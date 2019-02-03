@@ -7,7 +7,6 @@
     "email": "stevemyz@gmail.com",
     "url": "https://trufi.github.io/"
   },
-  "license": "MIT",
   "scripts": {
     "server": "ts-node server/index.ts",
     "start": "npm run dev",
