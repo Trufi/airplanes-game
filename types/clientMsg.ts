@@ -1,18 +1,15 @@
-export type Msg =
-    | StartMsg
-    | ActionsMsg
-    ;
+export type Msg = StartMsg | ActionsMsg;
 
 export interface StartMsg {
-    type: 'start';
-    name: string;
+  type: 'start';
+  name: string;
 }
 
 export interface PlayerAction {
-    type: 'left' | 'right' | 'up' | 'down';
+  type: 'left' | 'right' | 'up' | 'down';
 }
 
 export interface ActionsMsg {
-    type: 'actions';
-    actions: PlayerAction[];
+  type: 'actions';
+  actions: PlayerAction[];
 }
