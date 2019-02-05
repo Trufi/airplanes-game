@@ -34,7 +34,7 @@ module.exports = {
     extensions: ['.ts', '.js'],
   },
 
-  entry: './src/index.ts',
+  entry: './client/index.ts',
 
   output: {
     filename: 'index.js',
