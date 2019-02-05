@@ -14,7 +14,7 @@
     "dev": "webpack-dev-server --mode=development",
     "test": "npm run lint && npm run prettier && npm run build && npm run unit",
     "lint": "tslint 'src/**/*.ts'",
-    "prettier": "prettier --check \"./**/*.{ts,json,html,css}\"",
+    "prettier": "prettier --check \"./**/*.{ts,js,json,html,css}\"",
     "unit": "mocha -r ts-node/register test/**/*.ts"
   },
   "dependencies": {
