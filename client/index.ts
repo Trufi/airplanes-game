@@ -1,13 +1,11 @@
-import { Map, config } from '@2gis/jakarta';
-import { setEyePosition, radToDeg } from '@2gis/jakarta/src/utils/common';
-import { projectMapToGeo, projectGeoToMap, heightToZoom } from '@2gis/jakarta/src/utils/geo';
+import { setEyePosition, radToDeg } from '@2gis/jakarta/dist/es6/utils/common';
+import { projectMapToGeo, projectGeoToMap, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import * as mat4 from '@2gis/gl-matrix/mat4';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import 'three/examples/js/loaders/GLTFLoader';
 
-declare const window: any;
-declare const J: any;
 declare const THREE: any;
+declare const J: any;
 
 const container = document.getElementById('map') as HTMLElement;
 
@@ -40,8 +38,9 @@ const options = {
   minPitch: 0,
   maxPitch: 0,
   sendAnalytics: false,
+  fontUrl: './dist/fonts',
 };
-const map = (window.map = new J.Map(container, options) as Map);
+const map = ((window as any).map = new J.Map(container, options));
 
 window.addEventListener('resize', () => map.invalidateSize());
 
@@ -58,10 +57,10 @@ window.addEventListener('keyup', (ev) => {
 });
 
 const camera = new THREE.PerspectiveCamera(
-  config.camera.fov,
+  J.config.camera.fov,
   window.innerWidth / window.innerHeight,
-  config.camera.near,
-  config.camera.far,
+  J.config.camera.near,
+  J.config.camera.far,
 );
 camera.position.z = 1;
 camera.up.set(0, 0, 1);
@@ -79,10 +78,10 @@ const mesh = new THREE.Object3D();
 mesh.scale.set(k, k, k);
 mesh.rotateY(Math.PI / 2);
 mesh.updateMatrix();
-mesh.updateWorldMatrix();
+mesh.updateWorldMatrix(true, true);
 
 const loader = new THREE.GLTFLoader();
-loader.load('./assets/a5.glb', (gltf) => {
+loader.load('./assets/a5.glb', (gltf: any) => {
   const scene = gltf.scene;
   console.log(gltf);
   // scene.children[0].rotateX(-Math.PI / 2);
@@ -110,7 +109,7 @@ scene.add(directionalLight);
 // const up = new THREE.Vector3(0, 0, 1);
 
 const renderer = new THREE.WebGLRenderer({
-  canvas: document.getElementById('overlay'),
+  canvas: document.getElementById('overlay') as HTMLCanvasElement,
   alpha: true,
   antialias: true,
 });
@@ -205,7 +204,7 @@ function loop() {
 
   camera.position.set(eye[0], eye[1], eye[2]);
   camera.updateMatrix();
-  camera.updateWorldMatrix();
+  camera.updateWorldMatrix(true, true);
 
   mesh.position.set(position[0], position[1], position[2]);
 
@@ -232,7 +231,7 @@ function loop() {
   // mesh.setRotationFromQuaternion(q1);
 
   mesh.updateMatrix();
-  mesh.updateWorldMatrix();
+  mesh.updateWorldMatrix(true, true);
 
   plane.position.set(position[0], position[1], 0);
 
@@ -242,7 +241,7 @@ function loop() {
 }
 requestAnimationFrame(loop);
 
-map.on('click', (ev) => {
+map.on('click', (ev: any) => {
   console.log(projectGeoToMap(ev.lngLat));
 });
 

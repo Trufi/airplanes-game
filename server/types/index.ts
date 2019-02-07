@@ -1,5 +1,6 @@
 import * as ws from 'ws';
 import { PlayerAction } from '../../types/clientMsg';
+import { Body } from '../../types/physic';
 
 export interface InitialConnection {
   status: 'initial';
@@ -33,15 +34,6 @@ export interface PlayersState {
   map: Map<number, Player>;
   nextId: number;
 }
-
-export interface Airplane {
-  id: number;
-  position: number[];
-  quaternion: number[]; // кватернион
-  velocity: number[];
-}
-
-export type Body = Airplane;
 
 export interface BodiesState {
   map: Map<number, Body>;

@@ -1,6 +1,26 @@
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
+const fs = require('fs-extra');
+
+const dist = path.join(__dirname, 'dist');
+
+fs.copySync(
+  path.join(__dirname, 'node_modules/@2gis/jakarta/dist/jakarta.js'),
+  path.join(dist, 'jakarta.js'),
+);
+
+fs.copySync(
+  path.join(__dirname, 'node_modules/@2gis/jakarta/dist/jakarta.js.map'),
+  path.join(dist, 'jakarta.js.map'),
+);
+
+fs.copySync(
+  path.join(__dirname, 'node_modules/@2gis/jakarta/dist/assets/fonts'),
+  path.join(dist, 'assets/fonts'),
+);
+
+fs.copySync(path.join(__dirname, 'assets'), path.join(dist, 'assets'));
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -18,8 +38,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /(\.ts|\.tsx)$/,
-        exclude: /node_modules/,
+        test: /(\.ts|\.tsx|\.js)$/,
+        exclude: /node_modules(\/|\\)(?!@2gis(\/|\\)gl-matrix|2gl)/,
         use: {
           loader: 'ts-loader',
           options: {

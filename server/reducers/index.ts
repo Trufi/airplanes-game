@@ -7,10 +7,10 @@ import {
   Player,
   PlayerConnection,
   State,
-  Airplane,
 } from '../types';
 import { saveActions } from './playerActions';
 import { Cmd, sendStartDataCmd, sendPlayerLeaveCmd } from '../commands';
+import { Airplane } from '../../types/physic';
 
 export const createNewConnection = (state: ConnectionsState, socket: ws): number => {
   const connection: InitialConnection = {

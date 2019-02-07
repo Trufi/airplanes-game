@@ -1,9 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "tslib": ["./node_modules/tslib/tslib.d.ts"]
-    },
     "target": "es2016",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -17,6 +13,6 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true
   },
-  "exclude": ["node_modules"],
-  "compileOnSave": false
+  "exclude": ["/node_modules/(?!@2gis/gl-matrix|2gl)/"],
+  "ignore": "/node_modules/(?!@2gis/gl-matrix|2gl)/"
 }
