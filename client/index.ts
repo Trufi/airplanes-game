@@ -3,9 +3,10 @@ import { projectMapToGeo, projectGeoToMap, heightToZoom } from '@2gis/jakarta/di
 import * as mat4 from '@2gis/gl-matrix/mat4';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import 'three/examples/js/loaders/GLTFLoader';
+import { Map, config } from '@2gis/jakarta';
 
 declare const THREE: any;
-declare const J: any;
+// declare const J: any;
 
 const container = document.getElementById('map') as HTMLElement;
 
@@ -40,7 +41,7 @@ const options = {
   sendAnalytics: false,
   fontUrl: './dist/fonts',
 };
-const map = ((window as any).map = new J.Map(container, options));
+const map = ((window as any).map = new Map(container, options));
 
 window.addEventListener('resize', () => map.invalidateSize());
 
@@ -57,10 +58,10 @@ window.addEventListener('keyup', (ev) => {
 });
 
 const camera = new THREE.PerspectiveCamera(
-  J.config.camera.fov,
+  config.camera.fov,
   window.innerWidth / window.innerHeight,
-  J.config.camera.near,
-  J.config.camera.far,
+  config.camera.near,
+  config.camera.far,
 );
 camera.position.z = 1;
 camera.up.set(0, 0, 1);
