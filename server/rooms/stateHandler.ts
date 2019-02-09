@@ -1,56 +1,55 @@
-import { Room, EntityMap, Client, nosync } from "colyseus";
+import { Room, EntityMap, Client, nosync } from 'colyseus';
 
 export class State {
-    players: EntityMap<Player> = {};
+  players: EntityMap<Player> = {};
 
-    @nosync
-    something = "This attribute won't be sent to the client-side";
+  @nosync
+  something = "This attribute won't be sent to the client-side";
 
-    createPlayer (id: string) {
-        this.players[ id ] = new Player();
-    }
+  createPlayer(id: string) {
+    this.players[id] = new Player();
+  }
 
-    removePlayer (id: string) {
-        delete this.players[ id ];
-    }
+  removePlayer(id: string) {
+    delete this.players[id];
+  }
 
-    movePlayer (id: string, movement: any) {
-        if (movement.x) {
-            this.players[ id ].x += movement.x * 10;
-
-        } else if (movement.y) {
-            this.players[ id ].y += movement.y * 10;
-        }
-    }
+  movePlayer(id: string, movement: any) {
+    this.players[id].x = movement.position[0];
+    this.players[id].y = movement.position[1];
+    this.players[id].vx = movement.velocity[0];
+    this.players[id].vy = movement.velocity[1];
+  }
 }
 
 export class Player {
-    x = Math.floor(Math.random() * 400);
-    y = Math.floor(Math.random() * 400);
+  x = 989279049.1967943;
+  y = 789621208.6300365;
+  vx = 0;
+  vy = 40;
 }
 
 export class StateHandlerRoom extends Room<State> {
-    onInit (options) {
-        console.log("StateHandlerRoom created!", options);
+  onInit(options) {
+    console.log('StateHandlerRoom created!', options);
 
-        this.setState(new State());
-    }
+    this.setState(new State());
+  }
 
-    onJoin (client) {
-        this.state.createPlayer(client.sessionId);
-    }
+  onJoin(client) {
+    this.state.createPlayer(client.sessionId);
+  }
 
-    onLeave (client) {
-        this.state.removePlayer(client.sessionId);
-    }
+  onLeave(client) {
+    this.state.removePlayer(client.sessionId);
+  }
 
-    onMessage (client, data) {
-        console.log("StateHandlerRoom received message from", client.sessionId, ":", data);
-        this.state.movePlayer(client.sessionId, data);
-    }
+  onMessage(client, data) {
+    // console.log('StateHandlerRoom received message from', client.sessionId, ':', data);
+    this.state.movePlayer(client.sessionId, data);
+  }
 
-    onDispose () {
-        console.log("Dispose StateHandlerRoom");
-    }
-
+  onDispose() {
+    console.log('Dispose StateHandlerRoom');
+  }
 }

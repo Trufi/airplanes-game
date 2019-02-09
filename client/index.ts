@@ -6,6 +6,7 @@ import { AirplaneBody } from '../physic/airplane';
 import { angle, degToRad } from '../physic/utils';
 
 declare const THREE: any;
+declare const Colyseus: any;
 
 const container = document.getElementById('map') as HTMLElement;
 const host = window.document.location.host.replace(/:.*/, '');
@@ -14,18 +15,12 @@ const client = new Colyseus.Client(location.protocol.replace('http', 'ws') + hos
 const room = client.join('state_handler');
 
 const players: any = {};
-const colors: string[] = ['red', 'green', 'yellow', 'blue', 'cyan', 'magenta'];
+// const colors: string[] = ['red', 'green', 'yellow', 'blue', 'cyan', 'magenta'];
 
 const height = 80000;
 
-const body = new AirplaneBody();
-
-const mapPoint = projectGeoToMap([82.920412, 55.030111]);
-body.position[0] = mapPoint[0];
-body.position[1] = mapPoint[1];
-
 const options = {
-  center: projectMapToGeo(body.position),
+  center: [82.920412, 55.030111],
   zoom: heightToZoom(height + 25000, [window.innerWidth, window.innerHeight]),
   sendAnalytics: false,
   fontUrl: './dist/assets/fonts',
@@ -34,7 +29,7 @@ const map = ((window as any).map = new Map(container, options));
 
 window.addEventListener('resize', () => map.invalidateSize());
 
-let lastTime = Date.now();
+let lastTime = performance.now();
 
 const currentDownKeys: { [key: string]: boolean } = {};
 
@@ -60,105 +55,93 @@ const scene = new THREE.Scene();
 
 const k = 300; // размер соответсвует примерно 50 метрам!
 
-const mesh = new THREE.Object3D();
-mesh.scale.set(k, k, k);
-mesh.rotateY(Math.PI / 2);
-mesh.updateMatrix();
-mesh.updateWorldMatrix(true, true);
+function createMesh() {
+  const mesh = new THREE.Object3D();
+  mesh.scale.set(k, k, k);
+  mesh.rotateY(Math.PI / 2);
+  mesh.updateMatrix();
+  mesh.updateWorldMatrix(true, true);
+  const loader = new THREE.GLTFLoader();
+  loader.load('./assets/a5.glb', (gltf: any) => {
+    const scene = gltf.scene;
+    scene.rotateX(Math.PI / 2);
+    scene.rotateY(Math.PI / 2);
+    mesh.add(scene);
+  });
+  return mesh;
+}
+
+const light = new THREE.AmbientLight(0x404040);
+scene.add(light);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+directionalLight.position.set(0, 0, 1);
+scene.add(directionalLight);
+
+let currentPlayer: any;
+
+function initCurrentPlayer(id: string) {
+  currentPlayer = players[id];
+}
 
 // listen to patches coming from the server
 room.listen('players/:id', (change: any) => {
   if (change.operation === 'add') {
-    // const dom = document.createElement("div");
-    // dom.className = "player";
-    // dom.style.left = change.value.x + "px";
-    // dom.style.top = change.value.y + "px";
-    // dom.style.background = colors[Math.floor(Math.random() * colors.length)];
-    // dom.innerHTML = "Player " + change.path.id;
-    //
-    // document.body.appendChild(dom);
-
-    const loader = new THREE.GLTFLoader();
-    loader.load('./assets/a5.glb', (gltf: any) => {
-      const scene = gltf.scene;
-      console.log(gltf);
-      // scene.children[0].rotateX(-Math.PI / 2);
-      // scene.children[0].updateMatrix();
-      // scene.children[0].updateWorldMatrix();
-      // scene.children[0].material = material;
-      // mesh.add(scene.children[1]);
-
-      scene.rotateX(Math.PI / 2);
-      scene.rotateY(Math.PI / 2);
-      // scene.updateMatrix();
-      // scene.updateWorldMatrix();
-      mesh.add(scene);
-    });
-
+    const mesh = createMesh();
     scene.add(mesh);
 
-    const light = new THREE.AmbientLight(0x404040);
-    scene.add(light);
+    const body = new AirplaneBody();
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(0, 0, 1);
-    scene.add(directionalLight);
+    body.position[0] = change.value.x;
+    body.position[1] = change.value.y;
+    body.velocity[0] = change.value.vx;
+    body.velocity[1] = change.value.vy;
 
     console.log('ADDED PLAYER', change);
 
     players[change.path.id] = {
-      change,
-      x: change.value.x,
-      y: change.value.y,
-      mesh: 0,
+      mesh,
+      body,
     };
+
+    if (change.path.id === room.sessionId) {
+      initCurrentPlayer(change.path.id);
+    }
   } else if (change.operation === 'remove') {
-    // document.body.removeChild(players[ change.path.id ]);
+    const player = players[change.path.id];
+    scene.remove(player.mesh);
     delete players[change.path.id];
     console.log('REMOVE PLAYER', change, players);
   }
 });
 
-room.listen('players/:id/:axis', (change: any) => {
-  console.log('CHANGE AXIS PLAYER', change);
-  // const dom = players[ change.path.id ];
-  //
-  // const styleAttribute = (change.path.axis === "x")
-  //     ? "left"
-  //     : "top";
-  //
-  // dom.style[ styleAttribute ] = change.value + "px";
-  const player = { ...players[change.path.id] };
-
-  switch (change.path.axis) {
-    case 'x': {
-      player.x = change.value;
-    }
-    case 'y': {
-      player.y = change.value;
-    }
+room.listen('players/:id/:attribute', (change: any) => {
+  if (change.path.id === room.sessionId) {
+    return;
   }
-  players[change.path.id] = {
-    ...player,
-  };
+  const player = players[change.path.id];
 
-  console.log('players', players);
+  switch (change.path.attribute) {
+    case 'x':
+      player.body.position[0] = change.value;
+      break;
+    case 'y':
+      player.body.position[1] = change.value;
+      break;
+    case 'vx':
+      player.body.velocity[0] = change.value;
+      break;
+    case 'vy':
+      console.log('VX change', change.value);
+      player.body.velocity[1] = change.value;
+      break;
+  }
+
+  // console.log('players', players);
 });
 
-function up() {
-  room.send({y: -1});
-}
-
-function right() {
-  room.send({x: 1});
-}
-
-function down() {
-  room.send({y: 1});
-}
-
-function left() {
-  room.send({x: -1});
+function send() {
+  room.send(currentPlayer.body);
 }
 
 const renderer = new THREE.WebGLRenderer({
@@ -168,10 +151,39 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
+function updateOtherPlayers() {
+  for (const id in players) {
+    if (room.sessionId === id) {
+      continue;
+    }
+
+    updateMesh(players[id]);
+  }
+}
+
+function updateMesh(player: any) {
+  const { mesh, body } = player;
+  mesh.position.set(body.position[0], body.position[1], height);
+
+  // rotate mesh
+  const q1 = new THREE.Quaternion();
+  mesh.setRotationFromQuaternion(q1);
+  const rotation = angle(body.velocity);
+  mesh.rotateZ(rotation - Math.PI / 2);
+  mesh.updateMatrix();
+  mesh.updateWorldMatrix(true, true);
+}
+
 function loop() {
   requestAnimationFrame(loop);
 
-  const now = Date.now();
+  if (!currentPlayer) {
+    return;
+  }
+
+  const { body } = currentPlayer;
+
+  const now = performance.now();
   const delta = now - lastTime;
 
   let rollPressed = false;
@@ -183,21 +195,23 @@ function loop() {
 
     switch (code) {
       case 'KeyA':
-        left();
         body.rollLeft(delta);
         rollPressed = true;
         break;
       case 'KeyD':
-        right();
         body.rollRight(delta);
         rollPressed = true;
         break;
     }
   }
 
+  send();
+
   if (!rollPressed) {
     body.restoreRoll(delta);
   }
+
+  updateOtherPlayers();
 
   body.tick(delta);
 
@@ -215,14 +229,7 @@ function loop() {
   camera.updateMatrix();
   camera.updateWorldMatrix(true, true);
 
-  mesh.position.set(body.position[0], body.position[1], height);
-
-  // rotate mesh
-  const q1 = new THREE.Quaternion();
-  mesh.setRotationFromQuaternion(q1);
-  mesh.rotateZ(rotation - Math.PI / 2);
-  mesh.updateMatrix();
-  mesh.updateWorldMatrix(true, true);
+  updateMesh(currentPlayer);
 
   renderer.render(scene, camera);
 

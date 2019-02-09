@@ -1,4 +1,3 @@
-
 import * as path from 'path';
 import * as express from 'express';
 import { createServer } from 'http';
@@ -13,20 +12,20 @@ const app = express();
 
 // Attach WebSocket Server on HTTP Server.
 const gameServer = new Server({
-    server: createServer(app)
+  server: createServer(app),
 });
 
 // Register StateHandlerRoom as "state_handler"
-gameServer.register("state_handler", StateHandlerRoom);
+gameServer.register('state_handler', StateHandlerRoom);
 
-app.use('/', express.static(path.join(__dirname, "static")));
+app.use('/', express.static(path.join(__dirname, 'static')));
 
 // (optional) attach web monitoring panel
 app.use('/colyseus', monitor(gameServer));
 
 gameServer.onShutdown(() => {
-    console.log(`game server is going down.`);
+  console.log(`game server is going down.`);
 });
 
 gameServer.listen(port);
-console.log(`Listening on http://localhost:${ port }`);
+console.log(`Listening on http://localhost:${port}`);
