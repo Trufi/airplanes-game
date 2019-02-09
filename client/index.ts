@@ -1,44 +1,68 @@
 import { setEyePosition, radToDeg } from '@2gis/jakarta/dist/es6/utils/common';
 import { projectMapToGeo, projectGeoToMap, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
-import 'three/examples/js/loaders/GLTFLoader';
 import { Map, config } from '@2gis/jakarta';
-import { AirplaneBody } from '../physic/airplane';
-import { angle, degToRad } from '../physic/utils';
+import { msg, AnyClientMsg } from './messages';
+import { AnyServerMsg } from '../server/messages';
+import { message } from './reducers';
+import { createState } from './state';
+import { angle, degToRad } from './utils';
+import { tick } from './reducers/tick';
+import { processPressedkeys } from './reducers/actions';
 
 declare const THREE: any;
-declare const Colyseus: any;
 
-const container = document.getElementById('map') as HTMLElement;
-const host = window.document.location.host.replace(/:.*/, '');
+const state = createState(Date.now());
 
-const client = new Colyseus.Client(location.protocol.replace('http', 'ws') + host + ':' + 2567);
-const room = client.join('state_handler');
+const ws = new WebSocket(`ws://${location.hostname}:3001/`);
 
-const players: any = {};
-// const colors: string[] = ['red', 'green', 'yellow', 'blue', 'cyan', 'magenta'];
+function sendMessage(msg: AnyClientMsg) {
+  ws.send(JSON.stringify(msg));
+}
+
+ws.addEventListener('open', () => {
+  console.log('Connected');
+
+  sendMessage(msg.start(`Random-${Math.round(Math.random() * 100)}`));
+});
+
+ws.addEventListener('close', () => {
+  console.log('Disconnected');
+});
+
+ws.addEventListener('message', (ev) => {
+  let msg: AnyServerMsg;
+
+  try {
+    msg = JSON.parse(ev.data);
+  } catch (e) {
+    console.error(`Bad server message ${ev.data}`);
+    return;
+  }
+
+  message(state, msg);
+});
 
 const height = 80000;
 
+const container = document.getElementById('map') as HTMLElement;
 const options = {
   center: [82.920412, 55.030111],
   zoom: heightToZoom(height + 25000, [window.innerWidth, window.innerHeight]),
   sendAnalytics: false,
-  fontUrl: './dist/assets/fonts',
+  fontUrl: './assets/fonts',
 };
 const map = ((window as any).map = new Map(container, options));
 
 window.addEventListener('resize', () => map.invalidateSize());
 
-let lastTime = performance.now();
-
-const currentDownKeys: { [key: string]: boolean } = {};
+const pressedKeys: { [key: string]: boolean } = {};
 
 window.addEventListener('keydown', (ev) => {
-  currentDownKeys[ev.code] = true;
+  pressedKeys[ev.code] = true;
 });
 
 window.addEventListener('keyup', (ev) => {
-  currentDownKeys[ev.code] = false;
+  pressedKeys[ev.code] = false;
 });
 
 const camera = new THREE.PerspectiveCamera(
@@ -51,169 +75,34 @@ camera.position.z = 1;
 camera.up.set(0, 0, 1);
 camera.lookAt(0, 0, 0);
 
-const scene = new THREE.Scene();
-
-const k = 300; // размер соответсвует примерно 50 метрам!
-
-function createMesh() {
-  const mesh = new THREE.Object3D();
-  mesh.scale.set(k, k, k);
-  mesh.rotateY(Math.PI / 2);
-  mesh.updateMatrix();
-  mesh.updateWorldMatrix(true, true);
-  const loader = new THREE.GLTFLoader();
-  loader.load('./assets/a5.glb', (gltf: any) => {
-    const scene = gltf.scene;
-    scene.rotateX(Math.PI / 2);
-    scene.rotateY(Math.PI / 2);
-    mesh.add(scene);
-  });
-  return mesh;
-}
-
-const light = new THREE.AmbientLight(0x404040);
-scene.add(light);
-
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-directionalLight.position.set(0, 0, 1);
-scene.add(directionalLight);
-
-let currentPlayer: any;
-
-function initCurrentPlayer(id: string) {
-  currentPlayer = players[id];
-}
-
-// listen to patches coming from the server
-room.listen('players/:id', (change: any) => {
-  if (change.operation === 'add') {
-    const mesh = createMesh();
-    scene.add(mesh);
-
-    const body = new AirplaneBody();
-
-    body.position[0] = change.value.x;
-    body.position[1] = change.value.y;
-    body.velocity[0] = change.value.vx;
-    body.velocity[1] = change.value.vy;
-
-    console.log('ADDED PLAYER', change);
-
-    players[change.path.id] = {
-      mesh,
-      body,
-    };
-
-    if (change.path.id === room.sessionId) {
-      initCurrentPlayer(change.path.id);
-    }
-  } else if (change.operation === 'remove') {
-    const player = players[change.path.id];
-    scene.remove(player.mesh);
-    delete players[change.path.id];
-    console.log('REMOVE PLAYER', change, players);
-  }
-});
-
-room.listen('players/:id/:attribute', (change: any) => {
-  if (change.path.id === room.sessionId) {
-    return;
-  }
-  const player = players[change.path.id];
-
-  switch (change.path.attribute) {
-    case 'x':
-      player.body.position[0] = change.value;
-      break;
-    case 'y':
-      player.body.position[1] = change.value;
-      break;
-    case 'vx':
-      player.body.velocity[0] = change.value;
-      break;
-    case 'vy':
-      console.log('VX change', change.value);
-      player.body.velocity[1] = change.value;
-      break;
-  }
-
-  // console.log('players', players);
-});
-
-function send() {
-  room.send(currentPlayer.body);
-}
-
 const renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById('overlay') as HTMLCanvasElement,
   alpha: true,
   antialias: true,
 });
-renderer.setSize(window.innerWidth, window.innerHeight);
 
-function updateOtherPlayers() {
-  for (const id in players) {
-    if (room.sessionId === id) {
-      continue;
-    }
+const onResize = () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+};
 
-    updateMesh(players[id]);
-  }
-}
-
-function updateMesh(player: any) {
-  const { mesh, body } = player;
-  mesh.position.set(body.position[0], body.position[1], height);
-
-  // rotate mesh
-  const q1 = new THREE.Quaternion();
-  mesh.setRotationFromQuaternion(q1);
-  const rotation = angle(body.velocity);
-  mesh.rotateZ(rotation - Math.PI / 2);
-  mesh.updateMatrix();
-  mesh.updateWorldMatrix(true, true);
-}
+window.addEventListener('resize', onResize);
+onResize();
 
 function loop() {
   requestAnimationFrame(loop);
-
-  if (!currentPlayer) {
+  if (!state.session) {
     return;
   }
 
-  const { body } = currentPlayer;
+  const time = Date.now();
 
-  const now = performance.now();
-  const delta = now - lastTime;
+  processPressedkeys(time - state.time, state, pressedKeys);
 
-  let rollPressed = false;
+  tick(state, time);
 
-  for (const code in currentDownKeys) {
-    if (!currentDownKeys[code]) {
-      continue;
-    }
-
-    switch (code) {
-      case 'KeyA':
-        body.rollLeft(delta);
-        rollPressed = true;
-        break;
-      case 'KeyD':
-        body.rollRight(delta);
-        rollPressed = true;
-        break;
-    }
-  }
-
-  send();
-
-  if (!rollPressed) {
-    body.restoreRoll(delta);
-  }
-
-  updateOtherPlayers();
-
-  body.tick(delta);
+  const body = state.session.body;
 
   const rotation = angle(body.velocity);
   map.setCenter(projectMapToGeo(body.position), { animate: false });
@@ -229,13 +118,15 @@ function loop() {
   camera.updateMatrix();
   camera.updateWorldMatrix(true, true);
 
-  updateMesh(currentPlayer);
-
-  renderer.render(scene, camera);
-
-  lastTime = now;
+  renderer.render(state.scene, camera);
 }
 requestAnimationFrame(loop);
+
+setInterval(() => {
+  if (state.session) {
+    sendMessage(msg.bodyState(state.session.body));
+  }
+}, 50);
 
 map.on('click', (ev: any) => {
   console.log(projectGeoToMap(ev.lngLat));

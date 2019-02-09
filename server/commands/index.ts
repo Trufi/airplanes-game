@@ -1,20 +1,22 @@
-export const sendPlayersTickDataCmd = () => ({
-  type: 'sendPlayersTickData' as 'sendPlayersTickData',
+import { ObjectElement } from '../../types/utils';
+import { AnyServerMsg } from '../messages';
+
+const sendMsg = (msg: AnyServerMsg, connectionId: number) => ({
+  type: 'sendMsg' as 'sendMsg',
+  connectionId,
+  msg,
 });
 
-export const sendStartDataCmd = (playerId: number) => ({
-  type: 'sendStartData' as 'sendStartData',
-  playerId,
+const sendMsgToAll = (msg: AnyServerMsg) => ({
+  type: 'sendMsgToAll' as 'sendMsgToAll',
+  msg,
 });
 
-export const sendPlayerLeaveCmd = (playerId: number) => ({
-  type: 'sendPlayerLeave' as 'sendPlayerLeave',
-  playerId,
-});
+export const cmd = {
+  sendMsg,
+  sendMsgToAll,
+};
 
-export type ExistCmd =
-  | ReturnType<typeof sendPlayersTickDataCmd>
-  | ReturnType<typeof sendStartDataCmd>
-  | ReturnType<typeof sendPlayerLeaveCmd>;
+export type ExistCmd = ReturnType<ObjectElement<typeof cmd>>;
 
-export type Cmd = ExistCmd | undefined;
+export type Cmd = ExistCmd | ExistCmd[] | undefined | void;

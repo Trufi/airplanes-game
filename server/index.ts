@@ -1,24 +1,22 @@
 import '@2gis/gl-matrix';
 
 import * as express from 'express';
+import * as path from 'path';
 import * as ws from 'ws';
-import { Msg } from '../types/clientMsg';
-import { ServerMsg } from '../types/serverMsg';
 import { createNewConnection, message, connectionLost } from './reducers';
-import {
-  getConnectionByPlayerId,
-  getStartDataMsg,
-  getPlayerLeaveMsg,
-  getTickDataMsg,
-} from './selectors';
 import { Connection, State } from './types';
-import { tick } from './reducers/step';
-import { ExistCmd } from './commands';
+import { tick } from './reducers/tick';
+import { ExistCmd, Cmd } from './commands';
 import { createState } from './state';
+import { getConnectionByPlayerId } from './utils';
+import { AnyServerMsg } from './messages';
+import { AnyClientMsg } from '../client/messages';
 
 const port = 3001;
 
 const app = express();
+
+app.use(express.static(path.join(__dirname, '../dist')));
 
 const server = app.listen(port, () => console.log(`Server listen on ${port} port`));
 
@@ -28,13 +26,34 @@ const wsServer = new ws.Server({
 
 const state = createState(Date.now());
 
-const gameStep = 30;
+app.get('/state', (_req, res) => {
+  const data = {
+    bodies: Array.from(state.bodies.map),
+    players: Array.from(state.players.map),
+    connections: Array.from(state.connections.map).map((v) => {
+      const { id, status } = v[1];
+      return {
+        id,
+        status,
+      };
+    }),
+  };
+  res.send(JSON.stringify(data, null, 2));
+});
 
-const sendMessage = (connection: Connection, msg: ServerMsg): void => {
-  connection.socket.send(JSON.stringify(msg));
+// app.use('', express.static(path.join(__dirname, '../index.html')));
+
+const gameStep = 50;
+
+const sendMessage = (connection: Connection, msg: AnyServerMsg): void => {
+  try {
+    connection.socket.send(JSON.stringify(msg));
+  } catch (e) {
+    console.error(e);
+  }
 };
 
-const sendAllPlayersMessage = (state: State, msg: ServerMsg): void => {
+const sendAllPlayersMessage = (state: State, msg: AnyServerMsg): void => {
   state.players.map.forEach((player) => {
     const connection = getConnectionByPlayerId(state, player.id);
     if (connection) {
@@ -43,24 +62,28 @@ const sendAllPlayersMessage = (state: State, msg: ServerMsg): void => {
   });
 };
 
-const executeCmd = (cmd: ExistCmd) => {
+const executeCmd = (cmd: Cmd) => {
+  if (cmd) {
+    if (Array.isArray(cmd)) {
+      cmd.forEach(executeOneCmd);
+    } else {
+      executeOneCmd(cmd);
+    }
+  }
+};
+
+const executeOneCmd = (cmd: ExistCmd) => {
   switch (cmd.type) {
-    case 'sendStartData': {
-      const msg = getStartDataMsg(state, cmd.playerId);
-      const connection = getConnectionByPlayerId(state, cmd.playerId);
-      if (connection && msg) {
-        sendMessage(connection, msg);
+    case 'sendMsg': {
+      const connection = state.connections.map.get(cmd.connectionId);
+      if (connection) {
+        sendMessage(connection, cmd.msg);
       }
       break;
     }
-    case 'sendPlayerLeave': {
-      const msg = getPlayerLeaveMsg(cmd.playerId);
-      sendAllPlayersMessage(state, msg);
-      break;
-    }
-    case 'sendPlayersTickData': {
-      const msg = getTickDataMsg(state);
-      sendAllPlayersMessage(state, msg);
+
+    case 'sendMsgToAll': {
+      sendAllPlayersMessage(state, cmd.msg);
       break;
     }
   }
@@ -69,9 +92,7 @@ const executeCmd = (cmd: ExistCmd) => {
 const gameLoop = () => {
   setTimeout(gameLoop, gameStep);
   const cmd = tick(state, Date.now());
-  if (cmd) {
-    executeCmd(cmd);
-  }
+  executeCmd(cmd);
 };
 gameLoop();
 
@@ -79,27 +100,24 @@ wsServer.on('connection', (socket) => {
   const id = createNewConnection(state.connections, socket);
 
   const onMessage = (data: string) => {
-    let msg: Msg;
+    let msg: AnyClientMsg;
 
     try {
       msg = JSON.parse(data);
     } catch (e) {
+      console.error(`Bad client message ${data}`);
       return;
     }
 
     const cmd = message(state, id, msg);
-    if (cmd) {
-      executeCmd(cmd);
-    }
+    executeCmd(cmd);
   };
 
   socket.on('message', onMessage);
 
   const onClose = () => {
     const cmd = connectionLost(state, id);
-    if (cmd) {
-      executeCmd(cmd);
-    }
+    executeCmd(cmd);
     socket.off('message', onMessage);
     socket.off('close', onClose);
   };

@@ -5,6 +5,8 @@ const fs = require('fs-extra');
 
 const dist = path.join(__dirname, 'dist');
 
+fs.copySync(path.join(__dirname, 'client/index.html'), path.join(dist, 'index.html'));
+
 fs.copySync(
   path.join(__dirname, 'node_modules/@2gis/jakarta/dist/jakarta.js'),
   path.join(dist, 'jakarta.js'),
@@ -54,6 +56,11 @@ module.exports = {
     extensions: ['.ts', '.js'],
   },
 
+  // TODO: Почему-то при минимизации карта запускается с огромными иконками POI
+  optimization: {
+    minimize: false,
+  },
+
   entry: './client/index.ts',
 
   output: {
@@ -67,6 +74,7 @@ module.exports = {
   devtool: 'source-map',
 
   devServer: {
+    contentBase: path.resolve(__dirname, 'dist'),
     host: '0.0.0.0',
     port: 3000,
     stats: {

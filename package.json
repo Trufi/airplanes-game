@@ -8,7 +8,7 @@
     "url": "https://trufi.github.io/"
   },
   "scripts": {
-    "server": "ts-node server/index.ts",
+    "server": "node server/hook.js",
     "start": "npm run dev",
     "build": "webpack --mode=production",
     "dev": "webpack-dev-server --mode=development",

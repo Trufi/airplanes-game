@@ -1,16 +1,16 @@
 import * as ws from 'ws';
-import { Msg, StartMsg } from '../../types/clientMsg';
+import { AnyClientMsg, ClientMsg } from '../../client/messages';
 import {
-  Connection,
   ConnectionsState,
   InitialConnection,
   Player,
   PlayerConnection,
   State,
+  Airplane,
 } from '../types';
-import { saveActions } from './playerActions';
-import { Cmd, sendStartDataCmd, sendPlayerLeaveCmd } from '../commands';
-import { Airplane } from '../../types/physic';
+import { Cmd, cmd } from '../commands';
+import { updatePlayerBodyState } from './bodies';
+import { msg } from '../messages';
 
 export const createNewConnection = (state: ConnectionsState, socket: ws): number => {
   const connection: InitialConnection = {
@@ -26,7 +26,7 @@ export const createNewConnection = (state: ConnectionsState, socket: ws): number
 /**
  * Обработка сообщений клиента
  */
-export const message = (state: State, connectionId: number, msg: Msg): Cmd => {
+export const message = (state: State, connectionId: number, msg: AnyClientMsg): Cmd => {
   const connection = state.connections.map.get(connectionId);
   if (!connection) {
     return;
@@ -43,59 +43,83 @@ export const message = (state: State, connectionId: number, msg: Msg): Cmd => {
 export const initialConnectionMessage = (
   state: State,
   connection: InitialConnection,
-  msg: Msg,
+  msg: AnyClientMsg,
 ): Cmd => {
   switch (msg.type) {
-    case 'start':
-      return createNewPlayer(state, connection, msg);
+    case 'start': {
+      return playerStart(state, connection, msg);
+    }
   }
+};
+
+const playerStart = (
+  state: State,
+  connection: InitialConnection,
+  clientMsg: ClientMsg['start'],
+): Cmd => {
+  const body = createAirplane(state.bodies.nextId);
+  state.bodies.nextId++;
+  state.bodies.map.set(body.id, body);
+
+  const player = createPlayer(state.players.nextId, body.id, connection.id, clientMsg.name);
+  state.players.nextId++;
+  state.players.map.set(player.id, player);
+
+  state.connections.map.set(connection.id, {
+    status: 'player',
+    id: connection.id,
+    socket: connection.socket,
+    playerId: player.id,
+  });
+
+  return [
+    cmd.sendMsg(msg.startData(state, player, body), connection.id),
+    cmd.sendMsgToAll(msg.playerEnter(player)),
+  ];
 };
 
 export const playerConnectionMessage = (
   state: State,
   connection: PlayerConnection,
-  msg: Msg,
+  msg: AnyClientMsg,
 ): Cmd => {
   const player = state.players.map.get(connection.playerId);
   if (!player) {
     return;
   }
+  const body = state.bodies.map.get(player.bodyId);
+  if (!body) {
+    return;
+  }
 
   switch (msg.type) {
-    case 'actions':
-      return saveActions(state, player, msg);
+    case 'bodyState':
+      return updatePlayerBodyState(body, msg);
   }
 };
 
-export const createNewPlayer = (state: State, connection: Connection, msg: StartMsg): Cmd => {
-  const bodyId = createNewAirplane(state);
-
-  const player: Player = {
-    id: state.players.nextId,
-    connectionId: connection.id,
-    name: msg.name,
+export const createPlayer = (
+  id: number,
+  bodyId: number,
+  connectionId: number,
+  name: string,
+): Player => {
+  return {
+    id,
+    connectionId,
+    name,
     bodyId,
-    actions: new Map(),
   };
-
-  state.players.nextId++;
-  state.players.map.set(player.id, player);
-
-  return sendStartDataCmd(player.id);
 };
 
-const createNewAirplane = (state: State): number => {
-  const airplane: Airplane = {
-    id: state.bodies.nextId,
-    position: [0, 0, 0],
-    quaternion: [0, 0, 0, 0],
-    velocity: [0, 0, 0],
+const createAirplane = (id: number): Airplane => {
+  return {
+    id,
+    updateTime: 0,
+    position: [989279049.1967943, 789621208.6300365, 80000],
+    quaternion: [0, 0, 0, 1],
+    velocity: [0, 10, 0],
   };
-
-  state.bodies.nextId++;
-  state.bodies.map.set(airplane.id, airplane);
-
-  return airplane.id;
 };
 
 export const connectionLost = (state: State, connectionId: number): Cmd => {
@@ -109,7 +133,8 @@ export const connectionLost = (state: State, connectionId: number): Cmd => {
     const player = state.players.map.get(connection.playerId);
     if (player) {
       state.players.map.delete(player.id);
-      return sendPlayerLeaveCmd(player.id);
+      state.bodies.map.delete(player.bodyId);
+      return cmd.sendMsgToAll(msg.playerLeave(player.id));
     }
   }
 };
