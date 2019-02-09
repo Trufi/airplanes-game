@@ -1,45 +1,27 @@
 import { setEyePosition, radToDeg } from '@2gis/jakarta/dist/es6/utils/common';
 import { projectMapToGeo, projectGeoToMap, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
-import * as mat4 from '@2gis/gl-matrix/mat4';
-import * as vec3 from '@2gis/gl-matrix/vec3';
 import 'three/examples/js/loaders/GLTFLoader';
 import { Map, config } from '@2gis/jakarta';
+import { AirplaneBody } from '../physic/airplane';
+import { angle, degToRad } from '../physic/utils';
 
 declare const THREE: any;
-// declare const J: any;
 
 const container = document.getElementById('map') as HTMLElement;
 
-const position = projectGeoToMap([82.920412, 55.030111]);
-position[2] = 80000;
+const height = 80000;
 
-const minZoom = 12;
-const maxZoom = 22; // heightToZoom(position[2] + 5000, [window.innerWidth, window.innerHeight]);
+const body = new AirplaneBody();
 
-// const maxVelocity = 30;
-// const minVelocity = 10;
-
-// const acceleration = 0.05;
-
-const velocity = 40;
-let rotation = 0;
-
-let roll = 0;
-const rollSpeed = 0.001;
-const rollComebackSpeed = 0.0002;
-
-let pitch = 0;
-const pitchSpeed = 0.001;
+const mapPoint = projectGeoToMap([82.920412, 55.030111]);
+body.position[0] = mapPoint[0];
+body.position[1] = mapPoint[1];
 
 const options = {
-  center: projectMapToGeo(position),
-  zoom: 17,
-  minZoom,
-  maxZoom,
-  minPitch: 0,
-  maxPitch: 0,
+  center: projectMapToGeo(body.position),
+  zoom: heightToZoom(height + 25000, [window.innerWidth, window.innerHeight]),
   sendAnalytics: false,
-  fontUrl: './dist/fonts',
+  fontUrl: './dist/assets/fonts',
 };
 const map = ((window as any).map = new Map(container, options));
 
@@ -71,10 +53,6 @@ const scene = new THREE.Scene();
 
 const k = 300; // размер соответсвует примерно 50 метрам!
 
-// const geometry = new THREE.BoxGeometry(k, k, k);
-// const material = new THREE.MeshNormalMaterial();
-
-// const mesh = new THREE.Mesh(geometry, material);
 const mesh = new THREE.Object3D();
 mesh.scale.set(k, k, k);
 mesh.rotateY(Math.PI / 2);
@@ -116,14 +94,6 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-const geometry = new THREE.PlaneGeometry(5000, 5000);
-const material = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide });
-const plane = new THREE.Mesh(geometry, material);
-// scene.add(plane);
-
-const m = mat4.create();
-const m2 = mat4.create();
-
 function loop() {
   requestAnimationFrame(loop);
 
@@ -131,7 +101,6 @@ function loop() {
   const delta = now - lastTime;
 
   let rollPressed = false;
-  let pitchPressed = false;
 
   for (const code in currentDownKeys) {
     if (!currentDownKeys[code]) {
@@ -140,101 +109,44 @@ function loop() {
 
     switch (code) {
       case 'KeyA':
-        roll = clamp(roll - rollSpeed * delta, -Math.PI / 2, Math.PI / 2);
+        body.rollLeft(delta);
         rollPressed = true;
         break;
       case 'KeyD':
-        roll = clamp(roll + rollSpeed * delta, -Math.PI / 2, Math.PI / 2);
+        body.rollRight(delta);
         rollPressed = true;
-        break;
-      case 'KeyW':
-        pitch = pitch - pitchSpeed * delta;
-        pitchPressed = true;
-        // velocity = clamp(velocity + delta * acceleration, minVelocity, maxVelocity);
-        break;
-      case 'KeyS':
-        pitch = pitch + pitchSpeed * delta;
-        pitchPressed = true;
-        // velocity = clamp(velocity - delta * acceleration, minVelocity, maxVelocity);
         break;
     }
   }
 
   if (!rollPressed) {
-    if (Math.abs(roll) < rollComebackSpeed * delta) {
-      roll = 0;
-    } else if (roll > 0) {
-      roll = Math.max(0, roll - rollComebackSpeed * delta);
-    } else if (roll < 0) {
-      roll = Math.min(0, roll + rollComebackSpeed * delta);
-    }
+    body.restoreRoll(delta);
   }
 
-  if (!pitchPressed) {
-    if (Math.abs(pitch) < pitchSpeed * delta) {
-      pitch = 0;
-    }
-  }
+  body.tick(delta);
 
-  rotation = rotation - roll * delta * 0.001;
-
-  const step = delta * velocity;
-
-  mat4.identity(m);
-  mat4.rotateZ(m, m, rotation);
-
-  mat4.identity(m2);
-  mat4.rotateX(m2, m2, pitch);
-
-  mat4.mul(m, m, m2);
-
-  const direction = vec3.fromValues(0, 1, 0);
-  vec3.transformMat4(direction, direction, m);
-  vec3.scale(direction, direction, step);
-  vec3.add(position, position, direction);
-
-  map.setCenter(projectMapToGeo(position), { animate: false });
-  map.setRotation(radToDeg(rotation));
-  map.setZoom(heightToZoom(position[2] + 25000, [window.innerWidth, window.innerHeight]));
+  const rotation = angle(body.velocity);
+  map.setCenter(projectMapToGeo(body.position), { animate: false });
+  map.setRotation(radToDeg(rotation - Math.PI / 2));
 
   const eye = [0, 0, 0];
   setEyePosition(eye, map.map.state);
 
-  const a = new THREE.Euler(0, degToRad(map.getPitch()), degToRad(map.getRotation()), 'XYZ');
+  const a = new THREE.Euler(0, 0, degToRad(map.getRotation()), 'XYZ');
   camera.setRotationFromEuler(a);
 
   camera.position.set(eye[0], eye[1], eye[2]);
   camera.updateMatrix();
   camera.updateWorldMatrix(true, true);
 
-  mesh.position.set(position[0], position[1], position[2]);
+  mesh.position.set(body.position[0], body.position[1], height);
 
   // rotate mesh
   const q1 = new THREE.Quaternion();
-
   mesh.setRotationFromQuaternion(q1);
-
-  mesh.rotateZ(rotation);
-  mesh.rotateX(pitch);
-  mesh.rotateY(roll);
-
-  // q1.setFromAxisAngle(new THREE.Vector3(0, 0, 1), rotation);
-
-  // const q2 = new THREE.Quaternion();
-  // q2.setFromAxisAngle(new THREE.Vector3(0, 1, 0), roll);
-
-  // const q3 = new THREE.Quaternion();
-  // q3.setFromAxisAngle(new THREE.Vector3(1, 0, 0), pitch);
-
-  // q1.multiply(q2);
-  // q1.multiply(q3);
-
-  // mesh.setRotationFromQuaternion(q1);
-
+  mesh.rotateZ(rotation - Math.PI / 2);
   mesh.updateMatrix();
   mesh.updateWorldMatrix(true, true);
-
-  plane.position.set(position[0], position[1], 0);
 
   renderer.render(scene, camera);
 
@@ -245,13 +157,3 @@ requestAnimationFrame(loop);
 map.on('click', (ev: any) => {
   console.log(projectGeoToMap(ev.lngLat));
 });
-
-function degToRad(degrees: number): number {
-  return (degrees * Math.PI) / 180;
-}
-
-function clamp(value: number, min: number, max: number): number {
-  value = Math.max(value, min);
-  value = Math.min(value, max);
-  return value;
-}
