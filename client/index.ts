@@ -16,14 +16,6 @@ const room = client.join('state_handler');
 const players: any = {};
 const colors: string[] = ['red', 'green', 'yellow', 'blue', 'cyan', 'magenta'];
 
-const scene = new THREE.Scene();
-
-const rollSpeed = 0.001;
-const rollComebackSpeed = 0.0002;
-const pitchSpeed = 0.001;
-const velocity = 40;
-const k = 300; // размер соответсвует примерно 50 метрам!
-
 const height = 80000;
 
 const body = new AirplaneBody();
@@ -168,91 +160,6 @@ function down() {
 function left() {
   room.send({x: -1});
 }
-
-declare const THREE: any;
-// declare const J: any;
-
-const container = document.getElementById('map') as HTMLElement;
-
-const position = projectGeoToMap([82.920412, 55.030111]);
-position[2] = 80000;
-
-const minZoom = 12;
-const maxZoom = 22; // heightToZoom(position[2] + 5000, [window.innerWidth, window.innerHeight]);
-
-// const maxVelocity = 30;
-// const minVelocity = 10;
-
-// const acceleration = 0.05;
-let rotation = 0;
-let roll = 0;
-let pitch = 0;
-
-const options = {
-  center: projectMapToGeo(position),
-  zoom: 17,
-  minZoom,
-  maxZoom,
-  minPitch: 0,
-  maxPitch: 0,
-  sendAnalytics: false,
-  fontUrl: './dist/fonts',
-};
-const map = ((window as any).map = new Map(container, options));
-
-window.addEventListener('resize', () => map.invalidateSize());
-
-let lastTime = Date.now();
-
-const currentDownKeys: { [key: string]: boolean } = {};
-
-window.addEventListener('keydown', (ev) => {
-  currentDownKeys[ev.code] = true;
-});
-
-window.addEventListener('keyup', (ev) => {
-  currentDownKeys[ev.code] = false;
-});
-
-// const geometry = new THREE.BoxGeometry(k, k, k);
-// const material = new THREE.MeshNormalMaterial();
-
-// const mesh = new THREE.Mesh(geometry, material);
-
-// @TODO перенес в ADD PLAYER
-// const mesh = new THREE.Object3D();
-// mesh.scale.set(k, k, k);
-// mesh.rotateY(Math.PI / 2);
-// mesh.updateMatrix();
-// mesh.updateWorldMatrix(true, true);
-//
-// const loader = new THREE.GLTFLoader();
-// loader.load('./assets/a5.glb', (gltf: any) => {
-//   const scene = gltf.scene;
-//   console.log(gltf);
-//   // scene.children[0].rotateX(-Math.PI / 2);
-//   // scene.children[0].updateMatrix();
-//   // scene.children[0].updateWorldMatrix();
-//   // scene.children[0].material = material;
-//   // mesh.add(scene.children[1]);
-//
-//   scene.rotateX(Math.PI / 2);
-//   scene.rotateY(Math.PI / 2);
-//   // scene.updateMatrix();
-//   // scene.updateWorldMatrix();
-//   mesh.add(scene);
-// });
-//
-// scene.add(mesh);
-//
-// const light = new THREE.AmbientLight(0x404040);
-// scene.add(light);
-//
-// const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-// directionalLight.position.set(0, 0, 1);
-// scene.add(directionalLight);
-
-// const up = new THREE.Vector3(0, 0, 1);
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById('overlay') as HTMLCanvasElement,
