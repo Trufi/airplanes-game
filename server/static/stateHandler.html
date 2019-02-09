@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+
+    <style>
+      body { font-family: Tahoma, Geneva, sans-serif; text-align: center; }
+    </style>
+
+    <!-- colyseus.js client (npm run bundle-colyseus-client) -->
+    <script type="text/javascript" src="colyseus.js"></script>
+    <script type="text/javascript" src="./roomCreator.js"></script>
+
+    <style type="text/css">
+      .player {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        padding-top: 24px;
+        box-sizing: border-box;
+        left: 0;
+        top: 0;
+      }
+    </style>
+
+  </head>
+  <body>
+    <strong>commands</strong><br>
+    <button onclick="up()">up</button>
+    <button onclick="down()">down</button>
+    <br />
+    <button onclick="left()">left</button>
+    <button onclick="right()">right</button>
+  </body>
+</html>
