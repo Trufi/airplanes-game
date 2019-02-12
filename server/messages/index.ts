@@ -28,7 +28,7 @@ const startData = (state: State, player: Player, body: Airplane) => {
     body: {
       id: body.id,
       position: body.position,
-      quaternion: body.quaternion,
+      rotation: body.rotation,
       velocity: body.velocity,
     },
     anotherPlayers,
@@ -51,13 +51,13 @@ export interface TickBodyData {
   id: number;
   updateTime: number;
   position: number[];
-  quaternion: number[];
+  rotation: number[];
 }
 
-const getTickBodyData = ({ id, position, quaternion, updateTime }: Airplane): TickBodyData => ({
+const getTickBodyData = ({ id, position, rotation, updateTime }: Airplane): TickBodyData => ({
   id,
   position,
-  quaternion,
+  rotation,
   updateTime,
 });
 

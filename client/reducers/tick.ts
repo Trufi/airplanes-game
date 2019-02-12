@@ -33,7 +33,7 @@ const updateNonPhysicBody = (body: NonPhysicBodyState, time: number) => {
   const t = (interpolationTime - startStep.time) / (endStep.time - startStep.time);
 
   vec3.lerp(body.position, startStep.position, endStep.position, t);
-  quat.slerp(body.quaternion, startStep.quaternion, endStep.quaternion, t);
+  quat.slerp(body.rotation, startStep.rotation, endStep.rotation, t);
 
   updateMesh(body);
 };
@@ -58,11 +58,11 @@ const q = quat.create();
 const zAxis = [0, 0, 1];
 
 const updatePhysicBody = (body: PhysicBodyState, dt: number) => {
-  const euler = quatToEuler(body.quaternion);
+  const euler = quatToEuler(body.rotation);
   const angle = euler.pitch * rotationСoefficient * dt;
 
   quat.setAxisAngle(q, zAxis, -angle);
-  quat.mul(body.quaternion, q, body.quaternion);
+  quat.mul(body.rotation, q, body.rotation);
 
   rotate(body.velocity, angle);
 

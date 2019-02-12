@@ -36,7 +36,7 @@ export interface Airplane {
   id: number;
   updateTime: number;
   position: number[];
-  quaternion: number[];
+  rotation: number[];
   velocity: number[];
 }
 

@@ -117,7 +117,7 @@ const createAirplane = (id: number): Airplane => {
     id,
     updateTime: 0,
     position: [989279049.1967943, 789621208.6300365, 80000],
-    quaternion: [0, 0, 0, 1],
+    rotation: [0, 0, 0, 1],
     velocity: [0, 10, 0],
   };
 };

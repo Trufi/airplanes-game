@@ -6,7 +6,7 @@ import { Cmd } from '../commands';
 interface BodyState {
   position: number[];
   velocity: number[];
-  quaternion: number[];
+  rotation: number[];
 }
 
 export const updatePlayerBodyState = (airplane: Airplane, bodyState: BodyState): Cmd => {
@@ -14,5 +14,5 @@ export const updatePlayerBodyState = (airplane: Airplane, bodyState: BodyState):
 
   vec3.copy(airplane.position, bodyState.position);
   vec3.copy(airplane.velocity, bodyState.velocity);
-  quat.copy(airplane.quaternion, bodyState.quaternion);
+  quat.copy(airplane.rotation, bodyState.rotation);
 };

@@ -38,11 +38,11 @@ const rollSpeed = 0.001;
 // const rollComebackSpeed = 0.0002;
 
 const rollLeft = (dt: number, body: PhysicBodyState) => {
-  quat.rotateY(body.quaternion, body.quaternion, -dt * rollSpeed);
+  quat.rotateY(body.rotation, body.rotation, -dt * rollSpeed);
 };
 
 const rollRight = (dt: number, body: PhysicBodyState) => {
-  quat.rotateY(body.quaternion, body.quaternion, dt * rollSpeed);
+  quat.rotateY(body.rotation, body.rotation, dt * rollSpeed);
 };
 
 const restoreRoll = (_dt: number, _body: PhysicBodyState) => {

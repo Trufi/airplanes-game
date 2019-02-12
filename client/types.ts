@@ -1,7 +1,7 @@
 export interface BodyStep {
   time: number;
   position: number[];
-  quaternion: number[];
+  rotation: number[];
 }
 
 export interface PhysicBodyState {
@@ -11,7 +11,7 @@ export interface PhysicBodyState {
   mesh: any;
   position: number[];
   velocity: number[];
-  quaternion: number[];
+  rotation: number[];
 }
 
 export interface NonPhysicBodyState {
@@ -23,7 +23,7 @@ export interface NonPhysicBodyState {
    */
   mesh: any;
   position: number[];
-  quaternion: number[];
+  rotation: number[];
   steps: BodyStep[];
 }
 

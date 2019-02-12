@@ -43,16 +43,16 @@ export const createMesh = () => {
 
 const height = 80000;
 
-export const updateMesh = (body: { mesh: any; position: number[]; quaternion: number[] }) => {
+export const updateMesh = (body: { mesh: any; position: number[]; rotation: number[] }) => {
   const { mesh, position } = body;
   mesh.position.set(position[0], position[1], height);
 
   // rotate mesh
   const q1 = new THREE.Quaternion(
-    body.quaternion[0],
-    body.quaternion[1],
-    body.quaternion[2],
-    body.quaternion[3],
+    body.rotation[0],
+    body.rotation[1],
+    body.rotation[2],
+    body.rotation[3],
   );
   mesh.setRotationFromQuaternion(q1);
 

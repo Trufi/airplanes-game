@@ -10,7 +10,7 @@ const bodyState = (body: PhysicBodyState) => ({
   type: 'bodyState' as 'bodyState',
   position: body.position,
   velocity: body.velocity,
-  quaternion: body.quaternion,
+  rotation: body.rotation,
 });
 
 export const msg = {

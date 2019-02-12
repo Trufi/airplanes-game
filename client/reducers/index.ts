@@ -25,7 +25,7 @@ const createSession = (state: State, msg: ServerMsg['startData']) => {
     body: {
       position: msg.body.position,
       velocity: msg.body.velocity,
-      quaternion: msg.body.quaternion,
+      rotation: msg.body.rotation,
       mesh: createMesh(),
     },
   };
@@ -42,7 +42,7 @@ const updateGameData = (state: State, msg: ServerMsg['tickData']) => {
 };
 
 const updateBodyData = (state: State, data: TickBodyData) => {
-  const { id, position, quaternion, updateTime } = data;
+  const { id, position, rotation, updateTime } = data;
 
   // Собственный самолет не обновляем
   if (state.session && state.session.id === id) {
@@ -56,7 +56,7 @@ const updateBodyData = (state: State, data: TickBodyData) => {
 
   bodyState.steps.push({
     position,
-    quaternion,
+    rotation,
     time: updateTime,
   });
 };
@@ -77,7 +77,7 @@ const createBody = (state: State, playerId: number, id: number) => {
     id,
     playerId,
     position: [0, 0, 0],
-    quaternion: [0, 0, 0, 1],
+    rotation: [0, 0, 0, 1],
     steps: [],
     mesh: createMesh(),
   };
