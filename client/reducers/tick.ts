@@ -2,7 +2,7 @@ import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import { State, NonPhysicBodyState, BodyStep, PhysicBodyState } from '../types';
 import { updateMesh } from '../view';
-import { rotate, quatToEuler } from '../utils';
+import { quatToEuler } from '../utils';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
@@ -64,7 +64,7 @@ const updatePhysicBody = (body: PhysicBodyState, dt: number) => {
   quat.setAxisAngle(q, zAxis, -angle);
   quat.mul(body.rotation, q, body.rotation);
 
-  rotate(body.velocity, angle);
+  vec3.transformQuat(body.velocity, body.velocity, q);
 
   body.position[0] += body.velocity[0] * dt;
   body.position[1] += body.velocity[1] * dt;
