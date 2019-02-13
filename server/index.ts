@@ -12,7 +12,7 @@ import { getConnectionByPlayerId } from './utils';
 import { AnyServerMsg } from './messages';
 import { AnyClientMsg } from '../client/messages';
 
-const port = 3001;
+const port = 3002;
 
 const app = express();
 

@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { setEyePosition, radToDeg } from '@2gis/jakarta/dist/es6/utils/common';
+import * as quat from '@2gis/gl-matrix/quat';
+import * as vec3 from '@2gis/gl-matrix/vec3';
 import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
-import { Map, config } from '@2gis/jakarta';
+import { Map, config, MapOptions } from '@2gis/jakarta';
 import { msg, AnyClientMsg } from '../messages';
 import { AnyServerMsg } from '../../server/messages';
 import { message } from '../reducers';
 import { createState } from '../state';
-import { angle, degToRad } from '../utils';
+import { degToRad } from '../utils';
 import { tick } from '../reducers/tick';
 import { processPressedkeys } from '../reducers/actions';
 
@@ -26,7 +27,7 @@ export class Game extends React.Component<any, any> {
   public componentDidMount() {
     const state = createState(Date.now());
 
-    const ws = new WebSocket(`ws://${location.hostname}:3001/`);
+    const ws = new WebSocket(`ws://${location.hostname}:3002/`);
 
     function sendMessage(msg: AnyClientMsg) {
       ws.send(JSON.stringify(msg));
@@ -55,19 +56,16 @@ export class Game extends React.Component<any, any> {
       message(state, msg);
     });
 
-    const height = 80000;
-
     const container = this.map as HTMLElement;
-    const options = {
+    const options: Partial<MapOptions> = {
+      tileSearchNumber: 5,
       center: [82.920412, 55.030111],
-      zoom: heightToZoom(height + 25000, [window.innerWidth, window.innerHeight]),
+      zoom: 17,
       sendAnalytics: false,
       fontUrl: './assets/fonts',
     };
     const map = ((window as any).map = new Map(container, options));
-    map.setPromoMode(true);
-
-    window.addEventListener('resize', () => map.invalidateSize());
+    config.render.alwaysRerender = true;
 
     const pressedKeys: { [key: string]: boolean } = {};
 
@@ -99,6 +97,26 @@ export class Game extends React.Component<any, any> {
       pressedKeys['KeyD'] = false;
     });
 
+    const upButton = document.getElementById('up') as HTMLElement;
+    upButton.addEventListener('touchstart', (ev) => {
+      ev.preventDefault();
+      pressedKeys['KeyS'] = true;
+    });
+    upButton.addEventListener('touchend', (ev) => {
+      ev.preventDefault();
+      pressedKeys['KeyS'] = false;
+    });
+
+    const downButton = document.getElementById('down') as HTMLElement;
+    downButton.addEventListener('touchstart', (ev) => {
+      ev.preventDefault();
+      pressedKeys['KeyW'] = true;
+    });
+    downButton.addEventListener('touchend', (ev) => {
+      ev.preventDefault();
+      pressedKeys['KeyW'] = false;
+    });
+
     const fullscreenButton = document.getElementById('fullscreen') as HTMLElement;
     fullscreenButton.addEventListener('click', () => {
       document.body.requestFullscreen();
@@ -121,6 +139,7 @@ export class Game extends React.Component<any, any> {
     });
 
     const onResize = () => {
+      map.invalidateSize();
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
       camera.aspect = window.innerWidth / window.innerHeight;
@@ -129,6 +148,9 @@ export class Game extends React.Component<any, any> {
 
     window.addEventListener('resize', onResize);
     onResize();
+
+    const cameraRotation = [0, 0, 0, 1];
+    const eye = [0, 0, 0];
 
     function loop() {
       requestAnimationFrame(loop);
@@ -144,16 +166,25 @@ export class Game extends React.Component<any, any> {
 
       const body = state.session.body;
 
-      const rotation = angle(body.velocity);
+      quat.rotateX(cameraRotation, body.rotation, degToRad(70));
+      map.setQuat(cameraRotation);
+
       map.setCenter(projectMapToGeo(body.position), { animate: false });
-      map.setRotation(radToDeg(rotation - Math.PI / 2));
+      map.setZoom(heightToZoom(body.position[2], [window.innerWidth, window.innerHeight]), {
+        animate: false,
+      });
 
-      const eye = [0, 0, 0];
-      setEyePosition(eye, map.map.state);
+      const shift = [0, 3000, 15000];
+      vec3.transformQuat(shift, shift, cameraRotation);
+      vec3.add(eye, body.position, shift);
 
-      const a = new THREE.Euler(0, 0, degToRad(map.getRotation()), 'XYZ');
-      camera.setRotationFromEuler(a);
-
+      const threeQuaternion = new THREE.Quaternion(
+        cameraRotation[0],
+        cameraRotation[1],
+        cameraRotation[2],
+        cameraRotation[3],
+      );
+      camera.setRotationFromQuaternion(threeQuaternion);
       camera.position.set(eye[0], eye[1], eye[2]);
       camera.updateMatrix();
       camera.updateWorldMatrix(true, true);

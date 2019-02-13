@@ -4,9 +4,9 @@ export const weapon = {
   /**
    * Угл попадания в градусах
    */
-  hitAngle: 20,
+  hitAngle: 5,
   delay: 100,
-  distance: 15000,
+  distance: 50000,
 };
 
 export const airplane = {

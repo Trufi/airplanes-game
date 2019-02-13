@@ -43,7 +43,7 @@
     "typescript": "3.3.3"
   },
   "devDependencies": {
-    "@2gis/jakarta": "https://gitlab.2gis.ru/WebMaps/jakarta/builds/artifacts/v1.9.1-es6.0/raw/build.tar.gz?job=release",
+    "@2gis/jakarta": "https://gitlab.2gis.ru/WebMaps/jakarta/builds/artifacts/v1.9.1-free-camera.0/raw/build.tar.gz?job=release",
     "@types/express": "^4.16.1",
     "@types/fs-extra": "^5.0.4",
     "@types/mocha": "^5.2.5",

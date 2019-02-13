@@ -1,7 +1,7 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
 import { PhysicBodyState, State } from '../types';
-import { quatToEuler, degToRad } from '../utils';
+import { degToRad } from '../utils';
 import * as config from '../../config';
 
 export const processPressedkeys = (
@@ -28,6 +28,12 @@ export const processPressedkeys = (
           rollRight(dt, body);
           rollPressed = true;
           break;
+        case 'KeyW':
+          pitchDown(dt, body);
+          break;
+        case 'KeyS':
+          pitchUp(dt, body);
+          break;
         case 'Space':
           fire(state);
           break;
@@ -41,7 +47,6 @@ export const processPressedkeys = (
 };
 
 const rollSpeed = 0.001;
-const rollComebackSpeed = 0.0002;
 
 const rollLeft = (dt: number, body: PhysicBodyState) => {
   quat.rotateY(body.rotation, body.rotation, -dt * rollSpeed);
@@ -51,17 +56,25 @@ const rollRight = (dt: number, body: PhysicBodyState) => {
   quat.rotateY(body.rotation, body.rotation, dt * rollSpeed);
 };
 
-const restoreRoll = (dt: number, body: PhysicBodyState) => {
-  const euler = quatToEuler(body.rotation);
-  const roll = euler.pitch;
-  if (Math.abs(roll) < rollComebackSpeed * dt) {
-    quat.identity(body.rotation);
-    quat.rotateZ(body.rotation, body.rotation, euler.yaw);
-  } else if (roll > 0) {
-    quat.rotateY(body.rotation, body.rotation, -rollComebackSpeed * dt);
-  } else if (roll < 0) {
-    quat.rotateY(body.rotation, body.rotation, rollComebackSpeed * dt);
-  }
+const restoreRoll = (_dt: number, _body: PhysicBodyState) => {
+  // const euler = quatToEuler(body.rotation);
+  // const roll = euler.pitch;
+  // if (Math.abs(roll) < rollComebackSpeed * dt) {
+  //   quat.identity(body.rotation);
+  //   quat.rotateZ(body.rotation, body.rotation, euler.yaw);
+  // } else if (roll > 0) {
+  //   quat.rotateY(body.rotation, body.rotation, -rollComebackSpeed * dt);
+  // } else if (roll < 0) {
+  //   quat.rotateY(body.rotation, body.rotation, rollComebackSpeed * dt);
+  // }
+};
+
+const pitchDown = (dt: number, body: PhysicBodyState) => {
+  quat.rotateX(body.rotation, body.rotation, -dt * rollSpeed);
+};
+
+const pitchUp = (dt: number, body: PhysicBodyState) => {
+  quat.rotateX(body.rotation, body.rotation, dt * rollSpeed);
 };
 
 const forwardDirection = [0, 1, 0];

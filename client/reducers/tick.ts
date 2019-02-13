@@ -2,7 +2,6 @@ import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import { State, NonPhysicBodyState, BodyStep } from '../types';
 import { updateMesh, updateShot } from '../view';
-import { quatToEuler } from '../utils';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
@@ -51,9 +50,8 @@ const findStepInterval = (time: number, steps: BodyStep[]): number => {
   return -1;
 };
 
-const rotationСoefficient = 0.001;
-const q = quat.create();
-const zAxis = [0, 0, 1];
+const minimalHeight = 10000;
+const velocity = [0, 10, 0];
 
 const updatePhysicBody = (state: State) => {
   if (!state.session) {
@@ -64,16 +62,12 @@ const updatePhysicBody = (state: State) => {
     session: { body },
     weapon,
   } = state;
-  const euler = quatToEuler(body.rotation);
-  const angle = euler.pitch * rotationСoefficient * dt;
 
-  quat.setAxisAngle(q, zAxis, -angle);
-  quat.mul(body.rotation, q, body.rotation);
-
-  vec3.transformQuat(body.velocity, body.velocity, q);
+  vec3.transformQuat(body.velocity, velocity, body.rotation);
 
   body.position[0] += body.velocity[0] * dt;
   body.position[1] += body.velocity[1] * dt;
+  body.position[2] = Math.max(body.position[2] + body.velocity[2] * dt, minimalHeight);
 
   updateMesh(body);
   updateShot(state.time, body.shotMesh, weapon);
