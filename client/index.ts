@@ -52,6 +52,7 @@ const options = {
   fontUrl: './assets/fonts',
 };
 const map = ((window as any).map = new Map(container, options));
+map.setPromoMode(true);
 
 window.addEventListener('resize', () => map.invalidateSize());
 
@@ -79,6 +80,11 @@ rightButton.addEventListener('touchstart', () => {
 });
 rightButton.addEventListener('touchend', () => {
   pressedKeys['KeyD'] = false;
+});
+
+const fullscreenButton = document.getElementById('fullscreen') as HTMLElement;
+fullscreenButton.addEventListener('click', () => {
+  document.body.requestFullscreen();
 });
 
 const camera = new THREE.PerspectiveCamera(
