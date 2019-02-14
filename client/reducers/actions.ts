@@ -1,5 +1,6 @@
 import * as quat from '@2gis/gl-matrix/quat';
 import { PhysicBodyState, State } from '../types';
+import { quatToEuler } from '../utils';
 
 export const processPressedkeys = (
   dt: number,
@@ -35,7 +36,7 @@ export const processPressedkeys = (
 };
 
 const rollSpeed = 0.001;
-// const rollComebackSpeed = 0.0002;
+const rollComebackSpeed = 0.0002;
 
 const rollLeft = (dt: number, body: PhysicBodyState) => {
   quat.rotateY(body.rotation, body.rotation, -dt * rollSpeed);
@@ -45,12 +46,15 @@ const rollRight = (dt: number, body: PhysicBodyState) => {
   quat.rotateY(body.rotation, body.rotation, dt * rollSpeed);
 };
 
-const restoreRoll = (_dt: number, _body: PhysicBodyState) => {
-  // if (Math.abs(this.roll) < rollComebackSpeed * dt) {
-  //   this.roll = 0;
-  // } else if (this.roll > 0) {
-  //   this.roll = Math.max(0, this.roll - rollComebackSpeed * dt);
-  // } else if (this.roll < 0) {
-  //   this.roll = Math.min(0, this.roll + rollComebackSpeed * dt);
-  // }
+const restoreRoll = (dt: number, body: PhysicBodyState) => {
+  const euler = quatToEuler(body.rotation);
+  const roll = euler.pitch;
+  if (Math.abs(roll) < rollComebackSpeed * dt) {
+    quat.identity(body.rotation);
+    quat.rotateZ(body.rotation, body.rotation, euler.yaw);
+  } else if (roll > 0) {
+    quat.rotateY(body.rotation, body.rotation, -rollComebackSpeed * dt);
+  } else if (roll < 0) {
+    quat.rotateY(body.rotation, body.rotation, rollComebackSpeed * dt);
+  }
 };

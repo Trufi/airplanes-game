@@ -9,8 +9,10 @@ export function clamp(value: number, min: number, max: number): number {
 }
 
 export function rotate(v: number[], a: number) {
-  v[0] = v[0] * Math.cos(a) + v[1] * Math.sin(a);
-  v[1] = -v[0] * Math.sin(a) + v[1] * Math.cos(a);
+  const x = v[0];
+  const y = v[1];
+  v[0] = x * Math.cos(a) + y * Math.sin(a);
+  v[1] = -x * Math.sin(a) + y * Math.cos(a);
 }
 
 export function angle(v: number[]): number {

@@ -65,6 +65,22 @@ window.addEventListener('keyup', (ev) => {
   pressedKeys[ev.code] = false;
 });
 
+const leftButton = document.getElementById('left') as HTMLElement;
+leftButton.addEventListener('touchstart', () => {
+  pressedKeys['KeyA'] = true;
+});
+leftButton.addEventListener('touchend', () => {
+  pressedKeys['KeyA'] = false;
+});
+
+const rightButton = document.getElementById('right') as HTMLElement;
+rightButton.addEventListener('touchstart', () => {
+  pressedKeys['KeyD'] = true;
+});
+rightButton.addEventListener('touchend', () => {
+  pressedKeys['KeyD'] = false;
+});
+
 const camera = new THREE.PerspectiveCamera(
   config.camera.fov,
   window.innerWidth / window.innerHeight,

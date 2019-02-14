@@ -22,11 +22,33 @@
         height: 100%;
         pointer-events: none;
       }
+      #controls {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+      }
+      #left,
+      #right {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        background: #fff;
+        border: 1px solid;
+        text-align: center;
+        line-height: 50px;
+        font-size: 30px;
+        user-select: none;
+      }
     </style>
   </head>
   <body>
     <div id="map"></div>
     <canvas id="overlay"></canvas>
+    <div id="controls">
+      <div id="left"><</div>
+      --
+      <div id="right">></div>
+    </div>
     <script src="http://threejs.org/build/three.min.js"></script>
     <script src="./index.js"></script>
   </body>
