@@ -67,18 +67,22 @@ window.addEventListener('keyup', (ev) => {
 });
 
 const leftButton = document.getElementById('left') as HTMLElement;
-leftButton.addEventListener('touchstart', () => {
+leftButton.addEventListener('touchstart', (ev) => {
+  ev.preventDefault();
   pressedKeys['KeyA'] = true;
 });
-leftButton.addEventListener('touchend', () => {
+leftButton.addEventListener('touchend', (ev) => {
+  ev.preventDefault();
   pressedKeys['KeyA'] = false;
 });
 
 const rightButton = document.getElementById('right') as HTMLElement;
-rightButton.addEventListener('touchstart', () => {
+rightButton.addEventListener('touchstart', (ev) => {
+  ev.preventDefault();
   pressedKeys['KeyD'] = true;
 });
-rightButton.addEventListener('touchend', () => {
+rightButton.addEventListener('touchend', (ev) => {
+  ev.preventDefault();
   pressedKeys['KeyD'] = false;
 });
 
