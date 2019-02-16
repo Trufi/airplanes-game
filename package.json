@@ -19,11 +19,6 @@
   },
   "dependencies": {
     "@2gis/gl-matrix": "^2.4.5",
-    "express": "^4.16.4",
-    "fs-extra": "^7.0.1",
-    "ts-node": "^8.0.2",
-    "tslib": "^1.9.3",
-    "ws": "^6.1.3",
     "@types/jest": "24.0.0",
     "@types/node": "10.12.24",
     "@types/react": "16.8.2",
@@ -31,6 +26,8 @@
     "@types/react-redux": "^7.0.1",
     "@types/react-router-config": "^1.1.0",
     "@types/react-router-redux": "^5.0.17",
+    "express": "^4.16.4",
+    "fs-extra": "^7.0.1",
     "gsap": "^2.0.2",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
@@ -39,8 +36,11 @@
     "react-router-config": "^1.0.0-beta.4",
     "react-router-dom": "4.2.2",
     "react-router-redux": "5.0.0-alpha.6",
-    "react-scripts": "2.1.3",
-    "typescript": "3.3.3"
+    "react-scripts": "^2.1.5",
+    "ts-node": "^8.0.2",
+    "tslib": "^1.9.3",
+    "typescript": "3.3.3",
+    "ws": "^6.1.3"
   },
   "devDependencies": {
     "@2gis/jakarta": "https://gitlab.2gis.ru/WebMaps/jakarta/builds/artifacts/v1.9.2-free-camera.2/raw/build.tar.gz?job=release",
