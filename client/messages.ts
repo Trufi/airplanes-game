@@ -13,9 +13,15 @@ const bodyState = (body: PhysicBodyState) => ({
   rotation: body.rotation,
 });
 
+const ping = (time: number) => ({
+  type: 'ping' as 'ping',
+  time,
+});
+
 export const msg = {
   start,
   bodyState,
+  ping,
 };
 
 /**

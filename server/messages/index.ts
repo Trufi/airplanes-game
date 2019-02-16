@@ -71,11 +71,18 @@ const tickData = (state: State) => {
   };
 };
 
+const pong = (serverTime: number, clientTime: number) => ({
+  type: 'pong' as 'pong',
+  serverTime,
+  clientTime,
+});
+
 export const msg = {
   startData,
   playerEnter,
   playerLeave,
   tickData,
+  pong,
 };
 
 /**

@@ -6,3 +6,6 @@ export const getConnectionByPlayerId = (state: State, playerId: number): Connect
     return state.connections.map.get(player.connectionId);
   }
 };
+
+// TODO: переделать на более точное
+export const time = () => Date.now();

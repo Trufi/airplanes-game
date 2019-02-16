@@ -41,8 +41,6 @@ app.get('/state', (_req, res) => {
   res.send(JSON.stringify(data, null, 2));
 });
 
-// app.use('', express.static(path.join(__dirname, '../index.html')));
-
 const gameStep = 50;
 
 const sendMessage = (connection: Connection, msg: AnyServerMsg): void => {

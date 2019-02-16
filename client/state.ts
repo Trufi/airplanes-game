@@ -8,5 +8,9 @@ export const createState = (time: number): State => {
     players: new Map(),
     bodies: new Map(),
     scene: createScene(),
+    serverTime: {
+      diff: 0,
+      ping: 300,
+    },
   };
 };
