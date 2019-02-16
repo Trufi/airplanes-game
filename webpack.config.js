@@ -2,6 +2,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs-extra');
+const resolve = require('resolve');
 
 const dist = path.join(__dirname, 'dist');
 
@@ -48,12 +49,12 @@ module.exports = {
             transpileOnly: true,
           },
         },
-      },
+      }
     ],
   },
 
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.tsx'],
   },
 
   // TODO: Почему-то при минимизации карта запускается с огромными иконками POI
@@ -61,7 +62,7 @@ module.exports = {
     minimize: false,
   },
 
-  entry: './client/index.ts',
+  entry: './client/index.tsx',
 
   output: {
     filename: 'index.js',

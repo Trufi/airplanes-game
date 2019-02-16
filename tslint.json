@@ -42,7 +42,7 @@
     "no-redundant-jsdoc": true,
     "jsdoc-format": true,
     "no-inferrable-types": true,
-    "member-access": false,
+    "member-access": true,
     "member-ordering": [
       true,
       {

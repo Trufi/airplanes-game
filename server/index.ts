@@ -118,8 +118,8 @@ wsServer.on('connection', (socket) => {
   const onClose = () => {
     const cmd = connectionLost(state, id);
     executeCmd(cmd);
-    socket.off('message', onMessage);
-    socket.off('close', onClose);
+    // socket.off('message', onMessage);
+    // socket.off('close', onClose);
   };
 
   socket.on('close', onClose);
