@@ -38,6 +38,11 @@ export interface SessionState {
   body: PhysicBodyState;
 }
 
+export interface ServerTimeState {
+  diff: number;
+  ping: number;
+}
+
 export interface State {
   time: number;
   prevTime: number;
@@ -49,4 +54,5 @@ export interface State {
    */
   scene: any;
   bodies: Map<number, NonPhysicBodyState>;
+  serverTime: ServerTimeState;
 }

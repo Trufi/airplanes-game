@@ -43,3 +43,5 @@ export const quatToEuler = (q: number[]) => {
 
   return { roll, pitch, yaw };
 };
+
+export const time = () => Date.now();

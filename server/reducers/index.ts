@@ -11,6 +11,7 @@ import {
 import { Cmd, cmd } from '../commands';
 import { updatePlayerBodyState } from './bodies';
 import { msg } from '../messages';
+import { time } from '../utils';
 
 export const createNewConnection = (state: ConnectionsState, socket: ws): number => {
   const connection: InitialConnection = {
@@ -81,7 +82,7 @@ const playerStart = (
 export const playerConnectionMessage = (
   state: State,
   connection: PlayerConnection,
-  msg: AnyClientMsg,
+  clientMsg: AnyClientMsg,
 ): Cmd => {
   const player = state.players.map.get(connection.playerId);
   if (!player) {
@@ -92,9 +93,12 @@ export const playerConnectionMessage = (
     return;
   }
 
-  switch (msg.type) {
+  switch (clientMsg.type) {
     case 'bodyState':
-      return updatePlayerBodyState(body, msg);
+      return updatePlayerBodyState(body, clientMsg);
+    case 'ping':
+      // Да, функция — не чистая, но и пофиг!
+      return cmd.sendMsg(msg.pong(time(), clientMsg.time), connection.id);
   }
 };
 

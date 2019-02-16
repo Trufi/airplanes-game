@@ -1,6 +1,7 @@
-import { State, NonPhysicBodyState, PlayerState } from '../types';
+import { State, NonPhysicBodyState, PlayerState, ServerTimeState } from '../types';
 import { createMesh } from '../view';
 import { AnyServerMsg, ServerMsg, TickBodyData, AnotherPlayer } from '../../server/messages';
+import { time } from '../utils';
 
 export const message = (state: State, msg: AnyServerMsg) => {
   switch (msg.type) {
@@ -16,6 +17,8 @@ export const message = (state: State, msg: AnyServerMsg) => {
     case 'playerLeave':
       removePlayer(state, msg);
       break;
+    case 'pong':
+      updatePingAndServerTime(state.serverTime, msg);
   }
 };
 
@@ -96,4 +99,12 @@ const removePlayer = (state: State, msg: ServerMsg['playerLeave']) => {
     state.scene.remove(body);
   }
   state.players.delete(player.id);
+};
+
+const updatePingAndServerTime = (timeState: ServerTimeState, msg: ServerMsg['pong']) => {
+  const ping = time() - msg.clientTime;
+  timeState.ping = (timeState.ping + ping) / 2;
+
+  const diff = msg.clientTime + ping / 2 - msg.serverTime;
+  timeState.diff = (timeState.diff + diff) / 2;
 };
