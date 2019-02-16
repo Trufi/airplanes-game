@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { setEyePosition, radToDeg } from '@2gis/jakarta/dist/es6/utils/common';
-import { projectMapToGeo, projectGeoToMap, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
+import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import { Map, config } from '@2gis/jakarta';
 import { msg, AnyClientMsg } from '../messages';
 import { AnyServerMsg } from '../../server/messages';
@@ -164,13 +164,12 @@ export class Game extends React.Component<any, any> {
 
     setInterval(() => {
       if (state.session) {
-        sendMessage(msg.bodyState(state.session.body));
+        sendMessage(msg.changes(state.session, state.weapon));
+
+        // Сбрасываем попадания после отправки на сервер
+        state.weapon.hits = [];
       }
     }, 50);
-
-    map.on('click', (ev: any) => {
-      console.log(projectGeoToMap(ev.lngLat));
-    });
   }
 
   public render() {

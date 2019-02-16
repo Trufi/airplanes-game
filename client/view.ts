@@ -1,6 +1,6 @@
 import 'three/examples/js/loaders/GLTFLoader';
-
-declare const THREE: any;
+import { WeaponState } from './types';
+import * as config from '../config';
 
 export const createTestMesh = () => {
   const k = 300;
@@ -24,9 +24,7 @@ export const createTestMesh = () => {
 };
 
 export const createMesh = () => {
-  const k = 300; // размер соответсвует примерно 50 метрам!
   const mesh = new THREE.Object3D();
-  mesh.scale.set(k, k, k);
   mesh.rotateY(Math.PI / 2);
   mesh.updateMatrix(); // todo убрать
   mesh.updateWorldMatrix(true, true);
@@ -35,6 +33,8 @@ export const createMesh = () => {
     const scene = gltf.scene;
     scene.rotateX(Math.PI / 2);
     scene.rotateY(Math.PI / 2);
+    const k = 300; // размер соответсвует примерно 50 метрам!
+    scene.scale.set(k, k, k);
     mesh.add(scene);
   });
 
@@ -71,4 +71,24 @@ export const createScene = () => {
   scene.add(directionalLight);
 
   return scene;
+};
+
+export const createShotMesh = (length: number, angle: number) => {
+  const geometry = new THREE.ConeGeometry(Math.tan(angle) * length, length, 20);
+  const material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
+  material.transparent = true;
+  material.opacity = 0.5;
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.rotateZ(Math.PI);
+  mesh.position.y = length / 2;
+  mesh.visible = false;
+  return mesh;
+};
+
+export const updateShot = (time: number, shotMesh: any, weaponState: WeaponState) => {
+  if (time - weaponState.lastShotTime < config.weapon.delay) {
+    shotMesh.visible = true;
+  } else {
+    shotMesh.visible = false;
+  }
 };

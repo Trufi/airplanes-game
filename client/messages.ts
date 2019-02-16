@@ -1,4 +1,4 @@
-import { PhysicBodyState } from './types';
+import { WeaponState, SessionState } from './types';
 import { ObjectElement } from '../types/utils';
 
 const start = (name: string) => ({
@@ -6,12 +6,24 @@ const start = (name: string) => ({
   name,
 });
 
-const bodyState = (body: PhysicBodyState) => ({
-  type: 'bodyState' as 'bodyState',
-  position: body.position,
-  velocity: body.velocity,
-  rotation: body.rotation,
-});
+// добавить передачу хитов на сервер
+const changes = (session: SessionState, weapon: WeaponState) => {
+  const {
+    body: { position, velocity, rotation },
+  } = session;
+
+  const { hits } = weapon;
+
+  return {
+    type: 'changes' as 'changes',
+    body: {
+      position,
+      velocity,
+      rotation,
+    },
+    hits,
+  };
+};
 
 const ping = (time: number) => ({
   type: 'ping' as 'ping',
@@ -20,7 +32,7 @@ const ping = (time: number) => ({
 
 export const msg = {
   start,
-  bodyState,
+  changes,
   ping,
 };
 

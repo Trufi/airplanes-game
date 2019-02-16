@@ -1,7 +1,8 @@
 import { State, NonPhysicBodyState, PlayerState, ServerTimeState } from '../types';
-import { createMesh } from '../view';
+import { createMesh, createShotMesh } from '../view';
 import { AnyServerMsg, ServerMsg, TickBodyData, AnotherPlayer } from '../../server/messages';
-import { time } from '../utils';
+import { time, degToRad } from '../utils';
+import * as config from '../../config';
 
 export const message = (state: State, msg: AnyServerMsg) => {
   switch (msg.type) {
@@ -30,9 +31,11 @@ const createSession = (state: State, msg: ServerMsg['startData']) => {
       velocity: msg.body.velocity,
       rotation: msg.body.rotation,
       mesh: createMesh(),
+      shotMesh: createShotMesh(config.weapon.distance, degToRad(config.weapon.hitAngle)),
     },
   };
 
+  state.session.body.mesh.add(state.session.body.shotMesh);
   state.scene.add(state.session.body.mesh);
 
   msg.anotherPlayers.forEach((anotherPlayer) => {

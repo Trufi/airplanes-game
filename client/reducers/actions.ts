@@ -1,6 +1,8 @@
+import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
 import { PhysicBodyState, State } from '../types';
-import { quatToEuler } from '../utils';
+import { quatToEuler, degToRad } from '../utils';
+import * as config from '../../config';
 
 export const processPressedkeys = (
   dt: number,
@@ -25,6 +27,9 @@ export const processPressedkeys = (
         case 'KeyD':
           rollRight(dt, body);
           rollPressed = true;
+          break;
+        case 'Space':
+          fire(state);
           break;
       }
     }
@@ -56,5 +61,40 @@ const restoreRoll = (dt: number, body: PhysicBodyState) => {
     quat.rotateY(body.rotation, body.rotation, -rollComebackSpeed * dt);
   } else if (roll < 0) {
     quat.rotateY(body.rotation, body.rotation, rollComebackSpeed * dt);
+  }
+};
+
+const forwardDirection = [0, 1, 0];
+const bodyDirection = [0, 0, 0];
+const toOtherDirection = [0, 0, 0];
+
+export const fire = (state: State) => {
+  if (!state.session) {
+    return;
+  }
+  const {
+    bodies,
+    session: { body },
+    weapon,
+  } = state;
+
+  if (state.time - weapon.lastShotTime < config.weapon.delay) {
+    return;
+  }
+
+  weapon.lastShotTime = state.time;
+
+  vec3.transformQuat(bodyDirection, forwardDirection, body.rotation);
+
+  for (const [, otherBody] of bodies) {
+    vec3.sub(toOtherDirection, otherBody.position, body.position);
+    const angle = vec3.angle(bodyDirection, toOtherDirection);
+
+    if (
+      angle < degToRad(config.weapon.hitAngle) &&
+      vec3.dist(body.position, otherBody.position) < config.weapon.distance
+    ) {
+      weapon.hits.push({ bodyId: otherBody.id });
+    }
   }
 };

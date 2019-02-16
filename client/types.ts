@@ -10,6 +10,7 @@ export interface PhysicBodyState {
    * THREE.Mesh
    */
   mesh: any;
+  shotMesh: any;
   position: number[];
   velocity: number[];
   rotation: number[];
@@ -45,6 +46,15 @@ export interface ServerTimeState {
   ping: number;
 }
 
+export interface Hit {
+  bodyId: number;
+}
+
+export interface WeaponState {
+  lastShotTime: number;
+  hits: Hit[];
+}
+
 export interface State {
   time: number;
   prevTime: number;
@@ -57,4 +67,5 @@ export interface State {
   scene: any;
   bodies: Map<number, NonPhysicBodyState>;
   serverTime: ServerTimeState;
+  weapon: WeaponState;
 }

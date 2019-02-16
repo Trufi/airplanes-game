@@ -9,9 +9,11 @@ import {
   Airplane,
 } from '../types';
 import { Cmd, cmd } from '../commands';
-import { updatePlayerBodyState } from './bodies';
 import { msg } from '../messages';
-import { time } from '../utils';
+import { time, getBodyByPlayerId, clamp } from '../utils';
+import { updatePlayerBodyState } from './bodies';
+import { weapon, airplane } from '../../config';
+import { Hit } from '../../client/types';
 
 export const createNewConnection = (state: ConnectionsState, socket: ws): number => {
   const connection: InitialConnection = {
@@ -84,18 +86,9 @@ export const playerConnectionMessage = (
   connection: PlayerConnection,
   clientMsg: AnyClientMsg,
 ): Cmd => {
-  const player = state.players.map.get(connection.playerId);
-  if (!player) {
-    return;
-  }
-  const body = state.bodies.map.get(player.bodyId);
-  if (!body) {
-    return;
-  }
-
   switch (clientMsg.type) {
-    case 'bodyState':
-      return updatePlayerBodyState(body, clientMsg);
+    case 'changes':
+      return updatePlayerChanges(state, clientMsg, connection.id);
     case 'ping':
       // Да, функция — не чистая, но и пофиг!
       return cmd.sendMsg(msg.pong(time(), clientMsg.time), connection.id);
@@ -142,4 +135,23 @@ export const connectionLost = (state: State, connectionId: number): Cmd => {
       return cmd.sendMsgToAll(msg.playerLeave(player.id));
     }
   }
+};
+
+const updatePlayerChanges = (state: State, msg: ClientMsg['changes'], playerId: number): Cmd => {
+  const playerBody = getBodyByPlayerId(state, playerId);
+  if (playerBody) {
+    updatePlayerBodyState(playerBody, msg.body);
+  }
+
+  msg.hits.forEach((hit) => applyHit(state, hit));
+};
+
+const applyHit = (state: State, hit: Hit) => {
+  const { bodyId } = hit;
+  const body = state.bodies.map.get(bodyId);
+  if (!body) {
+    return;
+  }
+
+  body.health = clamp(body.health - weapon.damage, 0, airplane.maxHealth);
 };

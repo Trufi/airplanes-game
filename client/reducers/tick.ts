@@ -1,20 +1,16 @@
 import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
-import { State, NonPhysicBodyState, BodyStep, PhysicBodyState } from '../types';
-import { updateMesh } from '../view';
+import { State, NonPhysicBodyState, BodyStep } from '../types';
+import { updateMesh, updateShot } from '../view';
 import { quatToEuler } from '../utils';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
   state.time = time;
 
-  const dt = state.time - state.prevTime;
-
   state.bodies.forEach((body) => updateNonPhysicBody(body, state.time));
 
-  if (state.session) {
-    updatePhysicBody(state.session.body, dt);
-  }
+  updatePhysicBody(state);
 };
 
 const updateNonPhysicBody = (body: NonPhysicBodyState, time: number) => {
@@ -59,7 +55,15 @@ const rotationСoefficient = 0.001;
 const q = quat.create();
 const zAxis = [0, 0, 1];
 
-const updatePhysicBody = (body: PhysicBodyState, dt: number) => {
+const updatePhysicBody = (state: State) => {
+  if (!state.session) {
+    return;
+  }
+  const dt = state.time - state.prevTime;
+  const {
+    session: { body },
+    weapon,
+  } = state;
   const euler = quatToEuler(body.rotation);
   const angle = euler.pitch * rotationСoefficient * dt;
 
@@ -72,4 +76,5 @@ const updatePhysicBody = (body: PhysicBodyState, dt: number) => {
   body.position[1] += body.velocity[1] * dt;
 
   updateMesh(body);
+  updateShot(state.time, body.shotMesh, weapon);
 };
