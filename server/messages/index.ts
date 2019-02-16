@@ -30,6 +30,7 @@ const startData = (state: State, player: Player, body: Airplane) => {
       position: body.position,
       rotation: body.rotation,
       velocity: body.velocity,
+      health: body.health,
     },
     anotherPlayers,
   };
@@ -47,19 +48,15 @@ const playerLeave = (playerId: number) => ({
   playerId,
 });
 
-export interface TickBodyData {
-  id: number;
-  updateTime: number;
-  position: number[];
-  rotation: number[];
-}
-
-const getTickBodyData = ({ id, position, rotation, updateTime }: Airplane): TickBodyData => ({
+const getTickBodyData = ({ id, position, rotation, updateTime, health }: Airplane) => ({
   id,
   position,
   rotation,
   updateTime,
+  health,
 });
+
+export type TickBodyData = ReturnType<typeof getTickBodyData>;
 
 const tickData = (state: State) => {
   const bodies: TickBodyData[] = [];

@@ -35,6 +35,8 @@ const updateNonPhysicBody = (body: NonPhysicBodyState, time: number) => {
   vec3.lerp(body.position, startStep.position, endStep.position, t);
   quat.slerp(body.rotation, startStep.rotation, endStep.rotation, t);
 
+  body.health = endStep.health;
+
   updateMesh(body);
 };
 

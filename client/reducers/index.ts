@@ -45,7 +45,7 @@ const updateGameData = (state: State, msg: ServerMsg['tickData']) => {
 };
 
 const updateBodyData = (state: State, data: TickBodyData) => {
-  const { id, position, rotation, updateTime } = data;
+  const { id, position, rotation, updateTime, health } = data;
 
   // Собственный самолет не обновляем
   if (state.session && state.session.id === id) {
@@ -60,6 +60,7 @@ const updateBodyData = (state: State, data: TickBodyData) => {
   bodyState.steps.push({
     position,
     rotation,
+    health,
     time: updateTime,
   });
 };
@@ -81,6 +82,7 @@ const createBody = (state: State, playerId: number, id: number) => {
     playerId,
     position: [0, 0, 0],
     rotation: [0, 0, 0, 1],
+    health: 100,
     steps: [],
     mesh: createMesh(),
   };

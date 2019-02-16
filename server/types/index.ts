@@ -38,6 +38,7 @@ export interface Airplane {
   position: number[];
   rotation: number[];
   velocity: number[];
+  health: number;
 }
 
 export interface BodiesState {
