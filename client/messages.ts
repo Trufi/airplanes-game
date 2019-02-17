@@ -1,4 +1,4 @@
-import { WeaponState, SessionState } from './types';
+import { SessionState } from './types';
 import { ObjectElement } from '../types/utils';
 
 const start = (name: string) => ({
@@ -7,12 +7,10 @@ const start = (name: string) => ({
 });
 
 // добавить передачу хитов на сервер
-const changes = (session: SessionState, weapon: WeaponState) => {
+const changes = (session: SessionState) => {
   const {
-    body: { position, velocity, rotation, velocityDirection },
+    body: { position, velocity, rotation, velocityDirection, weapon },
   } = session;
-
-  const { hits } = weapon;
 
   return {
     type: 'changes' as 'changes',
@@ -21,8 +19,8 @@ const changes = (session: SessionState, weapon: WeaponState) => {
       velocity,
       rotation,
       velocityDirection,
+      weapon,
     },
-    hits,
   };
 };
 

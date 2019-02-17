@@ -118,6 +118,9 @@ const createAirplane = (id: number): Airplane => {
     velocity: 10,
     velocityDirection: [0, 0, 0],
     health: 100,
+    weapon: {
+      lastShotTime: 0,
+    },
   };
 };
 
@@ -144,7 +147,7 @@ const updatePlayerChanges = (state: State, msg: ClientMsg['changes'], playerId: 
     updatePlayerBodyState(playerBody, msg.body);
   }
 
-  msg.hits.forEach((hit) => applyHit(state, hit));
+  msg.body.weapon.hits.forEach((hit) => applyHit(state, hit));
 };
 
 const applyHit = (state: State, hit: Hit) => {

@@ -117,8 +117,9 @@ export const fire = (state: State) => {
   }
   const {
     bodies,
-    session: { body },
-    weapon,
+    session: {
+      body: { weapon, rotation, position },
+    },
   } = state;
 
   if (state.time - weapon.lastShotTime < config.weapon.delay) {
@@ -127,15 +128,15 @@ export const fire = (state: State) => {
 
   weapon.lastShotTime = state.time;
 
-  vec3.transformQuat(bodyDirection, forwardDirection, body.rotation);
+  vec3.transformQuat(bodyDirection, forwardDirection, rotation);
 
   for (const [, otherBody] of bodies) {
-    vec3.sub(toOtherDirection, otherBody.position, body.position);
+    vec3.sub(toOtherDirection, otherBody.position, position);
     const angle = vec3.angle(bodyDirection, toOtherDirection);
 
     if (
       angle < degToRad(config.weapon.hitAngle) &&
-      vec3.dist(body.position, otherBody.position) < config.weapon.distance
+      vec3.dist(position, otherBody.position) < config.weapon.distance
     ) {
       weapon.hits.push({ bodyId: otherBody.id });
     }

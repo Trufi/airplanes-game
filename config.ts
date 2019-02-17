@@ -5,7 +5,7 @@ export const weapon = {
    * Угл попадания в градусах
    */
   hitAngle: 5,
-  delay: 100,
+  delay: 500,
   distance: 50000,
 };
 

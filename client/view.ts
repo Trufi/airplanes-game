@@ -1,6 +1,6 @@
 import 'three/examples/js/loaders/GLTFLoader';
-import { WeaponState } from './types';
 import * as config from '../config';
+import { degToRad } from './utils';
 
 export const createTestMesh = () => {
   const k = 300;
@@ -77,20 +77,24 @@ export const createScene = () => {
   return scene;
 };
 
-export const createShotMesh = (length: number, angle: number) => {
+export const createShotMesh = () => {
+  const length = config.weapon.distance;
+  const angle = degToRad(config.weapon.hitAngle);
+
   const geometry = new THREE.ConeGeometry(Math.tan(angle) * length, length, 20);
   const material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
   material.transparent = true;
   material.opacity = 0.5;
   const mesh = new THREE.Mesh(geometry, material);
   mesh.rotateZ(Math.PI);
+  mesh.position.z -= 300;
   mesh.position.y = length / 2;
   mesh.visible = false;
   return mesh;
 };
 
-export const updateShot = (time: number, shotMesh: any, weaponState: WeaponState) => {
-  if (time - weaponState.lastShotTime < config.weapon.delay) {
+export const updateShot = (time: number, shotMesh: any, weapon: { lastShotTime: number }) => {
+  if (time - weapon.lastShotTime < config.weapon.delay) {
     shotMesh.visible = true;
   } else {
     shotMesh.visible = false;

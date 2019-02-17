@@ -166,7 +166,7 @@ export class Game extends React.Component<any, any> {
 
       const body = state.session.body;
 
-      quat.rotateX(cameraRotation, body.rotation, degToRad(70));
+      quat.rotateX(cameraRotation, body.rotation, degToRad(80));
       map.setQuat(cameraRotation);
 
       map.setCenter(projectMapToGeo(body.position), { animate: false });
@@ -174,7 +174,7 @@ export class Game extends React.Component<any, any> {
         animate: false,
       });
 
-      const shift = [0, 3000, 15000];
+      const shift = [0, 4500, 15000];
       vec3.transformQuat(shift, shift, cameraRotation);
       vec3.add(eye, body.position, shift);
 
@@ -195,10 +195,10 @@ export class Game extends React.Component<any, any> {
 
     setInterval(() => {
       if (state.session) {
-        sendMessage(msg.changes(state.session, state.weapon));
+        sendMessage(msg.changes(state.session));
 
         // Сбрасываем попадания после отправки на сервер
-        state.weapon.hits = [];
+        state.session.body.weapon.hits = [];
       }
     }, 50);
   }

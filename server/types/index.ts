@@ -32,6 +32,10 @@ export interface PlayersState {
   nextId: number;
 }
 
+export interface Weapon {
+  lastShotTime: number;
+}
+
 export interface Airplane {
   id: number;
   updateTime: number;
@@ -40,6 +44,7 @@ export interface Airplane {
   velocity: number;
   velocityDirection: number[];
   health: number;
+  weapon: Weapon;
 }
 
 export interface BodiesState {

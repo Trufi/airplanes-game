@@ -8,13 +8,17 @@ interface BodyState {
   velocity: number;
   velocityDirection: number[];
   rotation: number[];
+  weapon: {
+    lastShotTime: number;
+  };
 }
 
 export const updatePlayerBodyState = (airplane: Airplane, bodyState: BodyState): Cmd => {
   airplane.updateTime = Date.now();
 
   vec3.copy(airplane.position, bodyState.position);
-  vec3.copy(airplane.velocityDirection, bodyState.velocityDirection);
   airplane.velocity = bodyState.velocity;
+  vec3.copy(airplane.velocityDirection, bodyState.velocityDirection);
   quat.copy(airplane.rotation, bodyState.rotation);
+  airplane.weapon.lastShotTime = bodyState.weapon.lastShotTime;
 };

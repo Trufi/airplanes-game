@@ -39,3 +39,5 @@ export function clamp(value: number, min: number, max: number) {
   value = Math.min(value, max);
   return value;
 }
+
+export const lerp = (a: number, b: number, t: number) => a + t * (b - a);

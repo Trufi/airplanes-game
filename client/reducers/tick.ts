@@ -2,6 +2,7 @@ import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import { State, NonPhysicBodyState, BodyStep } from '../types';
 import { updateMesh, updateShot } from '../view';
+import { lerp } from '../../server/utils';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
@@ -31,9 +32,12 @@ const updateNonPhysicBody = (body: NonPhysicBodyState, time: number) => {
   quat.slerp(body.rotation, startStep.rotation, endStep.rotation, t);
   vec3.lerp(body.velocityDirection, startStep.velocityDirection, endStep.velocityDirection, t);
 
+  body.weapon.lastShotTime = lerp(startStep.weapon.lastShotTime, endStep.weapon.lastShotTime, t);
+
   body.health = endStep.health;
 
   updateMesh(body);
+  updateShot(interpolationTime, body.shotMesh, body.weapon);
 };
 
 /**
@@ -62,7 +66,6 @@ const updatePhysicBody = (state: State) => {
   const dt = state.time - state.prevTime;
   const {
     session: { body },
-    weapon,
   } = state;
 
   quat.identity(rotation);
@@ -80,5 +83,5 @@ const updatePhysicBody = (state: State) => {
   body.position[2] = Math.max(body.position[2] + velocityVector[2] * dt, minimalHeight);
 
   updateMesh(body);
-  updateShot(state.time, body.shotMesh, weapon);
+  updateShot(state.time, body.shotMesh, body.weapon);
 };

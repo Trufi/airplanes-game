@@ -1,8 +1,7 @@
 import { State, NonPhysicBodyState, PlayerState, ServerTimeState } from '../types';
 import { createMesh, createShotMesh } from '../view';
 import { AnyServerMsg, ServerMsg, TickBodyData, AnotherPlayer } from '../../server/messages';
-import { time, degToRad } from '../utils';
-import * as config from '../../config';
+import { time } from '../utils';
 
 export const message = (state: State, msg: AnyServerMsg) => {
   switch (msg.type) {
@@ -32,7 +31,11 @@ const createSession = (state: State, msg: ServerMsg['startData']) => {
       velocityDirection: [0, 0, 0], // TODO: принимать с сервера
       rotation: msg.body.rotation,
       mesh: createMesh(),
-      shotMesh: createShotMesh(config.weapon.distance, degToRad(config.weapon.hitAngle)),
+      shotMesh: createShotMesh(),
+      weapon: {
+        lastShotTime: 0,
+        hits: [],
+      },
     },
   };
 
@@ -49,7 +52,7 @@ const updateGameData = (state: State, msg: ServerMsg['tickData']) => {
 };
 
 const updateBodyData = (state: State, data: TickBodyData) => {
-  const { id, position, rotation, updateTime, velocityDirection, health } = data;
+  const { id, position, rotation, updateTime, velocityDirection, health, weapon } = data;
 
   // Собственный самолет не обновляем
   if (state.session && state.session.id === id) {
@@ -66,6 +69,7 @@ const updateBodyData = (state: State, data: TickBodyData) => {
     rotation,
     velocityDirection,
     health,
+    weapon,
     time: updateTime,
   });
 };
@@ -91,8 +95,13 @@ const createBody = (state: State, playerId: number, id: number) => {
     health: 100,
     steps: [],
     mesh: createMesh(),
+    shotMesh: createShotMesh(),
+    weapon: {
+      lastShotTime: 0,
+    },
   };
   state.bodies.set(id, body);
+  body.mesh.add(body.shotMesh);
   state.scene.add(body.mesh);
 };
 

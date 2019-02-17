@@ -56,6 +56,7 @@ const getTickBodyData = ({
   velocityDirection,
   updateTime,
   health,
+  weapon,
 }: Airplane) => ({
   id,
   position,
@@ -63,6 +64,7 @@ const getTickBodyData = ({
   velocityDirection,
   updateTime,
   health,
+  weapon,
 });
 
 export type TickBodyData = ReturnType<typeof getTickBodyData>;

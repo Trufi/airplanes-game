@@ -4,6 +4,18 @@ export interface BodyStep {
   rotation: number[];
   velocityDirection: number[];
   health: number;
+  weapon: {
+    lastShotTime: number;
+  };
+}
+
+export interface Hit {
+  bodyId: number;
+}
+
+export interface WeaponState {
+  lastShotTime: number;
+  hits: Hit[];
 }
 
 export interface PhysicBodyState {
@@ -16,6 +28,7 @@ export interface PhysicBodyState {
   velocity: number;
   rotation: number[];
   velocityDirection: number[];
+  weapon: WeaponState;
 }
 
 export interface NonPhysicBodyState {
@@ -26,10 +39,14 @@ export interface NonPhysicBodyState {
    * THREE.Mesh
    */
   mesh: any;
+  shotMesh: any;
   position: number[];
   rotation: number[];
   velocityDirection: number[];
   health: number;
+  weapon: {
+    lastShotTime: number;
+  };
   steps: BodyStep[];
 }
 
@@ -49,15 +66,6 @@ export interface ServerTimeState {
   ping: number;
 }
 
-export interface Hit {
-  bodyId: number;
-}
-
-export interface WeaponState {
-  lastShotTime: number;
-  hits: Hit[];
-}
-
 export interface State {
   time: number;
   prevTime: number;
@@ -70,5 +78,4 @@ export interface State {
   scene: any;
   bodies: Map<number, NonPhysicBodyState>;
   serverTime: ServerTimeState;
-  weapon: WeaponState;
 }
