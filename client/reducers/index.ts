@@ -25,6 +25,7 @@ export const message = (state: State, msg: AnyServerMsg) => {
 const createSession = (state: State, msg: ServerMsg['startData']) => {
   state.session = {
     id: msg.id,
+    name: msg.name,
     body: {
       position: msg.body.position,
       velocity: msg.body.velocity,

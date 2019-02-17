@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { State } from '../types';
 import { PlayerLabel } from './playerLabel';
+import { Debug } from './debug';
 
 interface Props {
   state: State;
@@ -44,6 +45,18 @@ export class Root extends React.Component<Props, any> {
       );
     });
 
-    return <div>{playerNames}</div>;
+    return (
+      <div>
+        <Debug
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+          }}
+          state={this.props.state}
+        />
+        {playerNames}
+      </div>
+    );
   }
 }

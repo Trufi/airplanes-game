@@ -25,6 +25,7 @@ const startData = (state: State, player: Player, body: Airplane) => {
   return {
     type: 'startData' as 'startData',
     id: player.id,
+    name: player.name,
     body: {
       id: body.id,
       position: body.position,

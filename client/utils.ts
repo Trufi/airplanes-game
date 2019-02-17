@@ -52,3 +52,9 @@ export const unnormalizeMouse = (v: { x: number; y: number }, size: number[]) =>
   v.x = v.x * widthHalf + widthHalf;
   v.y = -(v.y * heightHalf) + heightHalf;
 };
+
+export const mapMap = <K, V, R>(m: Map<K, V>, cb: (v: V, k: K) => R): R[] => {
+  const res: R[] = [];
+  m.forEach((v, k) => res.push(cb(v, k)));
+  return res;
+};

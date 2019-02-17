@@ -59,6 +59,7 @@ export interface PlayerState {
 export interface SessionState {
   id: number;
   body: PhysicBodyState;
+  name: string;
 }
 
 export interface ServerTimeState {
