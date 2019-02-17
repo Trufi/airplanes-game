@@ -9,7 +9,7 @@ const start = (name: string) => ({
 // добавить передачу хитов на сервер
 const changes = (session: SessionState, weapon: WeaponState) => {
   const {
-    body: { position, velocity, rotation },
+    body: { position, velocity, rotation, velocityDirection },
   } = session;
 
   const { hits } = weapon;
@@ -20,6 +20,7 @@ const changes = (session: SessionState, weapon: WeaponState) => {
       position,
       velocity,
       rotation,
+      velocityDirection,
     },
     hits,
   };

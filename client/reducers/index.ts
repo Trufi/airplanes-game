@@ -29,6 +29,7 @@ const createSession = (state: State, msg: ServerMsg['startData']) => {
     body: {
       position: msg.body.position,
       velocity: msg.body.velocity,
+      velocityDirection: [0, 0, 0], // TODO: принимать с сервера
       rotation: msg.body.rotation,
       mesh: createMesh(),
       shotMesh: createShotMesh(config.weapon.distance, degToRad(config.weapon.hitAngle)),
@@ -48,7 +49,7 @@ const updateGameData = (state: State, msg: ServerMsg['tickData']) => {
 };
 
 const updateBodyData = (state: State, data: TickBodyData) => {
-  const { id, position, rotation, updateTime, health } = data;
+  const { id, position, rotation, updateTime, velocityDirection, health } = data;
 
   // Собственный самолет не обновляем
   if (state.session && state.session.id === id) {
@@ -63,6 +64,7 @@ const updateBodyData = (state: State, data: TickBodyData) => {
   bodyState.steps.push({
     position,
     rotation,
+    velocityDirection,
     health,
     time: updateTime,
   });
@@ -85,6 +87,7 @@ const createBody = (state: State, playerId: number, id: number) => {
     playerId,
     position: [0, 0, 0],
     rotation: [0, 0, 0, 1],
+    velocityDirection: [0, 0, 0],
     health: 100,
     steps: [],
     mesh: createMesh(),

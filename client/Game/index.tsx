@@ -58,7 +58,7 @@ export class Game extends React.Component<any, any> {
 
     const container = this.map as HTMLElement;
     const options: Partial<MapOptions> = {
-      tileSearchNumber: 5,
+      tileSearchNumber: 3,
       center: [82.920412, 55.030111],
       zoom: 17,
       sendAnalytics: false,

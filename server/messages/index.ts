@@ -30,6 +30,7 @@ const startData = (state: State, player: Player, body: Airplane) => {
       position: body.position,
       rotation: body.rotation,
       velocity: body.velocity,
+      velocityDirection: body.velocityDirection,
       health: body.health,
     },
     anotherPlayers,
@@ -48,10 +49,18 @@ const playerLeave = (playerId: number) => ({
   playerId,
 });
 
-const getTickBodyData = ({ id, position, rotation, updateTime, health }: Airplane) => ({
+const getTickBodyData = ({
   id,
   position,
   rotation,
+  velocityDirection,
+  updateTime,
+  health,
+}: Airplane) => ({
+  id,
+  position,
+  rotation,
+  velocityDirection,
   updateTime,
   health,
 });

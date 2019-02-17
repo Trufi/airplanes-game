@@ -2,6 +2,7 @@ export interface BodyStep {
   time: number;
   position: number[];
   rotation: number[];
+  velocityDirection: number[];
   health: number;
 }
 
@@ -12,8 +13,9 @@ export interface PhysicBodyState {
   mesh: any;
   shotMesh: any;
   position: number[];
-  velocity: number[];
+  velocity: number;
   rotation: number[];
+  velocityDirection: number[];
 }
 
 export interface NonPhysicBodyState {
@@ -26,6 +28,7 @@ export interface NonPhysicBodyState {
   mesh: any;
   position: number[];
   rotation: number[];
+  velocityDirection: number[];
   health: number;
   steps: BodyStep[];
 }

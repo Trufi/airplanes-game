@@ -29,6 +29,7 @@ const updateNonPhysicBody = (body: NonPhysicBodyState, time: number) => {
 
   vec3.lerp(body.position, startStep.position, endStep.position, t);
   quat.slerp(body.rotation, startStep.rotation, endStep.rotation, t);
+  vec3.lerp(body.velocityDirection, startStep.velocityDirection, endStep.velocityDirection, t);
 
   body.health = endStep.health;
 
@@ -51,7 +52,8 @@ const findStepInterval = (time: number, steps: BodyStep[]): number => {
 };
 
 const minimalHeight = 10000;
-const velocity = [0, 10, 0];
+const velocityVector = [0, 0, 0];
+const rotation = [0, 0, 0, 1];
 
 const updatePhysicBody = (state: State) => {
   if (!state.session) {
@@ -63,11 +65,19 @@ const updatePhysicBody = (state: State) => {
     weapon,
   } = state;
 
-  vec3.transformQuat(body.velocity, velocity, body.rotation);
+  quat.identity(rotation);
+  quat.rotateX(rotation, rotation, body.velocityDirection[0] * dt);
+  quat.rotateY(rotation, rotation, body.velocityDirection[1] * dt);
+  quat.rotateZ(rotation, rotation, body.velocityDirection[2] * dt);
 
-  body.position[0] += body.velocity[0] * dt;
-  body.position[1] += body.velocity[1] * dt;
-  body.position[2] = Math.max(body.position[2] + body.velocity[2] * dt, minimalHeight);
+  quat.mul(body.rotation, body.rotation, rotation);
+
+  vec3.set(velocityVector, 0, body.velocity, 0);
+  vec3.transformQuat(velocityVector, velocityVector, body.rotation);
+
+  body.position[0] += velocityVector[0] * dt;
+  body.position[1] += velocityVector[1] * dt;
+  body.position[2] = Math.max(body.position[2] + velocityVector[2] * dt, minimalHeight);
 
   updateMesh(body);
   updateShot(state.time, body.shotMesh, weapon);

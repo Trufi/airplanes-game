@@ -1,8 +1,10 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
-import * as quat from '@2gis/gl-matrix/quat';
 import { PhysicBodyState, State } from '../types';
-import { degToRad } from '../utils';
+import { degToRad, clamp } from '../utils';
 import * as config from '../../config';
+
+const rotationAcceleration = { x: 0.000001, z: 0.000002 };
+const maxRotationSpeed = { x: 0.001, z: 0.002 };
 
 export const processPressedkeys = (
   dt: number,
@@ -12,7 +14,8 @@ export const processPressedkeys = (
   if (state.session) {
     const body = state.session.body;
 
-    let rollPressed = false;
+    let yawPressed = false;
+    let pitchPressed = false;
 
     for (const code in pressedKeys) {
       if (!pressedKeys[code]) {
@@ -21,18 +24,20 @@ export const processPressedkeys = (
 
       switch (code) {
         case 'KeyA':
-          rollLeft(dt, body);
-          rollPressed = true;
+          yawLeft(dt, body);
+          yawPressed = true;
           break;
         case 'KeyD':
-          rollRight(dt, body);
-          rollPressed = true;
+          yawRight(dt, body);
+          yawPressed = true;
           break;
         case 'KeyW':
           pitchDown(dt, body);
+          pitchPressed = true;
           break;
         case 'KeyS':
           pitchUp(dt, body);
+          pitchPressed = true;
           break;
         case 'Space':
           fire(state);
@@ -40,41 +45,66 @@ export const processPressedkeys = (
       }
     }
 
-    if (!rollPressed) {
-      restoreRoll(dt, body);
+    if (!yawPressed) {
+      restoreYaw(dt, body);
+    }
+
+    if (!pitchPressed) {
+      restorePitch(dt, body);
     }
   }
 };
 
-const rollSpeed = 0.001;
-
-const rollLeft = (dt: number, body: PhysicBodyState) => {
-  quat.rotateY(body.rotation, body.rotation, -dt * rollSpeed);
+const yawLeft = (dt: number, body: PhysicBodyState) => {
+  body.velocityDirection[2] = clamp(
+    body.velocityDirection[2] + rotationAcceleration.z * dt,
+    -maxRotationSpeed.z,
+    maxRotationSpeed.z,
+  );
 };
 
-const rollRight = (dt: number, body: PhysicBodyState) => {
-  quat.rotateY(body.rotation, body.rotation, dt * rollSpeed);
+const yawRight = (dt: number, body: PhysicBodyState) => {
+  body.velocityDirection[2] = clamp(
+    body.velocityDirection[2] - rotationAcceleration.z * dt,
+    -maxRotationSpeed.z,
+    maxRotationSpeed.z,
+  );
 };
 
-const restoreRoll = (_dt: number, _body: PhysicBodyState) => {
-  // const euler = quatToEuler(body.rotation);
-  // const roll = euler.pitch;
-  // if (Math.abs(roll) < rollComebackSpeed * dt) {
-  //   quat.identity(body.rotation);
-  //   quat.rotateZ(body.rotation, body.rotation, euler.yaw);
-  // } else if (roll > 0) {
-  //   quat.rotateY(body.rotation, body.rotation, -rollComebackSpeed * dt);
-  // } else if (roll < 0) {
-  //   quat.rotateY(body.rotation, body.rotation, rollComebackSpeed * dt);
-  // }
+const restoreYaw = (dt: number, body: PhysicBodyState) => {
+  if (Math.abs(body.velocityDirection[2]) < rotationAcceleration.z * dt) {
+    body.velocityDirection[2] = 0;
+  } else if (body.velocityDirection[2] > 0) {
+    yawRight(dt, body);
+  } else {
+    yawLeft(dt, body);
+  }
 };
 
 const pitchDown = (dt: number, body: PhysicBodyState) => {
-  quat.rotateX(body.rotation, body.rotation, -dt * rollSpeed);
+  body.velocityDirection[0] = clamp(
+    body.velocityDirection[0] - rotationAcceleration.x * dt,
+    -maxRotationSpeed.x,
+    maxRotationSpeed.x,
+  );
 };
 
 const pitchUp = (dt: number, body: PhysicBodyState) => {
-  quat.rotateX(body.rotation, body.rotation, dt * rollSpeed);
+  body.velocityDirection[0] = clamp(
+    body.velocityDirection[0] + rotationAcceleration.x * dt,
+    -maxRotationSpeed.x,
+    maxRotationSpeed.x,
+  );
+};
+
+const restorePitch = (dt: number, body: PhysicBodyState) => {
+  if (Math.abs(body.velocityDirection[0]) < rotationAcceleration.x * dt) {
+    body.velocityDirection[0] = 0;
+  } else if (body.velocityDirection[0] > 0) {
+    pitchDown(dt, body);
+  } else {
+    pitchUp(dt, body);
+  }
 };
 
 const forwardDirection = [0, 1, 0];

@@ -41,8 +41,13 @@ export const createMesh = () => {
   return mesh;
 };
 
-export const updateMesh = (body: { mesh: any; position: number[]; rotation: number[] }) => {
-  const { mesh, position } = body;
+export const updateMesh = (body: {
+  mesh: any;
+  position: number[];
+  rotation: number[];
+  velocityDirection: number[];
+}) => {
+  const { mesh, position, velocityDirection } = body;
   mesh.position.set(position[0], position[1], position[2]);
 
   // rotate mesh
@@ -53,6 +58,7 @@ export const updateMesh = (body: { mesh: any; position: number[]; rotation: numb
     body.rotation[3],
   );
   mesh.setRotationFromQuaternion(q1);
+  mesh.rotateY(-velocityDirection[2] * 500);
 
   mesh.updateMatrix();
   mesh.updateWorldMatrix(true, true);
