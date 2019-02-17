@@ -2,6 +2,7 @@ import * as React from 'react';
 import { State } from '../types';
 import { PlayerLabel } from './playerLabel';
 import { Debug } from './debug';
+import { Aim } from './aim';
 
 interface Props {
   state: State;
@@ -56,6 +57,7 @@ export class Root extends React.Component<Props, any> {
           state={this.props.state}
         />
         {playerNames}
+        <Aim />
       </div>
     );
   }
