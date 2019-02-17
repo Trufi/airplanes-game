@@ -1,4 +1,5 @@
 import 'three/examples/js/loaders/GLTFLoader';
+import { config as mapConfig } from '@2gis/jakarta';
 import * as config from '../config';
 import { degToRad } from './utils';
 
@@ -99,4 +100,52 @@ export const updateShot = (time: number, shotMesh: any, weapon: { lastShotTime: 
   } else {
     shotMesh.visible = false;
   }
+};
+
+export const createCamera = () => {
+  const camera = new THREE.PerspectiveCamera(
+    mapConfig.camera.fov,
+    window.innerWidth / window.innerHeight,
+    mapConfig.camera.near,
+    mapConfig.camera.far,
+  );
+  camera.position.z = 1;
+  camera.up.set(0, 0, 1);
+  camera.lookAt(0, 0, 0);
+  return camera;
+};
+
+export const createText = (text: string) => {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+  const fontSize = 300;
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.font = `${fontSize}px serif`;
+
+  const textMetrics = ctx.measureText(text);
+  canvas.width = textMetrics.width;
+  canvas.height = fontSize;
+
+  ctx.fillStyle = '#ff0000';
+  ctx.font = `${fontSize}px monospace`;
+  ctx.fillText(text, 0, fontSize);
+
+  const texture = new THREE.CanvasTexture(canvas);
+
+  const material = new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+  });
+  texture.generateMipmaps = false;
+  texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+  texture.minFilter = THREE.LinearFilter;
+
+  const sprite = new THREE.Sprite(material);
+  sprite.scale.set(1500, 1500, 1);
+  sprite.position.z += 3000;
+
+  return sprite;
 };

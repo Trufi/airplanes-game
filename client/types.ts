@@ -76,6 +76,11 @@ export interface State {
    * THREE.Scene
    */
   scene: any;
+
+  /**
+   * THREE.Camera
+   */
+  camera: any;
   bodies: Map<number, NonPhysicBodyState>;
   serverTime: ServerTimeState;
 }

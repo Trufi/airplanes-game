@@ -75,6 +75,10 @@ const updateBodyData = (state: State, data: TickBodyData) => {
 };
 
 const createPlayer = (state: State, { id, name, bodyId }: AnotherPlayer) => {
+  // Себя добавляем через отдельный механизм
+  if (!state.session || state.session.id === id) {
+    return;
+  }
   createBody(state, id, bodyId);
 
   const player: PlayerState = {

@@ -44,3 +44,11 @@ export const quatToEuler = (q: number[]) => {
 };
 
 export const time = () => Date.now();
+
+export const unnormalizeMouse = (v: { x: number; y: number }, size: number[]) => {
+  const widthHalf = size[0] / 2;
+  const heightHalf = size[1] / 2;
+
+  v.x = v.x * widthHalf + widthHalf;
+  v.y = -(v.y * heightHalf) + heightHalf;
+};

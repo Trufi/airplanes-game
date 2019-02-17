@@ -1,5 +1,5 @@
 import { State } from './types';
-import { createScene } from './view';
+import { createScene, createCamera } from './view';
 
 export const createState = (time: number): State => {
   return {
@@ -8,6 +8,7 @@ export const createState = (time: number): State => {
     players: new Map(),
     bodies: new Map(),
     scene: createScene(),
+    camera: createCamera(),
     serverTime: {
       diff: 0,
       ping: 300,
