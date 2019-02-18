@@ -3,6 +3,7 @@ import { State } from '../types';
 import { PlayerLabel } from './playerLabel';
 import { Debug } from './debug';
 import { Aim } from './aim';
+import { FireButton } from './fireButton';
 
 interface Props {
   state: State;
@@ -58,6 +59,7 @@ export class Root extends React.Component<Props, any> {
         />
         {playerNames}
         <Aim />
+        <FireButton state={this.props.state} />
       </div>
     );
   }

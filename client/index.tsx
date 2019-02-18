@@ -63,54 +63,52 @@ const options: Partial<MapOptions> = {
 const map = ((window as any).map = new Map(container, options));
 config.render.alwaysRerender = true;
 
-const pressedKeys: { [key: string]: boolean } = {};
-
 window.addEventListener('keydown', (ev) => {
-  pressedKeys[ev.code] = true;
+  state.pressedKeys[ev.code] = true;
 });
 
 window.addEventListener('keyup', (ev) => {
-  pressedKeys[ev.code] = false;
+  state.pressedKeys[ev.code] = false;
 });
 
 const leftButton = document.getElementById('left') as HTMLElement;
 leftButton.addEventListener('touchstart', (ev) => {
   ev.preventDefault();
-  pressedKeys['KeyA'] = true;
+  state.pressedKeys['KeyA'] = true;
 });
 leftButton.addEventListener('touchend', (ev) => {
   ev.preventDefault();
-  pressedKeys['KeyA'] = false;
+  state.pressedKeys['KeyA'] = false;
 });
 
 const rightButton = document.getElementById('right') as HTMLElement;
 rightButton.addEventListener('touchstart', (ev) => {
   ev.preventDefault();
-  pressedKeys['KeyD'] = true;
+  state.pressedKeys['KeyD'] = true;
 });
 rightButton.addEventListener('touchend', (ev) => {
   ev.preventDefault();
-  pressedKeys['KeyD'] = false;
+  state.pressedKeys['KeyD'] = false;
 });
 
 const upButton = document.getElementById('up') as HTMLElement;
 upButton.addEventListener('touchstart', (ev) => {
   ev.preventDefault();
-  pressedKeys['KeyS'] = true;
+  state.pressedKeys['KeyS'] = true;
 });
 upButton.addEventListener('touchend', (ev) => {
   ev.preventDefault();
-  pressedKeys['KeyS'] = false;
+  state.pressedKeys['KeyS'] = false;
 });
 
 const downButton = document.getElementById('down') as HTMLElement;
 downButton.addEventListener('touchstart', (ev) => {
   ev.preventDefault();
-  pressedKeys['KeyW'] = true;
+  state.pressedKeys['KeyW'] = true;
 });
 downButton.addEventListener('touchend', (ev) => {
   ev.preventDefault();
-  pressedKeys['KeyW'] = false;
+  state.pressedKeys['KeyW'] = false;
 });
 
 const fullscreenButton = document.getElementById('fullscreen') as HTMLElement;
@@ -146,7 +144,7 @@ function loop() {
 
   const time = Date.now();
 
-  processPressedkeys(time - state.time, state, pressedKeys);
+  processPressedkeys(time - state.time, state);
 
   tick(state, time);
 

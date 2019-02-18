@@ -84,4 +84,5 @@ export interface State {
   camera: any;
   bodies: Map<number, NonPhysicBodyState>;
   serverTime: ServerTimeState;
+  pressedKeys: { [key: string]: boolean };
 }

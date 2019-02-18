@@ -13,5 +13,6 @@ export const createState = (time: number): State => {
       diff: 0,
       ping: 300,
     },
+    pressedKeys: {},
   };
 };

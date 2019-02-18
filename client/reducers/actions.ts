@@ -6,13 +6,12 @@ import * as config from '../../config';
 const rotationAcceleration = { x: 0.000001, z: 0.000002 };
 const maxRotationSpeed = { x: 0.001, z: 0.002 };
 
-export const processPressedkeys = (
-  dt: number,
-  state: State,
-  pressedKeys: { [key: string]: boolean },
-) => {
+export const processPressedkeys = (dt: number, state: State) => {
   if (state.session) {
-    const body = state.session.body;
+    const {
+      session: { body },
+      pressedKeys,
+    } = state;
 
     let yawPressed = false;
     let pitchPressed = false;
