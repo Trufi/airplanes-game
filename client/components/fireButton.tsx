@@ -31,11 +31,13 @@ export class FireButton extends React.Component<Props, any> {
     );
   }
 
-  private onTouchStart = () => {
+  private onTouchStart = (ev: React.TouchEvent) => {
+    ev.preventDefault();
     this.props.state.pressedKeys['Space'] = true;
   };
 
-  private onTouchEnd = () => {
+  private onTouchEnd = (ev: React.TouchEvent) => {
+    ev.preventDefault();
     this.props.state.pressedKeys['Space'] = false;
   };
 }
