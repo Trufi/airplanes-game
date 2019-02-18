@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { State as GameState } from '../types';
-import { mapMap } from '../utils';
+import { mapMap, quatToEuler } from '../utils';
 
 interface Props {
   style: React.CSSProperties;
@@ -32,12 +32,19 @@ export class Debug extends React.Component<Props, State> {
       );
     }
 
+    const euler = session && quatToEuler(session.body.rotation);
+
     return (
       <div style={style}>
         <button onClick={this.toggle}>Debug</button>
-        {session && (
+        {euler && session && (
           <div style={{ marginBottom: '15px', fontWeight: 700 }}>
-            You ID: {session.id} NAME: {session.name}
+            <div>
+              You ID: {session.id} NAME: {session.name}
+            </div>
+            <div>Roll: {euler.roll}</div>
+            <div>Pitch: {euler.pitch}</div>
+            <div>Yaw: {euler.yaw}</div>
           </div>
         )}
         <div style={{ fontWeight: 700 }}>Other players:</div>

@@ -1,10 +1,15 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
+import * as quat from '@2gis/gl-matrix/quat';
 import { PhysicBodyState, State } from '../types';
 import { degToRad, clamp } from '../utils';
 import * as config from '../../config';
 
 const rotationAcceleration = { x: 0.000001, z: 0.000002 };
 const maxRotationSpeed = { x: 0.001, z: 0.002 };
+
+const globalZ = [0, 0, 1];
+const localZ = [0, 0, 1];
+const alignmentRotation = [0, 0, 0, 1];
 
 export const processPressedkeys = (dt: number, state: State) => {
   if (state.session) {
@@ -51,6 +56,13 @@ export const processPressedkeys = (dt: number, state: State) => {
     if (!pitchPressed) {
       restorePitch(dt, body);
     }
+
+    // Выравниваем самолет
+    vec3.transformQuat(localZ, globalZ, body.rotation);
+    quat.rotationTo(alignmentRotation, localZ, globalZ);
+
+    quat.mul(alignmentRotation, alignmentRotation, body.rotation);
+    quat.slerp(body.rotation, body.rotation, alignmentRotation, 0.0005 * dt);
   }
 };
 
