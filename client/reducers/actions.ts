@@ -11,6 +11,9 @@ const globalZ = [0, 0, 1];
 const localZ = [0, 0, 1];
 const alignmentRotation = [0, 0, 0, 1];
 
+const globalX = [1, 0, 0];
+const localX = [1, 0, 0];
+
 export const processPressedkeys = (dt: number, state: State) => {
   if (state.session) {
     const {
@@ -43,8 +46,28 @@ export const processPressedkeys = (dt: number, state: State) => {
           pitchUp(dt, body);
           pitchPressed = true;
           break;
+        case 'KeyE':
+          quat.rotateY(body.rotation, body.rotation, 0.001 * dt);
+          break;
+        case 'KeyQ':
+          quat.rotateY(body.rotation, body.rotation, -0.001 * dt);
+          break;
         case 'Space':
           fire(state);
+          break;
+        case 'KeyR':
+          vec3.transformQuat(localX, globalX, body.rotation);
+          const angle = Math.atan2(localX[2], localX[0]);
+          quat.rotateY(body.rotation, body.rotation, angle / 10);
+          break;
+
+        case 'KeyF':
+          // Выравниваем самолет
+          vec3.transformQuat(localZ, globalZ, body.rotation);
+          quat.rotationTo(alignmentRotation, localZ, globalZ);
+
+          quat.mul(alignmentRotation, alignmentRotation, body.rotation);
+          quat.slerp(body.rotation, body.rotation, alignmentRotation, 0.0005 * dt);
           break;
       }
     }
@@ -56,13 +79,6 @@ export const processPressedkeys = (dt: number, state: State) => {
     if (!pitchPressed) {
       restorePitch(dt, body);
     }
-
-    // Выравниваем самолет
-    vec3.transformQuat(localZ, globalZ, body.rotation);
-    quat.rotationTo(alignmentRotation, localZ, globalZ);
-
-    quat.mul(alignmentRotation, alignmentRotation, body.rotation);
-    quat.slerp(body.rotation, body.rotation, alignmentRotation, 0.0005 * dt);
   }
 };
 
