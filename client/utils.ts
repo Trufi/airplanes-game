@@ -1,3 +1,5 @@
+import * as vec3 from '@2gis/gl-matrix/vec3';
+
 export const degToRad = (degrees: number) => (degrees * Math.PI) / 180;
 export const radToDeg = (radians: number) => (radians * 180) / Math.PI;
 
@@ -57,4 +59,25 @@ export const mapMap = <K, V, R>(m: Map<K, V>, cb: (v: V, k: K) => R): R[] => {
   const res: R[] = [];
   m.forEach((v, k) => res.push(cb(v, k)));
   return res;
+};
+
+const bodyGlobalAxis = [0, 0, 0];
+const xyProjection = [0, 0, 0];
+
+/**
+ * Вычисляет угл между плоскостью XY и локальной осью тела.
+ * Знак угла зависит от того, с какой стороны от плоскости XY находилась ось тела.
+ *
+ * @param axis Ось в системе координат тела
+ * @param rotation Вращение тела
+ */
+export const localAxisToXYAngle = (axis: number[], rotation: number[]) => {
+  // Переводим локальную ось в глобальную
+  vec3.transformQuat(bodyGlobalAxis, axis, rotation);
+
+  // Проекция на плоскость XY
+  vec3.copy(xyProjection, bodyGlobalAxis);
+  xyProjection[2] = 0;
+
+  return Math.sign(bodyGlobalAxis[2]) * vec3.angle(bodyGlobalAxis, xyProjection);
 };

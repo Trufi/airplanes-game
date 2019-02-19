@@ -1,18 +1,15 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
-import { PhysicBodyState, State } from '../types';
-import { degToRad, clamp } from '../utils';
+import { degToRad, clamp, localAxisToXYAngle } from '../utils';
 import * as config from '../../config';
+import { PhysicBodyState, State } from '../types';
 
 const rotationAcceleration = { x: 0.000001, z: 0.000002 };
 const maxRotationSpeed = { x: 0.001, z: 0.002 };
+const restoreYSpeed = 0.0006;
 
-const globalZ = [0, 0, 1];
-const localZ = [0, 0, 1];
-const alignmentRotation = [0, 0, 0, 1];
-
-const globalX = [1, 0, 0];
-const localX = [1, 0, 0];
+const xAxis = [1, 0, 0];
+const yAxis = [0, 1, 0];
 
 export const processPressedkeys = (dt: number, state: State) => {
   if (state.session) {
@@ -23,6 +20,7 @@ export const processPressedkeys = (dt: number, state: State) => {
 
     let yawPressed = false;
     let pitchPressed = false;
+    let rollPressed = false;
 
     for (const code in pressedKeys) {
       if (!pressedKeys[code]) {
@@ -48,36 +46,28 @@ export const processPressedkeys = (dt: number, state: State) => {
           break;
         case 'KeyE':
           quat.rotateY(body.rotation, body.rotation, 0.001 * dt);
+          rollPressed = true;
           break;
         case 'KeyQ':
           quat.rotateY(body.rotation, body.rotation, -0.001 * dt);
+          rollPressed = true;
           break;
         case 'Space':
           fire(state);
-          break;
-        case 'KeyR':
-          vec3.transformQuat(localX, globalX, body.rotation);
-          const angle = Math.atan2(localX[2], localX[0]);
-          quat.rotateY(body.rotation, body.rotation, angle / 10);
-          break;
-
-        case 'KeyF':
-          // Выравниваем самолет
-          vec3.transformQuat(localZ, globalZ, body.rotation);
-          quat.rotationTo(alignmentRotation, localZ, globalZ);
-
-          quat.mul(alignmentRotation, alignmentRotation, body.rotation);
-          quat.slerp(body.rotation, body.rotation, alignmentRotation, 0.0005 * dt);
           break;
       }
     }
 
     if (!yawPressed) {
-      restoreYaw(dt, body);
+      restoreYawAcceleration(dt, body);
     }
 
     if (!pitchPressed) {
-      restorePitch(dt, body);
+      restorePitchAcceleration(dt, body);
+    }
+
+    if (!rollPressed) {
+      restoreRoll(dt, body);
     }
   }
 };
@@ -98,7 +88,7 @@ const yawRight = (dt: number, body: PhysicBodyState) => {
   );
 };
 
-const restoreYaw = (dt: number, body: PhysicBodyState) => {
+const restoreYawAcceleration = (dt: number, body: PhysicBodyState) => {
   if (Math.abs(body.velocityDirection[2]) < rotationAcceleration.z * dt) {
     body.velocityDirection[2] = 0;
   } else if (body.velocityDirection[2] > 0) {
@@ -124,13 +114,32 @@ const pitchUp = (dt: number, body: PhysicBodyState) => {
   );
 };
 
-const restorePitch = (dt: number, body: PhysicBodyState) => {
+const restorePitchAcceleration = (dt: number, body: PhysicBodyState) => {
   if (Math.abs(body.velocityDirection[0]) < rotationAcceleration.x * dt) {
     body.velocityDirection[0] = 0;
   } else if (body.velocityDirection[0] > 0) {
     pitchDown(dt, body);
   } else {
     pitchUp(dt, body);
+  }
+};
+
+const restoreRoll = (dt: number, body: PhysicBodyState) => {
+  const angleY = localAxisToXYAngle(yAxis, body.rotation);
+
+  // TODO: надо обойти кейс, когда X локальный перпендикулярен глобальному
+  // в этом случае горизонт остается перпендикулярным
+
+  // Восстанавливаем горизонт, только если прицел смотрит почти на него
+  if (Math.abs(angleY) < degToRad(25)) {
+    const angleX = localAxisToXYAngle(xAxis, body.rotation);
+    const rotationYAngle = restoreYSpeed * dt;
+
+    if (rotationYAngle > Math.abs(angleX)) {
+      quat.rotateY(body.rotation, body.rotation, angleX);
+    } else {
+      quat.rotateY(body.rotation, body.rotation, Math.sign(angleX) * rotationYAngle);
+    }
   }
 };
 
