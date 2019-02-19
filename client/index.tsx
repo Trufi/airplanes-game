@@ -150,7 +150,7 @@ function loop() {
 
   const body = state.session.body;
 
-  quat.rotateX(cameraRotation, body.rotation, degToRad(80));
+  quat.rotateX(cameraRotation, body.rotation, degToRad(90));
   map.setQuat(cameraRotation);
 
   map.setCenter(projectMapToGeo(body.position), { animate: false });

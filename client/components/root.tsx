@@ -15,8 +15,12 @@ const position = new THREE.Vector3();
 export class Root extends React.Component<Props, any> {
   public render() {
     const {
-      state: { players, bodies, camera },
+      state: { players, bodies, camera, session },
     } = this.props;
+
+    if (!session) {
+      return null;
+    }
 
     const playerNames: JSX.Element[] = [];
 
@@ -58,7 +62,7 @@ export class Root extends React.Component<Props, any> {
           state={this.props.state}
         />
         {playerNames}
-        <Aim />
+        <Aim position={session.body.position} rotation={session.body.rotation} camera={camera} />
         <FireButton state={this.props.state} />
       </div>
     );

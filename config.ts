@@ -6,7 +6,7 @@ export const weapon = {
    */
   hitAngle: 5,
   delay: 500,
-  distance: 50000,
+  distance: 100000,
 };
 
 export const airplane = {
