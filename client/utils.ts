@@ -81,3 +81,16 @@ export const localAxisToXYAngle = (axis: number[], rotation: number[]) => {
 
   return Math.sign(bodyGlobalAxis[2]) * vec3.angle(bodyGlobalAxis, xyProjection);
 };
+
+/**
+ * Находит медиана в несортированном массиве
+ */
+export const median = (sample: number[]) => {
+  const array = sample.slice();
+  array.sort();
+
+  // Не совсем медиана, ну и пофиг
+  const medianIndex = Math.floor(array.length / 2);
+
+  return array[medianIndex];
+};

@@ -8,18 +8,16 @@ export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
   state.time = time;
 
-  state.bodies.forEach((body) => updateNonPhysicBody(body, state.time));
+  state.bodies.forEach((body) => updateNonPhysicBody(body, state.time, state.serverTime.diff));
 
   updatePhysicBody(state);
 
   updateCameraAndMap(state);
 };
 
-const updateNonPhysicBody = (body: NonPhysicBodyState, time: number) => {
-  // TODO: вычислять пинг
-  const ping = 300;
-
-  const interpolationTime = time - ping;
+const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, timeDiff: number) => {
+  // 300ms - порог, чтобы точно данные дошли
+  const interpolationTime = time - timeDiff - 300;
 
   const startIndex = findStepInterval(interpolationTime, body.steps);
   if (startIndex === -1) {

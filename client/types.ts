@@ -65,7 +65,10 @@ export interface SessionState {
 }
 
 export interface ServerTimeState {
+  diffSample: number[];
   diff: number;
+
+  pingSample: number[];
   ping: number;
 }
 

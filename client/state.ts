@@ -16,7 +16,10 @@ export const createState = (time: number): State => {
     map: createMap(),
     camera: createCamera(),
     serverTime: {
+      diffSample: [],
       diff: 0,
+
+      pingSample: [],
       ping: 300,
     },
     pressedKeys: {},

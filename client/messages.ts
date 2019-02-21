@@ -7,13 +7,14 @@ const start = (name: string) => ({
 });
 
 // добавить передачу хитов на сервер
-const changes = (session: SessionState) => {
+const changes = (session: SessionState, time: number) => {
   const {
     body: { position, velocity, rotation, velocityDirection, weapon },
   } = session;
 
   return {
     type: 'changes' as 'changes',
+    time,
     body: {
       position,
       velocity,

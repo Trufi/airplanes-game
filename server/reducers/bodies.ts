@@ -13,9 +13,12 @@ interface BodyState {
   };
 }
 
-export const updatePlayerBodyState = (airplane: Airplane, bodyState: BodyState): Cmd => {
-  airplane.updateTime = Date.now();
-
+export const updatePlayerBodyState = (
+  airplane: Airplane,
+  bodyState: BodyState,
+  updateTime: number,
+): Cmd => {
+  airplane.updateTime = updateTime;
   vec3.copy(airplane.position, bodyState.position);
   airplane.velocity = bodyState.velocity;
   vec3.copy(airplane.velocityDirection, bodyState.velocityDirection);

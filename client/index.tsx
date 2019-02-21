@@ -9,6 +9,7 @@ import { message } from './reducers';
 import { processPressedkeys } from './reducers/actions';
 import { tick } from './reducers/tick';
 import { State } from './types';
+import { time } from './utils';
 
 const renderUI = (state: State) => {
   ReactDOM.render(<Root state={state} />, document.getElementById('root'));
@@ -18,7 +19,7 @@ const state = createState(Date.now());
 
 renderUI(state);
 
-const ws = new WebSocket(`ws://${location.hostname}:3002/`);
+const ws = new WebSocket(`ws://localhost:3002/`);
 
 function sendMessage(msg: AnyClientMsg) {
   ws.send(JSON.stringify(msg));
@@ -123,11 +124,11 @@ function loop() {
     return;
   }
 
-  const time = Date.now();
+  const now = time();
 
-  processPressedkeys(time - state.time, state);
+  processPressedkeys(now - state.time, state);
 
-  tick(state, time);
+  tick(state, now);
 
   renderer.render(state.scene, state.camera);
   renderUI(state);
@@ -136,9 +137,13 @@ requestAnimationFrame(loop);
 
 setInterval(() => {
   if (state.session) {
-    sendMessage(msg.changes(state.session));
+    sendMessage(msg.changes(state.session, time() - state.serverTime.diff));
 
     // Сбрасываем попадания после отправки на сервер
     state.session.body.weapon.hits = [];
   }
 }, 50);
+
+setInterval(() => {
+  sendMessage(msg.ping(time()));
+}, 500);

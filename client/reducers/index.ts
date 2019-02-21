@@ -1,7 +1,7 @@
 import { State, NonPhysicBodyState, PlayerState, ServerTimeState } from '../types';
 import { createMesh, createShotMesh } from '../view';
 import { AnyServerMsg, ServerMsg, TickBodyData, AnotherPlayer } from '../../server/messages';
-import { time } from '../utils';
+import { time, median } from '../utils';
 
 export const message = (state: State, msg: AnyServerMsg) => {
   switch (msg.type) {
@@ -124,9 +124,22 @@ const removePlayer = (state: State, msg: ServerMsg['playerLeave']) => {
 };
 
 const updatePingAndServerTime = (timeState: ServerTimeState, msg: ServerMsg['pong']) => {
+  const { pingSample, diffSample } = timeState;
+  const maxSampleLength = 10;
+
   const ping = time() - msg.clientTime;
-  timeState.ping = (timeState.ping + ping) / 2;
+  pingSample.push(ping);
+  if (pingSample.length > maxSampleLength) {
+    pingSample.shift();
+  }
+
+  timeState.ping = median(pingSample);
 
   const diff = msg.clientTime + ping / 2 - msg.serverTime;
-  timeState.diff = (timeState.diff + diff) / 2;
+  diffSample.push(diff);
+  if (diffSample.length > maxSampleLength) {
+    diffSample.shift();
+  }
+
+  timeState.diff = median(diffSample);
 };
