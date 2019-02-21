@@ -1,7 +1,7 @@
 import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import { State, NonPhysicBodyState, BodyStep } from '../types';
-import { updateMesh, updateShot } from '../view';
+import { updateMesh, updateShot, updateCameraAndMap } from '../view';
 import { lerp } from '../../server/utils';
 
 export const tick = (state: State, time: number) => {
@@ -11,6 +11,8 @@ export const tick = (state: State, time: number) => {
   state.bodies.forEach((body) => updateNonPhysicBody(body, state.time));
 
   updatePhysicBody(state);
+
+  updateCameraAndMap(state);
 };
 
 const updateNonPhysicBody = (body: NonPhysicBodyState, time: number) => {

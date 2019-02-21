@@ -1,3 +1,5 @@
+import * as J from '@2gis/jakarta';
+
 export interface BodyStep {
   time: number;
   position: number[];
@@ -70,6 +72,13 @@ export interface ServerTimeState {
 export interface State {
   time: number;
   prevTime: number;
+
+  /**
+   * Начало системы отсчета.
+   * Нужен для того, чтобы глобальные координаты не выходили за int32 (максимум точности в шейдерах)
+   */
+  origin: number[];
+
   session?: SessionState;
   players: Map<number, PlayerState>;
 
@@ -82,6 +91,8 @@ export interface State {
    * THREE.Camera
    */
   camera: any;
+
+  map: J.Map;
   bodies: Map<number, NonPhysicBodyState>;
   serverTime: ServerTimeState;
   pressedKeys: { [key: string]: boolean };

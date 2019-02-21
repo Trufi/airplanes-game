@@ -1,7 +1,11 @@
 import 'three/examples/js/loaders/GLTFLoader';
-import { config as mapConfig } from '@2gis/jakarta';
+import * as quat from '@2gis/gl-matrix/quat';
+import * as vec3 from '@2gis/gl-matrix/vec3';
+import { config as mapConfig, MapOptions, Map } from '@2gis/jakarta';
+import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import * as config from '../config';
 import { degToRad } from './utils';
+import { State } from './types';
 
 export const createTestMesh = () => {
   const k = 300;
@@ -102,6 +106,20 @@ export const updateShot = (time: number, shotMesh: any, weapon: { lastShotTime: 
   }
 };
 
+export const createMap = () => {
+  const container = document.getElementById('map') as HTMLElement;
+  const options: Partial<MapOptions> = {
+    tileSearchNumber: 3,
+    center: [82.920412, 55.030111],
+    zoom: 17,
+    sendAnalytics: false,
+    fontUrl: './assets/fonts',
+  };
+  const map = ((window as any).map = new Map(container, options));
+  mapConfig.render.alwaysRerender = true;
+  return map;
+};
+
 export const createCamera = () => {
   const camera = new THREE.PerspectiveCamera(
     mapConfig.camera.fov,
@@ -113,6 +131,48 @@ export const createCamera = () => {
   camera.up.set(0, 0, 1);
   camera.lookAt(0, 0, 0);
   return camera;
+};
+
+const cameraRotation = [0, 0, 0, 1];
+const mapBodyPosition = [0, 0, 0];
+const eye = [0, 0, 0];
+
+export const updateCameraAndMap = (state: State) => {
+  if (!state.session) {
+    return;
+  }
+
+  const {
+    map,
+    session: {
+      body: { rotation, position },
+    },
+    origin,
+    camera,
+  } = state;
+
+  vec3.add(mapBodyPosition, position, origin);
+
+  quat.rotateX(cameraRotation, rotation, degToRad(100));
+  map.setQuat(cameraRotation);
+
+  map.setCenter(projectMapToGeo(mapBodyPosition), { animate: false });
+  map.setZoom(heightToZoom(mapBodyPosition[2], [window.innerWidth, window.innerHeight]), {
+    animate: false,
+  });
+
+  // Отодвигаем камеру от самолета
+  const shift = [0, 4500, 15000];
+  vec3.transformQuat(shift, shift, cameraRotation);
+  vec3.add(eye, mapBodyPosition, shift);
+
+  // Вычитаем центр координат для увеличения точности
+  vec3.sub(eye, eye, origin);
+
+  camera.quaternion.fromArray(cameraRotation);
+  camera.position.fromArray(eye);
+  camera.updateMatrix();
+  camera.updateWorldMatrix(true, true);
 };
 
 export const createText = (text: string) => {

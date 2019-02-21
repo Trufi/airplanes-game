@@ -12,3 +12,5 @@ export const weapon = {
 export const airplane = {
   maxHealth: 100,
 };
+
+export const origin = [82.920412, 55.030111];
