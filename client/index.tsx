@@ -19,7 +19,7 @@ const state = createState(Date.now());
 
 renderUI(state);
 
-const ws = new WebSocket(`ws://localhost:3002/`);
+const ws = new WebSocket(`ws://${location.hostname}:3002/`);
 
 function sendMessage(msg: AnyClientMsg) {
   ws.send(JSON.stringify(msg));
