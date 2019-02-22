@@ -118,7 +118,7 @@ const removePlayer = (state: State, msg: ServerMsg['playerLeave']) => {
   const body = state.bodies.get(player.bodyId);
   if (body) {
     state.bodies.delete(player.bodyId);
-    state.scene.remove(body);
+    state.scene.remove(body.mesh);
   }
   state.players.delete(player.id);
 };
