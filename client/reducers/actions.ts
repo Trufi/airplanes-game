@@ -168,13 +168,33 @@ export const fire = (state: State) => {
 
   for (const [, otherBody] of bodies) {
     vec3.sub(toOtherDirection, otherBody.position, position);
-    const angle = vec3.angle(bodyDirection, toOtherDirection);
+    const angle = hitAngle(toOtherDirection, bodyDirection, config.weapon.radius1);
 
+    const projection = vec3.dot(toOtherDirection, bodyDirection) / vec3.len(bodyDirection);
     if (
+      // Если проекция на направление больше 0, то цель находится впереди
+      projection > 0 &&
       angle < degToRad(config.weapon.hitAngle) &&
       vec3.dist(position, otherBody.position) < config.weapon.distance
     ) {
       weapon.hits.push({ bodyId: otherBody.id });
     }
   }
+};
+
+const hitAngle = (target: number[], forward: number[], radius: number) => {
+  /**
+   *              _ /|
+   *          _ / _/ |
+   *      _ /   _/   | X  α — угл между направлением тела вперед (forward) и целью (target)
+   *    /_β____/_____|    R — меньший ралиус конуса
+   *   |    _/<- D   |    D — дистанция между телом и целью (target)
+   * R | __/         | R  β — угл, который нам надо найти, чтобы понять, что есть попадание
+   *   |/_α__________|
+   */
+
+  const d = vec3.len(target);
+  const alpha = vec3.angle(forward, target);
+  const x = d * Math.sin(alpha) - radius;
+  return Math.atan2(x, d * Math.cos(alpha));
 };

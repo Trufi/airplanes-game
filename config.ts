@@ -1,12 +1,17 @@
 export const weapon = {
-  damage: 10,
+  damage: 5,
+
+  /**
+   * Меньший радиус усеченного конуса
+   */
+  radius1: 1000,
 
   /**
    * Угл попадания в градусах
    */
-  hitAngle: 5,
-  delay: 500,
-  distance: 100000,
+  hitAngle: 2,
+  delay: 100,
+  distance: 1000000,
 };
 
 export const airplane = {

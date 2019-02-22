@@ -7,6 +7,8 @@ import * as config from '../config';
 import { degToRad } from './utils';
 import { State } from './types';
 
+mapConfig.camera.fov = 45;
+
 export const createTestMesh = () => {
   const k = 300;
 
@@ -83,17 +85,24 @@ export const createScene = () => {
 };
 
 export const createShotMesh = () => {
-  const length = config.weapon.distance;
   const angle = degToRad(config.weapon.hitAngle);
 
-  const geometry = new THREE.ConeGeometry(Math.tan(angle) * length, length, 20);
+  const offsetLength = config.weapon.radius1 / Math.tan(angle);
+  const length = config.weapon.distance;
+
+  const geometry = new THREE.ConeGeometry(
+    Math.tan(angle) * (length + offsetLength),
+    length + offsetLength,
+    20,
+  );
   const material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
   material.transparent = true;
   material.opacity = 0.5;
   const mesh = new THREE.Mesh(geometry, material);
   mesh.rotateZ(Math.PI);
-  mesh.position.z -= 300;
-  mesh.position.y = length / 2;
+
+  mesh.position.y = length / 2 - offsetLength;
+
   mesh.visible = false;
   return mesh;
 };
