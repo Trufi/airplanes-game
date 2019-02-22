@@ -94,3 +94,10 @@ export const median = (sample: number[]) => {
 
   return array[medianIndex];
 };
+
+/**
+ * Находит проекцию вектора А на вектор Б
+ */
+export const projection = (a: number[], b: number[]) => {
+  return vec3.dot(a, b) / vec3.len(b);
+};

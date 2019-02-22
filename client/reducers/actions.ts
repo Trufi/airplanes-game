@@ -1,6 +1,6 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
-import { degToRad, clamp, localAxisToXYAngle } from '../utils';
+import { degToRad, clamp, localAxisToXYAngle, projection } from '../utils';
 import * as config from '../../config';
 import { PhysicBodyState, State } from '../types';
 
@@ -144,8 +144,8 @@ const restoreRoll = (dt: number, body: PhysicBodyState) => {
 };
 
 const forwardDirection = [0, 1, 0];
-const bodyDirection = [0, 0, 0];
-const toOtherDirection = [0, 0, 0];
+const bodyForward = [0, 0, 0];
+const toTarget = [0, 0, 0];
 
 export const fire = (state: State) => {
   if (!state.session) {
@@ -164,20 +164,21 @@ export const fire = (state: State) => {
 
   weapon.lastShotTime = state.time;
 
-  vec3.transformQuat(bodyDirection, forwardDirection, rotation);
+  vec3.transformQuat(bodyForward, forwardDirection, rotation);
 
-  for (const [, otherBody] of bodies) {
-    vec3.sub(toOtherDirection, otherBody.position, position);
-    const angle = hitAngle(toOtherDirection, bodyDirection, config.weapon.radius1);
+  for (const [, targetBody] of bodies) {
+    vec3.sub(toTarget, targetBody.position, position);
 
-    const projection = vec3.dot(toOtherDirection, bodyDirection) / vec3.len(bodyDirection);
+    const targetProjection = projection(toTarget, bodyForward);
+    const angle = hitAngle(toTarget, bodyForward, config.weapon.radius);
+
     if (
       // Если проекция на направление больше 0, то цель находится впереди
-      projection > 0 &&
-      angle < degToRad(config.weapon.hitAngle) &&
-      vec3.dist(position, otherBody.position) < config.weapon.distance
+      targetProjection > 0 &&
+      vec3.len(toTarget) < config.weapon.distance &&
+      angle < degToRad(config.weapon.hitAngle)
     ) {
-      weapon.hits.push({ bodyId: otherBody.id });
+      weapon.hits.push({ bodyId: targetBody.id });
     }
   }
 };
@@ -188,13 +189,16 @@ const hitAngle = (target: number[], forward: number[], radius: number) => {
    *          _ / _/ |
    *      _ /   _/   | X  α — угл между направлением тела вперед (forward) и целью (target)
    *    /_β____/_____|    R — меньший ралиус конуса
-   *   |    _/<- D   |    D — дистанция между телом и целью (target)
+   *   |    _/       |    P — проекция вектора D на направление самолета
    * R | __/         | R  β — угл, который нам надо найти, чтобы понять, что есть попадание
    *   |/_α__________|
+   *          P
+   * tg α = (X + R) / P  ⇒  X = P * tg α - R
+   * tg β = X / P = tg α - R / P
    */
 
-  const d = vec3.len(target);
-  const alpha = vec3.angle(forward, target);
-  const x = d * Math.sin(alpha) - radius;
-  return Math.atan2(x, d * Math.cos(alpha));
+  const alpha = vec3.angle(target, forward);
+  const p = projection(target, forward);
+  const tanBeta = Math.tan(alpha) - radius / p;
+  return Math.atan(tanBeta);
 };

@@ -85,24 +85,19 @@ export const createScene = () => {
 };
 
 export const createShotMesh = () => {
-  const angle = degToRad(config.weapon.hitAngle);
-
-  const offsetLength = config.weapon.radius1 / Math.tan(angle);
-  const length = config.weapon.distance;
-
-  const geometry = new THREE.ConeGeometry(
-    Math.tan(angle) * (length + offsetLength),
-    length + offsetLength,
-    20,
+  const geometry = new THREE.CylinderGeometry(
+    config.weapon.radius,
+    config.weapon.radius + config.weapon.distance * Math.atan(degToRad(config.weapon.hitAngle)),
+    config.weapon.distance,
+    9,
   );
+
   const material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
   material.transparent = true;
   material.opacity = 0.5;
   const mesh = new THREE.Mesh(geometry, material);
   mesh.rotateZ(Math.PI);
-
-  mesh.position.y = length / 2 - offsetLength;
-
+  mesh.position.y = config.weapon.distance / 2;
   mesh.visible = false;
   return mesh;
 };
