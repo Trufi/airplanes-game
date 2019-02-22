@@ -2,27 +2,24 @@ import { State, NonPhysicBodyState, PlayerState, ServerTimeState } from '../type
 import { createMesh, createShotMesh } from '../view';
 import { AnyServerMsg, ServerMsg, TickBodyData, AnotherPlayer } from '../../server/messages';
 import { time, median } from '../utils';
+import { Cmd, cmd } from '../commands';
 
-export const message = (state: State, msg: AnyServerMsg) => {
+export const message = (state: State, msg: AnyServerMsg): Cmd => {
   switch (msg.type) {
     case 'startData':
-      createSession(state, msg);
-      break;
+      return createSession(state, msg);
     case 'tickData':
-      updateGameData(state, msg);
-      break;
+      return updateGameData(state, msg);
     case 'playerEnter':
-      createPlayer(state, msg);
-      break;
+      return createPlayer(state, msg);
     case 'playerLeave':
-      removePlayer(state, msg);
-      break;
+      return removePlayer(state, msg);
     case 'pong':
-      updatePingAndServerTime(state.serverTime, msg);
+      return updatePingAndServerTime(state.serverTime, msg);
   }
 };
 
-const createSession = (state: State, msg: ServerMsg['startData']) => {
+const createSession = (state: State, msg: ServerMsg['startData']): Cmd => {
   state.session = {
     id: msg.id,
     name: msg.name,
@@ -46,6 +43,8 @@ const createSession = (state: State, msg: ServerMsg['startData']) => {
   msg.anotherPlayers.forEach((anotherPlayer) => {
     createPlayer(state, anotherPlayer);
   });
+
+  return cmd.saveNameToLocalStorage(msg.name);
 };
 
 const updateGameData = (state: State, msg: ServerMsg['tickData']) => {

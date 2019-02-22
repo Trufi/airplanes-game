@@ -4,9 +4,12 @@ import { PlayerLabel } from './playerLabel';
 import { Debug } from './debug';
 import { Aim } from './aim';
 import { FireButton } from './fireButton';
+import { ExecuteCmd } from '..';
+import { Login } from './login';
 
 interface Props {
   state: State;
+  executeCmd: ExecuteCmd;
 }
 
 const projScreenMatrix = new THREE.Matrix4();
@@ -16,10 +19,11 @@ export class Root extends React.Component<Props, any> {
   public render() {
     const {
       state: { players, bodies, camera, session },
+      executeCmd,
     } = this.props;
 
     if (!session) {
-      return null;
+      return <Login executeCmd={executeCmd} />;
     }
 
     const playerNames: JSX.Element[] = [];

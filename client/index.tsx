@@ -10,25 +10,51 @@ import { processPressedkeys } from './reducers/actions';
 import { tick } from './reducers/tick';
 import { State } from './types';
 import { time } from './utils';
+import { Cmd, ExistCmd } from './commands';
 
-const renderUI = (state: State) => {
-  ReactDOM.render(<Root state={state} />, document.getElementById('root'));
+const renderUI = (state: State, executeCmd: ExecuteCmd) => {
+  ReactDOM.render(<Root state={state} executeCmd={executeCmd} />, document.getElementById('root'));
 };
 
 const state = createState(Date.now());
 
-renderUI(state);
-
 const ws = new WebSocket(`ws://${location.hostname}:3002/`);
 
-function sendMessage(msg: AnyClientMsg) {
+export type ExecuteCmd = typeof executeCmd;
+
+const executeCmd = (cmd: Cmd) => {
+  if (cmd) {
+    if (Array.isArray(cmd)) {
+      cmd.forEach(executeOneCmd);
+    } else {
+      executeOneCmd(cmd);
+    }
+  }
+};
+
+renderUI(state, executeCmd);
+
+const sendMessage = (msg: AnyClientMsg) => {
   ws.send(JSON.stringify(msg));
-}
+};
+
+const executeOneCmd = (cmd: ExistCmd) => {
+  switch (cmd.type) {
+    case 'sendMsg':
+      sendMessage(cmd.msg);
+      break;
+    case 'saveNameToLocalStorage':
+      localStorage.setItem('name', cmd.name);
+      break;
+  }
+};
 
 ws.addEventListener('open', () => {
+  const name = localStorage.getItem('name');
+  if (name) {
+    sendMessage(msg.start(name));
+  }
   console.log('Connected');
-
-  sendMessage(msg.start(`Random-${Math.round(Math.random() * 100)}`));
 });
 
 ws.addEventListener('close', () => {
@@ -45,7 +71,8 @@ ws.addEventListener('message', (ev) => {
     return;
   }
 
-  message(state, msg);
+  const cmd = message(state, msg);
+  executeCmd(cmd);
 });
 
 window.addEventListener('keydown', (ev) => {
@@ -131,7 +158,7 @@ function loop() {
   tick(state, now);
 
   renderer.render(state.scene, state.camera);
-  renderUI(state);
+  renderUI(state, executeCmd);
 }
 requestAnimationFrame(loop);
 
