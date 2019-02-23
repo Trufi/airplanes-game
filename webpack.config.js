@@ -2,11 +2,10 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs-extra');
-const resolve = require('resolve');
 
 const dist = path.join(__dirname, 'dist');
 
-fs.copySync(path.join(__dirname, 'client/index.html'), path.join(dist, 'index.html'));
+fs.copySync(path.join(__dirname, 'src/client/index.html'), path.join(dist, 'index.html'));
 
 fs.copySync(
   path.join(__dirname, 'node_modules/@2gis/jakarta/dist/jakarta.js'),
@@ -49,7 +48,7 @@ module.exports = {
             transpileOnly: true,
           },
         },
-      }
+      },
     ],
   },
 
@@ -62,7 +61,7 @@ module.exports = {
     minimize: false,
   },
 
-  entry: './client/index.tsx',
+  entry: './src/client/index.tsx',
 
   output: {
     filename: 'index.js',

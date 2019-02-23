@@ -8,13 +8,13 @@
     "url": "https://trufi.github.io/"
   },
   "scripts": {
-    "server": "node server/hook.js",
+    "server": "node src/server/hook.js",
     "start": "npm run dev",
     "build": "webpack --mode=production",
     "dev": "webpack-dev-server --mode=development",
     "test": "npm run lint && npm run prettier && npm run build && npm run unit",
     "lint": "tslint 'src/**/*.ts'",
-    "prettier": "prettier --check \"./**/*.{ts,js,json,html,css}\"",
+    "prettier": "prettier --check \"./**/*.{ts,tsx,js,json,html,css}\"",
     "unit": "mocha -r ts-node/register test/**/*.ts"
   },
   "dependencies": {

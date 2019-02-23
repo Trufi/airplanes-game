@@ -1,13 +1,13 @@
 import * as assert from 'assert';
-import { createState } from '../../server/state';
-import { createNewConnection } from '../../server/reducers';
-import { State, Connection } from '../../server/types';
+import { createState } from '../../src/server/state';
+import { createNewConnection } from '../../src/server/reducers';
+import { State, Connection } from '../../src/server/types';
 
 describe('reducers', () => {
   let state: State;
 
   beforeEach(() => {
-    state = createState(0);
+    state = createState();
   });
 
   describe('createNewConnection', () => {
