@@ -17,7 +17,7 @@ const port = 3002;
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(express.static(path.join(__dirname, '../../dist')));
 
 const server = app.listen(port, () => console.log(`Server listen on ${port} port`));
 
@@ -75,7 +75,6 @@ const executeOneCmd = (cmdData: ExistCmd) => {
     case 'sendMsgTo': {
       cmdData.connectionIds.forEach((id) => {
         const connection = state.connections.map.get(id);
-        console.log(id, connection);
         if (connection) {
           sendMessage(connection, cmdData.msg);
         }
