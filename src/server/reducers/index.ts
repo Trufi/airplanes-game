@@ -11,7 +11,7 @@ import {
 import { Cmd, cmd, union } from '../commands';
 import { msg } from '../messages';
 import { time } from '../utils';
-import * as game from './game';
+import * as game from '../games/game';
 import { mapMap, findMap } from '../../utils';
 
 export const createNewConnection = (state: ConnectionsState, socket: ws): number => {

@@ -1,5 +1,5 @@
 import * as ws from 'ws';
-import { GameState } from '../reducers/game';
+import { GameState } from '../games/game';
 
 export interface InitialConnection {
   status: 'initial';

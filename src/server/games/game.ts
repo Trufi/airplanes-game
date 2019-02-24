@@ -1,6 +1,6 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
-import { Cmd, cmd } from '../commands';
+import { Cmd, cmd, union } from '../commands';
 import { msg } from '../messages';
 import { findMap, clamp, mapMap } from '../../utils';
 import { ClientMsg } from '../../client/messages';
@@ -35,6 +35,7 @@ export interface GamePlayer {
   id: number;
   name: string;
   bodyId: number;
+  live: boolean;
 }
 
 export interface GameState {
@@ -51,7 +52,7 @@ export const debugInfo = ({ id, bodies, players }: GameState) => ({
   players: Array.from(players),
 });
 
-const gameConnectionIds = (gameState: GameState) => {
+const gamePlayerIds = (gameState: GameState) => {
   return mapMap(gameState.players, (gp) => gp.id);
 };
 
@@ -88,7 +89,7 @@ export const tick = (game: GameState, time: number): Cmd => {
   game.prevTime = game.time;
   game.time = time;
 
-  return cmd.sendMsgTo(gameConnectionIds(game), msg.tickData(game));
+  return cmd.sendMsgTo(gamePlayerIds(game), msg.tickData(game));
 };
 
 export const joinPlayer = (game: GameState, id: number, name: string): Cmd => {
@@ -100,12 +101,13 @@ export const joinPlayer = (game: GameState, id: number, name: string): Cmd => {
     id,
     bodyId: body.id,
     name,
+    live: true,
   };
   game.players.set(id, gamePlayer);
 
   return [
     cmd.sendMsg(id, msg.startData(game, gamePlayer, body)),
-    cmd.sendMsgTo(gameConnectionIds(game), msg.playerEnter(gamePlayer, body)),
+    cmd.sendMsgTo(gamePlayerIds(game), msg.playerEnter(gamePlayer)),
   ];
 };
 
@@ -116,7 +118,7 @@ export const kickPlayer = (game: GameState, id: number): Cmd => {
     game.bodies.map.delete(body.id);
   }
 
-  return cmd.sendMsgTo(gameConnectionIds(game), msg.playerLeave(id));
+  return cmd.sendMsgTo(gamePlayerIds(game), msg.playerLeave(id));
 };
 
 const updatePlayerBodyState = (
@@ -132,7 +134,28 @@ const updatePlayerBodyState = (
   body.weapon.lastShotTime = clientBody.weapon.lastShotTime;
 };
 
-const applyHit = (game: GameState, hit: Hit) => {
+const playerDeath = (game: GameState, body: Airplane, causePlayerId: number): Cmd => {
+  const cmds: Cmd = [];
+
+  // Превращаем живого игрока в мертвого
+  const player = game.players.get(body.playerId);
+  if (player) {
+    player.live = false;
+
+    // TODO: если игра на вылет, то тут нужно как-то прокинуть команду
+    // чтобы игрока выкинуло из игры
+
+    // Сообщаем игрокам
+    cmds.push(cmd.sendMsgTo(gamePlayerIds(game), msg.playerDeath(player.id, causePlayerId)));
+  }
+
+  // Удаляем тело
+  game.bodies.map.delete(body.id);
+
+  return cmds;
+};
+
+const applyHit = (game: GameState, hit: Hit, causePlayerId: number): Cmd => {
   const { bodyId } = hit;
   const body = game.bodies.map.get(bodyId);
   if (!body) {
@@ -140,15 +163,19 @@ const applyHit = (game: GameState, hit: Hit) => {
   }
 
   body.health = clamp(body.health - config.weapon.damage, 0, config.airplane.maxHealth);
+
+  if (body.health <= 0) {
+    return playerDeath(game, body, causePlayerId);
+  }
 };
 
 export const updatePlayerChanges = (
   game: GameState,
   playerId: number,
   clientMsg: ClientMsg['changes'],
-) => {
+): Cmd => {
   const gamePlayer = game.players.get(playerId);
-  if (!gamePlayer) {
+  if (!gamePlayer || !gamePlayer.live) {
     return;
   }
 
@@ -159,5 +186,6 @@ export const updatePlayerChanges = (
 
   updatePlayerBodyState(body, clientMsg.body, clientMsg.time);
 
-  clientMsg.body.weapon.hits.forEach((hit) => applyHit(game, hit));
+  const cmds = clientMsg.body.weapon.hits.map((hit) => applyHit(game, hit, gamePlayer.id));
+  return union(cmds);
 };

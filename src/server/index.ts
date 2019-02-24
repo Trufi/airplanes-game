@@ -2,6 +2,7 @@ import '@2gis/gl-matrix';
 
 import * as express from 'express';
 import * as path from 'path';
+import * as mysql from 'mysql';
 import * as ws from 'ws';
 import { createNewConnection, message, connectionLost, tick, createGame } from './reducers';
 import { Connection } from './types';
@@ -11,9 +12,8 @@ import { AnyServerMsg, msg } from './messages';
 import { AnyClientMsg } from '../client/messages';
 import { time } from './utils';
 import { mapMap } from '../utils';
-import * as game from './reducers/game';
-import { config } from 'config';
-const mysql = require('mysql');
+import { config } from './config';
+import * as game from './games/game';
 
 const port = 3002;
 

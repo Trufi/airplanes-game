@@ -56,12 +56,14 @@ export interface PlayerState {
   id: number;
   bodyId: number;
   name: string;
+  live: boolean;
 }
 
 export interface GameState {
   id: number;
   body: PhysicBodyState;
   name: string;
+  live: boolean;
 }
 
 export interface ServerTimeState {
@@ -70,6 +72,12 @@ export interface ServerTimeState {
 
   pingSample: number[];
   ping: number;
+}
+
+export interface DeathNote {
+  time: number;
+  causePlayerId: number;
+  deadPlayerId: number;
 }
 
 export interface State {
@@ -104,4 +112,6 @@ export interface State {
   bodies: Map<number, NonPhysicBodyState>;
   serverTime: ServerTimeState;
   pressedKeys: { [key: string]: boolean };
+
+  deathNotes: DeathNote[];
 }

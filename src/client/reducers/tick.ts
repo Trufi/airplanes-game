@@ -3,6 +3,7 @@ import * as vec3 from '@2gis/gl-matrix/vec3';
 import { State, NonPhysicBodyState, BodyStep } from '../types';
 import { updateMesh, updateShot, updateCameraAndMap } from '../view';
 import { lerp } from '../../utils';
+import * as config from '../../config';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
@@ -10,9 +11,13 @@ export const tick = (state: State, time: number) => {
 
   state.bodies.forEach((body) => updateNonPhysicBody(body, state.time, state.serverTime.diff));
 
-  updatePhysicBody(state);
+  if (state.game && state.game.live) {
+    updatePhysicBody(state);
+  }
 
   updateCameraAndMap(state);
+
+  hideOldDeathNotes(state);
 };
 
 const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, timeDiff: number) => {
@@ -84,4 +89,10 @@ const updatePhysicBody = (state: State) => {
 
   updateMesh(body);
   updateShot(state.time, body.shotMesh, body.weapon);
+};
+
+const hideOldDeathNotes = (state: State) => {
+  state.deathNotes = state.deathNotes.filter(
+    (note) => state.time - note.time < config.deathNote.delay,
+  );
 };

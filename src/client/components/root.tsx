@@ -7,6 +7,7 @@ import { FireButton } from './fireButton';
 import { ExecuteCmd } from '..';
 import { Login } from './login';
 import { GameSelect } from './gameSelect';
+import { DeathNotes } from './deathNotes';
 
 interface Props {
   state: State;
@@ -72,6 +73,7 @@ export class Root extends React.Component<Props, any> {
 
     return (
       <div>
+        <DeathNotes state={this.props.state} />
         <Debug
           style={{
             position: 'absolute',

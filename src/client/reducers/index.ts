@@ -15,9 +15,11 @@ export const message = (state: State, msg: AnyServerMsg): Cmd => {
     case 'tickData':
       return updateGameData(state, msg);
     case 'playerEnter':
-      return createPlayer(state, msg);
+      return createPlayer(state, msg.player);
     case 'playerLeave':
       return removePlayer(state, msg);
+    case 'playerDeath':
+      return playerDeath(state, msg);
     case 'pong':
       return updatePingAndServerTime(state.serverTime, msg);
   }
@@ -37,6 +39,7 @@ const createGame = (state: State, msg: ServerMsg['startData']): Cmd => {
   state.game = {
     id: msg.id,
     name: msg.name,
+    live: true,
     body: {
       position: msg.body.position,
       velocity: msg.body.velocity,
@@ -88,7 +91,7 @@ const updateBodyData = (state: State, data: TickBodyData) => {
   });
 };
 
-const createPlayer = (state: State, { id, name, bodyId }: AnotherPlayer) => {
+const createPlayer = (state: State, { id, name, bodyId, live }: AnotherPlayer) => {
   // Себя добавляем через отдельный механизм
   if (!state.game || state.game.id === id) {
     return;
@@ -99,6 +102,7 @@ const createPlayer = (state: State, { id, name, bodyId }: AnotherPlayer) => {
     id,
     bodyId,
     name,
+    live,
   };
   state.players.set(player.id, player);
 };
@@ -128,12 +132,38 @@ const removePlayer = (state: State, msg: ServerMsg['playerLeave']) => {
   if (!player) {
     return;
   }
-  const body = state.bodies.get(player.bodyId);
+  removeBody(state, player.bodyId);
+  state.players.delete(player.id);
+};
+
+const removeBody = (state: State, bodyId: number) => {
+  const body = state.bodies.get(bodyId);
   if (body) {
-    state.bodies.delete(player.bodyId);
+    state.bodies.delete(bodyId);
     state.scene.remove(body.mesh);
   }
-  state.players.delete(player.id);
+};
+
+const playerDeath = (state: State, msg: ServerMsg['playerDeath']) => {
+  const { playerId, causePlayerId } = msg;
+
+  if (playerId === state.id) {
+    if (state.game) {
+      state.game.live = false;
+    }
+  } else {
+    // Добавляем сообщение о смерти
+    state.deathNotes.push({
+      time: state.time,
+      causePlayerId,
+      deadPlayerId: playerId,
+    });
+
+    const player = state.players.get(playerId);
+    if (player) {
+      removeBody(state, player.bodyId);
+    }
+  }
 };
 
 const updatePingAndServerTime = (timeState: ServerTimeState, msg: ServerMsg['pong']) => {

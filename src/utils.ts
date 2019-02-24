@@ -21,6 +21,17 @@ export function clamp(value: number, min: number, max: number) {
 
 export const lerp = (a: number, b: number, t: number) => a + t * (b - a);
 
+export const pick = <T extends { [key: string]: any }, K extends keyof T, U extends Pick<T, K>>(
+  obj: T,
+  targetProps: K[],
+): U => {
+  const targetObj = {} as U;
+  for (let i = 0; i < targetProps.length; i++) {
+    targetObj[targetProps[i]] = obj[targetProps[i]];
+  }
+  return targetObj;
+};
+
 export type ObjectElement<T> = T[keyof T];
 export type ArrayElement<ArrayType> = ArrayType extends Array<infer ElementType>
   ? ElementType

@@ -23,5 +23,6 @@ export const createState = (time: number): State => {
       ping: 300,
     },
     pressedKeys: {},
+    deathNotes: [],
   };
 };

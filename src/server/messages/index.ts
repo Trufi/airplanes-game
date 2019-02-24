@@ -1,5 +1,5 @@
-import { ObjectElement, mapMap } from '../../utils';
-import { GameState, Airplane, GamePlayer } from '../reducers/game';
+import { ObjectElement, mapMap, pick } from '../../utils';
+import { GameState, Airplane, GamePlayer } from '../games/game';
 
 const connect = (id: number) => ({
   type: 'connect' as 'connect',
@@ -24,26 +24,20 @@ const gameJoinFail = () => ({
   type: 'gameJoinFail' as 'gameJoinFail',
 });
 
-export interface AnotherPlayer {
-  id: number;
-  name: string;
-  bodyId: number;
-}
+const getAnotherPlayer = (player: GamePlayer) => pick(player, ['id', 'live', 'name', 'bodyId']);
+
+export type AnotherPlayer = ReturnType<typeof getAnotherPlayer>;
 
 const startData = (game: GameState, player: GamePlayer, body: Airplane) => {
   const anotherPlayers: AnotherPlayer[] = [];
 
-  game.players.forEach(({ id, name, bodyId }) => {
+  game.players.forEach((p) => {
     // Самого игрока отправляем отдельно
-    if (id === player.id) {
+    if (p.id === player.id) {
       return;
     }
 
-    anotherPlayers.push({
-      id,
-      name,
-      bodyId,
-    });
+    anotherPlayers.push(getAnotherPlayer(p));
   });
 
   return {
@@ -62,16 +56,20 @@ const startData = (game: GameState, player: GamePlayer, body: Airplane) => {
   };
 };
 
-const playerEnter = (player: GamePlayer, body: Airplane) => ({
+const playerEnter = (player: GamePlayer) => ({
   type: 'playerEnter' as 'playerEnter',
-  name: player.name,
-  id: player.id,
-  bodyId: body.id,
+  player: getAnotherPlayer(player),
 });
 
 const playerLeave = (playerId: number) => ({
   type: 'playerLeave' as 'playerLeave',
   playerId,
+});
+
+const playerDeath = (playerId: number, causePlayerId: number) => ({
+  type: 'playerDeath' as 'playerDeath',
+  playerId,
+  causePlayerId,
 });
 
 const getTickBodyData = ({
@@ -118,6 +116,7 @@ export const msg = {
   startData,
   playerEnter,
   playerLeave,
+  playerDeath,
   tickData,
   pong,
 };
