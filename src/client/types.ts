@@ -80,6 +80,11 @@ export interface DeathNote {
   deadPlayerId: number;
 }
 
+export interface StickState {
+  x: number;
+  y: number;
+}
+
 export interface State {
   // TODO: Разбить стейты на несколько состояний и возможно вынести в redux
   id?: number;
@@ -114,4 +119,6 @@ export interface State {
   pressedKeys: { [key: string]: boolean };
 
   deathNotes: DeathNote[];
+
+  stick: StickState;
 }

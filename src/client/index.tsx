@@ -86,46 +86,6 @@ window.addEventListener('keyup', (ev) => {
   state.pressedKeys[ev.code] = false;
 });
 
-const leftButton = document.getElementById('left') as HTMLElement;
-leftButton.addEventListener('touchstart', (ev) => {
-  ev.preventDefault();
-  state.pressedKeys['KeyA'] = true;
-});
-leftButton.addEventListener('touchend', (ev) => {
-  ev.preventDefault();
-  state.pressedKeys['KeyA'] = false;
-});
-
-const rightButton = document.getElementById('right') as HTMLElement;
-rightButton.addEventListener('touchstart', (ev) => {
-  ev.preventDefault();
-  state.pressedKeys['KeyD'] = true;
-});
-rightButton.addEventListener('touchend', (ev) => {
-  ev.preventDefault();
-  state.pressedKeys['KeyD'] = false;
-});
-
-const upButton = document.getElementById('up') as HTMLElement;
-upButton.addEventListener('touchstart', (ev) => {
-  ev.preventDefault();
-  state.pressedKeys['KeyS'] = true;
-});
-upButton.addEventListener('touchend', (ev) => {
-  ev.preventDefault();
-  state.pressedKeys['KeyS'] = false;
-});
-
-const downButton = document.getElementById('down') as HTMLElement;
-downButton.addEventListener('touchstart', (ev) => {
-  ev.preventDefault();
-  state.pressedKeys['KeyW'] = true;
-});
-downButton.addEventListener('touchend', (ev) => {
-  ev.preventDefault();
-  state.pressedKeys['KeyW'] = false;
-});
-
 const fullscreenButton = document.getElementById('fullscreen') as HTMLElement;
 fullscreenButton.addEventListener('click', () => {
   document.body.requestFullscreen();

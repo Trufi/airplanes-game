@@ -24,5 +24,6 @@ export const createState = (time: number): State => {
     },
     pressedKeys: {},
     deathNotes: [],
+    stick: { x: 0, y: 0 },
   };
 };

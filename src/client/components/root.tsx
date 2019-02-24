@@ -8,6 +8,7 @@ import { ExecuteCmd } from '..';
 import { Login } from './login';
 import { GameSelect } from './gameSelect';
 import { DeathNotes } from './deathNotes';
+import { Stick } from './stick';
 
 interface Props {
   state: State;
@@ -87,6 +88,7 @@ export class Root extends React.Component<Props, any> {
           <Aim position={game.body.position} rotation={game.body.rotation} camera={camera} />
         )}
         <FireButton state={this.props.state} />
+        <Stick state={this.props.state} />
       </div>
     );
   }

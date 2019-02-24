@@ -16,6 +16,7 @@ export const processPressedkeys = (dt: number, state: State) => {
     const {
       game: { body },
       pressedKeys,
+      stick,
     } = state;
 
     let yawPressed = false;
@@ -58,6 +59,18 @@ export const processPressedkeys = (dt: number, state: State) => {
       }
     }
 
+    // Обрабатываем стик для мобилок
+    if (stick.x !== 0) {
+      yawPressed = true;
+      yawRight(dt * stick.x, body);
+    }
+
+    if (stick.y !== 0) {
+      pitchPressed = true;
+      pitchUp(dt * stick.y, body);
+    }
+
+    // Обрабатываем восстановление положение
     if (!yawPressed) {
       restoreYawAcceleration(dt, body);
     }

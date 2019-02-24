@@ -3,29 +3,30 @@
 1. npm install
 2. npm run server — поднимается сервак на 3002 порту
 3. npm run dev — поднимает dev-сервер с клиентским кодом на 3000 порту
-4. Открывает http://localhost:3000
+4. Открыть http://localhost:3000
 
 # Как поднять контейнер с базой
+
 Нужно установить docker и docker-compose
 Поднимаем контейнер:
-```docker-compose up -d```
+`docker-compose up -d`
 
 Это всё) база живет на localhost:3306
 
 Если нужно подключиться к базе данных, выполняем слеующее:
 
-```docker ps```
+`docker ps`
 
 Из списка контейнеров выбрать нужный ID и подставть его в следующий скрипт.
 
-```docker exec -it CONTAINER_ID bash```
+`docker exec -it CONTAINER_ID bash`
 
 Вуаля мы внутри нашего контейнера и нам доступен bash.
 Чтобы подключиться к базе данных выполняем (без []):
 
-```mysql -u[user] -p[password] airplanes```
+`mysql -u[user] -p[password] airplanes`
 
-Теперь мы внутри нашей DB. 
+Теперь мы внутри нашей DB.
 
 Чтобы убить контейнер:
-```docker-compose down```
+`docker-compose down`
