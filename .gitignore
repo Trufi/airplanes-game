@@ -5,6 +5,7 @@ npm-debug.log
 yarn.lock
 node_modules/
 dist/
+db/
 
 server/lib
 server/node_modules

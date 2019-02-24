@@ -12,6 +12,8 @@ import { AnyClientMsg } from '../client/messages';
 import { time } from './utils';
 import { mapMap } from '../utils';
 import * as game from './reducers/game';
+import { config } from 'config';
+const mysql = require('mysql');
 
 const port = 3002;
 
@@ -40,6 +42,23 @@ app.get('/state', (_req, res) => {
     }),
   };
   res.send(JSON.stringify(data, null, 2));
+});
+
+app.get('/login', (_req, res) => {
+  const con = mysql.createConnection({
+    host: config.db.host,
+    user: config.db.user,
+    password: config.db.password,
+    database: config.db.database,
+  });
+
+  con.connect((err: any) => {
+    if (err) {
+      throw err;
+    }
+
+    res.send('Connected!');
+  });
 });
 
 const gameStep = 50;

@@ -29,6 +29,7 @@
     "express": "^4.16.4",
     "fs-extra": "^7.0.1",
     "gsap": "^2.0.2",
+    "mysql": "^2.16.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-redux": "^5.0.6",
