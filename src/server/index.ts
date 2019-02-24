@@ -2,7 +2,6 @@ import '@2gis/gl-matrix';
 
 import * as express from 'express';
 import * as path from 'path';
-import * as mysql from 'mysql';
 import * as ws from 'ws';
 import { createNewConnection, message, connectionLost, tick, createGame } from './reducers';
 import { Connection } from './types';
@@ -11,9 +10,8 @@ import { createState } from './state';
 import { AnyServerMsg, msg } from './messages';
 import { AnyClientMsg } from '../client/messages';
 import { time } from './utils';
-import { mapMap } from '../utils';
-import { config } from './config';
-import * as game from './games/game';
+import { applyRouter } from './routes';
+import { applyMiddlewares } from './middlewares';
 
 const port = 3002;
 
@@ -30,36 +28,8 @@ const wsServer = new ws.Server({
 const state = createState();
 createGame(state, time());
 
-app.get('/state', (_req, res) => {
-  const data = {
-    games: mapMap(state.games.map, game.debugInfo),
-    connections: Array.from(state.connections.map).map((v) => {
-      const { id, status } = v[1];
-      return {
-        id,
-        status,
-      };
-    }),
-  };
-  res.send(JSON.stringify(data, null, 2));
-});
-
-app.get('/login', (_req, res) => {
-  const con = mysql.createConnection({
-    host: config.db.host,
-    user: config.db.user,
-    password: config.db.password,
-    database: config.db.database,
-  });
-
-  con.connect((err: any) => {
-    if (err) {
-      throw err;
-    }
-
-    res.send('Connected!');
-  });
-});
+applyMiddlewares(app);
+applyRouter(app, state);
 
 const gameStep = 50;
 
