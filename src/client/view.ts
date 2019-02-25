@@ -1,7 +1,7 @@
 import 'three/examples/js/loaders/GLTFLoader';
 import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
-import { config as mapConfig, MapOptions, Map } from '@2gis/jakarta';
+import { config as mapConfig, MapOptions, Map, Skybox } from '@2gis/jakarta';
 import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import * as config from '../config';
 import { degToRad } from './utils';
@@ -113,7 +113,9 @@ export const updateShot = (time: number, shotMesh: any, weapon: { lastShotTime: 
 export const createMap = () => {
   const container = document.getElementById('map') as HTMLElement;
   const options: Partial<MapOptions> = {
-    tileSearchNumber: 3,
+    tileSearchNumber: 5,
+    drawDistance: 500000,
+    fogSoftness: 0.5,
     center: [82.920412, 55.030111],
     zoom: 17,
     sendAnalytics: false,
@@ -121,6 +123,14 @@ export const createMap = () => {
   };
   const map = ((window as any).map = new Map(container, options));
   mapConfig.render.alwaysRerender = true;
+
+  const skyImage = document.createElement('img');
+  skyImage.onload = () => {
+    const skybox = new Skybox(skyImage);
+    skybox.addTo(map);
+  };
+  skyImage.src = './assets/skybox1.jpg';
+
   return map;
 };
 
