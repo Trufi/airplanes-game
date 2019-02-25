@@ -65,7 +65,7 @@ export const updateMesh = (body: {
     body.rotation[3],
   );
   mesh.setRotationFromQuaternion(q1);
-  mesh.rotateY(-velocityDirection[2] * 500);
+  mesh.rotateY(-velocityDirection[2] * 1500);
 
   mesh.updateMatrix();
   mesh.updateWorldMatrix(true, true);

@@ -5,7 +5,7 @@ import * as config from '../../config';
 import { PhysicBodyState, State } from '../types';
 
 const rotationAcceleration = { x: 0.000001, z: 0.000002 };
-const maxRotationSpeed = { x: 0.001, z: 0.002 };
+const maxRotationSpeed = { x: 0.001, z: 0.0005 };
 const restoreYSpeed = 0.0006;
 
 const xAxis = [1, 0, 0];
@@ -30,11 +30,11 @@ export const processPressedkeys = (dt: number, state: State) => {
 
       switch (code) {
         case 'KeyA':
-          yawLeft(dt, body);
+          yawLeft(dt / 2, body);
           yawPressed = true;
           break;
         case 'KeyD':
-          yawRight(dt, body);
+          yawRight(dt / 2, body);
           yawPressed = true;
           break;
         case 'KeyW':

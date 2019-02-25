@@ -18,6 +18,11 @@ fs.copySync(
 );
 
 fs.copySync(
+  path.join(__dirname, 'node_modules/three/build/three.min.js'),
+  path.join(dist, 'three.min.js'),
+);
+
+fs.copySync(
   path.join(__dirname, 'node_modules/@2gis/jakarta/dist/assets/fonts'),
   path.join(dist, 'assets/fonts'),
 );
