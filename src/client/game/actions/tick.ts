@@ -1,23 +1,28 @@
 import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
-import { State, NonPhysicBodyState, BodyStep } from '../types';
+import { State, NonPhysicBodyState, BodyStep, PhysicBodyState } from '../../types';
 import { updateMesh, updateShot, updateCameraAndMap } from '../view';
-import { lerp } from '../../utils';
-import * as config from '../../config';
+import { lerp } from '../../../utils';
+import * as config from '../../../config';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
   state.time = time;
 
-  state.bodies.forEach((body) => updateNonPhysicBody(body, state.time, state.serverTime.diff));
-
-  if (state.game && state.game.live) {
-    updatePhysicBody(state);
-  }
+  state.bodies.forEach((body) => updateBody(state, body));
 
   updateCameraAndMap(state);
 
   hideOldDeathNotes(state);
+};
+
+const updateBody = (state: State, body: PhysicBodyState | NonPhysicBodyState) => {
+  switch (body.type) {
+    case 'physic':
+      return updatePhysicBody(state, body);
+    case 'nonPhysic':
+      return updateNonPhysicBody(body, state.time, state.serverTime.diff);
+  }
 };
 
 const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, timeDiff: number) => {
@@ -64,14 +69,8 @@ const minimalHeight = 10000;
 const velocityVector = [0, 0, 0];
 const rotation = [0, 0, 0, 1];
 
-const updatePhysicBody = (state: State) => {
-  if (!state.game) {
-    return;
-  }
+const updatePhysicBody = (state: State, body: PhysicBodyState) => {
   const dt = state.time - state.prevTime;
-  const {
-    game: { body },
-  } = state;
 
   quat.identity(rotation);
   quat.rotateX(rotation, rotation, body.velocityDirection[0] * dt);

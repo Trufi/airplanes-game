@@ -1,4 +1,4 @@
-import { GameState } from './types';
+import { PhysicBodyState } from './types';
 import { ObjectElement } from '../utils';
 
 const login = (name: string) => ({
@@ -12,10 +12,8 @@ const joinGame = (gameId: number) => ({
 });
 
 // добавить передачу хитов на сервер
-const changes = (game: GameState, time: number) => {
-  const {
-    body: { position, velocity, rotation, velocityDirection, weapon },
-  } = game;
+const changes = (body: PhysicBodyState, time: number) => {
+  const { position, velocity, rotation, velocityDirection, weapon } = body;
 
   return {
     type: 'changes' as 'changes',

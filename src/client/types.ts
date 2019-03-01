@@ -22,21 +22,27 @@ export interface WeaponState {
 }
 
 export interface PhysicBodyState {
+  type: 'physic';
+  id: number;
+  playerId?: number;
   mesh: THREE.Object3D;
   shotMesh: THREE.Object3D;
   position: number[];
   velocity: number;
   rotation: number[];
   velocityDirection: number[];
+  health: number;
   weapon: WeaponState;
 }
 
 export interface NonPhysicBodyState {
+  type: 'nonPhysic';
   id: number;
-  playerId: number;
+  playerId?: number;
   mesh: THREE.Object3D;
   shotMesh: THREE.Object3D;
   position: number[];
+  velocity: number;
   rotation: number[];
   velocityDirection: number[];
   health: number;
@@ -49,13 +55,6 @@ export interface NonPhysicBodyState {
 export interface PlayerState {
   id: number;
   bodyId: number;
-  name: string;
-  live: boolean;
-}
-
-export interface GameState {
-  id: number;
-  body: PhysicBodyState;
   name: string;
   live: boolean;
 }
@@ -80,13 +79,13 @@ export interface StickState {
 }
 
 export interface State {
-  // TODO: Разбить стейты на несколько состояний и возможно вынести в redux
-  id?: number;
-  name?: string;
-  gameList?: Array<{ id: number }>;
-
   time: number;
   prevTime: number;
+
+  playerId: number;
+  bodyId: number;
+  name: string;
+  live: boolean;
 
   /**
    * Начало системы отсчета.
@@ -94,18 +93,26 @@ export interface State {
    */
   origin: number[];
 
-  game?: GameState;
   players: Map<number, PlayerState>;
 
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
 
   map: J.Map;
-  bodies: Map<number, NonPhysicBodyState>;
+  bodies: Map<number, PhysicBodyState | NonPhysicBodyState>;
   serverTime: ServerTimeState;
   pressedKeys: { [key: string]: boolean };
 
   deathNotes: DeathNote[];
 
   stick: StickState;
+}
+
+// TODO: Разбить на несколько
+export interface AppState {
+  type: 'login' | 'gameSelect' | 'game';
+  id?: number; // connection id на сервере
+  name?: string;
+  game?: State;
+  gameList?: Array<{ id: number }>;
 }

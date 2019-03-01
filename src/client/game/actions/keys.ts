@@ -1,8 +1,8 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
-import { degToRad, clamp, localAxisToXYAngle, projection } from '../utils';
-import * as config from '../../config';
-import { PhysicBodyState, State } from '../types';
+import { degToRad, clamp, localAxisToXYAngle, projection } from '../../utils';
+import * as config from '../../../config';
+import { PhysicBodyState, State } from '../../types';
 
 const rotationAcceleration = { x: 0.000001, z: 0.000002 };
 const maxRotationSpeed = { x: 0.001, z: 0.0005 };
@@ -12,76 +12,75 @@ const xAxis = [1, 0, 0];
 const yAxis = [0, 1, 0];
 
 export const processPressedkeys = (dt: number, state: State) => {
-  if (state.game) {
-    const {
-      game: { body },
-      pressedKeys,
-      stick,
-    } = state;
+  const { pressedKeys, stick, bodyId, bodies } = state;
 
-    let yawPressed = false;
-    let pitchPressed = false;
-    let rollPressed = false;
+  const body = bodies.get(bodyId);
+  if (!body || body.type !== 'physic') {
+    return;
+  }
 
-    for (const code in pressedKeys) {
-      if (!pressedKeys[code]) {
-        continue;
-      }
+  let yawPressed = false;
+  let pitchPressed = false;
+  let rollPressed = false;
 
-      switch (code) {
-        case 'KeyA':
-          yawLeft(dt / 2, body);
-          yawPressed = true;
-          break;
-        case 'KeyD':
-          yawRight(dt / 2, body);
-          yawPressed = true;
-          break;
-        case 'KeyW':
-          pitchDown(dt, body);
-          pitchPressed = true;
-          break;
-        case 'KeyS':
-          pitchUp(dt, body);
-          pitchPressed = true;
-          break;
-        case 'KeyE':
-          quat.rotateY(body.rotation, body.rotation, 0.001 * dt);
-          rollPressed = true;
-          break;
-        case 'KeyQ':
-          quat.rotateY(body.rotation, body.rotation, -0.001 * dt);
-          rollPressed = true;
-          break;
-        case 'Space':
-          fire(state);
-          break;
-      }
+  for (const code in pressedKeys) {
+    if (!pressedKeys[code]) {
+      continue;
     }
 
-    // Обрабатываем стик для мобилок
-    if (stick.x !== 0) {
-      yawPressed = true;
-      yawRight(dt * stick.x, body);
+    switch (code) {
+      case 'KeyA':
+        yawLeft(dt / 2, body);
+        yawPressed = true;
+        break;
+      case 'KeyD':
+        yawRight(dt / 2, body);
+        yawPressed = true;
+        break;
+      case 'KeyW':
+        pitchDown(dt, body);
+        pitchPressed = true;
+        break;
+      case 'KeyS':
+        pitchUp(dt, body);
+        pitchPressed = true;
+        break;
+      case 'KeyE':
+        quat.rotateY(body.rotation, body.rotation, 0.001 * dt);
+        rollPressed = true;
+        break;
+      case 'KeyQ':
+        quat.rotateY(body.rotation, body.rotation, -0.001 * dt);
+        rollPressed = true;
+        break;
+      case 'Space':
+        fire(state);
+        break;
     }
+  }
 
-    if (stick.y !== 0) {
-      pitchPressed = true;
-      pitchUp(dt * stick.y, body);
-    }
+  // Обрабатываем стик для мобилок
+  if (stick.x !== 0) {
+    yawPressed = true;
+    yawRight(dt * stick.x, body);
+  }
 
-    // Обрабатываем восстановление положение
-    if (!yawPressed) {
-      restoreYawAcceleration(dt, body);
-    }
+  if (stick.y !== 0) {
+    pitchPressed = true;
+    pitchUp(dt * stick.y, body);
+  }
 
-    if (!pitchPressed) {
-      restorePitchAcceleration(dt, body);
-    }
+  // Обрабатываем восстановление положение
+  if (!yawPressed) {
+    restoreYawAcceleration(dt, body);
+  }
 
-    if (!rollPressed) {
-      restoreRoll(dt, body);
-    }
+  if (!pitchPressed) {
+    restorePitchAcceleration(dt, body);
+  }
+
+  if (!rollPressed) {
+    restoreRoll(dt, body);
   }
 };
 
@@ -160,16 +159,14 @@ const forwardDirection = [0, 1, 0];
 const bodyForward = [0, 0, 0];
 const toTarget = [0, 0, 0];
 
-export const fire = (state: State) => {
-  if (!state.game) {
+const fire = (state: State) => {
+  const { bodies, bodyId } = state;
+
+  const body = bodies.get(bodyId);
+  if (!body || body.type !== 'physic') {
     return;
   }
-  const {
-    bodies,
-    game: {
-      body: { weapon, rotation, position },
-    },
-  } = state;
+  const { weapon, rotation, position } = body;
 
   if (state.time - weapon.lastShotTime < config.weapon.delay) {
     return;

@@ -4,9 +4,9 @@ import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import { config as mapConfig, MapOptions, Map, Skybox } from '@2gis/jakarta';
 import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
-import * as config from '../config';
-import { degToRad } from './utils';
-import { State } from './types';
+import * as config from '../../config';
+import { degToRad } from '../utils';
+import { State } from '../types';
 
 mapConfig.camera.fov = 45;
 
@@ -158,18 +158,14 @@ const mapBodyPosition = [0, 0, 0];
 const eye = [0, 0, 0];
 
 export const updateCameraAndMap = (state: State) => {
-  if (!state.game) {
+  const { map, bodies, bodyId, origin, camera } = state;
+
+  const body = bodies.get(bodyId);
+  if (!body) {
     return;
   }
 
-  const {
-    map,
-    game: {
-      body: { rotation, position },
-    },
-    origin,
-    camera,
-  } = state;
+  const { rotation, position } = body;
 
   vec3.add(mapBodyPosition, position, origin);
 

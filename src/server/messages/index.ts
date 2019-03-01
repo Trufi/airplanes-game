@@ -24,41 +24,40 @@ const gameJoinFail = () => ({
   type: 'gameJoinFail' as 'gameJoinFail',
 });
 
-const getAnotherPlayer = (player: GamePlayer) => pick(player, ['id', 'live', 'name', 'bodyId']);
+const getPlayerData = (player: GamePlayer) => pick(player, ['id', 'live', 'name', 'bodyId']);
+export type PlayerData = ReturnType<typeof getPlayerData>;
 
-export type AnotherPlayer = ReturnType<typeof getAnotherPlayer>;
+const getTickBodyData = (body: Airplane) =>
+  pick(body, [
+    'id',
+    'position',
+    'rotation',
+    'velocityDirection',
+    'updateTime',
+    'health',
+    'weapon',
+    'velocity',
+  ]);
+export type TickBodyData = ReturnType<typeof getTickBodyData>;
 
-const startData = (game: GameState, player: GamePlayer, body: Airplane) => {
-  const anotherPlayers: AnotherPlayer[] = [];
-
-  game.players.forEach((p) => {
-    // Самого игрока отправляем отдельно
-    if (p.id === player.id) {
-      return;
-    }
-
-    anotherPlayers.push(getAnotherPlayer(p));
-  });
+const startData = (game: GameState, player: GamePlayer) => {
+  const players = mapMap(game.players, getPlayerData);
+  const bodies = mapMap(game.bodies.map, getTickBodyData);
 
   return {
     type: 'startData' as 'startData',
-    id: player.id,
+    playerId: player.id,
     name: player.name,
-    body: {
-      id: body.id,
-      position: body.position,
-      rotation: body.rotation,
-      velocity: body.velocity,
-      velocityDirection: body.velocityDirection,
-      health: body.health,
-    },
-    anotherPlayers,
+
+    players,
+    bodies,
   };
 };
 
-const playerEnter = (player: GamePlayer) => ({
+const playerEnter = (player: GamePlayer, body: Airplane) => ({
   type: 'playerEnter' as 'playerEnter',
-  player: getAnotherPlayer(player),
+  player: getPlayerData(player),
+  body: getTickBodyData(body),
 });
 
 const playerLeave = (playerId: number) => ({
@@ -71,26 +70,6 @@ const playerDeath = (playerId: number, causePlayerId: number) => ({
   playerId,
   causePlayerId,
 });
-
-const getTickBodyData = ({
-  id,
-  position,
-  rotation,
-  velocityDirection,
-  updateTime,
-  health,
-  weapon,
-}: Airplane) => ({
-  id,
-  position,
-  rotation,
-  velocityDirection,
-  updateTime,
-  health,
-  weapon,
-});
-
-export type TickBodyData = ReturnType<typeof getTickBodyData>;
 
 const tickData = (game: GameState) => {
   const bodies: TickBodyData[] = [];

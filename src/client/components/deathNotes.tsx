@@ -3,7 +3,7 @@ import { State, DeathNote } from '../types';
 
 const Note = ({ state, note }: { state: State; note: DeathNote }): JSX.Element => {
   let deadName: string | undefined;
-  if (note.deadPlayerId === state.id) {
+  if (note.deadPlayerId === state.playerId) {
     deadName = state.name;
   } else {
     const deadPlayer = state.players.get(note.deadPlayerId);
@@ -13,7 +13,7 @@ const Note = ({ state, note }: { state: State; note: DeathNote }): JSX.Element =
   }
 
   let causeName: string | undefined;
-  if (note.causePlayerId === state.id) {
+  if (note.causePlayerId === state.playerId) {
     causeName = state.name;
   } else {
     const causePlayer = state.players.get(note.causePlayerId);

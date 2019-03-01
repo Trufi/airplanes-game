@@ -1,18 +1,18 @@
 import * as React from 'react';
 import * as THREE from 'three';
-import { State } from '../types';
+import { AppState, State } from '../types';
 import { PlayerLabel } from './playerLabel';
 import { Debug } from './debug';
 import { Aim } from './aim';
 import { FireButton } from './fireButton';
-import { ExecuteCmd } from '..';
 import { Login } from './login';
 import { GameSelect } from './gameSelect';
 import { DeathNotes } from './deathNotes';
 import { Stick } from './stick';
+import { ExecuteCmd } from '../commands/execute';
 
 interface Props {
-  state: State;
+  appState: AppState;
   executeCmd: ExecuteCmd;
 }
 
@@ -22,12 +22,12 @@ const position = new THREE.Vector3();
 export class Root extends React.Component<Props, {}> {
   public render() {
     const {
-      state: { game, name, gameList },
+      appState: { game, name, gameList },
       executeCmd,
     } = this.props;
 
     if (game) {
-      return this.renderGame();
+      return this.renderGame(game);
     }
 
     if (!name) {
@@ -39,10 +39,8 @@ export class Root extends React.Component<Props, {}> {
     }
   }
 
-  private renderGame() {
-    const {
-      state: { players, bodies, camera, game },
-    } = this.props;
+  private renderGame(game: State) {
+    const { players, bodies, camera } = game;
 
     const playerNames: JSX.Element[] = [];
 
@@ -73,23 +71,27 @@ export class Root extends React.Component<Props, {}> {
       );
     });
 
+    const body = game.bodies.get(game.bodyId);
+    if (!body || body.type !== 'physic') {
+      return;
+    }
+
     return (
       <div>
-        <DeathNotes state={this.props.state} />
+        <DeathNotes state={game} />
         <Debug
           style={{
             position: 'absolute',
             top: 0,
             left: 0,
+            zIndex: 400,
           }}
-          state={this.props.state}
+          state={game}
         />
         {playerNames}
-        {game && (
-          <Aim position={game.body.position} rotation={game.body.rotation} camera={camera} />
-        )}
-        <FireButton state={this.props.state} />
-        <Stick state={this.props.state} />
+        {game && <Aim position={body.position} rotation={body.rotation} camera={camera} />}
+        <FireButton state={game} />
+        <Stick state={game} />
       </div>
     );
   }

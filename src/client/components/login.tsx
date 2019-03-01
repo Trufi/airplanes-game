@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ExecuteCmd } from '..';
 import { cmd } from '../commands';
 import { msg } from '../messages';
+import { ExecuteCmd } from '../commands/execute';
 
 interface Props {
   executeCmd: ExecuteCmd;

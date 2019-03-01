@@ -106,8 +106,8 @@ export const joinPlayer = (game: GameState, id: number, name: string): Cmd => {
   game.players.set(id, gamePlayer);
 
   return [
-    cmd.sendMsg(id, msg.startData(game, gamePlayer, body)),
-    cmd.sendMsgTo(gamePlayerIds(game), msg.playerEnter(gamePlayer)),
+    cmd.sendMsg(id, msg.startData(game, gamePlayer)),
+    cmd.sendMsgTo(gamePlayerIds(game), msg.playerEnter(gamePlayer, body)),
   ];
 };
 
