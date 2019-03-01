@@ -5,7 +5,7 @@ interface Props {
   state: State;
 }
 
-export class FireButton extends React.Component<Props, any> {
+export class FireButton extends React.Component<Props, {}> {
   public render() {
     return (
       <div

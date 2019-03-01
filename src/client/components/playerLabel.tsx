@@ -1,10 +1,11 @@
 import * as React from 'react';
+import * as THREE from 'three';
 import { unnormalizeMouse } from '../utils';
 
 interface Props {
   name: string;
   position: number[];
-  camera: any;
+  camera: THREE.PerspectiveCamera;
   health: number;
 }
 

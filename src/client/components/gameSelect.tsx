@@ -8,7 +8,7 @@ interface Props {
   executeCmd: ExecuteCmd;
 }
 
-export class GameSelect extends React.Component<Props, any> {
+export class GameSelect extends React.Component<Props, {}> {
   public render() {
     const { gameList } = this.props;
 

@@ -7,39 +7,12 @@ const dist = path.join(__dirname, 'dist');
 
 fs.copySync(path.join(__dirname, 'src/client/index.html'), path.join(dist, 'index.html'));
 
-fs.copySync(
-  path.join(__dirname, 'node_modules/@2gis/jakarta/dist/jakarta.js'),
-  path.join(dist, 'jakarta.js'),
-);
-
-fs.copySync(
-  path.join(__dirname, 'node_modules/@2gis/jakarta/dist/jakarta.js.map'),
-  path.join(dist, 'jakarta.js.map'),
-);
-
-fs.copySync(
-  path.join(__dirname, 'node_modules/three/build/three.min.js'),
-  path.join(dist, 'three.min.js'),
-);
+fs.copySync(path.join(__dirname, 'assets'), path.join(dist, 'assets'));
 
 fs.copySync(
   path.join(__dirname, 'node_modules/@2gis/jakarta/dist/assets/fonts'),
   path.join(dist, 'assets/fonts'),
 );
-
-fs.copySync(path.join(__dirname, 'assets'), path.join(dist, 'assets'));
-
-const production = process.env.NODE_ENV === 'production';
-
-const tsCheckerPlugin = new ForkTsCheckerWebpackPlugin({
-  watch: ['./src'],
-});
-
-const plugins = [tsCheckerPlugin];
-
-if (production) {
-  plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true }));
-}
 
 module.exports = {
   module: {
@@ -61,11 +34,6 @@ module.exports = {
     extensions: ['.ts', '.js', '.tsx'],
   },
 
-  // TODO: Почему-то при минимизации карта запускается с огромными иконками POI
-  optimization: {
-    minimize: false,
-  },
-
   entry: './src/client/index.tsx',
 
   output: {
@@ -74,7 +42,11 @@ module.exports = {
     publicPath: '/',
   },
 
-  plugins,
+  plugins: [
+    new ForkTsCheckerWebpackPlugin({
+      watch: ['./src'],
+    }),
+  ],
 
   devtool: 'source-map',
 

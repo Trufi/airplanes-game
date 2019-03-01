@@ -38,7 +38,7 @@ interface Props {
   state: State;
 }
 
-export class DeathNotes extends React.Component<Props, any> {
+export class DeathNotes extends React.Component<Props, {}> {
   public render() {
     const { state } = this.props;
 

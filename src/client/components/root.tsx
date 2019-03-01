@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as THREE from 'three';
 import { State } from '../types';
 import { PlayerLabel } from './playerLabel';
 import { Debug } from './debug';
@@ -18,7 +19,7 @@ interface Props {
 const projScreenMatrix = new THREE.Matrix4();
 const position = new THREE.Vector3();
 
-export class Root extends React.Component<Props, any> {
+export class Root extends React.Component<Props, {}> {
   public render() {
     const {
       state: { game, name, gameList },

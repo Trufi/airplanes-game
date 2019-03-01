@@ -22,7 +22,7 @@ export const createUser = (connection: Connection, user: UserCreation) => {
   `;
 
   return new Promise((resolve, reject) => {
-    connection.query(sql, (err: any, result: any) => {
+    connection.query(sql, (err, result) => {
       if (err) {
         return reject(err);
       }
@@ -40,7 +40,7 @@ export const selectUser = (connection: Connection, userId: User['id']) => {
   `;
 
   return new Promise((resolve, reject) => {
-    connection.query(sql, (err: any, result: any) => {
+    connection.query(sql, (err, result) => {
       if (err) {
         return reject(err);
       }

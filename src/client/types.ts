@@ -1,4 +1,5 @@
 import * as J from '@2gis/jakarta';
+import * as THREE from 'three';
 
 export interface BodyStep {
   time: number;
@@ -21,11 +22,8 @@ export interface WeaponState {
 }
 
 export interface PhysicBodyState {
-  /**
-   * THREE.Mesh
-   */
-  mesh: any;
-  shotMesh: any;
+  mesh: THREE.Object3D;
+  shotMesh: THREE.Object3D;
   position: number[];
   velocity: number;
   rotation: number[];
@@ -36,12 +34,8 @@ export interface PhysicBodyState {
 export interface NonPhysicBodyState {
   id: number;
   playerId: number;
-
-  /**
-   * THREE.Mesh
-   */
-  mesh: any;
-  shotMesh: any;
+  mesh: THREE.Object3D;
+  shotMesh: THREE.Object3D;
   position: number[];
   rotation: number[];
   velocityDirection: number[];
@@ -103,15 +97,8 @@ export interface State {
   game?: GameState;
   players: Map<number, PlayerState>;
 
-  /**
-   * THREE.Scene
-   */
-  scene: any;
-
-  /**
-   * THREE.Camera
-   */
-  camera: any;
+  scene: THREE.Scene;
+  camera: THREE.PerspectiveCamera;
 
   map: J.Map;
   bodies: Map<number, NonPhysicBodyState>;

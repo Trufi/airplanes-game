@@ -1,11 +1,12 @@
 import * as React from 'react';
+import * as THREE from 'three';
 import { unnormalizeMouse } from '../utils';
 import * as config from '../../config';
 
 interface Props {
   position: number[];
   rotation: number[];
-  camera: any;
+  camera: THREE.PerspectiveCamera;
 }
 
 const v = new THREE.Vector3();

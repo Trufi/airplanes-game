@@ -1,4 +1,5 @@
-import 'three/examples/js/loaders/GLTFLoader';
+import * as THREE from 'three';
+import GLTFLoader from 'three-gltf-loader';
 import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import { config as mapConfig, MapOptions, Map, Skybox } from '@2gis/jakarta';
@@ -35,8 +36,8 @@ export const createMesh = () => {
   mesh.rotateY(Math.PI / 2);
   mesh.updateMatrix(); // todo убрать
   mesh.updateWorldMatrix(true, true);
-  const loader = new THREE.GLTFLoader();
-  loader.load('./assets/a5.glb', (gltf: any) => {
+  const loader = new GLTFLoader();
+  loader.load('./assets/a5.glb', (gltf) => {
     const scene = gltf.scene;
     scene.rotateX(Math.PI / 2);
     scene.rotateY(Math.PI / 2);
@@ -49,7 +50,7 @@ export const createMesh = () => {
 };
 
 export const updateMesh = (body: {
-  mesh: any;
+  mesh: THREE.Object3D;
   position: number[];
   rotation: number[];
   velocityDirection: number[];
@@ -102,7 +103,11 @@ export const createShotMesh = () => {
   return mesh;
 };
 
-export const updateShot = (time: number, shotMesh: any, weapon: { lastShotTime: number }) => {
+export const updateShot = (
+  time: number,
+  shotMesh: THREE.Object3D,
+  weapon: { lastShotTime: number },
+) => {
   if (time - weapon.lastShotTime < config.weapon.delay) {
     shotMesh.visible = true;
   } else {
@@ -120,6 +125,7 @@ export const createMap = () => {
     zoom: 17,
     sendAnalytics: false,
     fontUrl: './assets/fonts',
+    floorsEnabled: false,
   };
   const map = ((window as any).map = new Map(container, options));
   mapConfig.render.alwaysRerender = true;

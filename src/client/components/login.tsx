@@ -7,7 +7,7 @@ interface Props {
   executeCmd: ExecuteCmd;
 }
 
-export class Login extends React.Component<Props, any> {
+export class Login extends React.Component<Props, {}> {
   private inputRef: React.RefObject<HTMLInputElement>;
 
   constructor(props: Props) {
