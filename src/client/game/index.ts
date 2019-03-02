@@ -32,6 +32,9 @@ export const start = (appState: AppState, startMsg: ServerMsg['startData']) => {
   });
 
   const onResize = () => {
+    document.body.style.width = `${window.innerWidth}px`;
+    document.body.style.height = `${window.innerHeight}px`;
+
     state.map.invalidateSize();
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
