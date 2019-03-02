@@ -10,27 +10,7 @@ import { State, BodyState } from '../types';
 
 mapConfig.camera.fov = 45;
 mapConfig.camera.far = 2 ** 32; // Можно оставить 600000, но тогда надо поправить frustum
-
-export const createTestMesh = () => {
-  const k = 300;
-
-  const cubeGeometry1 = new THREE.BoxGeometry(5 * k, k, k);
-  const cubeGeometry2 = new THREE.BoxGeometry(k, 0.5 * k, 4 * k);
-
-  const cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff55ff });
-  const cube1 = new THREE.Mesh(cubeGeometry1, cubeMaterial);
-  const cube2 = new THREE.Mesh(cubeGeometry2, cubeMaterial);
-
-  cube1.rotation.set(Math.PI / 2, Math.PI / 2, 0);
-  cube2.rotation.set(Math.PI / 2, Math.PI / 2, 0);
-  cube2.position.y = k;
-
-  const cube = new THREE.Object3D();
-  cube.add(cube1);
-  cube.add(cube2);
-
-  return cube;
-};
+export let mixer: any = 0
 
 export const createMesh = () => {
   const mesh = new THREE.Object3D();
@@ -43,6 +23,12 @@ export const createMesh = () => {
     const k = config.airplane.scale; // размер соответсвует примерно 50 метрам!
     scene.scale.set(k, k, k);
     mesh.add(scene);
+
+    mixer = new THREE.AnimationMixer(mesh);
+    const clips = gltf.animations;
+    clips.forEach((clip) => {
+      mixer.clipAction(clip).play();
+    })
   });
 
   return mesh;
@@ -62,6 +48,8 @@ export const updateMesh = (body: {
   q1.fromArray(body.rotation);
   mesh.setRotationFromQuaternion(q1);
   mesh.rotateY(-velocityDirection[2] * 1500);
+
+  mixer.update(1);
 
   mesh.updateMatrix();
   mesh.updateWorldMatrix(true, true);

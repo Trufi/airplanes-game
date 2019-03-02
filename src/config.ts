@@ -24,7 +24,7 @@ export const weapon = {
 
 export const airplane = {
   maxHealth: 100,
-  scale: 1000,
+  scale: 12,
   velocity: 30,
 };
 
