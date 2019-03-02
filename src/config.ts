@@ -9,7 +9,7 @@ export const weapon = {
   /**
    * Угл попадания в градусах
    */
-  hitAngle: 2,
+  hitAngle: 3,
   cooldown: 200,
   animationDuration: 40,
   distance: 1000000,

@@ -38,6 +38,9 @@ const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, timeDiff: n
   const startStep = body.steps[startIndex];
   const endStep = body.steps[startIndex + 1];
 
+  // Чистим массив от старых steps
+  body.steps.splice(0, startIndex);
+
   const t = (interpolationTime - startStep.time) / (endStep.time - startStep.time);
 
   vec3.lerp(body.position, startStep.position, endStep.position, t);

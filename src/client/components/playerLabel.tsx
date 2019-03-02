@@ -7,12 +7,18 @@ interface Props {
   position: number[];
   camera: THREE.PerspectiveCamera;
   health: number;
+  frustum: THREE.Frustum;
 }
 
 const v = new THREE.Vector3();
 
-export const PlayerLabel = ({ name, position, camera, health }: Props) => {
+export const PlayerLabel = ({ name, position, camera, health, frustum }: Props) => {
   v.fromArray(position);
+
+  if (!frustum.containsPoint(v)) {
+    return null;
+  }
+
   v.project(camera);
 
   unnormalizeMouse(v, [window.innerWidth, window.innerHeight]);

@@ -10,6 +10,7 @@ import { Stick } from './stick';
 import { ExecuteCmd, executeCmd } from '../commands/execute';
 import { cmd } from '../commands';
 import { msg } from '../messages';
+import { Arrow } from './arrow';
 
 interface Props {
   appState: AppState;
@@ -17,7 +18,6 @@ interface Props {
 }
 
 const projScreenMatrix = new THREE.Matrix4();
-const position = new THREE.Vector3();
 
 export class Game extends React.Component<Props, {}> {
   public render() {
@@ -32,6 +32,7 @@ export class Game extends React.Component<Props, {}> {
     const { players, bodies, camera, body } = game;
 
     const playerNames: JSX.Element[] = [];
+    const playerArrows: JSX.Element[] = [];
 
     const frustum = new THREE.Frustum();
     projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
@@ -45,11 +46,9 @@ export class Game extends React.Component<Props, {}> {
         return;
       }
 
-      position.fromArray(targetBody.position);
-
-      if (!frustum.containsPoint(position)) {
-        return;
-      }
+      playerArrows.push(
+        <Arrow key={id} position={targetBody.position} camera={camera} frustum={frustum} />,
+      );
 
       playerNames.push(
         <PlayerLabel
@@ -58,6 +57,7 @@ export class Game extends React.Component<Props, {}> {
           position={targetBody.position}
           camera={camera}
           health={targetBody.health}
+          frustum={frustum}
         />,
       );
     });
@@ -66,18 +66,16 @@ export class Game extends React.Component<Props, {}> {
       <div>
         <DeathNotes state={game} />
         {playerNames}
-        {body && this.renderLiveComponents(game)}
-        {!body && this.renderDeath()}
+        {playerArrows}
+        {body ? this.renderLiveComponents(game) : this.renderDeath()}
       </div>
     );
   }
 
   private renderLiveComponents(game: State) {
-    const { camera, body } = game;
-
     return (
       <>
-        {body && <Aim position={body.position} rotation={body.rotation} camera={camera} />}
+        <Aim />
         <FireButton state={game} />
         <Stick state={game} />
         <Debug

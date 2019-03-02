@@ -9,7 +9,7 @@ import { degToRad } from '../utils';
 import { State, BodyState } from '../types';
 
 mapConfig.camera.fov = 45;
-mapConfig.camera.far = 600000;
+mapConfig.camera.far = 2 ** 32; // Можно оставить 600000, но тогда надо поправить frustum
 
 export const createTestMesh = () => {
   const k = 300;
@@ -58,12 +58,8 @@ export const updateMesh = (body: {
   mesh.position.set(position[0], position[1], position[2]);
 
   // rotate mesh
-  const q1 = new THREE.Quaternion(
-    body.rotation[0],
-    body.rotation[1],
-    body.rotation[2],
-    body.rotation[3],
-  );
+  const q1 = new THREE.Quaternion();
+  q1.fromArray(body.rotation);
   mesh.setRotationFromQuaternion(q1);
   mesh.rotateY(-velocityDirection[2] * 1500);
 
@@ -194,7 +190,7 @@ export const updateCameraAndMap = (state: State, targetBody: BodyState) => {
 
   vec3.add(mapBodyPosition, position, origin);
 
-  quat.rotateX(cameraRotation, rotation, degToRad(100));
+  quat.rotateX(cameraRotation, rotation, degToRad(90));
   map.setQuat(cameraRotation);
 
   map.setCenter(projectMapToGeo(mapBodyPosition), { animate: false });
