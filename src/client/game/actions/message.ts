@@ -27,18 +27,22 @@ const updateBodyData = (state: State, data: TickBodyData) => {
   const { id, position, rotation, updateTime, velocityDirection, health, weapon } = data;
 
   const bodyState = state.bodies.get(id);
-  if (!bodyState || bodyState.type === 'physic') {
+  if (!bodyState) {
     return;
   }
 
-  bodyState.steps.push({
-    position,
-    rotation,
-    velocityDirection,
-    health,
-    weapon,
-    time: updateTime,
-  });
+  if (bodyState.type === 'physic') {
+    bodyState.health = data.health;
+  } else {
+    bodyState.steps.push({
+      position,
+      rotation,
+      velocityDirection,
+      health,
+      weapon,
+      time: updateTime,
+    });
+  }
 };
 
 const playerEnter = (state: State, msg: ServerMsg['playerEnter']) => {
