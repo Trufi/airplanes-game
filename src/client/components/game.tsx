@@ -38,12 +38,14 @@ export class Game extends React.Component<Props, {}> {
     frustum.setFromMatrix(projScreenMatrix);
 
     players.forEach(({ id, name, bodyId }) => {
-      const body = bodies.get(bodyId);
-      if (!body) {
+      const targetBody = bodies.get(bodyId);
+
+      // Не показываем подпись на своим самолетом
+      if (!targetBody || targetBody === body) {
         return;
       }
 
-      position.fromArray(body.position);
+      position.fromArray(targetBody.position);
 
       if (!frustum.containsPoint(position)) {
         return;
@@ -53,9 +55,9 @@ export class Game extends React.Component<Props, {}> {
         <PlayerLabel
           key={id}
           name={name}
-          position={body.position}
+          position={targetBody.position}
           camera={camera}
-          health={body.health}
+          health={targetBody.health}
         />,
       );
     });
