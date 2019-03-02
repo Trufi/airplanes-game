@@ -5,7 +5,7 @@ import * as config from '../../../config';
 import { PhysicBodyState, State } from '../../types';
 
 const rotationAcceleration = { x: 0.000001, z: 0.000002 };
-const maxRotationSpeed = { x: 0.001, z: 0.0005 };
+const maxRotationSpeed = { x: 0.0007, z: 0.0007 };
 const restoreYSpeed = 0.0006;
 
 const xAxis = [1, 0, 0];
@@ -142,7 +142,7 @@ const restoreRoll = (dt: number, body: PhysicBodyState) => {
   // в этом случае горизонт остается перпендикулярным
 
   // Восстанавливаем горизонт, только если прицел смотрит почти на него
-  if (Math.abs(angleY) < degToRad(25)) {
+  if (Math.abs(angleY) < degToRad(40)) {
     const angleX = localAxisToXYAngle(xAxis, body.rotation);
     const rotationYAngle = restoreYSpeed * dt;
 

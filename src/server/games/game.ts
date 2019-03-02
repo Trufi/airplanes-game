@@ -76,9 +76,9 @@ const createAirplane = (id: number, playerId: number): Airplane => {
     updateTime: 0,
     position: [0, 0, 50000],
     rotation: [0, 0, 0, 1],
-    velocity: 10,
+    velocity: config.airplane.velocity,
     velocityDirection: [0, 0, 0],
-    health: 100,
+    health: config.airplane.maxHealth,
     weapon: {
       lastShotTime: 0,
     },

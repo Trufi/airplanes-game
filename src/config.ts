@@ -18,13 +18,14 @@ export const weapon = {
     color: 0xeeee33,
     opacity: 0.5,
     width: 2,
-    offset: { x: 2000, y: 4000, z: 0 }
-  }
+    offset: { x: 2000, y: 4000, z: 0 },
+  },
 };
 
 export const airplane = {
   maxHealth: 100,
   scale: 1000,
+  velocity: 30,
 };
 
 export const origin = [82.920412, 55.030111];
