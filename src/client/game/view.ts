@@ -36,7 +36,7 @@ export const createMesh = () => {
   mesh.updateMatrix(); // todo убрать
   mesh.updateWorldMatrix(true, true);
   const loader = new GLTFLoader();
-    loader.load('./assets/planeUV.glb', (gltf) => {
+  loader.load('./assets/planeUV.glb', (gltf) => {
     const scene = gltf.scene;
     scene.rotateX(Math.PI / 2);
     const k = config.airplane.scale; // размер соответсвует примерно 50 метрам!
@@ -102,8 +102,8 @@ export const createShotMesh = () => {
 };
 
 export const createBulletMesh = (offsetXDirection: number) => {
-  const material = new THREE.LineBasicMaterial({ 
-    color: config.weapon.bullet.color, 
+  const material = new THREE.LineBasicMaterial({
+    color: config.weapon.bullet.color,
     linewidth: config.weapon.bullet.width,
     opacity: config.weapon.bullet.opacity,
   });
@@ -118,7 +118,7 @@ export const createBulletMesh = (offsetXDirection: number) => {
   mesh.position.setY(config.weapon.bullet.offset.y);
   mesh.visible = false;
   return mesh;
-}
+};
 
 export const updateShot = (
   time: number,
@@ -164,7 +164,7 @@ export const createMap = () => {
     const skybox = new Skybox(skyImage);
     skybox.addTo(map);
   };
-  skyImage.src = './assets/skybox1.jpg';
+  skyImage.src = './assets/skybox3.jpg';
 
   return map;
 };
