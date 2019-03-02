@@ -1,10 +1,10 @@
 import { Connection } from 'mysql';
-import { User, UserCreation } from '../types';
+import { Achievement, User } from '../types';
 
-export const createUser = (connection: Connection, user: UserCreation) => {
+export const getAchievements = (connection: Connection) => {
   const sql = `
-    INSERT INTO users (name, password, kills, points, deaths)
-    VALUES ('${user.name}', '${user.password}', 0, 0, 0)
+    SELECT id, name, description, machine_name
+    FROM achievements
   `;
 
   return new Promise((resolve, reject) => {
@@ -17,12 +17,14 @@ export const createUser = (connection: Connection, user: UserCreation) => {
   });
 };
 
-export const selectUser = (connection: Connection, userId: User['id']) => {
+export const setAchievements = (
+  connection: Connection,
+  userId: User['id'],
+  achievementId: Achievement['id'],
+) => {
   const sql = `
-    SELECT id, name, kills, points, deaths
-    FROM users
-    WHERE users.id = ${userId}
-    LIMIT 1
+    INSERT INTO achievements_has_users (achievements_id,users_id)
+    VALUES(${achievementId},${userId})
   `;
 
   return new Promise((resolve, reject) => {

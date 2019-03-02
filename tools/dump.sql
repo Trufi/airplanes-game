@@ -27,9 +27,9 @@ CREATE TABLE IF NOT EXISTS `airplanes`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
   `password` VARCHAR(255) NULL,
-  `kills` INT NULL,
-  `points` INT NULL,
-  `deaths` INT NULL,
+  `kills` INT 0,
+  `points` INT 0,
+  `deaths` INT 0,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -42,7 +42,8 @@ DROP TABLE IF EXISTS `airplanes`.`achievements` ;
 CREATE TABLE IF NOT EXISTS `airplanes`.`achievements` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
-  `description` LONGTEXT NULL,
+  `description` LONGTEXT NULL DEFAULT NULL,
+  `machine_name` VARCHAR(255) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
