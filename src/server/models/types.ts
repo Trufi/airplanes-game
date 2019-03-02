@@ -9,7 +9,7 @@ export interface User {
   password: string;
   sessionId: string;
   kills?: number;
-  death?: number;
+  deaths?: number;
   points?: number;
 }
 
