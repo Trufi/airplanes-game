@@ -10,10 +10,10 @@ import { State, BodyState } from '../types';
 
 mapConfig.camera.fov = 45;
 mapConfig.camera.far = 2 ** 32; // Можно оставить 600000, но тогда надо поправить frustum
-export let mixer: any = 0
 
 export const createMesh = () => {
   const mesh = new THREE.Object3D();
+  const mixer = new THREE.AnimationMixer(mesh);
   mesh.updateMatrix(); // todo убрать
   mesh.updateWorldMatrix(true, true);
   const loader = new GLTFLoader();
@@ -24,23 +24,23 @@ export const createMesh = () => {
     scene.scale.set(k, k, k);
     mesh.add(scene);
 
-    mixer = new THREE.AnimationMixer(mesh);
     const clips = gltf.animations;
     clips.forEach((clip) => {
       mixer.clipAction(clip).play();
     })
   });
 
-  return mesh;
+  return { mesh, mixer };
 };
 
 export const updateMesh = (body: {
+  animation: THREE.AnimationMixer;
   mesh: THREE.Object3D;
   position: number[];
   rotation: number[];
   velocityDirection: number[];
 }) => {
-  const { mesh, position, velocityDirection } = body;
+  const { animation, mesh, position, velocityDirection } = body;
   mesh.position.set(position[0], position[1], position[2]);
 
   // rotate mesh
@@ -49,8 +49,7 @@ export const updateMesh = (body: {
   mesh.setRotationFromQuaternion(q1);
   mesh.rotateY(-velocityDirection[2] * 1500);
 
-  mixer.update(1);
-
+  animation.update(1);
   mesh.updateMatrix();
   mesh.updateWorldMatrix(true, true);
 };

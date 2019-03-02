@@ -36,6 +36,7 @@ export interface PhysicBodyState {
   velocityDirection: number[];
   health: number;
   weapon: WeaponState;
+  animation: THREE.AnimationMixer;
 }
 
 export interface NonPhysicBodyState {
@@ -55,6 +56,7 @@ export interface NonPhysicBodyState {
     right: THREE.Object3D;
   };
   steps: BodyStep[];
+  animation: THREE.AnimationMixer;
 }
 
 export type BodyState = PhysicBodyState | NonPhysicBodyState;
