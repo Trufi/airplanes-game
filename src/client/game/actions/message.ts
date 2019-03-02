@@ -46,6 +46,11 @@ const updateBodyData = (state: State, data: TickBodyData) => {
 };
 
 const playerEnter = (state: State, msg: ServerMsg['playerEnter']) => {
+  // Себя не добавляем
+  if (state.player.id === msg.player.id) {
+    return;
+  }
+
   const body = createNonPhysicBody(msg.body);
   addBody(state, body);
 
