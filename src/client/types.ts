@@ -1,5 +1,6 @@
 import * as J from '@2gis/jakarta';
 import * as THREE from 'three';
+// import { ThreadName } from '@2gis/jakarta/dist/es6/utils/thread/types';
 
 export interface BodyStep {
   time: number;
@@ -19,6 +20,8 @@ export interface Hit {
 export interface WeaponState {
   lastShotTime: number;
   hits: Hit[];
+  left: THREE.Object3D;
+  right: THREE.Object3D;
 }
 
 export interface PhysicBodyState {
@@ -48,6 +51,8 @@ export interface NonPhysicBodyState {
   health: number;
   weapon: {
     lastShotTime: number;
+    left: THREE.Object3D;
+    right: THREE.Object3D;
   };
   steps: BodyStep[];
 }

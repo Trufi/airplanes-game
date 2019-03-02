@@ -103,15 +103,46 @@ export const createShotMesh = () => {
   return mesh;
 };
 
+export const createBulletMesh = (offsetX: number) => {
+  const material = new THREE.LineBasicMaterial({ 
+    color: config.weapon.bullet.color, 
+    linewidth: config.weapon.bullet.width,
+    opacity: config.weapon.bullet.opacity,
+  });
+  const geometry = new THREE.Geometry();
+  geometry.vertices.push(
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(0, config.weapon.distance, 0),
+  );
+  const mesh = new THREE.Line(geometry, material);
+  mesh.position.x = config.weapon.bullet.offset.x * offsetX;
+  mesh.position.z = config.weapon.bullet.offset.z;
+  mesh.position.y = config.weapon.bullet.offset.y;
+  mesh.visible = false;
+  return mesh;
+}
+
 export const updateShot = (
   time: number,
   shotMesh: THREE.Object3D,
   weapon: { lastShotTime: number },
 ) => {
-  if (time - weapon.lastShotTime < config.weapon.delay) {
+  if (time - weapon.lastShotTime < config.weapon.cooldown) {
     shotMesh.visible = true;
   } else {
     shotMesh.visible = false;
+  }
+};
+
+export const updateBullet = (
+  time: number,
+  mesh: THREE.Object3D,
+  weapon: { lastShotTime: number },
+) => {
+  if (time - weapon.lastShotTime < config.weapon.animationDuration) {
+    mesh.visible = true;
+  } else {
+    mesh.visible = false;
   }
 };
 

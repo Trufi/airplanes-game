@@ -160,7 +160,7 @@ const fire = (state: State) => {
     bodies,
   } = state;
 
-  if (state.time - weapon.lastShotTime < config.weapon.delay) {
+  if (state.time - weapon.lastShotTime < config.weapon.cooldown) {
     return;
   }
 

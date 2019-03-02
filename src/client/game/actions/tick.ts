@@ -1,7 +1,7 @@
 import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import { State, NonPhysicBodyState, BodyStep, PhysicBodyState } from '../../types';
-import { updateMesh, updateShot, updateCameraAndMap } from '../view';
+import { updateMesh, updateBullet, updateCameraAndMap } from '../view';
 import { lerp } from '../../../utils';
 import * as config from '../../../config';
 
@@ -47,7 +47,8 @@ const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, timeDiff: n
   body.health = endStep.health;
 
   updateMesh(body);
-  updateShot(interpolationTime, body.shotMesh, body.weapon);
+  updateBullet(interpolationTime, body.weapon.left, body.weapon);
+  updateBullet(interpolationTime, body.weapon.right, body.weapon);
 };
 
 /**
@@ -87,7 +88,8 @@ const updatePhysicBody = (state: State, body: PhysicBodyState) => {
   body.position[2] = Math.max(body.position[2] + velocityVector[2] * dt, minimalHeight);
 
   updateMesh(body);
-  updateShot(state.time, body.shotMesh, body.weapon);
+  updateBullet(state.time, body.weapon.left, body.weapon);
+  updateBullet(state.time, body.weapon.right, body.weapon);
 };
 
 const hideOldDeathNotes = (state: State) => {
