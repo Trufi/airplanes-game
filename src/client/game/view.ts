@@ -9,6 +9,7 @@ import { degToRad } from '../utils';
 import { State, BodyState } from '../types';
 
 mapConfig.camera.fov = 45;
+mapConfig.camera.far = 600000;
 
 export const createTestMesh = () => {
   const k = 300;
