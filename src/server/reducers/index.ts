@@ -126,7 +126,23 @@ export const playerConnectionMessage = (
       return updatePlayerChanges(state, clientMsg, connection.id);
     case 'ping':
       return pingMessage(clientMsg, connection);
+    case 'restart':
+      return restartMessage(state, connection.id);
   }
+};
+
+const restartMessage = (state: State, connectionId: number): Cmd => {
+  const connection = state.connections.map.get(connectionId);
+  if (!connection || connection.status !== 'player') {
+    return;
+  }
+
+  const playerGame = state.games.map.get(connection.gameId);
+  if (!playerGame) {
+    return;
+  }
+
+  return game.playerRestart(playerGame, connectionId);
 };
 
 export const pingMessage = (clientMsg: ClientMsg['ping'], connection: Connection): Cmd => {

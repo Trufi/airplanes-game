@@ -14,6 +14,10 @@ const yAxis = [0, 1, 0];
 export const processPressedkeys = (dt: number, state: State) => {
   const { pressedKeys, stick, body } = state;
 
+  if (!body) {
+    return;
+  }
+
   let yawPressed = false;
   let pitchPressed = false;
   let rollPressed = false;
@@ -155,10 +159,13 @@ const bodyForward = [0, 0, 0];
 const toTarget = [0, 0, 0];
 
 const fire = (state: State) => {
-  const {
-    body: { weapon, rotation, position },
-    bodies,
-  } = state;
+  const { body, bodies } = state;
+
+  if (!body) {
+    return;
+  }
+
+  const { weapon, rotation, position } = body;
 
   if (state.time - weapon.lastShotTime < config.weapon.cooldown) {
     return;

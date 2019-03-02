@@ -60,6 +60,12 @@ const playerEnter = (player: GamePlayer, body: Airplane) => ({
   body: getTickBodyData(body),
 });
 
+const playerNewBody = (player: GamePlayer, body: Airplane) => ({
+  type: 'playerNewBody' as 'playerNewBody',
+  playerId: player.id,
+  body: getTickBodyData(body),
+});
+
 const playerLeave = (playerId: number) => ({
   type: 'playerLeave' as 'playerLeave',
   playerId,
@@ -94,6 +100,7 @@ export const msg = {
   gameJoinFail,
   startData,
   playerEnter,
+  playerNewBody,
   playerLeave,
   playerDeath,
   tickData,

@@ -96,8 +96,9 @@ export interface State {
 
   /**
    * Тело текущего игрока
+   * Если его нет, значит оно мертво
    */
-  body: PhysicBodyState;
+  body?: PhysicBodyState;
 
   /**
    * Начало системы отсчета.

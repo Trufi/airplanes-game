@@ -6,7 +6,7 @@ import { config as mapConfig, MapOptions, Map, Skybox } from '@2gis/jakarta';
 import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import * as config from '../../config';
 import { degToRad } from '../utils';
-import { State } from '../types';
+import { State, BodyState } from '../types';
 
 mapConfig.camera.fov = 45;
 
@@ -188,13 +188,10 @@ const cameraRotation = [0, 0, 0, 1];
 const mapBodyPosition = [0, 0, 0];
 const eye = [0, 0, 0];
 
-export const updateCameraAndMap = (state: State) => {
-  const {
-    map,
-    body: { rotation, position },
-    origin,
-    camera,
-  } = state;
+export const updateCameraAndMap = (state: State, targetBody: BodyState) => {
+  const { map, origin, camera } = state;
+
+  const { rotation, position } = targetBody;
 
   vec3.add(mapBodyPosition, position, origin);
 

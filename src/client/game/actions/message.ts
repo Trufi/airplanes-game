@@ -2,7 +2,7 @@ import { State, ServerTimeState } from '../../types';
 import { AnyServerMsg, ServerMsg, TickBodyData } from '../../../server/messages';
 import { median, time } from '../../utils';
 import { Cmd } from '../../commands';
-import { createPlayer, createNonPhysicBody, addBody } from '../common';
+import { createPlayer, createNonPhysicBody, addBody, createPhysicBody } from '../common';
 
 export const message = (state: State, msg: AnyServerMsg): Cmd => {
   switch (msg.type) {
@@ -14,6 +14,8 @@ export const message = (state: State, msg: AnyServerMsg): Cmd => {
       return removePlayer(state, msg);
     case 'playerDeath':
       return playerDeath(state, msg);
+    case 'playerNewBody':
+      return playerNewBody(state, msg);
     case 'pong':
       return updatePingAndServerTime(state.serverTime, msg);
   }
@@ -77,26 +79,44 @@ const removeBody = (state: State, bodyId: number) => {
     state.bodies.delete(bodyId);
     state.scene.remove(body.mesh);
   }
+  if (state.body === body) {
+    delete state.body;
+  }
 };
 
 const playerDeath = (state: State, msg: ServerMsg['playerDeath']) => {
   const { playerId, causePlayerId } = msg;
 
-  if (playerId === state.player.id) {
-    state.player.live = false;
-  } else {
-    // Добавляем сообщение о смерти
-    state.deathNotes.push({
-      time: state.time,
-      causePlayerId,
-      deadPlayerId: playerId,
-    });
-
-    const player = state.players.get(playerId);
-    if (player) {
-      removeBody(state, player.bodyId);
-    }
+  const player = state.players.get(playerId);
+  if (player) {
+    player.live = false;
+    removeBody(state, player.bodyId);
   }
+
+  // Добавляем сообщение о смерти
+  state.deathNotes.push({
+    time: state.time,
+    causePlayerId,
+    deadPlayerId: playerId,
+  });
+};
+
+const playerNewBody = (state: State, msg: ServerMsg['playerNewBody']) => {
+  if (msg.playerId === state.player.id) {
+    const body = createPhysicBody(msg.body);
+    addBody(state, body);
+    state.body = body;
+  } else {
+    const body = createNonPhysicBody(msg.body);
+    addBody(state, body);
+  }
+
+  const player = state.players.get(msg.playerId);
+  if (!player) {
+    return;
+  }
+
+  player.bodyId = msg.body.id;
 };
 
 const updatePingAndServerTime = (timeState: ServerTimeState, msg: ServerMsg['pong']) => {

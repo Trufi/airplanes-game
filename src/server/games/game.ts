@@ -111,6 +111,23 @@ export const joinPlayer = (game: GameState, id: number, name: string): Cmd => {
   ];
 };
 
+export const playerRestart = (game: GameState, id: number): Cmd => {
+  const player = game.players.get(id);
+
+  if (!player || player.live) {
+    return;
+  }
+
+  const body = createAirplane(game.bodies.nextId, id);
+  game.bodies.nextId++;
+  game.bodies.map.set(body.id, body);
+
+  player.bodyId = body.id;
+  player.live = true;
+
+  return cmd.sendMsgTo(gamePlayerIds(game), msg.playerNewBody(player, body));
+};
+
 export const kickPlayer = (game: GameState, id: number): Cmd => {
   game.players.delete(id);
   const body = findMap(game.bodies.map, (body) => body.playerId === id);

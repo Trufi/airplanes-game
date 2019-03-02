@@ -11,7 +11,9 @@ export const tick = (state: State, time: number) => {
 
   state.bodies.forEach((body) => updateBody(state, body));
 
-  updateCameraAndMap(state);
+  if (state.body) {
+    updateCameraAndMap(state, state.body);
+  }
 
   hideOldDeathNotes(state);
 };

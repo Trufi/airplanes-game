@@ -57,6 +57,10 @@ export const start = (appState: AppState, startMsg: ServerMsg['startData']) => {
   requestAnimationFrame(loop);
 
   setInterval(() => {
+    if (!state.body) {
+      return;
+    }
+
     sendMessage(msg.changes(state.body, time() - state.serverTime.diff));
 
     // Сбрасываем попадания после отправки на сервер

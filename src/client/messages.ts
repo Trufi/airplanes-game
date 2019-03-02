@@ -28,6 +28,10 @@ const changes = (body: PhysicBodyState, time: number) => {
   };
 };
 
+const restart = () => ({
+  type: 'restart' as 'restart',
+});
+
 const ping = (time: number) => ({
   type: 'ping' as 'ping',
   time,
@@ -37,6 +41,7 @@ export const msg = {
   login,
   joinGame,
   changes,
+  restart,
   ping,
 };
 
