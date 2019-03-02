@@ -1,5 +1,4 @@
 import '@2gis/gl-matrix';
-
 import * as express from 'express';
 import * as path from 'path';
 import * as ws from 'ws';
@@ -17,8 +16,6 @@ const port = 3002;
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, '../../dist')));
-
 const server = app.listen(port, () => console.log(`Server listen on ${port} port`));
 
 const wsServer = new ws.Server({
@@ -30,6 +27,8 @@ createGame(state, time());
 
 applyMiddlewares(app);
 applyRouter(app, state);
+
+app.use(express.static(path.join(__dirname, '../../dist')));
 
 const gameStep = 50;
 
