@@ -22,7 +22,7 @@ export class Debug extends React.Component<Props, State> {
 
   public render() {
     const { style, state: gameState } = this.props;
-    const { players, playerId, name, bodies, serverTime } = gameState;
+    const { players, player, bodies, serverTime } = gameState;
 
     if (!this.state.show) {
       return (
@@ -37,7 +37,7 @@ export class Debug extends React.Component<Props, State> {
         <button onClick={this.toggle}>Debug</button>
         <div style={{ marginBottom: '15px', fontWeight: 700 }}>
           <div>
-            You ID: {playerId} NAME: {name}
+            You ID: {player.id} NAME: {player.name}
           </div>
         </div>
         <div>Ping: {serverTime.ping}</div>

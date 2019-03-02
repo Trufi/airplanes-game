@@ -57,15 +57,10 @@ export const start = (appState: AppState, startMsg: ServerMsg['startData']) => {
   requestAnimationFrame(loop);
 
   setInterval(() => {
-    const body = state.bodies.get(state.bodyId);
-    if (!body || body.type !== 'physic') {
-      return;
-    }
-
-    sendMessage(msg.changes(body, time() - state.serverTime.diff));
+    sendMessage(msg.changes(state.body, time() - state.serverTime.diff));
 
     // Сбрасываем попадания после отправки на сервер
-    body.weapon.hits = [];
+    state.body.weapon.hits = [];
   }, 50);
 
   setInterval(() => {

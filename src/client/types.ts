@@ -52,6 +52,8 @@ export interface NonPhysicBodyState {
   steps: BodyStep[];
 }
 
+export type BodyState = PhysicBodyState | NonPhysicBodyState;
+
 export interface PlayerState {
   id: number;
   bodyId: number;
@@ -82,10 +84,15 @@ export interface State {
   time: number;
   prevTime: number;
 
-  playerId: number;
-  bodyId: number;
-  name: string;
-  live: boolean;
+  /**
+   * Текущий игрок
+   */
+  player: PlayerState;
+
+  /**
+   * Тело текущего игрока
+   */
+  body: PhysicBodyState;
 
   /**
    * Начало системы отсчета.

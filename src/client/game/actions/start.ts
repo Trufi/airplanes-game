@@ -1,29 +1,48 @@
 import { projectGeoToMap } from '@2gis/jakarta/dist/es6/utils/geo';
-import { State } from '../../types';
+import { State, PlayerState, PhysicBodyState } from '../../types';
 import { createScene, createCamera, createMap } from './../view';
 import * as config from '../../../config';
 import { ServerMsg } from '../../../server/messages';
-import { createPlayer, createPhysicBody, createNonPhysicBody } from '../common';
+import { createPlayer, createPhysicBody, createNonPhysicBody, addBody } from '../common';
 
 export const start = (time: number, data: ServerMsg['startData']): State => {
-  const { playerId, players, bodies } = data;
   const mapOrigin = projectGeoToMap(config.origin);
 
-  const player = players.find((p) => p.id === playerId);
-  if (!player) {
-    throw new Error(`Player with id ${playerId} not found in players`);
+  const players: State['players'] = new Map();
+  let currentPlayer: PlayerState | undefined;
+  let currentBody: PhysicBodyState | undefined;
+
+  data.players.forEach((playerData) => {
+    const player = createPlayer(playerData);
+    players.set(player.id, player);
+
+    if (data.playerId === player.id) {
+      currentPlayer = player;
+    }
+  });
+
+  const bodies: State['bodies'] = new Map();
+  data.bodies.forEach((bodyData) => {
+    if (currentPlayer && bodyData.id === currentPlayer.bodyId) {
+      const body = createPhysicBody(bodyData);
+      currentBody = body;
+      bodies.set(body.id, body);
+    } else {
+      const body = createNonPhysicBody(bodyData);
+      bodies.set(body.id, body);
+    }
+  });
+
+  if (!currentPlayer || !currentBody) {
+    throw new Error('Current player and body not found');
   }
 
-  const { bodyId, live } = player;
-
   const state: State = {
-    playerId,
-    bodyId,
     time,
     prevTime: time,
-    name,
+    player: currentPlayer,
+    body: currentBody,
     origin: [mapOrigin[0], mapOrigin[1], 0],
-    live,
     players: new Map(),
     bodies: new Map(),
     scene: createScene(),
@@ -41,24 +60,7 @@ export const start = (time: number, data: ServerMsg['startData']): State => {
     stick: { x: 0, y: 0 },
   };
 
-  bodies.forEach((body) => {
-    // Физику эмулируем только для себя
-    if (body.id === bodyId) {
-      createPhysicBody(state, body);
-    } else {
-      createNonPhysicBody(state, body);
-    }
-  });
-
-  players.forEach((p) => {
-    createPlayer(state, p);
-
-    // Добавляем к телам игроков их id, вдруг пригодится
-    const body = state.bodies.get(p.bodyId);
-    if (body) {
-      body.playerId = p.id;
-    }
-  });
+  bodies.forEach((body) => addBody(state, body));
 
   return state;
 };

@@ -40,7 +40,7 @@ export class Root extends React.Component<Props, {}> {
   }
 
   private renderGame(game: State) {
-    const { players, bodies, camera } = game;
+    const { players, bodies, camera, body } = game;
 
     const playerNames: JSX.Element[] = [];
 
@@ -70,11 +70,6 @@ export class Root extends React.Component<Props, {}> {
         />,
       );
     });
-
-    const body = game.bodies.get(game.bodyId);
-    if (!body || body.type !== 'physic') {
-      return;
-    }
 
     return (
       <div>

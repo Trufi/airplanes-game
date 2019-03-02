@@ -2,7 +2,7 @@ import { State, ServerTimeState } from '../../types';
 import { AnyServerMsg, ServerMsg, TickBodyData } from '../../../server/messages';
 import { median, time } from '../../utils';
 import { Cmd } from '../../commands';
-import { createPlayer, createPhysicBody } from '../common';
+import { createPlayer, createNonPhysicBody, addBody } from '../common';
 
 export const message = (state: State, msg: AnyServerMsg): Cmd => {
   switch (msg.type) {
@@ -46,12 +46,12 @@ const updateBodyData = (state: State, data: TickBodyData) => {
 };
 
 const playerEnter = (state: State, msg: ServerMsg['playerEnter']) => {
-  createPlayer(state, msg.player);
-  createPhysicBody(state, msg.body);
+  const body = createNonPhysicBody(msg.body);
+  addBody(state, body);
 
-  // Добавляем к телам игроков их id, вдруг пригодится
-  const player = state.players.get(msg.player.id);
-  const body = state.bodies.get(msg.player.bodyId);
+  const player = createPlayer(msg.player);
+  state.players.set(player.id, player);
+
   if (player && body) {
     body.playerId = player.id;
   }
@@ -77,8 +77,8 @@ const removeBody = (state: State, bodyId: number) => {
 const playerDeath = (state: State, msg: ServerMsg['playerDeath']) => {
   const { playerId, causePlayerId } = msg;
 
-  if (playerId === state.playerId) {
-    state.live = false;
+  if (playerId === state.player.id) {
+    state.player.live = false;
   } else {
     // Добавляем сообщение о смерти
     state.deathNotes.push({

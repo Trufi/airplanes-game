@@ -158,14 +158,12 @@ const mapBodyPosition = [0, 0, 0];
 const eye = [0, 0, 0];
 
 export const updateCameraAndMap = (state: State) => {
-  const { map, bodies, bodyId, origin, camera } = state;
-
-  const body = bodies.get(bodyId);
-  if (!body) {
-    return;
-  }
-
-  const { rotation, position } = body;
+  const {
+    map,
+    body: { rotation, position },
+    origin,
+    camera,
+  } = state;
 
   vec3.add(mapBodyPosition, position, origin);
 

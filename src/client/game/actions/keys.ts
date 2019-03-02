@@ -12,12 +12,7 @@ const xAxis = [1, 0, 0];
 const yAxis = [0, 1, 0];
 
 export const processPressedkeys = (dt: number, state: State) => {
-  const { pressedKeys, stick, bodyId, bodies } = state;
-
-  const body = bodies.get(bodyId);
-  if (!body || body.type !== 'physic') {
-    return;
-  }
+  const { pressedKeys, stick, body } = state;
 
   let yawPressed = false;
   let pitchPressed = false;
@@ -160,13 +155,10 @@ const bodyForward = [0, 0, 0];
 const toTarget = [0, 0, 0];
 
 const fire = (state: State) => {
-  const { bodies, bodyId } = state;
-
-  const body = bodies.get(bodyId);
-  if (!body || body.type !== 'physic') {
-    return;
-  }
-  const { weapon, rotation, position } = body;
+  const {
+    body: { weapon, rotation, position },
+    bodies,
+  } = state;
 
   if (state.time - weapon.lastShotTime < config.weapon.delay) {
     return;

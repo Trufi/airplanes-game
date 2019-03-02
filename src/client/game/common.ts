@@ -1,20 +1,23 @@
-import { State, PlayerState, NonPhysicBodyState, PhysicBodyState } from '../types';
+import { State, PlayerState, NonPhysicBodyState, PhysicBodyState, BodyState } from '../types';
 import { PlayerData, TickBodyData } from '../../server/messages';
 import { createMesh, createShotMesh } from './view';
 
-export const createPlayer = (state: State, { id, name, bodyId, live }: PlayerData) => {
-  const player: PlayerState = {
-    id,
-    bodyId,
-    name,
-    live,
-  };
-  state.players.set(player.id, player);
+export const createPlayer = ({ id, name, bodyId, live }: PlayerData): PlayerState => ({
+  id,
+  bodyId,
+  name,
+  live,
+});
+
+export const addBody = (state: State, body: BodyState) => {
+  state.bodies.set(body.id, body);
+  body.mesh.add(body.shotMesh);
+  state.scene.add(body.mesh);
 };
 
-export const createPhysicBody = (state: State, data: TickBodyData) => {
+export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
   const { id, position, velocityDirection, velocity, rotation, health } = data;
-  const body: PhysicBodyState = {
+  return {
     type: 'physic',
     id,
     position,
@@ -29,15 +32,11 @@ export const createPhysicBody = (state: State, data: TickBodyData) => {
       hits: [],
     },
   };
-  state.bodies.set(id, body);
-
-  body.mesh.add(body.shotMesh);
-  state.scene.add(body.mesh);
 };
 
-export const createNonPhysicBody = (state: State, data: TickBodyData) => {
+export const createNonPhysicBody = (data: TickBodyData): NonPhysicBodyState => {
   const { id, position, velocityDirection, velocity, rotation, health } = data;
-  const body: NonPhysicBodyState = {
+  return {
     type: 'nonPhysic',
     id,
     position,
@@ -52,8 +51,4 @@ export const createNonPhysicBody = (state: State, data: TickBodyData) => {
       lastShotTime: 0,
     },
   };
-  state.bodies.set(id, body);
-
-  body.mesh.add(body.shotMesh);
-  state.scene.add(body.mesh);
 };
