@@ -10,20 +10,21 @@ export const weapon = {
    * Угл попадания в градусах
    */
   hitAngle: 2,
-  cooldown: 100,
+  cooldown: 200,
   animationDuration: 40,
   distance: 1000000,
   offset: 5000,
   bullet: {
-    color: 0xff3333,
+    color: 0xeeee33,
     opacity: 0.5,
     width: 2,
-    offset: { x: 3000, y: 0, z: -500 }
+    offset: { x: 2000, y: 4000, z: 0 }
   }
 };
 
 export const airplane = {
   maxHealth: 100,
+  scale: 1000,
 };
 
 export const origin = [82.920412, 55.030111];

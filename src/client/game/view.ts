@@ -33,15 +33,13 @@ export const createTestMesh = () => {
 
 export const createMesh = () => {
   const mesh = new THREE.Object3D();
-  mesh.rotateY(Math.PI / 2);
   mesh.updateMatrix(); // todo убрать
   mesh.updateWorldMatrix(true, true);
   const loader = new GLTFLoader();
-  loader.load('./assets/a5.glb', (gltf) => {
+    loader.load('./assets/planeUV.glb', (gltf) => {
     const scene = gltf.scene;
     scene.rotateX(Math.PI / 2);
-    scene.rotateY(Math.PI / 2);
-    const k = 300; // размер соответсвует примерно 50 метрам!
+    const k = config.airplane.scale; // размер соответсвует примерно 50 метрам!
     scene.scale.set(k, k, k);
     mesh.add(scene);
   });
@@ -103,7 +101,7 @@ export const createShotMesh = () => {
   return mesh;
 };
 
-export const createBulletMesh = (offsetX: number) => {
+export const createBulletMesh = (offsetXDirection: number) => {
   const material = new THREE.LineBasicMaterial({ 
     color: config.weapon.bullet.color, 
     linewidth: config.weapon.bullet.width,
@@ -115,9 +113,9 @@ export const createBulletMesh = (offsetX: number) => {
     new THREE.Vector3(0, config.weapon.distance, 0),
   );
   const mesh = new THREE.Line(geometry, material);
-  mesh.position.x = config.weapon.bullet.offset.x * offsetX;
-  mesh.position.z = config.weapon.bullet.offset.z;
-  mesh.position.y = config.weapon.bullet.offset.y;
+  mesh.position.setX(config.weapon.bullet.offset.x * offsetXDirection);
+  mesh.position.setZ(config.weapon.bullet.offset.z);
+  mesh.position.setY(config.weapon.bullet.offset.y);
   mesh.visible = false;
   return mesh;
 }
