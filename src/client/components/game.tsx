@@ -12,6 +12,7 @@ import { cmd } from '../commands';
 import { msg } from '../messages';
 import { Arrow } from './arrow';
 import { GameStats } from './gameStats';
+import { Health } from './health';
 
 interface Props {
   appState: AppState;
@@ -88,6 +89,7 @@ export class Game extends React.Component<Props, {}> {
           }}
           state={game}
         />
+        {game.body && <Health body={game.body} />}
       </>
     );
   }
