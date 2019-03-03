@@ -66,6 +66,8 @@ export interface PlayerState {
   bodyId: number;
   name: string;
   live: boolean;
+  kills: number;
+  deaths: number;
 }
 
 export interface ServerTimeState {

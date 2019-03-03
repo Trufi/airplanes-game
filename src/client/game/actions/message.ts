@@ -87,9 +87,15 @@ const removeBody = (state: State, bodyId: number) => {
 const playerDeath = (state: State, msg: ServerMsg['playerDeath']) => {
   const { playerId, causePlayerId } = msg;
 
+  const causePlayer = state.players.get(causePlayerId);
+  if (causePlayer) {
+    causePlayer.kills++;
+  }
+
   const player = state.players.get(playerId);
   if (player) {
     player.live = false;
+    player.deaths++;
     removeBody(state, player.bodyId);
   }
 

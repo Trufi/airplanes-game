@@ -49,16 +49,20 @@ export class Debug extends React.Component<Props, State> {
               <td>ID</td>
               <td>Name</td>
               <td>Health</td>
+              <td>Kills</td>
+              <td>Deaths</td>
             </tr>
           </thead>
           <tbody>
-            {mapMap(players, ({ id, name, bodyId }, i) => {
+            {mapMap(players, ({ id, name, bodyId, kills, deaths }, i) => {
               const body = bodies.get(bodyId);
               return (
                 <tr key={i}>
                   <td>{id}</td>
                   <td>{name}</td>
                   <td>{body ? body.health : ''}</td>
+                  <td>{kills}</td>
+                  <td>{deaths}</td>
                 </tr>
               );
             })}

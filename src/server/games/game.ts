@@ -36,6 +36,8 @@ export interface GamePlayer {
   name: string;
   bodyId: number;
   live: boolean;
+  kills: number;
+  deaths: number;
 }
 
 export interface GameState {
@@ -102,6 +104,8 @@ export const joinPlayer = (game: GameState, id: number, name: string): Cmd => {
     bodyId: body.id,
     name,
     live: true,
+    kills: 0,
+    deaths: 0,
   };
   game.players.set(id, gamePlayer);
 
@@ -154,10 +158,16 @@ const updatePlayerBodyState = (
 const playerDeath = (game: GameState, body: Airplane, causePlayerId: number): Cmd => {
   const cmds: Cmd = [];
 
+  const causePlayer = game.players.get(causePlayerId);
+  if (causePlayer) {
+    causePlayer.kills++;
+  }
+
   // Превращаем живого игрока в мертвого
   const player = game.players.get(body.playerId);
   if (player) {
     player.live = false;
+    player.deaths++;
 
     // TODO: если игра на вылет, то тут нужно как-то прокинуть команду
     // чтобы игрока выкинуло из игры

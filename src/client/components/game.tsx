@@ -11,6 +11,7 @@ import { ExecuteCmd, executeCmd } from '../commands/execute';
 import { cmd } from '../commands';
 import { msg } from '../messages';
 import { Arrow } from './arrow';
+import { GameStats } from './gameStats';
 
 interface Props {
   appState: AppState;
@@ -67,7 +68,7 @@ export class Game extends React.Component<Props, {}> {
         <DeathNotes state={game} />
         {playerNames}
         {playerArrows}
-        {body ? this.renderLiveComponents(game) : this.renderDeath()}
+        {body ? this.renderLiveComponents(game) : this.renderDeath(game)}
       </div>
     );
   }
@@ -91,7 +92,7 @@ export class Game extends React.Component<Props, {}> {
     );
   }
 
-  private renderDeath() {
+  private renderDeath(game: State) {
     return (
       <div
         style={{
@@ -103,6 +104,7 @@ export class Game extends React.Component<Props, {}> {
       >
         <div>ПОТРАЧЕНО!</div>
         <button onClick={this.restart}>Restart</button>
+        <GameStats players={game.players} />
       </div>
     );
   }
