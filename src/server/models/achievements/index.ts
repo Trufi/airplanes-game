@@ -1,7 +1,7 @@
-import { Connection } from 'mysql';
+import { Client } from 'pg';
 import { Achievement, User } from '../types';
 
-export const getAchievements = (connection: Connection) => {
+export const getAchievements = (connection: Client) => {
   const sql = `
     SELECT id, name, description
     FROM achievements
@@ -17,7 +17,7 @@ export const getAchievements = (connection: Connection) => {
   });
 };
 
-export const getOwnAchievements = (connection: Connection, userId: User['id']) => {
+export const getOwnAchievements = (connection: Client, userId: User['id']) => {
   const sql = `
     SELECT ach.id, ach.name, ach.description
     FROM achievements AS ach
@@ -37,7 +37,7 @@ export const getOwnAchievements = (connection: Connection, userId: User['id']) =
 };
 
 export const setAchievements = (
-  connection: Connection,
+  connection: Client,
   userId: User['id'],
   achievementId: Achievement['id'],
 ) => {

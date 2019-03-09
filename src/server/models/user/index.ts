@@ -1,9 +1,9 @@
-import { Connection } from 'mysql';
+import { Client } from 'pg';
 import { User, UserCreation } from '../types';
 import { createHmac } from 'crypto';
 
 const parseResult = (result: any) => {
-  const string = JSON.stringify(result);
+  const string = JSON.stringify(result.rows);
   return JSON.parse(string);
 };
 
@@ -11,7 +11,7 @@ export const createToken = (p: { name: string, password: string }) => {
   return createHmac('sha256', `${p.name}${p.password}`).digest('hex');
 };
 
-export const createUser = (connection: Connection, user: UserCreation) => {
+export const createUser = (connection: Client, user: UserCreation) => {
   const sql = `
     INSERT INTO users (name, password, kills, points, deaths)
     VALUES
@@ -35,7 +35,7 @@ export const createUser = (connection: Connection, user: UserCreation) => {
 };
 
 export const updateUserStats = (
-  connection: Connection,
+  connection: Client,
   userId: User['id'],
   stats: { kills: User['kills'], deaths: User['deaths'], points: User['points'] },
 ) => {
@@ -58,7 +58,7 @@ export const updateUserStats = (
   });
 };
 
-export const selectUser = (connection: Connection, userId: User['id']) => {
+export const selectUser = (connection: Client, userId: User['id']) => {
   const sql = `
     SELECT id, name, kills, points, deaths
     FROM users
@@ -76,7 +76,7 @@ export const selectUser = (connection: Connection, userId: User['id']) => {
   });
 };
 
-export const selectUserByName = (connection: Connection, name: User['name']) => {
+export const selectUserByName = (connection: Client, name: User['name']) => {
   const sql = `
     SELECT id, name, kills, points, deaths
     FROM users
@@ -93,7 +93,7 @@ export const selectUserByName = (connection: Connection, name: User['name']) => 
   });
 };
 
-export const selectUserByToken = (connection: Connection, password: User['password']) => {
+export const selectUserByToken = (connection: Client, password: User['password']) => {
   const sql = `
     SELECT u.id, u.name, u.kills, u.points, u.deaths
     FROM users as u
@@ -103,6 +103,7 @@ export const selectUserByToken = (connection: Connection, password: User['passwo
 
   return new Promise((resolve, reject) => {
     connection.query(sql, (err, result) => {
+      console.log('selectUserByToken', result);
       if (err) {
         return reject(err);
       }

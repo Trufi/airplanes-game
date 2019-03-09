@@ -1,11 +1,15 @@
-import { createConnection } from 'mysql';
+import { Client } from 'pg';
 import { config } from '../../dbConfig';
 
 export const connectionDB = () => {
-  return createConnection({
-    host: config.db.host,
+  const clientPgsql = new Client({
     user: config.db.user,
-    password: config.db.password,
+    host: config.db.host,
     database: config.db.database,
+    password: config.db.password,
+    port: config.db.port,
   });
+  clientPgsql.connect();
+
+  return clientPgsql;
 };
