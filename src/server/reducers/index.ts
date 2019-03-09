@@ -13,6 +13,8 @@ import { msg } from '../messages';
 import { time } from '../utils';
 import * as game from '../games/game';
 import { mapMap } from '../../utils';
+import { selectUserByToken } from '../models/user';
+import { connectionDB } from '../models/database';
 
 export const createNewConnection = (state: ConnectionsState, socket: ws): number => {
   const connection: InitialConnection = {
@@ -45,11 +47,13 @@ export const message = (state: State, connectionId: number, msg: AnyClientMsg): 
 };
 
 export const initialConnectionMessage = (
-  _: State,
+  state: State,
   connection: InitialConnection,
   clientMsg: AnyClientMsg,
 ): Cmd => {
   switch (clientMsg.type) {
+    case 'auth':
+      return authMessage(state, connection, clientMsg);
     case 'ping':
       return pingMessage(clientMsg, connection);
   }
@@ -66,6 +70,30 @@ const userConnectionMessage = (
     case 'ping':
       return pingMessage(clientMsg, connection);
   }
+};
+
+const authMessage = (
+  state: State,
+  connection: InitialConnection,
+  clientMsg: ClientMsg['auth'],
+): Cmd => {
+  const { token } = clientMsg;
+
+  const dbConnect = connectionDB();
+  selectUserByToken(dbConnect, token).then((result: any) => {
+    dbConnect.end();
+
+    if (!result) {
+      return;
+    }
+
+    state.connections.map.set(connection.id, {
+      status: 'user',
+      id: connection.id,
+      socket: connection.socket,
+      name: result.name,
+    });
+  });
 };
 
 const playerStart = (

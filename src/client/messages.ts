@@ -31,10 +31,16 @@ const ping = (time: number) => ({
   time,
 });
 
+const auth = (token: string) => ({
+  type: 'auth' as 'auth',
+  token,
+});
+
 export const msg = {
   joinGame,
   changes,
   restart,
+  auth,
   ping,
 };
 

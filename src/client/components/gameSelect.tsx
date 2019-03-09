@@ -6,7 +6,7 @@ import { AppState } from '../types';
 import { getList } from '../services/game';
 
 interface State {
-  gamelist: Array<{ id: number, players: number }>;
+  gamelist: Array<{ id: number; players: number }>;
 }
 
 interface Props {
@@ -15,17 +15,19 @@ interface Props {
 }
 
 export class GameSelect extends React.Component<Props, State> {
-  private state: State = {
-    gamelist: [],
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      gamelist: [],
+    };
+  }
 
   public componentDidMount() {
     const { appState } = this.props;
     if (appState.token) {
-      getList({ token: appState.token })
-        .then((data) => {
-          this.setState({ gamelist: data.games });
-        });
+      getList({ token: appState.token }).then((data) => {
+        this.setState({ gamelist: data.games });
+      });
     }
   }
 
@@ -42,25 +44,26 @@ export class GameSelect extends React.Component<Props, State> {
           margin: '0 0 0 -150px',
         }}
       >
-        {gamelist && gamelist.map(({ id }, i) => (
-          <div
-            key={i}
-            style={{
-              width: '300px',
-              height: '70px',
-              lineHeight: '70px',
-              textAlign: 'center',
-              verticalAlign: 'middle',
-              border: '1px solid',
-              margin: '0 0 10px 0',
-              background: '#fff',
-              cursor: 'pointer',
-            }}
-            onClick={() => this.gameSelected(id)}
-          >
-            Game {id}
-          </div>
-        ))}
+        {gamelist &&
+          gamelist.map(({ id }, i) => (
+            <div
+              key={i}
+              style={{
+                width: '300px',
+                height: '70px',
+                lineHeight: '70px',
+                textAlign: 'center',
+                verticalAlign: 'middle',
+                border: '1px solid',
+                margin: '0 0 10px 0',
+                background: '#fff',
+                cursor: 'pointer',
+              }}
+              onClick={() => this.gameSelected(id)}
+            >
+              Game {id}
+            </div>
+          ))}
       </div>
     );
   }
