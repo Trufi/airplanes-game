@@ -132,7 +132,6 @@ export class Stick extends React.Component<Props, ComponentState> {
           borderRadius: `${radius}px`,
         }}
       >
-        {this.props.state.stick.x} - {this.props.state.stick.y}
         <div
           style={{
             position: 'absolute',
