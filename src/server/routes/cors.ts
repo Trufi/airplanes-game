@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 
 const allowedOrigins = [
+  'http://10.54.6.172:3000',
+  'http://10.54.6.172:3001',
+  'http://10.54.6.172:3002',
   'http://localhost:3001',
   'http://localhost:3000',
   'http://localhost:3002',

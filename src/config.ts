@@ -12,7 +12,7 @@ export const weapon = {
   hitAngle: 3,
   cooldown: 200,
   animationDuration: 40,
-  distance: 1000000,
+  distance: 100000,
   offset: 5000,
   bullet: {
     color: 0xeeee33,
