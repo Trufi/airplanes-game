@@ -115,6 +115,13 @@ export const tick = (game: GameState, time: number): Cmd => {
   game.prevTime = game.time;
   game.time = time;
 
+  // Если от пользователей довно не приходило сообщений, то убиваем их
+  game.bodies.map.forEach((body) => {
+    if (body.updateTime !== 0 && game.time - body.updateTime > 10000) {
+      playerDeath(game, body, 0);
+    }
+  });
+
   return cmd.sendMsgTo(gamePlayerIds(game), msg.tickData(game));
 };
 

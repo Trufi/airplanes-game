@@ -38,9 +38,14 @@ const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, timeDiff: n
   const startStep = body.steps[startIndex];
   const endStep = body.steps[startIndex + 1];
 
+  // С сервера всегда приходит последний стейт, поэтому они могут повторятся,
+  // если у другого игрока зависла игра
+  if (startStep.time - endStep.time === 0) {
+    return;
+  }
+
   // Чистим массив от старых steps
   body.steps.splice(0, startIndex);
-
   const t = (interpolationTime - startStep.time) / (endStep.time - startStep.time);
 
   vec3.lerp(body.position, startStep.position, endStep.position, t);

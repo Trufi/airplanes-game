@@ -1,6 +1,7 @@
 import { AnyServerMsg } from '../server/messages';
 import { AnyClientMsg, msg } from './messages';
 import { executeCmd } from './commands/execute';
+import { cmd } from './commands';
 import { appState } from './appState';
 import { message } from './reducers';
 
@@ -20,6 +21,8 @@ ws.addEventListener('open', () => {
 
 ws.addEventListener('close', () => {
   console.log('Disconnected');
+  appState.connected = false;
+  executeCmd(cmd.renderUI());
 });
 
 ws.addEventListener('message', (ev) => {

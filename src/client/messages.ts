@@ -11,7 +11,6 @@ const joinGame = (gameId: number) => ({
   gameId,
 });
 
-// добавить передачу хитов на сервер
 const changes = (body: PhysicBodyState, time: number) => {
   const { position, velocity, rotation, velocityDirection, weapon } = body;
 

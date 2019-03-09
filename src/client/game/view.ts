@@ -128,7 +128,14 @@ export const updateBullet = (
   }
 };
 
+let jakartaMap: Map | undefined;
+
 export const createMap = () => {
+  // Если карта уже была создана, то второй раз не создаем
+  if (jakartaMap) {
+    return jakartaMap;
+  }
+
   const container = document.getElementById('map') as HTMLElement;
   const options: Partial<MapOptions> = {
     tileSearchNumber: 3,
@@ -138,7 +145,7 @@ export const createMap = () => {
     fontUrl: './assets/fonts',
     floorsEnabled: false,
   };
-  const map = ((window as any).map = new Map(container, options));
+  const map = (jakartaMap = (window as any).map = new Map(container, options));
   mapConfig.render.alwaysRerender = true;
 
   const skyImage = document.createElement('img');

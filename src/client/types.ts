@@ -128,6 +128,7 @@ export interface State {
 // TODO: Разбить на несколько
 export interface AppState {
   type: 'login' | 'gameSelect' | 'game';
+  connected: boolean;
   id?: number; // connection id на сервере
   name?: string;
   game?: State;

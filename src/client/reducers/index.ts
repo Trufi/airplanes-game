@@ -21,7 +21,7 @@ export const message = (appState: AppState, msg: AnyServerMsg): Cmd => {
 
 const startData = (appState: AppState, msg: ServerMsg['startData']): Cmd => {
   appState.type = 'game';
-  start(appState, msg);
+  start(msg);
 };
 
 const saveConnectId = (appState: AppState, msg: ServerMsg['connect']): Cmd => {
