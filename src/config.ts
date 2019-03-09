@@ -3,7 +3,6 @@ export const services = {
 };
 
 export const weapon = {
-  // @TODO сделать рандомный дамаг. А конфигом указать диапазон.
   damage: 5,
 
   /**

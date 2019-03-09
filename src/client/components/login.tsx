@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { cmd } from '../commands';
-import { msg } from '../messages';
 import { ExecuteCmd } from '../commands/execute';
-import { userAuth, userLogin, userRegister } from '../services/users';
-import { get } from 'js-cookie';
+import { userAuth, userLogin, userRegister } from '../services/user';
+import { get, set } from 'js-cookie';
 import { AppState } from '../types';
 
 interface Props {
@@ -77,13 +76,15 @@ export class Login extends React.Component<Props, {}> {
       // Поэтому при ошибке на регистрацию, пытаемся логиниить.
       userRegister({ password, username })
         .then((data: any) => {
-          this.props.executeCmd(cmd.sendMsg(msg.login(data.user.name, data.user.token)));
+          set('token', data.user.token);
+          localStorage.setItem('name', data.user.name);
         })
         .catch((err: any) => {
           console.log('register err', err);
           userLogin({ password, username })
             .then((data: any) => {
-              this.props.executeCmd(cmd.sendMsg(msg.login(data.user.name, data.user.token)));
+              set('token', data.user.token);
+              localStorage.setItem('name', data.user.name);
             })
             .catch((err: any) => {
               console.log('login err', err);

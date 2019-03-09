@@ -3,20 +3,34 @@ import { cmd } from '../commands';
 import { msg } from '../messages';
 import { ExecuteCmd } from '../commands/execute';
 import { AppState } from '../types';
+import { getList } from '../services/game';
+
+interface State {
+  gamelist: Array<{ id: number, players: number }>;
+}
 
 interface Props {
   appState: AppState;
   executeCmd: ExecuteCmd;
 }
 
-export class GameSelect extends React.Component<Props, {}> {
+export class GameSelect extends React.Component<Props, State> {
+  private state: State = {
+    gamelist: [],
+  };
 
   public componentDidMount() {
-
+    const { appState } = this.props;
+    if (appState.token) {
+      getList({ token: appState.token })
+        .then((data) => {
+          this.setState({ gamelist: data.games });
+        });
+    }
   }
 
   public render() {
-    const { gameList } = this.props.appState;
+    const { gamelist } = this.state;
 
     return (
       <div
@@ -28,7 +42,7 @@ export class GameSelect extends React.Component<Props, {}> {
           margin: '0 0 0 -150px',
         }}
       >
-        {gameList && gameList.map(({ id }, i) => (
+        {gamelist && gamelist.map(({ id }, i) => (
           <div
             key={i}
             style={{
@@ -40,6 +54,7 @@ export class GameSelect extends React.Component<Props, {}> {
               border: '1px solid',
               margin: '0 0 10px 0',
               background: '#fff',
+              cursor: 'pointer',
             }}
             onClick={() => this.gameSelected(id)}
           >

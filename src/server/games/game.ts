@@ -220,7 +220,9 @@ const applyHit = (game: GameState, hit: Hit, causePlayerId: number): Cmd => {
     return;
   }
 
-  body.health = clamp(body.health - config.weapon.damage, 0, config.airplane.maxHealth);
+  // рандомный дамаг
+  const damage = Math.floor(Math.random() * config.weapon.damage) + 1;
+  body.health = clamp(body.health - damage, 0, config.airplane.maxHealth);
 
   if (body.health <= 0) {
     return playerDeath(game, body, causePlayerId);

@@ -15,7 +15,7 @@ interface Props {
 export class Root extends React.Component<Props, {}> {
   public render() {
     const {
-      appState: { type, game, name, gameList, connected },
+      appState: { type, game, name, connected },
       executeCmd,
     } = this.props;
 

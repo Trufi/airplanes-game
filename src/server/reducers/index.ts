@@ -12,7 +12,7 @@ import { Cmd, cmd, union } from '../commands';
 import { msg } from '../messages';
 import { time } from '../utils';
 import * as game from '../games/game';
-import { mapMap, findMap } from '../../utils';
+import { mapMap } from '../../utils';
 
 export const createNewConnection = (state: ConnectionsState, socket: ws): number => {
   const connection: InitialConnection = {
@@ -45,14 +45,11 @@ export const message = (state: State, connectionId: number, msg: AnyClientMsg): 
 };
 
 export const initialConnectionMessage = (
-  state: State,
+  _: State,
   connection: InitialConnection,
   clientMsg: AnyClientMsg,
 ): Cmd => {
   switch (clientMsg.type) {
-    case 'login':
-      console.log('clientMsg');
-      return login(state, connection, clientMsg.name, clientMsg.token);
     case 'ping':
       return pingMessage(clientMsg, connection);
   }
@@ -69,26 +66,6 @@ const userConnectionMessage = (
     case 'ping':
       return pingMessage(clientMsg, connection);
   }
-};
-
-const login = (state: State, connection: InitialConnection, name: string, token: string): Cmd => {
-  const connectionWithSameName = findMap(
-    state.connections.map,
-    (c) => (c.status === 'user' || c.status === 'player') && c.name === name,
-  );
-
-  if (connectionWithSameName || !token) {
-    return cmd.sendMsg(connection.id, msg.loginFail());
-  }
-
-  state.connections.map.set(connection.id, {
-    status: 'user',
-    id: connection.id,
-    socket: connection.socket,
-    name,
-  });
-
-  return cmd.sendMsg(connection.id, msg.loginSuccess(name, token, state.games.map));
 };
 
 const playerStart = (

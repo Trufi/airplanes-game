@@ -133,5 +133,4 @@ export interface AppState {
   name?: string;
   token?: string;
   game?: State;
-  gameList?: Array<{ id: number }>;
 }
