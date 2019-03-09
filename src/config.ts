@@ -1,7 +1,3 @@
-export const services = {
-  apiDomain: 'http://localhost:3002',
-};
-
 export const weapon = {
   damage: 5,
 
