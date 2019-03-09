@@ -82,6 +82,15 @@ export class Login extends React.Component<Props, {}> {
         .then((data: any) => {
           set('token', data.user.token);
           localStorage.setItem('name', data.user.name);
+
+          console.log('Auth Success', data.user);
+          this.props.appState.type = 'gameSelect';
+          this.props.appState.token = data.user.token;
+          this.props.appState.name = data.user.name;
+          this.props.executeCmd(cmd.renderUI());
+
+          // Посылаем также через сокеты, чтобы игровой сервер понял, что это за connection
+          this.props.executeCmd(cmd.sendMsg(msg.auth(data.user.token)));
         })
         .catch((err: any) => {
           console.log('register err', err);
@@ -89,6 +98,15 @@ export class Login extends React.Component<Props, {}> {
             .then((data: any) => {
               set('token', data.user.token);
               localStorage.setItem('name', data.user.name);
+
+              console.log('Auth Success', data.user);
+              this.props.appState.type = 'gameSelect';
+              this.props.appState.token = data.user.token;
+              this.props.appState.name = data.user.name;
+              this.props.executeCmd(cmd.renderUI());
+
+              // Посылаем также через сокеты, чтобы игровой сервер понял, что это за connection
+              this.props.executeCmd(cmd.sendMsg(msg.auth(data.user.token)));
             })
             .catch((err: any) => {
               console.log('login err', err);
