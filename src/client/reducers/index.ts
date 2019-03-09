@@ -32,5 +32,5 @@ const loginSuccess = (appState: AppState, msg: ServerMsg['loginSuccess']): Cmd =
   appState.name = msg.name;
   appState.gameList = msg.game;
   appState.type = 'gameSelect';
-  return cmd.renderUI();
+  return [cmd.renderUI(), cmd.saveNameToLocalStorage(msg.name)];
 };
