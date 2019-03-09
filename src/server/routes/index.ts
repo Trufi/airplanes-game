@@ -19,5 +19,5 @@ export function applyRouter(app: Express, state: State) {
     res.send(JSON.stringify(data, null, 2));
   });
 
-  applyApiRouter(app);
+  applyApiRouter(app, state);
 }
