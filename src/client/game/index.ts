@@ -28,7 +28,7 @@ export const start = (appState: AppState, startMsg: ServerMsg['startData']) => {
   const renderer = new THREE.WebGLRenderer({
     canvas: document.getElementById('overlay') as HTMLCanvasElement,
     alpha: true,
-    antialias: true,
+    antialias: window.devicePixelRatio >= 2,
   });
 
   const onResize = () => {
