@@ -4,7 +4,7 @@ import { degToRad, clamp, localAxisToXYAngle, projection } from '../../utils';
 import * as config from '../../../config';
 import { PhysicBodyState, State } from '../../types';
 
-const rotationAcceleration = { x: 0.000001, z: 0.000002 };
+const rotationAcceleration = { x: 0.000004, z: 0.000004 };
 const maxRotationSpeed = { x: 0.0007, z: 0.0007 };
 const restoreYSpeed = 0.0006;
 
@@ -37,11 +37,11 @@ export const processPressedkeys = (dt: number, state: State) => {
         yawPressed = true;
         break;
       case 'KeyW':
-        pitchDown(dt, body);
+        pitchDown(dt / 2, body);
         pitchPressed = true;
         break;
       case 'KeyS':
-        pitchUp(dt, body);
+        pitchUp(dt / 2, body);
         pitchPressed = true;
         break;
       case 'KeyE':
@@ -61,12 +61,12 @@ export const processPressedkeys = (dt: number, state: State) => {
   // Обрабатываем стик для мобилок
   if (stick.x !== 0) {
     yawPressed = true;
-    yawRight(dt * stick.x, body);
+    processStickX(stick, body, dt);
   }
 
   if (stick.y !== 0) {
     pitchPressed = true;
-    pitchUp(dt * stick.y, body);
+    processStickY(stick, body, dt);
   }
 
   // Обрабатываем восстановление положение
@@ -80,6 +80,42 @@ export const processPressedkeys = (dt: number, state: State) => {
 
   if (!rollPressed) {
     restoreRoll(dt, body);
+  }
+};
+
+const processStickX = (stick: State['stick'], body: PhysicBodyState, dt: number) => {
+  const targetRotSpeedX = -maxRotationSpeed.z * stick.x;
+  const currentRotSpeedX = body.velocityDirection[2];
+
+  const deltaRotSpeedX =
+    Math.sign(targetRotSpeedX - currentRotSpeedX) * rotationAcceleration.z * dt;
+
+  if (Math.abs(targetRotSpeedX - currentRotSpeedX) < Math.abs(deltaRotSpeedX)) {
+    body.velocityDirection[2] = clamp(targetRotSpeedX, -maxRotationSpeed.z, maxRotationSpeed.z);
+  } else {
+    body.velocityDirection[2] = clamp(
+      currentRotSpeedX + deltaRotSpeedX,
+      -maxRotationSpeed.z,
+      maxRotationSpeed.z,
+    );
+  }
+};
+
+const processStickY = (stick: State['stick'], body: PhysicBodyState, dt: number) => {
+  const targetRotSpeedY = maxRotationSpeed.x * stick.y;
+  const currentRotSpeedY = body.velocityDirection[0];
+
+  const deltaRotSpeedY =
+    Math.sign(targetRotSpeedY - currentRotSpeedY) * rotationAcceleration.x * dt;
+
+  if (Math.abs(targetRotSpeedY - currentRotSpeedY) < Math.abs(deltaRotSpeedY)) {
+    body.velocityDirection[0] = clamp(targetRotSpeedY, -maxRotationSpeed.x, maxRotationSpeed.x);
+  } else {
+    body.velocityDirection[0] = clamp(
+      currentRotSpeedY + deltaRotSpeedY,
+      -maxRotationSpeed.x,
+      maxRotationSpeed.x,
+    );
   }
 };
 

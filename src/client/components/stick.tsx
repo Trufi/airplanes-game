@@ -111,8 +111,9 @@ export class Stick extends React.Component<Props, ComponentState> {
       shiftY,
     });
 
-    this.props.state.stick.x = shiftX / radius;
-    this.props.state.stick.y = shiftY / radius;
+    const log = (x: number) => Math.sign(x) * x * x;
+    this.props.state.stick.x = log(shiftX / radius);
+    this.props.state.stick.y = log(shiftY / radius);
   };
 
   private renderControl(): JSX.Element {
@@ -131,6 +132,7 @@ export class Stick extends React.Component<Props, ComponentState> {
           borderRadius: `${radius}px`,
         }}
       >
+        {this.props.state.stick.x} - {this.props.state.stick.y}
         <div
           style={{
             position: 'absolute',
