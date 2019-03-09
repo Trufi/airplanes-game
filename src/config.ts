@@ -30,6 +30,11 @@ export const airplane = {
 
 export const origin = [82.920412, 55.030111];
 
+export const resurrection = {
+  radius: 1000000,
+  height: 50000,
+};
+
 export const deathNote = {
   delay: 5000,
 };

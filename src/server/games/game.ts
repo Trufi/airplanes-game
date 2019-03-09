@@ -2,7 +2,7 @@ import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
 import { Cmd, cmd, union } from '../commands';
 import { msg } from '../messages';
-import { findMap, clamp, mapMap } from '../../utils';
+import { findMap, clamp, mapMap, vec2SignedAngle } from '../../utils';
 import { ClientMsg } from '../../client/messages';
 import * as config from '../../config';
 import { Hit } from '../../client/types';
@@ -71,13 +71,37 @@ export const createGameState = (id: number, time: number): GameState => {
   };
 };
 
+const getStartPlayerPosition = (): number[] => {
+  const angle = Math.random() * Math.PI * 2;
+  return [
+    Math.cos(angle) * config.resurrection.radius,
+    Math.sin(angle) * config.resurrection.radius,
+    config.resurrection.height,
+  ];
+};
+
+const forward = [0, 1];
+const toCenter = [0, 0];
+const getStartPlayerRotation = (position: number[]): number[] => {
+  toCenter[0] = -position[0];
+  toCenter[1] = -position[1];
+
+  const angle = vec2SignedAngle(forward, toCenter);
+  const rotation = [0, 0, 0, 1];
+
+  quat.rotateZ(rotation, rotation, angle);
+  return rotation;
+};
+
 const createAirplane = (id: number, playerId: number): Airplane => {
+  const position = getStartPlayerPosition();
+
   return {
     id,
     playerId,
     updateTime: 0,
-    position: [0, 0, 50000],
-    rotation: [0, 0, 0, 1],
+    position,
+    rotation: getStartPlayerRotation(position),
     velocity: config.airplane.velocity,
     velocityDirection: [0, 0, 0],
     health: config.airplane.maxHealth,

@@ -1,3 +1,5 @@
+import * as vec2 from '@2gis/gl-matrix/vec2';
+
 export const mapMap = <K, V, R>(m: Map<K, V>, cb: (v: V, k: K) => R): R[] => {
   const res: R[] = [];
   m.forEach((v, k) => res.push(cb(v, k)));
@@ -36,3 +38,14 @@ export type ObjectElement<T> = T[keyof T];
 export type ArrayElement<ArrayType> = ArrayType extends Array<infer ElementType>
   ? ElementType
   : never;
+
+const na = [0, 0];
+const nb = [0, 0];
+export function vec2SignedAngle(a: number[], b: number[]): number {
+  const z = a[0] * b[1] - a[1] * b[0];
+  vec2.normalize(na, a);
+  vec2.normalize(nb, b);
+  const angle = Math.acos(vec2.dot(na, nb));
+
+  return z > 0 ? angle : -angle;
+}

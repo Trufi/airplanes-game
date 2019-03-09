@@ -27,7 +27,7 @@ export const createMesh = () => {
     const clips = gltf.animations;
     clips.forEach((clip) => {
       mixer.clipAction(clip).play();
-    })
+    });
   });
 
   return { mesh, mixer };
@@ -132,8 +132,6 @@ export const createMap = () => {
   const container = document.getElementById('map') as HTMLElement;
   const options: Partial<MapOptions> = {
     tileSearchNumber: 3,
-    drawDistance: 450000,
-    fogSoftness: 0.5,
     center: [82.920412, 55.030111],
     zoom: 17,
     sendAnalytics: false,
