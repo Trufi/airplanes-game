@@ -131,6 +131,7 @@ export interface AppState {
   connected: boolean;
   id?: number; // connection id на сервере
   name?: string;
+  token?: string;
   game?: State;
   gameList?: Array<{ id: number }>;
 }

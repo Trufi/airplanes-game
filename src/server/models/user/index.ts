@@ -60,7 +60,7 @@ export const updateUserStats = (
 
 export const selectUser = (connection: Client, userId: User['id']) => {
   const sql = `
-    SELECT id, name, kills, points, deaths
+    SELECT id, name, password, kills, points, deaths
     FROM users
     WHERE users.id = ${userId}
     LIMIT 1
@@ -103,7 +103,6 @@ export const selectUserByToken = (connection: Client, password: User['password']
 
   return new Promise((resolve, reject) => {
     connection.query(sql, (err, result) => {
-      console.log('selectUserByToken', result);
       if (err) {
         return reject(err);
       }

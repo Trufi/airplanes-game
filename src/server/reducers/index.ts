@@ -51,7 +51,8 @@ export const initialConnectionMessage = (
 ): Cmd => {
   switch (clientMsg.type) {
     case 'login':
-      return login(state, connection, clientMsg.name);
+      console.log('clientMsg');
+      return login(state, connection, clientMsg.name, clientMsg.token);
     case 'ping':
       return pingMessage(clientMsg, connection);
   }
@@ -70,13 +71,13 @@ const userConnectionMessage = (
   }
 };
 
-const login = (state: State, connection: InitialConnection, name: string): Cmd => {
+const login = (state: State, connection: InitialConnection, name: string, token: string): Cmd => {
   const connectionWithSameName = findMap(
     state.connections.map,
     (c) => (c.status === 'user' || c.status === 'player') && c.name === name,
   );
 
-  if (connectionWithSameName) {
+  if (connectionWithSameName || !token) {
     return cmd.sendMsg(connection.id, msg.loginFail());
   }
 
@@ -87,7 +88,7 @@ const login = (state: State, connection: InitialConnection, name: string): Cmd =
     name,
   });
 
-  return cmd.sendMsg(connection.id, msg.loginSuccess(name, state.games.map));
+  return cmd.sendMsg(connection.id, msg.loginSuccess(name, token, state.games.map));
 };
 
 const playerStart = (

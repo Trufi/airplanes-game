@@ -28,11 +28,11 @@ export class Root extends React.Component<Props, {}> {
     }
 
     if (type === 'login' && !name) {
-      return <Login executeCmd={executeCmd} />;
+      return <Login appState={appState} executeCmd={executeCmd} />;
     }
 
-    if (type === 'gameSelect' && gameList) {
-      return <GameSelect gameList={gameList} executeCmd={executeCmd} />;
+    if (type === 'gameSelect') {
+      return <GameSelect appState={appState} executeCmd={executeCmd} />;
     }
   }
 }

@@ -12,10 +12,6 @@ export const sendMessage = (msg: AnyClientMsg) => {
 };
 
 ws.addEventListener('open', () => {
-  const name = localStorage.getItem('name');
-  if (name) {
-    sendMessage(msg.login(name));
-  }
   console.log('Connected');
 });
 

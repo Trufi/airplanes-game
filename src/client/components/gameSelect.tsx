@@ -2,15 +2,21 @@ import * as React from 'react';
 import { cmd } from '../commands';
 import { msg } from '../messages';
 import { ExecuteCmd } from '../commands/execute';
+import { AppState } from '../types';
 
 interface Props {
-  gameList: Array<{ id: number }>;
+  appState: AppState;
   executeCmd: ExecuteCmd;
 }
 
 export class GameSelect extends React.Component<Props, {}> {
+
+  public componentDidMount() {
+
+  }
+
   public render() {
-    const { gameList } = this.props;
+    const { gameList } = this.props.appState;
 
     return (
       <div
@@ -22,7 +28,7 @@ export class GameSelect extends React.Component<Props, {}> {
           margin: '0 0 0 -150px',
         }}
       >
-        {gameList.map(({ id }, i) => (
+        {gameList && gameList.map(({ id }, i) => (
           <div
             key={i}
             style={{

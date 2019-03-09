@@ -1,3 +1,4 @@
+import { set } from 'js-cookie';
 import { Cmd, ExistCmd } from '.';
 import { renderUI } from '../ui';
 import { sendMessage } from '../socket';
@@ -22,6 +23,9 @@ const executeOneCmd = (cmd: ExistCmd) => {
       break;
     case 'saveNameToLocalStorage':
       localStorage.setItem('name', cmd.name);
+      break;
+    case 'saveTokenToCookie':
+      set('token', cmd.token, { expires: 7 });
       break;
     case 'renderUI':
       renderUI(appState, executeCmd);

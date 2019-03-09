@@ -6,10 +6,11 @@ const connect = (id: number) => ({
   id,
 });
 
-const loginSuccess = (name: string, games: Map<number, GameState>) => {
+const loginSuccess = (name: string, token: string, games: Map<number, GameState>) => {
   return {
     type: 'loginSuccess' as 'loginSuccess',
     name,
+    token,
     game: mapMap(games, (game) => ({
       id: game.id,
     })),

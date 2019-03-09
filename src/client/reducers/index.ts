@@ -30,7 +30,13 @@ const saveConnectId = (appState: AppState, msg: ServerMsg['connect']): Cmd => {
 
 const loginSuccess = (appState: AppState, msg: ServerMsg['loginSuccess']): Cmd => {
   appState.name = msg.name;
+  appState.token = msg.token;
   appState.gameList = msg.game;
   appState.type = 'gameSelect';
-  return [cmd.renderUI(), cmd.saveNameToLocalStorage(msg.name)];
+
+  return [
+    cmd.renderUI(),
+    cmd.saveNameToLocalStorage(msg.name),
+    cmd.saveTokenToCookie(msg.token),
+  ];
 };

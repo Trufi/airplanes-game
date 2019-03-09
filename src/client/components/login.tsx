@@ -2,19 +2,44 @@ import * as React from 'react';
 import { cmd } from '../commands';
 import { msg } from '../messages';
 import { ExecuteCmd } from '../commands/execute';
+import { userAuth, userLogin, userRegister } from '../services/users';
+import { get } from 'js-cookie';
+import { AppState } from '../types';
 
 interface Props {
+  appState: AppState;
   executeCmd: ExecuteCmd;
 }
 
 export class Login extends React.Component<Props, {}> {
-  private inputRef: React.RefObject<HTMLInputElement>;
+  private inputNameRef: React.RefObject<HTMLInputElement>;
+  private inputPassRef: React.RefObject<HTMLInputElement>;
 
   constructor(props: Props) {
     super(props);
 
-    this.inputRef = React.createRef();
+    this.inputNameRef = React.createRef();
+    this.inputPassRef = React.createRef();
   }
+
+  public componentDidMount() {
+    const token = get('token');
+    const username = localStorage.getItem('name');
+    if (token && username) {
+      userAuth({ token })
+        .then((data: any) => {
+          console.log('Auth Success', data.user);
+          this.props.appState.type = 'gameSelect';
+          this.props.appState.token = data.user.token;
+          this.props.appState.name = data.user.name;
+          this.props.executeCmd(cmd.renderUI());
+        })
+        .catch((err: any) => {
+          console.log('auth err', err);
+        });
+    }
+  }
+
   public render() {
     return (
       <div
@@ -28,22 +53,42 @@ export class Login extends React.Component<Props, {}> {
         }}
       >
         <h3>Login</h3>
-        <input ref={this.inputRef} type='text' onKeyPress={this.onKeyPress} />
+        <input ref={this.inputNameRef} type='text' onKeyPress={this.onKeyPress} />
+        <input ref={this.inputPassRef} type='text' onKeyPress={this.onKeyPress} />
         <button onClick={this.submit}>Start</button>
       </div>
     );
   }
 
   private submit = () => {
-    const input = this.inputRef.current;
-    if (!input) {
+    const usernameInput = this.inputNameRef.current;
+    const passwordInput = this.inputPassRef.current;
+    if (!usernameInput || !passwordInput) {
       return;
     }
 
-    const value = input.value;
+    const username = usernameInput.value;
+    const password = passwordInput.value;
 
-    if (value.length > 3) {
-      this.props.executeCmd(cmd.sendMsg(msg.login(value)));
+    if (username.length > 3 || password.length > 3) {
+      // @TODO КОСТЫЛЬ PIZDEC NAHOY BLYAT
+      // Если юзер вбил свой логин/пароль, мы его регаем.
+      // Если при регистрации произошла ошибка, значит юзер с таким именем уже есть.
+      // Поэтому при ошибке на регистрацию, пытаемся логиниить.
+      userRegister({ password, username })
+        .then((data: any) => {
+          this.props.executeCmd(cmd.sendMsg(msg.login(data.user.name, data.user.token)));
+        })
+        .catch((err: any) => {
+          console.log('register err', err);
+          userLogin({ password, username })
+            .then((data: any) => {
+              this.props.executeCmd(cmd.sendMsg(msg.login(data.user.name, data.user.token)));
+            })
+            .catch((err: any) => {
+              console.log('login err', err);
+            });
+        });
     }
   };
 

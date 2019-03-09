@@ -11,6 +11,11 @@ const saveNameToLocalStorage = (name: string) => ({
   name,
 });
 
+const saveTokenToCookie = (token: string) => ({
+  type: 'saveTokenToCookie' as 'saveTokenToCookie',
+  token,
+});
+
 const renderUI = () => ({
   type: 'renderUI' as 'renderUI',
 });
@@ -18,6 +23,7 @@ const renderUI = () => ({
 export const cmd = {
   sendMsg,
   saveNameToLocalStorage,
+  saveTokenToCookie,
   renderUI,
 };
 

@@ -1,11 +1,6 @@
 import { PhysicBodyState } from './types';
 import { ObjectElement } from '../utils';
 
-const login = (name: string) => ({
-  type: 'login' as 'login',
-  name,
-});
-
 const joinGame = (gameId: number) => ({
   type: 'joinGame' as 'joinGame',
   gameId,
@@ -37,7 +32,6 @@ const ping = (time: number) => ({
 });
 
 export const msg = {
-  login,
   joinGame,
   changes,
   restart,
