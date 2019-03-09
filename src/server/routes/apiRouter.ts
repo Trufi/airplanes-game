@@ -7,7 +7,14 @@ import {
 import { Router, Express } from 'express';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import { connectionDB } from '../models/database';
-import { createUser, selectUser, selectUserByToken, updateUserStats } from '../models/user';
+import {
+  createToken,
+  createUser,
+  selectUser,
+  selectUserByName,
+  selectUserByToken,
+  updateUserStats,
+} from '../models/user';
 import { getAchievements, getOwnAchievements, setAchievements } from '../models/achievements';
 
 const apiRouter = Router();
@@ -22,6 +29,7 @@ const strategy = new BearerStrategy(
     const promise = selectUserByToken(connection, token);
 
     promise.then((result: any) => {
+      console.log('result', result);
       connection.end();
       if (!result) {
         return done(null, false);
@@ -46,7 +54,6 @@ const strategy = new BearerStrategy(
   });
 
 apiRouter.post('/register', (req, res) => {
-  console.log('req', req.body);
   if (!req.body.username) {
     return res.status(422).send('Unprocessed entity');
   }
@@ -56,18 +63,37 @@ apiRouter.post('/register', (req, res) => {
   if (!req.body.sessionId) {
     return res.status(422).send('Unprocessed entity');
   }
+  const username = req.body.username;
+  const token = createToken({ name: req.body.username, password: req.body.password });
+
   const connection = connectionDB();
-  const promise = createUser(connection, {
-    name: req.body.username,
-    password: req.body.password,
-  });
-  promise.then(() => {
-    connection.end();
-    res.send({ test: 'test', password: JSON.stringify(req.body) });
-  }).catch((err) => {
-    console.log('err', err);
-    res.sendStatus(ERROR_CODE);
-  });
+  selectUserByName(connection, username)
+    .then((result: any) => {
+      if (result) {
+        res.status(400).send('Username already exists');
+        return;
+      }
+      createUser(connection, {
+        name: req.body.username,
+        password: token,
+      }).then(() => {
+        connection.end();
+        res
+          .status(200)
+          .send({
+            user: {
+              username: req.body.username,
+              token,
+            },
+          });
+      }).catch((err) => {
+        console.log('err', err);
+        res.sendStatus(ERROR_CODE);
+      });
+    }).catch((err) => {
+      console.log('err', err);
+      res.sendStatus(ERROR_CODE);
+    });
 });
 
 apiRouter.post(
@@ -80,7 +106,6 @@ apiRouter.post(
 
     promise.then((result) => {
       connection.end();
-      console.log('result', result);
       res.send({ user: result });
     }).catch((err) => {
       console.log('err', err);
@@ -92,7 +117,6 @@ apiRouter.post(
   '/user/stats',
   authenticate('bearer', { failureRedirect: '/login' }),
   (req, res) => {
-    console.log('req', req.body);
     const { deaths, kills, points } = req.body;
 
     if (typeof deaths === 'undefined' || typeof deaths !== 'number') {
@@ -116,9 +140,9 @@ apiRouter.post(
         points: req.user.points + points,
       });
 
-    promise.then((result) => {
+    promise.then(() => {
       connection.end();
-      res.send({ user: result });
+      res.sendStatus(200);
     }).catch((err) => {
       console.log('err', err);
       res.sendStatus(ERROR_CODE);

@@ -1,9 +1,14 @@
 import { Connection } from 'mysql';
 import { User, UserCreation } from '../types';
+import { createHmac } from 'crypto';
 
 const parseResult = (result: any) => {
   const string = JSON.stringify(result);
   return JSON.parse(string);
+};
+
+export const createToken = (p: { name: string, password: string }) => {
+  return createHmac('sha256', `${p.name}${p.password}`).digest('hex');
 };
 
 export const createUser = (connection: Connection, user: UserCreation) => {
@@ -61,6 +66,23 @@ export const selectUser = (connection: Connection, userId: User['id']) => {
     LIMIT 1
   `;
 
+  return new Promise((resolve, reject) => {
+    connection.query(sql, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(parseResult(result)[0]);
+    });
+  });
+};
+
+export const selectUserByName = (connection: Connection, name: User['name']) => {
+  const sql = `
+    SELECT id, name, kills, points, deaths
+    FROM users
+    WHERE users.name = '${name}'
+    LIMIT 1
+  `;
   return new Promise((resolve, reject) => {
     connection.query(sql, (err, result) => {
       if (err) {
