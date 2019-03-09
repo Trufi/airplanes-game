@@ -57,7 +57,7 @@ export class Stick extends React.Component<Props, ComponentState> {
 
   private onTouchStart = (ev: React.TouchEvent) => {
     ev.preventDefault();
-    const touch = ev.touches[0];
+    const touch = ev.targetTouches[0];
     if (!touch) {
       return;
     }
@@ -85,7 +85,7 @@ export class Stick extends React.Component<Props, ComponentState> {
 
   private onTouchMove = (ev: React.TouchEvent) => {
     ev.preventDefault();
-    const touch = ev.touches[0];
+    const touch = ev.targetTouches[0];
     if (!touch) {
       return;
     }
