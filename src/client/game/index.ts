@@ -28,8 +28,8 @@ const onResize = () => {
 
   if (game) {
     game.map.invalidateSize();
-    game.camera.aspect = window.innerWidth / window.innerHeight;
-    game.camera.updateProjectionMatrix();
+    game.camera.object.aspect = window.innerWidth / window.innerHeight;
+    game.camera.object.updateProjectionMatrix();
   }
 };
 window.addEventListener('resize', onResize);
@@ -60,7 +60,7 @@ export const start = (startMsg: ServerMsg['startData']) => {
 
     tick(state, now);
 
-    renderer.render(state.scene, state.camera);
+    renderer.render(state.scene, state.camera.object);
     renderUI(appState, executeCmd);
   }
   requestAnimationFrame(loop);

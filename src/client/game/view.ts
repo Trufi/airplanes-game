@@ -1,12 +1,11 @@
 import * as THREE from 'three';
 import GLTFLoader from 'three-gltf-loader';
-import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import { config as mapConfig, MapOptions, Map, Skybox } from '@2gis/jakarta';
 import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import * as config from '../../config';
 import { degToRad } from '../utils';
-import { State, BodyState } from '../types';
+import { State, CameraState } from '../types';
 
 mapConfig.camera.fov = 45;
 mapConfig.camera.far = 2 ** 32; // Можно оставить 600000, но тогда надо поправить frustum
@@ -159,50 +158,40 @@ export const createMap = () => {
   return map;
 };
 
-export const createCamera = () => {
-  const camera = new THREE.PerspectiveCamera(
+export const createCamera = (): CameraState => {
+  const object = new THREE.PerspectiveCamera(
     mapConfig.camera.fov,
     window.innerWidth / window.innerHeight,
     mapConfig.camera.near,
     mapConfig.camera.far,
   );
-  camera.position.z = 1;
-  camera.up.set(0, 0, 1);
-  camera.lookAt(0, 0, 0);
-  return camera;
+  object.position.z = 1;
+  object.up.set(0, 0, 1);
+  object.lookAt(0, 0, 0);
+
+  return {
+    object,
+    position: [0, 0, 0],
+    rotation: [0, 0, 0, 1],
+  };
 };
 
-const cameraRotation = [0, 0, 0, 1];
 const mapBodyPosition = [0, 0, 0];
-const eye = [0, 0, 0];
-
-export const updateCameraAndMap = (state: State, targetBody: BodyState) => {
+export const updateCameraAndMap = (state: State) => {
   const { map, origin, camera } = state;
 
-  const { rotation, position } = targetBody;
+  map.setQuat(camera.rotation);
 
-  vec3.add(mapBodyPosition, position, origin);
-
-  quat.rotateX(cameraRotation, rotation, degToRad(90));
-  map.setQuat(cameraRotation);
-
+  vec3.add(mapBodyPosition, camera.position, origin);
   map.setCenter(projectMapToGeo(mapBodyPosition), { animate: false });
   map.setZoom(heightToZoom(mapBodyPosition[2], [window.innerWidth, window.innerHeight]), {
     animate: false,
   });
 
-  // Отодвигаем камеру от самолета
-  const shift = [0, 4500, 15000];
-  vec3.transformQuat(shift, shift, cameraRotation);
-  vec3.add(eye, mapBodyPosition, shift);
-
-  // Вычитаем центр координат для увеличения точности
-  vec3.sub(eye, eye, origin);
-
-  camera.quaternion.fromArray(cameraRotation);
-  camera.position.fromArray(eye);
-  camera.updateMatrix();
-  camera.updateWorldMatrix(true, true);
+  camera.object.quaternion.fromArray(camera.rotation);
+  camera.object.position.fromArray(camera.position);
+  camera.object.updateMatrix();
+  camera.object.updateWorldMatrix(true, true);
 };
 
 export const createText = (text: string) => {

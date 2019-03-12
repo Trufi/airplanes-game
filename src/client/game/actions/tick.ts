@@ -1,9 +1,10 @@
 import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import { State, NonPhysicBodyState, BodyStep, PhysicBodyState } from '../../types';
-import { updateMesh, updateBullet, updateCameraAndMap } from '../view';
+import * as view from '../view';
 import { lerp } from '../../../utils';
 import * as config from '../../../config';
+import { degToRad } from '../../utils';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
@@ -11,11 +12,10 @@ export const tick = (state: State, time: number) => {
 
   state.bodies.forEach((body) => updateBody(state, body));
 
-  if (state.body) {
-    updateCameraAndMap(state, state.body);
-  }
-
+  updateCamera(state);
   hideOldDeathNotes(state);
+
+  view.updateCameraAndMap(state);
 };
 
 const updateBody = (state: State, body: PhysicBodyState | NonPhysicBodyState) => {
@@ -56,9 +56,9 @@ const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, timeDiff: n
 
   body.health = endStep.health;
 
-  updateMesh(body);
-  updateBullet(interpolationTime, body.weapon.left, body.weapon);
-  updateBullet(interpolationTime, body.weapon.right, body.weapon);
+  view.updateMesh(body);
+  view.updateBullet(interpolationTime, body.weapon.left, body.weapon);
+  view.updateBullet(interpolationTime, body.weapon.right, body.weapon);
 };
 
 /**
@@ -96,13 +96,29 @@ const updatePhysicBody = (state: State, body: PhysicBodyState) => {
   body.position[1] += velocityVector[1] * dt;
   body.position[2] = Math.max(body.position[2] + velocityVector[2] * dt, config.minimalHeight);
 
-  updateMesh(body);
-  updateBullet(state.time, body.weapon.left, body.weapon);
-  updateBullet(state.time, body.weapon.right, body.weapon);
+  view.updateMesh(body);
+  view.updateBullet(state.time, body.weapon.left, body.weapon);
+  view.updateBullet(state.time, body.weapon.right, body.weapon);
 };
 
 const hideOldDeathNotes = (state: State) => {
   state.deathNotes = state.deathNotes.filter(
     (note) => state.time - note.time < config.deathNote.delay,
   );
+};
+
+const updateCamera = (state: State) => {
+  const { body, camera } = state;
+
+  if (!body) {
+    return;
+  }
+
+  // Наклоняем камеру
+  quat.rotateX(camera.rotation, body.rotation, degToRad(90));
+
+  // Отодвигаем камеру от самолета
+  const shift = [0, 4500, 15000];
+  vec3.transformQuat(shift, shift, camera.rotation);
+  vec3.add(camera.position, body.position, shift);
 };

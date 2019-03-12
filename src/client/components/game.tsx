@@ -31,7 +31,12 @@ export class Game extends React.Component<Props, {}> {
       return;
     }
 
-    const { players, bodies, camera, body } = game;
+    const {
+      players,
+      bodies,
+      camera: { object: camera },
+      body,
+    } = game;
 
     const playerNames: JSX.Element[] = [];
     const playerArrows: JSX.Element[] = [];

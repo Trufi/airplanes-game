@@ -88,6 +88,12 @@ export interface StickState {
   y: number;
 }
 
+export interface CameraState {
+  position: number[];
+  rotation: number[];
+  object: THREE.PerspectiveCamera;
+}
+
 export interface State {
   time: number;
   prevTime: number;
@@ -112,7 +118,7 @@ export interface State {
   players: Map<number, PlayerState>;
 
   scene: THREE.Scene;
-  camera: THREE.PerspectiveCamera;
+  camera: CameraState;
 
   map: J.Map;
   bodies: Map<number, PhysicBodyState | NonPhysicBodyState>;
