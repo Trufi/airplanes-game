@@ -76,7 +76,6 @@ const findStepInterval = (time: number, steps: BodyStep[]): number => {
   return -1;
 };
 
-const minimalHeight = 10000;
 const velocityVector = [0, 0, 0];
 const rotation = [0, 0, 0, 1];
 
@@ -95,7 +94,7 @@ const updatePhysicBody = (state: State, body: PhysicBodyState) => {
 
   body.position[0] += velocityVector[0] * dt;
   body.position[1] += velocityVector[1] * dt;
-  body.position[2] = Math.max(body.position[2] + velocityVector[2] * dt, minimalHeight);
+  body.position[2] = Math.max(body.position[2] + velocityVector[2] * dt, config.minimalHeight);
 
   updateMesh(body);
   updateBullet(state.time, body.weapon.left, body.weapon);

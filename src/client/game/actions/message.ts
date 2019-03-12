@@ -125,7 +125,7 @@ const playerNewBody = (state: State, msg: ServerMsg['playerNewBody']) => {
   player.bodyId = msg.body.id;
 };
 
-const updatePingAndServerTime = (timeState: ServerTimeState, msg: ServerMsg['pong']) => {
+export const updatePingAndServerTime = (timeState: ServerTimeState, msg: ServerMsg['pong']) => {
   const { pingSample, diffSample } = timeState;
   const maxSampleLength = 10;
 

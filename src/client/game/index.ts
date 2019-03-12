@@ -9,6 +9,7 @@ import { sendMessage } from '../socket';
 import { ServerMsg } from '../../server/messages';
 import { start as startAction } from './actions/start';
 import { appState } from '../appState';
+import * as config from '../../config';
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById('overlay') as HTMLCanvasElement,
@@ -73,9 +74,9 @@ export const start = (startMsg: ServerMsg['startData']) => {
 
     // Сбрасываем попадания после отправки на сервер
     state.body.weapon.hits = [];
-  }, 50);
+  }, config.clientSendChangesInterval);
 
   setInterval(() => {
     sendMessage(msg.ping(time()));
-  }, 500);
+  }, config.clientSendChangesInterval);
 };

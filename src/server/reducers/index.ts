@@ -54,6 +54,8 @@ export const initialConnectionMessage = (
   switch (clientMsg.type) {
     case 'auth':
       return authMessage(state, connection, clientMsg);
+    case 'botAuth':
+      return botAuthMessage(state, connection, clientMsg);
     case 'ping':
       return pingMessage(clientMsg, connection);
   }
@@ -93,6 +95,19 @@ const authMessage = (
       socket: connection.socket,
       name: result.name,
     });
+  });
+};
+
+const botAuthMessage = (
+  state: State,
+  connection: InitialConnection,
+  clientMsg: ClientMsg['botAuth'],
+): Cmd => {
+  state.connections.map.set(connection.id, {
+    status: 'user',
+    id: connection.id,
+    socket: connection.socket,
+    name: clientMsg.name,
   });
 };
 

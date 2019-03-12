@@ -1,5 +1,5 @@
 import { PhysicBodyState } from './types';
-import { ObjectElement } from '../utils';
+import { ObjectElement, pick } from '../utils';
 
 const joinGame = (gameId: number) => ({
   type: 'joinGame' as 'joinGame',
@@ -17,7 +17,7 @@ const changes = (body: PhysicBodyState, time: number) => {
       velocity,
       rotation,
       velocityDirection,
-      weapon,
+      weapon: pick(weapon, ['lastShotTime', 'hits']),
     },
   };
 };
@@ -36,11 +36,17 @@ const auth = (token: string) => ({
   token,
 });
 
+const botAuth = (name: string) => ({
+  type: 'botAuth' as 'botAuth',
+  name,
+});
+
 export const msg = {
   joinGame,
   changes,
   restart,
   auth,
+  botAuth,
   ping,
 };
 

@@ -1,6 +1,5 @@
 import * as J from '@2gis/jakarta';
 import * as THREE from 'three';
-// import { ThreadName } from '@2gis/jakarta/dist/es6/utils/thread/types';
 
 export interface BodyStep {
   time: number;
