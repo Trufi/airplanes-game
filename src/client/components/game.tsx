@@ -31,18 +31,16 @@ export class Game extends React.Component<Props, {}> {
       return;
     }
 
-    const {
-      players,
-      bodies,
-      camera: { object: camera },
-      body,
-    } = game;
+    const { players, bodies, camera, body } = game;
 
     const playerNames: JSX.Element[] = [];
     const playerArrows: JSX.Element[] = [];
 
     const frustum = new THREE.Frustum();
-    projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+    projScreenMatrix.multiplyMatrices(
+      camera.object.projectionMatrix,
+      camera.object.matrixWorldInverse,
+    );
     frustum.setFromMatrix(projScreenMatrix);
 
     players.forEach(({ id, name, bodyId }) => {

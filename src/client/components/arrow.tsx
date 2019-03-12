@@ -1,10 +1,13 @@
 import * as React from 'react';
 import * as THREE from 'three';
 import * as vec2 from '@2gis/gl-matrix/vec2';
+import * as vec3 from '@2gis/gl-matrix/vec3';
+import { CameraState } from '../types';
+import * as config from '../../config';
 
 interface Props {
   position: number[];
-  camera: THREE.PerspectiveCamera;
+  camera: CameraState;
   frustum: THREE.Frustum;
 }
 
@@ -18,7 +21,10 @@ export const Arrow = ({ position, camera, frustum }: Props) => {
     return null;
   }
 
-  v.project(camera);
+  const distance = vec3.distance(position, camera.position);
+  const near = distance < config.weapon.distance;
+
+  v.project(camera.object);
 
   const width = 6;
   const height = 16;
@@ -48,7 +54,10 @@ export const Arrow = ({ position, camera, frustum }: Props) => {
         height: 0,
         borderLeft: `${width / 2}px solid transparent`,
         borderRight: `${width / 2}px solid transparent`,
-        borderBottom: `${height}px solid rgba(255, 0, 0, 0.5)`,
+        borderBottom: `${height}px solid ${
+          near ? 'rgba(255, 0, 0, 0.5)' : 'rgba(128, 128, 128, 0.3)'
+        }`,
+        zIndex: near ? 1 : 0,
       }}
     />
   );

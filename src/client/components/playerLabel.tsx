@@ -1,11 +1,14 @@
 import * as React from 'react';
 import * as THREE from 'three';
+import * as vec3 from '@2gis/gl-matrix/vec3';
 import { unnormalizeMouse } from '../utils';
+import { CameraState } from '../types';
+import * as config from '../../config';
 
 interface Props {
   name: string;
   position: number[];
-  camera: THREE.PerspectiveCamera;
+  camera: CameraState;
   health: number;
   frustum: THREE.Frustum;
 }
@@ -19,7 +22,10 @@ export const PlayerLabel = ({ name, position, camera, health, frustum }: Props) 
     return null;
   }
 
-  v.project(camera);
+  const distance = vec3.distance(position, camera.position);
+  const color = distance < config.weapon.distance ? '#ff0000' : '#777777';
+
+  v.project(camera.object);
 
   unnormalizeMouse(v, [window.innerWidth, window.innerHeight]);
 
@@ -36,7 +42,7 @@ export const PlayerLabel = ({ name, position, camera, health, frustum }: Props) 
         left: 0,
         width: `${width}px`,
         transform: `translate3d(${x}px,${y}px,0)`,
-        color: '#ff0000',
+        color,
         textAlign: 'center',
       }}
     >
