@@ -193,15 +193,20 @@ const restoreRoll = (dt: number, body: PhysicBodyState) => {
 const forwardDirection = [0, 1, 0];
 const bodyForward = [0, 0, 0];
 const toTarget = [0, 0, 0];
+const bodyRotation = [0, 0, 0, 1];
 
 const fire = (state: State) => {
-  const { body, bodies } = state;
-
+  const { body } = state;
   if (!body) {
     return;
   }
 
-  const { weapon, rotation, position } = body;
+  const {
+    bodies,
+    camera: { rotation, position },
+  } = state;
+
+  const { weapon } = body;
 
   if (state.time - weapon.lastShotTime < config.weapon.cooldown) {
     return;
@@ -209,7 +214,8 @@ const fire = (state: State) => {
 
   weapon.lastShotTime = state.time;
 
-  vec3.transformQuat(bodyForward, forwardDirection, rotation);
+  quat.rotateX(bodyRotation, rotation, -degToRad(config.camera.pitch));
+  vec3.transformQuat(bodyForward, forwardDirection, bodyRotation);
 
   for (const [, targetBody] of bodies) {
     vec3.sub(toTarget, targetBody.position, position);

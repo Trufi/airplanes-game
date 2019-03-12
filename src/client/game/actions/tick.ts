@@ -115,7 +115,7 @@ const updateCamera = (state: State) => {
   }
 
   // Наклоняем камеру
-  quat.rotateX(camera.rotation, body.rotation, degToRad(90));
+  quat.rotateX(camera.rotation, body.rotation, degToRad(config.camera.pitch));
 
   // Отодвигаем камеру от самолета
   const shift = [0, 4500, 15000];

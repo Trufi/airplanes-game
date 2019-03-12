@@ -4,7 +4,7 @@ export const weapon = {
   /**
    * Меньший радиус усеченного конуса
    */
-  radius: 1000,
+  radius: 100,
 
   /**
    * Угл попадания в градусах
@@ -12,7 +12,8 @@ export const weapon = {
   hitAngle: 3,
   cooldown: 200,
   animationDuration: 40,
-  distance: 100000,
+  distance: 300000,
+
   offset: 5000,
   bullet: {
     color: 0xeeee33,
@@ -28,10 +29,14 @@ export const airplane = {
   velocity: 30,
 };
 
+export const camera = {
+  pitch: 90,
+};
+
 export const origin = [82.920412, 55.030111];
 
 export const resurrection = {
-  radius: 1000000,
+  radius: 500000,
   height: 50000,
 };
 
