@@ -138,6 +138,8 @@ export const createMap = () => {
 
   const container = document.getElementById('map') as HTMLElement;
   const options: Partial<MapOptions> = {
+    tileSearchNumber: 3,
+    universeTileSearchNumber: 1,
     center: [82.920412, 55.030111],
     zoom: 17,
     sendAnalytics: false,
