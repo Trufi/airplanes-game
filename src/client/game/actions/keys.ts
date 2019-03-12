@@ -229,6 +229,7 @@ const fire = (state: State) => {
       vec3.len(toTarget) < config.weapon.distance &&
       angle < degToRad(config.weapon.hitAngle)
     ) {
+      weapon.lastHitTime = state.time;
       weapon.hits.push({ bodyId: targetBody.id });
     }
   }

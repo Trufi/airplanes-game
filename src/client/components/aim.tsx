@@ -1,21 +1,56 @@
 import * as React from 'react';
+import { WeaponState } from '../types';
 
-export const Aim = () => {
+interface Props {
+  weapon: WeaponState;
+  time: number;
+}
+
+export const Aim = ({ weapon: { lastHitTime }, time }: Props) => {
   const width = 30;
 
-  const x = window.innerWidth / 2 - width / 2;
-  const y = window.innerHeight / 2 - width / 2;
-
   return (
-    <img
+    <div
       style={{
         position: 'absolute',
-        left: `${x}px`,
-        top: `${y}px`,
-        width: `${width}px`,
-        opacity: 0.5,
+        left: `${window.innerWidth / 2}px`,
+        top: `${window.innerHeight / 2}px`,
       }}
-      src='./assets/aim.png'
-    />
+    >
+      <img
+        style={{
+          position: 'absolute',
+          left: `${-width / 2}px`,
+          top: `${-width / 2}px`,
+          width: `${width}px`,
+          opacity: 0.5,
+        }}
+        src='./assets/aim.png'
+      />
+      {time - lastHitTime < 100 && (
+        <>
+          <div
+            style={{
+              position: 'absolute',
+              left: `${-width / 2}px`,
+              width: `${width}px`,
+              height: `1px`,
+              background: '#ff0000',
+              transform: `rotate(45deg)`,
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              top: `${-width / 2}px`,
+              width: `1px`,
+              height: `${width}px`,
+              background: '#ff0000',
+              transform: `rotate(45deg)`,
+            }}
+          />
+        </>
+      )}
+    </div>
   );
 };

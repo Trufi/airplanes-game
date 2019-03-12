@@ -18,6 +18,7 @@ export interface Hit {
 
 export interface WeaponState {
   lastShotTime: number;
+  lastHitTime: number;
   hits: Hit[];
   left: THREE.Object3D;
   right: THREE.Object3D;

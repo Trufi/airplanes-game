@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as THREE from 'three';
-import { AppState, State } from '../types';
+import { AppState, State, PhysicBodyState } from '../types';
 import { PlayerLabel } from './playerLabel';
 import { Debug } from './debug';
 import { Aim } from './aim';
@@ -72,17 +72,17 @@ export class Game extends React.Component<Props, {}> {
     return (
       <div>
         <DeathNotes state={game} />
-        {playerNames}
-        {playerArrows}
-        {body ? this.renderLiveComponents(game) : this.renderDeath(game)}
+        <div>{playerNames}</div>
+        <div>{playerArrows}</div>
+        {body ? this.renderLiveComponents(game, body) : this.renderDeath(game)}
       </div>
     );
   }
 
-  private renderLiveComponents(game: State) {
+  private renderLiveComponents(game: State, body: PhysicBodyState) {
     return (
       <>
-        <Aim />
+        <Aim weapon={body.weapon} time={game.time} />
         <FireButton state={game} />
         <Stick state={game} />
         <Debug
@@ -94,7 +94,7 @@ export class Game extends React.Component<Props, {}> {
           }}
           state={game}
         />
-        {game.body && <Health body={game.body} />}
+        <Health body={body} />}
       </>
     );
   }

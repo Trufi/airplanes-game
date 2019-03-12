@@ -34,6 +34,7 @@ export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
     animation: mixer,
     shotMesh: createShotMesh(),
     weapon: {
+      lastHitTime: 0,
       lastShotTime: 0,
       hits: [],
       left: createBulletMesh(1),
