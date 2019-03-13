@@ -68,7 +68,12 @@ export class Game extends React.Component<Props, {}> {
     });
 
     return (
-      <div onTouchMove={this.onTouchMove}>
+      <div
+        style={{
+          // https://developers.google.com/web/updates/2017/01/scrolling-intervention
+          touchAction: 'none',
+        }}
+      >
         <DeathNotes state={game} />
         <div>{playerNames}</div>
         <div>{playerArrows}</div>
@@ -92,7 +97,7 @@ export class Game extends React.Component<Props, {}> {
           }}
           state={game}
         />
-        <Health body={body} />}
+        <Health body={body} />
       </>
     );
   }
@@ -116,9 +121,5 @@ export class Game extends React.Component<Props, {}> {
 
   private restart = () => {
     executeCmd(cmd.sendMsg(msg.restart()));
-  };
-
-  private onTouchMove = (ev: React.TouchEvent) => {
-    ev.preventDefault();
   };
 }

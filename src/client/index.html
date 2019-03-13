@@ -11,13 +11,7 @@
         margin: 0;
         overflow: hidden;
       }
-      #root {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-      }
+      #root,
       #map,
       #overlay {
         position: absolute;
@@ -25,6 +19,10 @@
         left: 0;
         width: 100%;
         height: 100%;
+        overflow: hidden;
+      }
+      #map,
+      #overlay {
         pointer-events: none;
       }
       #fullscreen {

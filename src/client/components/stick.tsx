@@ -42,9 +42,6 @@ export class Stick extends React.Component<Props, ComponentState> {
           zIndex: 300,
           width: `${window.innerWidth / 2}px`,
           height: `${window.innerHeight}px`,
-
-          // https://developers.google.com/web/updates/2017/01/scrolling-intervention
-          touchAction: 'none',
         }}
         onTouchStart={this.onTouchStart}
         onTouchEnd={this.onTouchEnd}
