@@ -68,7 +68,7 @@ export class Game extends React.Component<Props, {}> {
     });
 
     return (
-      <div>
+      <div onTouchMove={this.onTouchMove}>
         <DeathNotes state={game} />
         <div>{playerNames}</div>
         <div>{playerArrows}</div>
@@ -116,5 +116,9 @@ export class Game extends React.Component<Props, {}> {
 
   private restart = () => {
     executeCmd(cmd.sendMsg(msg.restart()));
+  };
+
+  private onTouchMove = (ev: React.TouchEvent) => {
+    ev.preventDefault();
   };
 }
