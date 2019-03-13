@@ -28,6 +28,14 @@ createGame(state, time());
 applyMiddlewares(app);
 applyRouter(app, state);
 
+// Всю статику заставляем кэшироваться
+app.use(
+  express.static(path.join(__dirname, '../../dist'), {
+    maxAge: 86400000, // сутки
+    index: false,
+  }),
+);
+// А index.html — нет
 app.use(express.static(path.join(__dirname, '../../dist')));
 
 const gameStep = 50;
