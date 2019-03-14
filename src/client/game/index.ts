@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import { projectGeoToMap } from '@2gis/jakarta/dist/es6/utils/geo';
 import { msg } from '../messages';
 import { processPressedkeys } from './actions/keys';
 import { tick } from './actions/tick';
@@ -7,39 +7,71 @@ import { renderUI } from '../ui';
 import { executeCmd } from '../commands/execute';
 import { sendMessage } from '../socket';
 import { ServerMsg } from '../../server/messages';
-import { start as startAction } from './actions/start';
 import { appState } from '../appState';
 import * as config from '../../config';
+import * as view from './view';
+import { addBody, createPlayer, createPhysicBody, createNonPhysicBody } from './common';
+import { State, PlayerState, PhysicBodyState } from '../types';
+import { createServerTimeState } from '../common/serverTime';
+import { createNotesState } from '../common/notes';
 
-const renderer = new THREE.WebGLRenderer({
-  canvas: document.getElementById('overlay') as HTMLCanvasElement,
-  alpha: true,
-  antialias: window.devicePixelRatio < 2,
-});
-
-const onResize = () => {
-  document.body.style.width = `${window.innerWidth}px`;
-  document.body.style.height = `${window.innerHeight}px`;
-
-  const { game } = appState;
-
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-
-  if (game) {
-    game.map.invalidateSize();
-    game.camera.object.aspect = window.innerWidth / window.innerHeight;
-    game.camera.object.updateProjectionMatrix();
-  }
-};
-window.addEventListener('resize', onResize);
-
-export const start = (startMsg: ServerMsg['startData']) => {
+export const start = (data: ServerMsg['startData']) => {
   if (!appState.name || !appState.id) {
     return;
   }
 
-  const state = (appState.game = startAction(time(), startMsg));
+  const mapOrigin = projectGeoToMap(config.origin);
+
+  const players: State['players'] = new Map();
+  let currentPlayer: PlayerState | undefined;
+  let currentBody: PhysicBodyState | undefined;
+
+  data.players.forEach((playerData) => {
+    const player = createPlayer(playerData);
+    players.set(player.id, player);
+
+    if (data.playerId === player.id) {
+      currentPlayer = player;
+    }
+  });
+
+  const bodies: State['bodies'] = new Map();
+  data.bodies.forEach((bodyData) => {
+    if (currentPlayer && bodyData.id === currentPlayer.bodyId) {
+      const body = createPhysicBody(bodyData);
+      currentBody = body;
+      bodies.set(body.id, body);
+    } else {
+      const body = createNonPhysicBody(bodyData);
+      bodies.set(body.id, body);
+    }
+  });
+
+  if (!currentPlayer || !currentBody) {
+    throw new Error('Current player and body not found');
+  }
+
+  const now = time();
+
+  const state: State = {
+    time: now,
+    prevTime: now,
+    player: currentPlayer,
+    body: currentBody,
+    origin: [mapOrigin[0], mapOrigin[1], 0],
+    players,
+    bodies,
+    renderer: view.createRenderer(),
+    scene: view.createScene(),
+    map: view.createMap(),
+    camera: view.createCamera(),
+    serverTime: createServerTimeState(),
+    pressedKeys: {},
+    notes: createNotesState(),
+    stick: { x: 0, y: 0 },
+  };
+  appState.game = state;
+  state.bodies.forEach((body) => addBody(state, body));
 
   window.addEventListener('keydown', (ev) => {
     state.pressedKeys[ev.code] = true;
@@ -49,7 +81,9 @@ export const start = (startMsg: ServerMsg['startData']) => {
     state.pressedKeys[ev.code] = false;
   });
 
-  onResize();
+  window.addEventListener('resize', () => {
+    view.resize(state.map, state.camera.object);
+  });
 
   function loop() {
     requestAnimationFrame(loop);
@@ -60,7 +94,7 @@ export const start = (startMsg: ServerMsg['startData']) => {
 
     tick(state, now);
 
-    renderer.render(state.scene, state.camera.object);
+    state.renderer.render(state.scene, state.camera.object);
     renderUI(appState, executeCmd);
   }
   requestAnimationFrame(loop);

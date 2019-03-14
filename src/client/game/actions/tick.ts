@@ -28,7 +28,7 @@ const updateBody = (state: State, body: PhysicBodyState | NonPhysicBodyState) =>
   }
 };
 
-const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, timeDiff: number) => {
+export const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, timeDiff: number) => {
   // 300ms - порог, чтобы точно данные дошли
   const interpolationTime = time - timeDiff - 300;
 

@@ -1,5 +1,6 @@
 import * as J from '@2gis/jakarta';
 import * as THREE from 'three';
+import { ObserverState } from './observer/types';
 import { NotesState } from './common/notes';
 
 export interface BodyStep {
@@ -114,6 +115,7 @@ export interface State {
   players: Map<number, PlayerState>;
 
   scene: THREE.Scene;
+  renderer: THREE.WebGLRenderer;
   camera: CameraState;
 
   map: J.Map;
@@ -134,4 +136,5 @@ export interface AppState {
   name?: string;
   token?: string;
   game?: State;
+  observer?: ObserverState;
 }

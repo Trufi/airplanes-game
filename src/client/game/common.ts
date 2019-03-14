@@ -1,4 +1,4 @@
-import { State, PlayerState, NonPhysicBodyState, PhysicBodyState, BodyState } from '../types';
+import { PlayerState, NonPhysicBodyState, PhysicBodyState, BodyState } from '../types';
 import { PlayerData, TickBodyData } from '../../server/messages';
 import { createMesh, createShotMesh, createBulletMesh } from './view';
 
@@ -11,7 +11,13 @@ export const createPlayer = ({ id, name, bodyId, live }: PlayerData): PlayerStat
   deaths: 0,
 });
 
-export const addBody = (state: State, body: BodyState) => {
+export const addBody = (
+  state: {
+    bodies: Map<number, BodyState>;
+    scene: THREE.Scene;
+  },
+  body: BodyState,
+) => {
   state.bodies.set(body.id, body);
   body.mesh.add(body.shotMesh);
   body.mesh.add(body.weapon.left);

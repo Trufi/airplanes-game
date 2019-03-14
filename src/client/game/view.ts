@@ -5,10 +5,22 @@ import { config as mapConfig, MapOptions, Map, Skybox } from '@2gis/jakarta';
 import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import * as config from '../../config';
 import { degToRad } from '../utils';
-import { State, CameraState } from '../types';
+import { CameraState } from '../types';
 
 mapConfig.camera.fov = 45;
 mapConfig.camera.far = 2 ** 32; // Можно оставить 600000, но тогда надо поправить frustum
+
+let renderer: THREE.WebGLRenderer | undefined;
+export const createRenderer = () => {
+  if (!renderer) {
+    renderer = new THREE.WebGLRenderer({
+      canvas: document.getElementById('overlay') as HTMLCanvasElement,
+      alpha: true,
+      antialias: window.devicePixelRatio < 2,
+    });
+  }
+  return renderer;
+};
 
 export const createMesh = () => {
   const mesh = new THREE.Object3D();
@@ -175,7 +187,7 @@ export const createCamera = (): CameraState => {
 };
 
 const mapBodyPosition = [0, 0, 0];
-export const updateCameraAndMap = (state: State) => {
+export const updateCameraAndMap = (state: { map: Map; origin: number[]; camera: CameraState }) => {
   const { map, origin, camera } = state;
 
   map.setQuat(camera.rotation);
@@ -190,6 +202,12 @@ export const updateCameraAndMap = (state: State) => {
   camera.object.position.fromArray(camera.position);
   camera.object.updateMatrix();
   camera.object.updateWorldMatrix(true, true);
+};
+
+export const resize = (map: Map, camera: THREE.PerspectiveCamera) => {
+  map.invalidateSize();
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 };
 
 export const createText = (text: string) => {
