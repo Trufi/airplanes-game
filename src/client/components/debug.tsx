@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { State as GameState } from '../types';
 import { mapMap } from '../../utils';
+import { ObserverState } from '../observer/types';
 
 interface Props {
   style: React.CSSProperties;
-  state: GameState;
+  state: GameState | ObserverState;
 }
 
 interface State {
@@ -22,7 +23,7 @@ export class Debug extends React.Component<Props, State> {
 
   public render() {
     const { style, state: gameState } = this.props;
-    const { players, player, bodies, serverTime } = gameState;
+    const { players, bodies, serverTime } = gameState;
 
     if (!this.state.show) {
       return (
@@ -35,11 +36,13 @@ export class Debug extends React.Component<Props, State> {
     return (
       <div style={style}>
         <button onClick={this.toggle}>Debug</button>
-        <div style={{ marginBottom: '15px', fontWeight: 700 }}>
-          <div>
-            You ID: {player.id} NAME: {player.name}
+        {gameState.type === 'game' && (
+          <div style={{ marginBottom: '15px', fontWeight: 700 }}>
+            <div>
+              You ID: {gameState.player.id} NAME: {gameState.player.name}
+            </div>
           </div>
-        </div>
+        )}
         <div>Ping: {serverTime.ping}</div>
         <div>Time diff: {serverTime.diff}</div>
         <div style={{ fontWeight: 700 }}>Other players:</div>

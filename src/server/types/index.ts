@@ -22,7 +22,15 @@ export interface PlayerConnection {
   gameId: number;
 }
 
-export type Connection = InitialConnection | UserConnection | PlayerConnection;
+export interface ObserverConnection {
+  status: 'observer';
+  id: number;
+  socket: ws;
+  name: string;
+  gameId: number;
+}
+
+export type Connection = InitialConnection | UserConnection | PlayerConnection | ObserverConnection;
 
 export interface ConnectionsState {
   map: Map<number, Connection>;

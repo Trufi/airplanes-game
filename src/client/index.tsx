@@ -10,7 +10,9 @@ fullscreenButton.addEventListener('click', () => {
   document.body.requestFullscreen();
 });
 
-window.addEventListener('resize', () => {
+const resize = () => {
   document.body.style.width = `${window.innerWidth}px`;
   document.body.style.height = `${window.innerHeight}px`;
-});
+};
+window.addEventListener('resize', resize);
+resize();

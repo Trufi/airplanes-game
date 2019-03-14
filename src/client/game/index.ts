@@ -54,6 +54,7 @@ export const start = (data: ServerMsg['startData']) => {
   const now = time();
 
   const state: State = {
+    type: 'game',
     time: now,
     prevTime: now,
     player: currentPlayer,
@@ -82,8 +83,9 @@ export const start = (data: ServerMsg['startData']) => {
   });
 
   window.addEventListener('resize', () => {
-    view.resize(state.map, state.camera.object);
+    view.resize(state.map, state.camera.object, state.renderer);
   });
+  view.resize(state.map, state.camera.object, state.renderer);
 
   function loop() {
     requestAnimationFrame(loop);

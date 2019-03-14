@@ -4,6 +4,7 @@ import { Cmd } from '../../commands';
 import { createPlayer, createNonPhysicBody, addBody, createPhysicBody } from '../common';
 import { updatePingAndServerTime } from '../../common/serverTime';
 import { addKillNote } from '../../common/notes';
+import { ObserverState } from '../../observer/types';
 
 export const message = (state: State, msg: AnyServerMsg): Cmd => {
   switch (msg.type) {
@@ -22,11 +23,11 @@ export const message = (state: State, msg: AnyServerMsg): Cmd => {
   }
 };
 
-const updateGameData = (state: State, msg: ServerMsg['tickData']) => {
+export const updateGameData = (state: State | ObserverState, msg: ServerMsg['tickData']) => {
   msg.bodies.forEach((body) => updateBodyData(state, body));
 };
 
-const updateBodyData = (state: State, data: TickBodyData) => {
+export const updateBodyData = (state: State | ObserverState, data: TickBodyData) => {
   const { id, position, rotation, updateTime, velocityDirection, health, weapon } = data;
 
   const bodyState = state.bodies.get(id);
@@ -48,9 +49,9 @@ const updateBodyData = (state: State, data: TickBodyData) => {
   }
 };
 
-const playerEnter = (state: State, msg: ServerMsg['playerEnter']) => {
+export const playerEnter = (state: State | ObserverState, msg: ServerMsg['playerEnter']) => {
   // Себя не добавляем
-  if (state.player.id === msg.player.id) {
+  if (state.type === 'game' && state.player.id === msg.player.id) {
     return;
   }
 
@@ -65,7 +66,7 @@ const playerEnter = (state: State, msg: ServerMsg['playerEnter']) => {
   }
 };
 
-const removePlayer = (state: State, msg: ServerMsg['playerLeave']) => {
+export const removePlayer = (state: State | ObserverState, msg: ServerMsg['playerLeave']) => {
   const player = state.players.get(msg.playerId);
   if (!player) {
     return;
@@ -74,18 +75,18 @@ const removePlayer = (state: State, msg: ServerMsg['playerLeave']) => {
   state.players.delete(player.id);
 };
 
-const removeBody = (state: State, bodyId: number) => {
+const removeBody = (state: State | ObserverState, bodyId: number) => {
   const body = state.bodies.get(bodyId);
   if (body) {
     state.bodies.delete(bodyId);
     state.scene.remove(body.mesh);
   }
-  if (state.body === body) {
+  if (state.type === 'game' && state.body === body) {
     delete state.body;
   }
 };
 
-const playerDeath = (state: State, msg: ServerMsg['playerDeath']) => {
+export const playerDeath = (state: State | ObserverState, msg: ServerMsg['playerDeath']) => {
   const { playerId, causePlayerId } = msg;
 
   const causePlayer = state.players.get(causePlayerId);
@@ -104,8 +105,8 @@ const playerDeath = (state: State, msg: ServerMsg['playerDeath']) => {
   addKillNote(state.notes, state.time, causePlayerId, playerId);
 };
 
-const playerNewBody = (state: State, msg: ServerMsg['playerNewBody']) => {
-  if (msg.playerId === state.player.id) {
+export const playerNewBody = (state: State | ObserverState, msg: ServerMsg['playerNewBody']) => {
+  if (state.type === 'game' && msg.playerId === state.player.id) {
     const body = createPhysicBody(msg.body);
     addBody(state, body);
     state.body = body;

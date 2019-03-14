@@ -6,6 +6,7 @@ import { AppState } from '../types';
 import { Game } from './game';
 import { appState } from '../appState';
 import { Disconnect } from './disconnect';
+import { Observer } from './observer';
 
 interface Props {
   appState: AppState;
@@ -15,7 +16,7 @@ interface Props {
 export class Root extends React.Component<Props, {}> {
   public render() {
     const {
-      appState: { type, game, name, connected },
+      appState: { type, game, name, connected, observer },
       executeCmd,
     } = this.props;
 
@@ -25,6 +26,10 @@ export class Root extends React.Component<Props, {}> {
 
     if (type === 'game' && game) {
       return <Game appState={appState} executeCmd={executeCmd} />;
+    }
+
+    if (type === 'observer' && observer) {
+      return <Observer appState={appState} executeCmd={executeCmd} />;
     }
 
     if (type === 'login' && !name) {

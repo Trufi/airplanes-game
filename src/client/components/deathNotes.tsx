@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { State } from '../types';
 import { DeathNote } from '../common/notes';
+import { ObserverState } from '../observer/types';
 
-const Note = ({ state, note }: { state: State; note: DeathNote }): JSX.Element => {
+const Note = ({ state, note }: { state: State | ObserverState; note: DeathNote }): JSX.Element => {
   let deadName: string | undefined;
-  if (note.deadPlayerId === state.player.id) {
+
+  if (state.type === 'game' && note.deadPlayerId === state.player.id) {
     deadName = state.player.name;
   } else {
     const deadPlayer = state.players.get(note.deadPlayerId);
@@ -14,7 +16,7 @@ const Note = ({ state, note }: { state: State; note: DeathNote }): JSX.Element =
   }
 
   let causeName: string | undefined;
-  if (note.causePlayerId === state.player.id) {
+  if (state.type === 'game' && note.causePlayerId === state.player.id) {
     causeName = state.player.name;
   } else {
     const causePlayer = state.players.get(note.causePlayerId);
@@ -36,7 +38,7 @@ const Note = ({ state, note }: { state: State; note: DeathNote }): JSX.Element =
 };
 
 interface Props {
-  state: State;
+  state: State | ObserverState;
 }
 
 export class DeathNotes extends React.Component<Props, {}> {

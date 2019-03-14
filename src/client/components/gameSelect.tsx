@@ -49,6 +49,7 @@ export class GameSelect extends React.Component<Props, State> {
             <div
               key={i}
               style={{
+                position: 'relative',
                 width: '300px',
                 height: '70px',
                 lineHeight: '70px',
@@ -62,6 +63,18 @@ export class GameSelect extends React.Component<Props, State> {
               onClick={() => this.gameSelected(id)}
             >
               Game {id}
+              <div
+                style={{
+                  position: 'absolute',
+                  right: '-50px',
+                  top: 0,
+                  border: '1px solid',
+                  color: '#0000ff',
+                }}
+                onClick={(ev) => this.gameObserve(ev, id)}
+              >
+                obs
+              </div>
             </div>
           ))}
       </div>
@@ -70,5 +83,10 @@ export class GameSelect extends React.Component<Props, State> {
 
   private gameSelected = (id: number) => {
     this.props.executeCmd(cmd.sendMsg(msg.joinGame(id)));
+  };
+
+  private gameObserve = (ev: React.MouseEvent, id: number) => {
+    ev.stopPropagation();
+    this.props.executeCmd(cmd.sendMsg(msg.joinGameAsObserver(id)));
   };
 }

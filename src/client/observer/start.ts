@@ -12,8 +12,9 @@ import { renderUI } from '../ui';
 import { executeCmd } from '../commands/execute';
 import { sendMessage } from '../socket';
 import { msg } from '../messages';
+import { tick } from './tick';
 
-export const start = (appState: AppState, data: ServerMsg['startData']) => {
+export const start = (appState: AppState, data: ServerMsg['startObserverData']) => {
   const mapOrigin = projectGeoToMap(config.origin);
 
   const players: ObserverState['players'] = new Map();
@@ -32,6 +33,7 @@ export const start = (appState: AppState, data: ServerMsg['startData']) => {
   const now = time();
 
   const state: ObserverState = {
+    type: 'observer',
     time: now,
     prevTime: now,
     origin: [mapOrigin[0], mapOrigin[1], 0],
@@ -58,14 +60,16 @@ export const start = (appState: AppState, data: ServerMsg['startData']) => {
   bodies.forEach((body) => addBody(state, body));
 
   state.callbacks.resize = () => {
-    view.resize(state.map, state.camera.object);
+    view.resize(state.map, state.camera.object, state.renderer);
   };
   window.addEventListener('resize', state.callbacks.resize);
+  state.callbacks.resize();
 
   const loopCallback = () => {
     state.callbacks.loopId = requestAnimationFrame(loopCallback);
 
-    // const now = time();
+    const now = time();
+    tick(state, now);
 
     state.renderer.render(state.scene, state.camera.object);
     renderUI(appState, executeCmd);

@@ -16,5 +16,15 @@ export const tick = (state: ObserverState, time: number) => {
 };
 
 const updateCamera = (state: ObserverState) => {
-  state.camera.position = state.origin;
+  const nextBodyValue = state.bodies.entries().next().value;
+  if (!nextBodyValue) {
+    state.camera.position[0] = 0;
+    state.camera.position[1] = 0;
+    state.camera.position[2] = 1000000;
+  } else {
+    const body = nextBodyValue[1];
+    state.camera.position[0] = body.position[0];
+    state.camera.position[1] = body.position[1];
+    state.camera.position[2] = 200000;
+  }
 };

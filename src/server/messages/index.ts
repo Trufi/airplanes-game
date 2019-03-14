@@ -55,6 +55,17 @@ const startData = (game: GameState, player: GamePlayer) => {
   };
 };
 
+const startObserverData = (game: GameState) => {
+  const players = mapMap(game.players, getPlayerData);
+  const bodies = mapMap(game.bodies.map, getTickBodyData);
+
+  return {
+    type: 'startObserverData' as 'startObserverData',
+    players,
+    bodies,
+  };
+};
+
 const playerEnter = (player: GamePlayer, body: Airplane) => ({
   type: 'playerEnter' as 'playerEnter',
   player: getPlayerData(player),
@@ -100,6 +111,7 @@ export const msg = {
   loginFail,
   gameJoinFail,
   startData,
+  startObserverData,
   playerEnter,
   playerNewBody,
   playerLeave,

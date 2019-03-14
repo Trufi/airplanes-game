@@ -204,7 +204,13 @@ export const updateCameraAndMap = (state: { map: Map; origin: number[]; camera: 
   camera.object.updateWorldMatrix(true, true);
 };
 
-export const resize = (map: Map, camera: THREE.PerspectiveCamera) => {
+export const resize = (
+  map: Map,
+  camera: THREE.PerspectiveCamera,
+  renderer: THREE.WebGLRenderer,
+) => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
   map.invalidateSize();
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();

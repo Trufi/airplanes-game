@@ -3,6 +3,7 @@ import { PlayerState, CameraState, ServerTimeState, NonPhysicBodyState } from '.
 import { NotesState } from '../common/notes';
 
 export interface ObserverState {
+  type: 'observer';
   time: number;
   prevTime: number;
 

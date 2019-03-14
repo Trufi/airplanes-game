@@ -7,6 +7,7 @@ import {
   PlayerConnection,
   State,
   Connection,
+  ObserverConnection,
 } from '../types';
 import { Cmd, cmd, union } from '../commands';
 import { msg } from '../messages';
@@ -43,6 +44,8 @@ export const message = (state: State, connectionId: number, msg: AnyClientMsg): 
       return userConnectionMessage(state, connection, msg);
     case 'player':
       return playerConnectionMessage(state, connection, msg);
+    case 'observer':
+      return observerConnectionMessage(state, connection, msg);
   }
 };
 
@@ -69,6 +72,8 @@ const userConnectionMessage = (
   switch (clientMsg.type) {
     case 'joinGame':
       return playerStart(state, connection, clientMsg);
+    case 'joinGameAsObserver':
+      return observerStart(state, connection, clientMsg);
     case 'ping':
       return pingMessage(clientMsg, connection);
   }
@@ -137,6 +142,29 @@ const playerStart = (
   return game.joinPlayer(gameState, connection.id, connection.name);
 };
 
+const observerStart = (
+  state: State,
+  connection: UserConnection,
+  clientMsg: ClientMsg['joinGameAsObserver'],
+): Cmd => {
+  const { gameId } = clientMsg;
+
+  const gameState = state.games.map.get(gameId);
+  if (!gameState) {
+    return cmd.sendMsg(connection.id, msg.gameJoinFail());
+  }
+
+  state.connections.map.set(connection.id, {
+    status: 'observer',
+    id: connection.id,
+    socket: connection.socket,
+    name: connection.name,
+    gameId: gameState.id,
+  });
+
+  return game.joinObserver(gameState, connection.id, connection.name);
+};
+
 export const playerConnectionMessage = (
   state: State,
   connection: PlayerConnection,
@@ -166,6 +194,17 @@ const restartMessage = (state: State, connectionId: number): Cmd => {
   return game.playerRestart(playerGame, connectionId);
 };
 
+export const observerConnectionMessage = (
+  _state: State,
+  connection: ObserverConnection,
+  clientMsg: AnyClientMsg,
+): Cmd => {
+  switch (clientMsg.type) {
+    case 'ping':
+      return pingMessage(clientMsg, connection);
+  }
+};
+
 export const pingMessage = (clientMsg: ClientMsg['ping'], connection: Connection): Cmd => {
   // Да, функция — не чистая, но и пофиг!
   return cmd.sendMsg(connection.id, msg.pong(time(), clientMsg.time));
@@ -178,10 +217,18 @@ export const connectionLost = (state: State, connectionId: number): Cmd => {
   }
   state.connections.map.delete(connectionId);
 
-  if (connection.status === 'player') {
-    const gameState = state.games.map.get(connection.gameId);
-    if (gameState) {
-      return game.kickPlayer(gameState, connection.id);
+  switch (connection.status) {
+    case 'player': {
+      const gameState = state.games.map.get(connection.gameId);
+      if (gameState) {
+        return game.kickPlayer(gameState, connection.id);
+      }
+    }
+    case 'observer': {
+      const gameState = state.games.map.get(connection.gameId);
+      if (gameState) {
+        return game.kickObserver(gameState, connection.id);
+      }
     }
   }
 };

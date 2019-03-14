@@ -40,12 +40,21 @@ export interface GamePlayer {
   deaths: number;
 }
 
+export interface GameObserver {
+  /**
+   * id равен connectionId
+   */
+  id: number;
+  name: string;
+}
+
 export interface GameState {
   id: number;
   prevTime: number;
   time: number;
   bodies: BodiesState;
   players: Map<number, GamePlayer>;
+  observers: Map<number, GameObserver>;
 }
 
 export const debugInfo = ({ id, bodies, players }: GameState) => ({
@@ -54,8 +63,8 @@ export const debugInfo = ({ id, bodies, players }: GameState) => ({
   players: Array.from(players),
 });
 
-const gamePlayerIds = (gameState: GameState) => {
-  return mapMap(gameState.players, (gp) => gp.id);
+const tickBodyRecipientIds = (gameState: GameState) => {
+  return [...mapMap(gameState.players, (p) => p.id), ...mapMap(gameState.observers, (o) => o.id)];
 };
 
 export const createGameState = (id: number, time: number): GameState => {
@@ -68,6 +77,7 @@ export const createGameState = (id: number, time: number): GameState => {
       map: new Map(),
     },
     players: new Map(),
+    observers: new Map(),
   };
 };
 
@@ -122,7 +132,7 @@ export const tick = (game: GameState, time: number): Cmd => {
     }
   });
 
-  return cmd.sendMsgTo(gamePlayerIds(game), msg.tickData(game));
+  return cmd.sendMsgTo(tickBodyRecipientIds(game), msg.tickData(game));
 };
 
 export const joinPlayer = (game: GameState, id: number, name: string): Cmd => {
@@ -142,7 +152,7 @@ export const joinPlayer = (game: GameState, id: number, name: string): Cmd => {
 
   return [
     cmd.sendMsg(id, msg.startData(game, gamePlayer)),
-    cmd.sendMsgTo(gamePlayerIds(game), msg.playerEnter(gamePlayer, body)),
+    cmd.sendMsgTo(tickBodyRecipientIds(game), msg.playerEnter(gamePlayer, body)),
   ];
 };
 
@@ -160,7 +170,7 @@ export const playerRestart = (game: GameState, id: number): Cmd => {
   player.bodyId = body.id;
   player.live = true;
 
-  return cmd.sendMsgTo(gamePlayerIds(game), msg.playerNewBody(player, body));
+  return cmd.sendMsgTo(tickBodyRecipientIds(game), msg.playerNewBody(player, body));
 };
 
 export const kickPlayer = (game: GameState, id: number): Cmd => {
@@ -170,7 +180,7 @@ export const kickPlayer = (game: GameState, id: number): Cmd => {
     game.bodies.map.delete(body.id);
   }
 
-  return cmd.sendMsgTo(gamePlayerIds(game), msg.playerLeave(id));
+  return cmd.sendMsgTo(tickBodyRecipientIds(game), msg.playerLeave(id));
 };
 
 const updatePlayerBodyState = (
@@ -204,7 +214,7 @@ const playerDeath = (game: GameState, body: Airplane, causePlayerId: number): Cm
     // чтобы игрока выкинуло из игры
 
     // Сообщаем игрокам
-    cmds.push(cmd.sendMsgTo(gamePlayerIds(game), msg.playerDeath(player.id, causePlayerId)));
+    cmds.push(cmd.sendMsgTo(tickBodyRecipientIds(game), msg.playerDeath(player.id, causePlayerId)));
   }
 
   // Удаляем тело
@@ -248,4 +258,18 @@ export const updatePlayerChanges = (
 
   const cmds = clientMsg.body.weapon.hits.map((hit) => applyHit(game, hit, gamePlayer.id));
   return union(cmds);
+};
+
+export const joinObserver = (game: GameState, id: number, name: string): Cmd => {
+  const gameObserver: GameObserver = {
+    id,
+    name,
+  };
+  game.observers.set(id, gameObserver);
+
+  return cmd.sendMsg(id, msg.startObserverData(game));
+};
+
+export const kickObserver = (game: GameState, id: number): Cmd => {
+  game.observers.delete(id);
 };

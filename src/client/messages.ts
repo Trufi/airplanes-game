@@ -6,6 +6,11 @@ const joinGame = (gameId: number) => ({
   gameId,
 });
 
+const joinGameAsObserver = (gameId: number) => ({
+  type: 'joinGameAsObserver' as 'joinGameAsObserver',
+  gameId,
+});
+
 const changes = (body: PhysicBodyState, time: number) => {
   const { position, velocity, rotation, velocityDirection, weapon } = body;
 
@@ -43,6 +48,7 @@ const botAuth = (name: string) => ({
 
 export const msg = {
   joinGame,
+  joinGameAsObserver,
   changes,
   restart,
   auth,

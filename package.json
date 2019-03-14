@@ -8,6 +8,7 @@
     "start": "npm run dev",
     "build": "webpack --mode=production",
     "dev": "webpack-dev-server --mode=development",
+    "bots": "node src/bot/hook.js",
     "test": "npm run lint && npm run prettier && npm run build && npm run unit",
     "lint": "tslint 'src/**/*.ts'",
     "prettier": "prettier --check \"./**/*.{ts,tsx,js,json,html,css}\"",

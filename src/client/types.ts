@@ -92,6 +92,7 @@ export interface CameraState {
 }
 
 export interface State {
+  type: 'game';
   time: number;
   prevTime: number;
 
