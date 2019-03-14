@@ -3,12 +3,6 @@ import * as vec3 from '@2gis/gl-matrix/vec3';
 export const degToRad = (degrees: number) => (degrees * Math.PI) / 180;
 export const radToDeg = (radians: number) => (radians * 180) / Math.PI;
 
-export function clamp(value: number, min: number, max: number): number {
-  value = Math.max(value, min);
-  value = Math.min(value, max);
-  return value;
-}
-
 export function rotate(v: number[], a: number) {
   const x = v[0];
   const y = v[1];

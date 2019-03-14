@@ -1,8 +1,8 @@
-import { State, ServerTimeState } from '../../types';
+import { State } from '../../types';
 import { AnyServerMsg, ServerMsg, TickBodyData } from '../../../server/messages';
-import { median, time } from '../../utils';
 import { Cmd } from '../../commands';
 import { createPlayer, createNonPhysicBody, addBody, createPhysicBody } from '../common';
+import { updatePingAndServerTime } from '../serverTime';
 
 export const message = (state: State, msg: AnyServerMsg): Cmd => {
   switch (msg.type) {
@@ -123,25 +123,4 @@ const playerNewBody = (state: State, msg: ServerMsg['playerNewBody']) => {
   }
 
   player.bodyId = msg.body.id;
-};
-
-export const updatePingAndServerTime = (timeState: ServerTimeState, msg: ServerMsg['pong']) => {
-  const { pingSample, diffSample } = timeState;
-  const maxSampleLength = 10;
-
-  const ping = time() - msg.clientTime;
-  pingSample.push(ping);
-  if (pingSample.length > maxSampleLength) {
-    pingSample.shift();
-  }
-
-  timeState.ping = median(pingSample);
-
-  const diff = msg.clientTime + ping / 2 - msg.serverTime;
-  diffSample.push(diff);
-  if (diffSample.length > maxSampleLength) {
-    diffSample.shift();
-  }
-
-  timeState.diff = median(diffSample);
 };

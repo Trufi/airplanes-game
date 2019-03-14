@@ -1,22 +1,15 @@
 import * as ws from 'ws';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
-import { AnyClientMsg, msg, ClientMsg } from '../src/client/messages';
-import { AnyServerMsg, ServerMsg } from '../src/server/messages';
-import * as config from '../src/config';
-import { pick } from '../src/utils';
-import { ServerTimeState } from '../src/client/types';
-import { median } from '../src/client/utils';
+import { AnyClientMsg, msg, ClientMsg } from '../client/messages';
+import { AnyServerMsg, ServerMsg } from '../server/messages';
+import * as config from '../config';
+import { pick } from '../utils';
 import { BotBody } from './types';
+import { createServerTimeState, updatePingAndServerTime } from '../client/game/serverTime';
 
 export const initBot = (serverUrl: string, name: string, gameId: number) => {
-  const serverTimeState: ServerTimeState = {
-    diffSample: [],
-    diff: 0,
-
-    pingSample: [],
-    ping: 300,
-  };
+  const serverTimeState = createServerTimeState();
 
   let connected = false;
 
@@ -60,27 +53,6 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
         };
       }
     });
-  };
-
-  const updatePingAndServerTime = (timeState: ServerTimeState, msg: ServerMsg['pong']) => {
-    const { pingSample, diffSample } = timeState;
-    const maxSampleLength = 10;
-
-    const ping = time() - msg.clientTime;
-    pingSample.push(ping);
-    if (pingSample.length > maxSampleLength) {
-      pingSample.shift();
-    }
-
-    timeState.ping = median(pingSample);
-
-    const diff = msg.clientTime + ping / 2 - msg.serverTime;
-    diffSample.push(diff);
-    if (diffSample.length > maxSampleLength) {
-      diffSample.shift();
-    }
-
-    timeState.diff = median(diffSample);
   };
 
   const message = (msg: AnyServerMsg) => {

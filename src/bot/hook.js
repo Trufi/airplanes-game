@@ -1,4 +1,4 @@
-const tsConfig = require('../tsconfig');
+const tsConfig = require('../../tsconfig');
 
 // Меняем тип модулей, т.к. mocha не понимает es6
 tsConfig.compilerOptions.module = 'commonjs';

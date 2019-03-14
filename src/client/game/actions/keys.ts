@@ -1,8 +1,9 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
-import { degToRad, clamp, localAxisToXYAngle, projection } from '../../utils';
+import { degToRad, localAxisToXYAngle, projection } from '../../utils';
 import * as config from '../../../config';
 import { PhysicBodyState, State } from '../../types';
+import { clamp } from '../../../utils';
 
 const rotationAcceleration = { x: 0.000004, z: 0.000004 };
 const maxRotationSpeed = { x: 0.0007, z: 0.0007 };
