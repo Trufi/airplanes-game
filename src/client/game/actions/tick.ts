@@ -5,6 +5,7 @@ import * as view from '../view';
 import { lerp } from '../../../utils';
 import * as config from '../../../config';
 import { degToRad } from '../../utils';
+import { hideOldNotes } from '../../common/notes';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
@@ -13,7 +14,7 @@ export const tick = (state: State, time: number) => {
   state.bodies.forEach((body) => updateBody(state, body));
 
   updateCamera(state);
-  hideOldDeathNotes(state);
+  hideOldNotes(state.notes, time);
 
   view.updateCameraAndMap(state);
 };
@@ -99,12 +100,6 @@ const updatePhysicBody = (state: State, body: PhysicBodyState) => {
   view.updateMesh(body);
   view.updateBullet(state.time, body.weapon.left, body.weapon);
   view.updateBullet(state.time, body.weapon.right, body.weapon);
-};
-
-const hideOldDeathNotes = (state: State) => {
-  state.deathNotes = state.deathNotes.filter(
-    (note) => state.time - note.time < config.deathNote.delay,
-  );
 };
 
 const updateCamera = (state: State) => {

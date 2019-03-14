@@ -4,7 +4,8 @@ import { createScene, createCamera, createMap } from './../view';
 import * as config from '../../../config';
 import { ServerMsg } from '../../../server/messages';
 import { createPlayer, createPhysicBody, createNonPhysicBody, addBody } from '../common';
-import { createServerTimeState } from '../serverTime';
+import { createServerTimeState } from '../../common/serverTime';
+import { createNotesState } from '../../common/notes';
 
 export const start = (time: number, data: ServerMsg['startData']): State => {
   const mapOrigin = projectGeoToMap(config.origin);
@@ -51,7 +52,7 @@ export const start = (time: number, data: ServerMsg['startData']): State => {
     camera: createCamera(),
     serverTime: createServerTimeState(),
     pressedKeys: {},
-    deathNotes: [],
+    notes: createNotesState(),
     stick: { x: 0, y: 0 },
   };
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { State, DeathNote } from '../types';
+import { State } from '../types';
+import { DeathNote } from '../common/notes';
 
 const Note = ({ state, note }: { state: State; note: DeathNote }): JSX.Element => {
   let deadName: string | undefined;
@@ -51,7 +52,7 @@ export class DeathNotes extends React.Component<Props, {}> {
           zIndex: 200,
         }}
       >
-        {state.deathNotes.map((note, i) => (
+        {state.notes.notes.map((note, i) => (
           <Note note={note} state={state} key={i} />
         ))}
       </div>

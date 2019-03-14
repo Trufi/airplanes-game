@@ -6,7 +6,7 @@ import { AnyServerMsg, ServerMsg } from '../server/messages';
 import * as config from '../config';
 import { pick } from '../utils';
 import { BotBody } from './types';
-import { createServerTimeState, updatePingAndServerTime } from '../client/game/serverTime';
+import { createServerTimeState, updatePingAndServerTime } from '../client/common/serverTime';
 
 export const initBot = (serverUrl: string, name: string, gameId: number) => {
   const serverTimeState = createServerTimeState();

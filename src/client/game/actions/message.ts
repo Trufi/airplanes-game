@@ -2,7 +2,8 @@ import { State } from '../../types';
 import { AnyServerMsg, ServerMsg, TickBodyData } from '../../../server/messages';
 import { Cmd } from '../../commands';
 import { createPlayer, createNonPhysicBody, addBody, createPhysicBody } from '../common';
-import { updatePingAndServerTime } from '../serverTime';
+import { updatePingAndServerTime } from '../../common/serverTime';
+import { addKillNote } from '../../common/notes';
 
 export const message = (state: State, msg: AnyServerMsg): Cmd => {
   switch (msg.type) {
@@ -100,11 +101,7 @@ const playerDeath = (state: State, msg: ServerMsg['playerDeath']) => {
   }
 
   // Добавляем сообщение о смерти
-  state.deathNotes.push({
-    time: state.time,
-    causePlayerId,
-    deadPlayerId: playerId,
-  });
+  addKillNote(state.notes, state.time, causePlayerId, playerId);
 };
 
 const playerNewBody = (state: State, msg: ServerMsg['playerNewBody']) => {

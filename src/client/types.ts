@@ -1,5 +1,6 @@
 import * as J from '@2gis/jakarta';
 import * as THREE from 'three';
+import { NotesState } from './common/notes';
 
 export interface BodyStep {
   time: number;
@@ -78,12 +79,6 @@ export interface ServerTimeState {
   ping: number;
 }
 
-export interface DeathNote {
-  time: number;
-  causePlayerId: number;
-  deadPlayerId: number;
-}
-
 export interface StickState {
   x: number;
   y: number;
@@ -122,18 +117,18 @@ export interface State {
   camera: CameraState;
 
   map: J.Map;
-  bodies: Map<number, PhysicBodyState | NonPhysicBodyState>;
+  bodies: Map<number, BodyState>;
   serverTime: ServerTimeState;
   pressedKeys: { [key: string]: boolean };
 
-  deathNotes: DeathNote[];
+  notes: NotesState;
 
   stick: StickState;
 }
 
 // TODO: Разбить на несколько
 export interface AppState {
-  type: 'login' | 'gameSelect' | 'game';
+  type: 'login' | 'gameSelect' | 'game' | 'observer';
   connected: boolean;
   id?: number; // connection id на сервере
   name?: string;
