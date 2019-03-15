@@ -7,6 +7,7 @@ import { degToRad } from '../utils';
 import { clamp } from '../../utils';
 
 const rotateButton = 2; // right button
+const defaultRadius = 100000;
 
 export interface ControlState {
   action: 'none' | 'rotate' | 'drag';
@@ -17,6 +18,7 @@ export interface ControlState {
 
   pitch: number;
   rotation: number;
+  distance: number;
 
   position: number[];
   target?: { position: number[] };
@@ -24,10 +26,13 @@ export interface ControlState {
   startPoint: number[];
   movePoint: number[];
 
+  wheelDelta: number;
+
   handlers: {
     mouseUp: (ev: MouseEvent) => void;
     mouseDown: (ev: MouseEvent) => void;
     mouseMove: (ev: MouseEvent) => void;
+    wheel: (ev: WheelEvent) => void;
   };
 }
 
@@ -67,6 +72,18 @@ const mouseMove = (state: ControlState, ev: MouseEvent) => {
   }
 };
 
+const wheel = (state: ControlState, ev: WheelEvent) => {
+  // В FF под маком на скролл мыши вызывается событие
+  // с deltaMode = 1 (разница в строках, а не пикслеях)
+  // https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent/deltaMode
+  if (ev.deltaMode === 1) {
+    state.wheelDelta -= ev.deltaY * 20;
+  } else {
+    // обычная ситуация
+    state.wheelDelta -= ev.deltaY;
+  }
+};
+
 const preventDefault = (ev: MouseEvent) => ev.preventDefault();
 
 export const enable = (container: HTMLElement): ControlState => {
@@ -75,24 +92,29 @@ export const enable = (container: HTMLElement): ControlState => {
     container,
     pitch: 0,
     rotation: 0,
+    distance: defaultRadius,
     orbit: [0, 0, 0, 1],
     position: [0, 0, 0],
     startPoint: [0, 0],
     movePoint: [0, 0],
+    wheelDelta: 0,
     handlers: {
       mouseUp: () => {},
       mouseDown: () => {},
       mouseMove: () => {},
+      wheel: () => {},
     },
   };
 
   state.handlers.mouseUp = mouseUp.bind(undefined, state);
   state.handlers.mouseDown = mouseDown.bind(undefined, state);
   state.handlers.mouseMove = mouseMove.bind(undefined, state);
+  state.handlers.wheel = wheel.bind(undefined, state);
 
   container.addEventListener('mouseup', state.handlers.mouseUp);
   container.addEventListener('mousedown', state.handlers.mouseDown);
   container.addEventListener('mousemove', state.handlers.mouseMove);
+  container.addEventListener('wheel', state.handlers.wheel);
   container.addEventListener('contextmenu', preventDefault);
 
   return state;
@@ -103,6 +125,7 @@ export const disable = (state: ControlState) => {
   container.removeEventListener('mouseup', handlers.mouseUp);
   container.removeEventListener('mousedown', handlers.mouseDown);
   container.removeEventListener('mousemove', handlers.mouseMove);
+  container.removeEventListener('wheel', state.handlers.wheel);
   container.removeEventListener('contextmenu', preventDefault);
 };
 
@@ -113,13 +136,18 @@ export const setTarget = (state: ControlState, target?: ControlState['target']) 
 const identity = [0, 0, 0, 1];
 const q1 = [0, 0, 0, 1];
 const q2 = [0, 0, 0, 1];
+const shift = [0, 0, 0];
 
 export const updateCamera = (state: ControlState, camera: CameraState) => {
-  const { action, container, startPoint, movePoint, orbit } = state;
+  const { action, container, startPoint, movePoint, orbit, position } = state;
 
   if (state.target) {
-    vec3.copy(state.position, state.target.position);
+    vec3.copy(position, state.target.position);
   }
+
+  // Обработаем изменение расстояния
+  state.distance = Math.max(0, state.distance - state.wheelDelta * 100);
+  state.wheelDelta = 0;
 
   if (action === 'rotate') {
     const deltaX = ((movePoint[0] - startPoint[0]) * 2 * Math.PI) / container.clientWidth;
@@ -138,7 +166,7 @@ export const updateCamera = (state: ControlState, camera: CameraState) => {
   quat.rotateX(camera.rotation, orbit, degToRad(config.camera.pitch));
 
   // Отодвигаем камеру от самолета
-  const shift = [0, 100000, 0];
+  vec3.set(shift, 0, state.distance, 0);
   vec3.transformQuat(shift, shift, orbit);
   vec3.negate(shift, shift);
   vec3.add(camera.position, state.position, shift);
