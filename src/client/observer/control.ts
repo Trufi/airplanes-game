@@ -1,13 +1,16 @@
 import * as quat from '@2gis/gl-matrix/quat';
 import * as vec2 from '@2gis/gl-matrix/vec2';
 import * as vec3 from '@2gis/gl-matrix/vec3';
+import * as THREE from 'three';
 import * as config from '../../config';
 import { CameraState } from '../types';
 import { degToRad } from '../utils';
 import { clamp } from '../../utils';
 
+const dragButton = 0; // left button
 const rotateButton = 2; // right button
-const defaultRadius = 100000;
+const defaultDistance = 100000;
+const minDistance = 10000;
 
 export interface ControlState {
   action: 'none' | 'rotate' | 'drag';
@@ -20,8 +23,19 @@ export interface ControlState {
   rotation: number;
   distance: number;
 
-  position: number[];
   target?: { position: number[] };
+
+  /**
+   * Если есть цель, то эта позиция становится равной позиции цели и не лежит в плоскости карты
+   */
+  position: number[];
+
+  /**
+   * А эта позиция всегда лежит на плоскости карты
+   * Она выставляется, когда сбрасывается цель
+   */
+  planePosition: number[];
+  planeDistance: number;
 
   startPoint: number[];
   movePoint: number[];
@@ -49,6 +63,13 @@ const mouseDown = (state: ControlState, ev: MouseEvent) => {
     state.action = 'rotate';
     vec2.set(state.startPoint, clientX, clientY);
     vec2.copy(state.movePoint, state.startPoint);
+  } else if (button === dragButton) {
+    state.action = 'drag';
+    vec2.set(state.startPoint, clientX, clientY);
+    vec2.copy(state.movePoint, state.startPoint);
+
+    // Сбросим цель
+    setTarget(state);
   }
 };
 
@@ -57,7 +78,10 @@ const mouseUp = (state: ControlState, ev: MouseEvent) => {
 
   const { button } = ev;
 
-  if (state.action === 'rotate' && button === rotateButton) {
+  if (
+    (state.action === 'rotate' && button === rotateButton) ||
+    (state.action === 'drag' && button === dragButton)
+  ) {
     state.action = 'none';
   }
 };
@@ -67,7 +91,7 @@ const mouseMove = (state: ControlState, ev: MouseEvent) => {
 
   const { clientX, clientY } = ev;
 
-  if (state.action === 'rotate') {
+  if (state.action === 'rotate' || state.action === 'drag') {
     vec2.set(state.movePoint, clientX, clientY);
   }
 };
@@ -92,9 +116,11 @@ export const enable = (container: HTMLElement): ControlState => {
     container,
     pitch: 0,
     rotation: 0,
-    distance: defaultRadius,
+    distance: defaultDistance,
     orbit: [0, 0, 0, 1],
     position: [0, 0, 0],
+    planePosition: [0, 0, 0],
+    planeDistance: 0,
     startPoint: [0, 0],
     movePoint: [0, 0],
     wheelDelta: 0,
@@ -131,6 +157,11 @@ export const disable = (state: ControlState) => {
 
 export const setTarget = (state: ControlState, target?: ControlState['target']) => {
   state.target = target;
+
+  if (target === undefined) {
+    vec3.copy(state.position, state.planePosition);
+    state.distance = state.planeDistance;
+  }
 };
 
 const identity = [0, 0, 0, 1];
@@ -138,15 +169,35 @@ const q1 = [0, 0, 0, 1];
 const q2 = [0, 0, 0, 1];
 const shift = [0, 0, 0];
 
-export const updateCamera = (state: ControlState, camera: CameraState) => {
-  const { action, container, startPoint, movePoint, orbit, position } = state;
+const normalizeMousePosition = (mouse: THREE.Vector2, point: number[]) => {
+  mouse.x = (point[0] / window.innerWidth) * 2 - 1;
+  mouse.y = -(point[1] / window.innerHeight) * 2 + 1;
+};
 
-  if (state.target) {
-    vec3.copy(position, state.target.position);
+const raycaster = new THREE.Raycaster();
+const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1));
+const mouse = new THREE.Vector2();
+const startVector = new THREE.Vector3();
+const moveVector = new THREE.Vector3();
+
+export const updateCamera = (state: ControlState, camera: CameraState) => {
+  const {
+    action,
+    container,
+    startPoint,
+    movePoint,
+    orbit,
+    position,
+    target,
+    planePosition,
+  } = state;
+
+  if (target) {
+    vec3.copy(position, target.position);
   }
 
   // Обработаем изменение расстояния
-  state.distance = Math.max(0, state.distance - state.wheelDelta * 100);
+  state.distance = Math.max(minDistance, state.distance - state.wheelDelta * 100);
   state.wheelDelta = 0;
 
   if (action === 'rotate') {
@@ -161,8 +212,28 @@ export const updateCamera = (state: ControlState, camera: CameraState) => {
     quat.rotateZ(q2, identity, state.rotation);
 
     quat.multiply(orbit, q2, q1);
+  } else if (action === 'drag') {
+    normalizeMousePosition(mouse, startPoint);
+    raycaster.setFromCamera(mouse, camera.object);
+
+    const startIntersect = raycaster.ray.intersectPlane(plane, startVector);
+
+    if (startIntersect !== null) {
+      normalizeMousePosition(mouse, movePoint);
+      raycaster.setFromCamera(mouse, camera.object);
+
+      const moveIntersection = raycaster.ray.intersectPlane(plane, moveVector);
+
+      if (moveIntersection !== null) {
+        position[0] += startVector.x - moveVector.x;
+        position[1] += startVector.y - moveVector.y;
+
+        vec2.copy(startPoint, movePoint);
+      }
+    }
   }
 
+  // Обновляем камеру
   quat.rotateX(camera.rotation, orbit, degToRad(config.camera.pitch));
 
   // Отодвигаем камеру от самолета
@@ -172,4 +243,23 @@ export const updateCamera = (state: ControlState, camera: CameraState) => {
   vec3.add(camera.position, state.position, shift);
 
   camera.position[2] = Math.max(camera.position[2], 0);
+
+  if (target) {
+    mouse.set(0, 0);
+    raycaster.setFromCamera(mouse, camera.object);
+    const intersect = raycaster.ray.intersectPlane(plane, startVector);
+    if (intersect !== null) {
+      vec2.set(planePosition, startVector.x, startVector.y);
+      state.planeDistance = Math.max(
+        minDistance,
+        vec3.distance(camera.position, state.planePosition),
+      );
+    } else {
+      vec2.copy(planePosition, position);
+      state.planeDistance = state.distance;
+    }
+  } else {
+    vec2.copy(planePosition, position);
+    state.planeDistance = state.distance;
+  }
 };
