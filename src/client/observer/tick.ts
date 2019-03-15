@@ -10,7 +10,14 @@ export const tick = (state: ObserverState, time: number) => {
 
   state.bodies.forEach((body) => updateNonPhysicBody(body, time, state.serverTime.diff));
 
-  control.updateCamera(state.control, state.camera, state.time - state.prevTime);
+  const nextBodyValue = state.bodies.entries().next().value;
+  if (nextBodyValue) {
+    control.setTarget(state.control, nextBodyValue[1]);
+  } else {
+    control.setTarget(state.control);
+  }
+
+  control.updateCamera(state.control, state.camera);
 
   hideOldNotes(state.notes, time);
 

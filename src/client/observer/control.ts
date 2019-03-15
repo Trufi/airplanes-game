@@ -3,7 +3,8 @@ import * as vec2 from '@2gis/gl-matrix/vec2';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as config from '../../config';
 import { CameraState } from '../types';
-import { restoreRoll, degToRad, localAxisToXYAngle, radToDeg } from '../utils';
+import { degToRad } from '../utils';
+import { clamp } from '../../utils';
 
 const rotateButton = 2; // right button
 
@@ -14,10 +15,11 @@ export interface ControlState {
 
   orbit: number[];
 
-  pinch: number;
+  pitch: number;
   rotation: number;
 
   position: number[];
+  target?: { position: number[] };
 
   startPoint: number[];
   movePoint: number[];
@@ -71,7 +73,7 @@ export const enable = (container: HTMLElement): ControlState => {
   const state: ControlState = {
     action: 'none',
     container,
-    pinch: 0,
+    pitch: 0,
     rotation: 0,
     orbit: [0, 0, 0, 1],
     position: [0, 0, 0],
@@ -104,42 +106,34 @@ export const disable = (state: ControlState) => {
   container.removeEventListener('contextmenu', preventDefault);
 };
 
-export interface ControlChanges {
-  rotateX: number;
-  rotateZ: number;
-}
+export const setTarget = (state: ControlState, target?: ControlState['target']) => {
+  state.target = target;
+};
 
-// const rotateSpeed = 1;
+const identity = [0, 0, 0, 1];
+const q1 = [0, 0, 0, 1];
+const q2 = [0, 0, 0, 1];
 
-const yAxis = [0, 1, 0];
-export const updateCamera = (
-  state: ControlState,
-  camera: CameraState,
-  dt: number,
-  // targetPosition?: number[],
-) => {
+export const updateCamera = (state: ControlState, camera: CameraState) => {
   const { action, container, startPoint, movePoint, orbit } = state;
 
-  // Наклоняем камеру
-  // quat.rotateX(orbit, orbit, -degToRad(config.camera.pitch));
+  if (state.target) {
+    vec3.copy(state.position, state.target.position);
+  }
 
   if (action === 'rotate') {
     const deltaX = ((movePoint[0] - startPoint[0]) * 2 * Math.PI) / container.clientWidth;
     const deltaY = ((movePoint[1] - startPoint[1]) * 2 * Math.PI) / container.clientHeight;
     vec2.copy(startPoint, movePoint);
 
-    const angleY = localAxisToXYAngle(yAxis, orbit);
-    console.log(radToDeg(angleY));
-    if (angleY < degToRad(-80)) {
-      // quat.rotateY(orbit, orbit, deltaX);
-      // вращение вокруг точки на карте
-    } else {
-      quat.rotateZ(orbit, orbit, -deltaX);
-    }
-    quat.rotateX(orbit, orbit, -deltaY);
-  }
+    state.pitch = clamp(state.pitch + deltaY, -Math.PI / 2, Math.PI / 2);
+    state.rotation += deltaX;
 
-  restoreRoll(orbit, dt, 1, 80);
+    quat.rotateX(q1, identity, -state.pitch);
+    quat.rotateZ(q2, identity, state.rotation);
+
+    quat.multiply(orbit, q2, q1);
+  }
 
   quat.rotateX(camera.rotation, orbit, degToRad(config.camera.pitch));
 
