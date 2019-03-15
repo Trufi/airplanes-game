@@ -4,6 +4,7 @@ import { ServerMsg } from '../../server/messages';
 import { addBody, createPlayer, createNonPhysicBody } from '../game/common';
 import * as config from '../../config';
 import * as view from '../game/view';
+import * as control from './control';
 import { createServerTimeState } from '../common/serverTime';
 import { createNotesState } from '../common/notes';
 import { AppState } from '../types';
@@ -32,6 +33,8 @@ export const start = (appState: AppState, data: ServerMsg['startObserverData']) 
 
   const now = time();
 
+  const overlay = document.getElementById('root') as HTMLElement;
+
   const state: ObserverState = {
     type: 'observer',
     time: now,
@@ -46,6 +49,7 @@ export const start = (appState: AppState, data: ServerMsg['startObserverData']) 
     serverTime: createServerTimeState(),
     pressedKeys: {},
     notes: createNotesState(),
+    control: control.enable(overlay),
     callbacks: {
       loopId: 0,
       loop: () => {},

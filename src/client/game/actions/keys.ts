@@ -1,6 +1,6 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
-import { degToRad, localAxisToXYAngle, projection } from '../../utils';
+import { degToRad, projection, restoreRoll } from '../../utils';
 import * as config from '../../../config';
 import { PhysicBodyState, State } from '../../types';
 import { clamp } from '../../../utils';
@@ -8,9 +8,6 @@ import { clamp } from '../../../utils';
 const rotationAcceleration = { x: 0.000004, z: 0.000004 };
 const maxRotationSpeed = { x: 0.0007, z: 0.0007 };
 const restoreYSpeed = 0.0006;
-
-const xAxis = [1, 0, 0];
-const yAxis = [0, 1, 0];
 
 export const processPressedkeys = (dt: number, state: State) => {
   const { pressedKeys, stick, body } = state;
@@ -80,7 +77,7 @@ export const processPressedkeys = (dt: number, state: State) => {
   }
 
   if (!rollPressed) {
-    restoreRoll(dt, body);
+    restoreRoll(body.rotation, dt, restoreYSpeed, 40);
   }
 };
 
@@ -169,25 +166,6 @@ const restorePitchAcceleration = (dt: number, body: PhysicBodyState) => {
     pitchDown(dt, body);
   } else {
     pitchUp(dt, body);
-  }
-};
-
-const restoreRoll = (dt: number, body: PhysicBodyState) => {
-  const angleY = localAxisToXYAngle(yAxis, body.rotation);
-
-  // TODO: надо обойти кейс, когда X локальный перпендикулярен глобальному
-  // в этом случае горизонт остается перпендикулярным
-
-  // Восстанавливаем горизонт, только если прицел смотрит почти на него
-  if (Math.abs(angleY) < degToRad(40)) {
-    const angleX = localAxisToXYAngle(xAxis, body.rotation);
-    const rotationYAngle = restoreYSpeed * dt;
-
-    if (rotationYAngle > Math.abs(angleX)) {
-      quat.rotateY(body.rotation, body.rotation, angleX);
-    } else {
-      quat.rotateY(body.rotation, body.rotation, Math.sign(angleX) * rotationYAngle);
-    }
   }
 };
 

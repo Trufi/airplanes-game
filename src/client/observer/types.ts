@@ -1,6 +1,7 @@
 import * as J from '@2gis/jakarta';
 import { PlayerState, CameraState, ServerTimeState, NonPhysicBodyState } from '../types';
 import { NotesState } from '../common/notes';
+import { ControlState } from './control';
 
 export interface ObserverState {
   type: 'observer';
@@ -25,6 +26,8 @@ export interface ObserverState {
   pressedKeys: { [key: string]: boolean };
 
   notes: NotesState;
+
+  control: ControlState;
 
   callbacks: {
     loopId: number;
