@@ -6,6 +6,7 @@ import { findMap, clamp, mapMap, vec2SignedAngle } from '../../utils';
 import { ClientMsg } from '../../client/messages';
 import * as config from '../../config';
 import { Hit } from '../../client/types';
+import { updatePointsByType } from './calcPoints';
 
 export interface Weapon {
   lastShotTime: number;
@@ -202,6 +203,7 @@ const playerDeath = (game: GameState, body: Airplane, causePlayerId: number): Cm
   const causePlayer = game.players.get(causePlayerId);
   if (causePlayer) {
     causePlayer.kills++;
+    updatePointsByType(causePlayer, 'kills');
   }
 
   // Превращаем живого игрока в мертвого
@@ -209,6 +211,7 @@ const playerDeath = (game: GameState, body: Airplane, causePlayerId: number): Cm
   if (player) {
     player.live = false;
     player.deaths++;
+    updatePointsByType(player, 'deaths');
 
     // TODO: если игра на вылет, то тут нужно как-то прокинуть команду
     // чтобы игрока выкинуло из игры

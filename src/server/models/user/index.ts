@@ -7,11 +7,12 @@ const parseResult = (result: any) => {
   return JSON.parse(string);
 };
 
-export const createToken = (p: { name: string, password: string }) => {
+export const createToken = (p: { name: string; password: string }) => {
   return createHmac('sha256', `${p.name}${p.password}`).digest('hex');
 };
 
 export const createUser = (connection: Client, user: UserCreation) => {
+  // @TODO Уставновить рейтинг Эло. 1200 [#ratingElo]
   const sql = `
     INSERT INTO users (name, password, kills, points, deaths)
     VALUES
@@ -37,7 +38,7 @@ export const createUser = (connection: Client, user: UserCreation) => {
 export const updateUserStats = (
   connection: Client,
   userId: User['id'],
-  stats: { kills: User['kills'], deaths: User['deaths'], points: User['points'] },
+  stats: { kills: User['kills']; deaths: User['deaths']; points: User['points'] },
 ) => {
   const sql = `
     UPDATE users
@@ -47,6 +48,8 @@ export const updateUserStats = (
       points=${stats.points}
     WHERE id=${userId};
   `;
+
+  console.log('sql', sql);
 
   return new Promise((resolve, reject) => {
     connection.query(sql, (err, result) => {

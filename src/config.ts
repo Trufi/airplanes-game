@@ -1,5 +1,5 @@
 export const weapon = {
-  damage: 5,
+  damage: 8,
 
   /**
    * Меньший радиус усеченного конуса
