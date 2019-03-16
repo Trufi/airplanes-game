@@ -23,7 +23,7 @@ export interface ControlState {
   rotation: number;
   distance: number;
 
-  target?: { position: number[] };
+  target?: { id: number; position: number[] };
 
   /**
    * Если есть цель, то эта позиция становится равной позиции цели и не лежит в плоскости карты
@@ -156,6 +156,11 @@ export const disable = (state: ControlState) => {
 };
 
 export const setTarget = (state: ControlState, target?: ControlState['target']) => {
+  // Если цели до этого не было, то сбрасываем дистацнию до дефолтной
+  // Если цель была, то дистацния должна остаться такой же, чтобы камера не скакала
+  if (!state.target) {
+    state.distance = defaultDistance;
+  }
   state.target = target;
 
   if (target === undefined) {

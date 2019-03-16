@@ -5,6 +5,7 @@ import { PlayerLabel } from './playerLabel';
 import { DeathNotes } from './deathNotes';
 import { ExecuteCmd } from '../commands/execute';
 import { Debug } from './debug';
+import { ObserverList } from './observerList';
 
 interface Props {
   appState: AppState;
@@ -72,6 +73,7 @@ export class Observer extends React.Component<Props, {}> {
           }}
           state={observer}
         />
+        <ObserverList observer={observer} />
       </div>
     );
   }
