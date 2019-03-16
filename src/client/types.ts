@@ -22,8 +22,9 @@ export interface WeaponState {
   lastShotTime: number;
   lastHitTime: number;
   hits: Hit[];
-  left: THREE.Object3D;
-  right: THREE.Object3D;
+  left: THREE.Line;
+  right: THREE.Line;
+  target?: THREE.Vector3;
 }
 
 export interface PhysicBodyState {
@@ -38,7 +39,6 @@ export interface PhysicBodyState {
   velocityDirection: number[];
   health: number;
   weapon: WeaponState;
-  animation: THREE.AnimationMixer;
 }
 
 export interface NonPhysicBodyState {
@@ -54,11 +54,11 @@ export interface NonPhysicBodyState {
   health: number;
   weapon: {
     lastShotTime: number;
-    left: THREE.Object3D;
-    right: THREE.Object3D;
+    left: THREE.Line;
+    right: THREE.Line;
+    target?: THREE.Vector3;
   };
   steps: BodyStep[];
-  animation: THREE.AnimationMixer;
 }
 
 export type BodyState = PhysicBodyState | NonPhysicBodyState;

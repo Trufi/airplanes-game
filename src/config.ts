@@ -25,8 +25,10 @@ export const weapon = {
 
 export const airplane = {
   maxHealth: 100,
-  scale: 12,
+  scale: 4000,
   velocity: 30,
+  initRotation: { x: -Math.PI / 2, y: 0, z: Math.PI },
+  propeller: { x: 0, y: 0, z: 0.666, radius: 0.36, opacity: 0.4 },
 };
 
 export const camera = {

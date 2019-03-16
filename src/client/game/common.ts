@@ -27,7 +27,7 @@ export const addBody = (
 
 export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
   const { id, position, velocityDirection, velocity, rotation, health } = data;
-  const { mesh, mixer } = createMesh();
+  const mesh = createMesh();
   return {
     type: 'physic',
     id,
@@ -37,7 +37,6 @@ export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
     rotation,
     health,
     mesh,
-    animation: mixer,
     shotMesh: createShotMesh(),
     weapon: {
       lastHitTime: 0,
@@ -51,7 +50,7 @@ export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
 
 export const createNonPhysicBody = (data: TickBodyData): NonPhysicBodyState => {
   const { id, position, velocityDirection, velocity, rotation, health } = data;
-  const { mesh, mixer } = createMesh();
+  const mesh = createMesh();
   return {
     type: 'nonPhysic',
     id,
@@ -62,7 +61,6 @@ export const createNonPhysicBody = (data: TickBodyData): NonPhysicBodyState => {
     health,
     steps: [],
     mesh,
-    animation: mixer,
     shotMesh: createShotMesh(),
     weapon: {
       lastShotTime: 0,

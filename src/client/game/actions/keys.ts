@@ -4,6 +4,7 @@ import { degToRad, projection, restoreRoll } from '../../utils';
 import * as config from '../../../config';
 import { PhysicBodyState, State } from '../../types';
 import { clamp } from '../../../utils';
+import { Vector3 } from 'three';
 
 const rotationAcceleration = { x: 0.000004, z: 0.000004 };
 const maxRotationSpeed = { x: 0.0007, z: 0.0007 };
@@ -210,6 +211,11 @@ const fire = (state: State) => {
     ) {
       weapon.lastHitTime = state.time;
       weapon.hits.push({ bodyId: targetBody.id });
+      weapon.target = new Vector3(
+        targetBody.position[0],
+        targetBody.position[1],
+        targetBody.position[2],
+      );
     }
   }
 };

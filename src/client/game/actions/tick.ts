@@ -58,8 +58,8 @@ export const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, time
   body.health = endStep.health;
 
   view.updateMesh(body);
-  view.updateBullet(interpolationTime, body.weapon.left, body.weapon);
-  view.updateBullet(interpolationTime, body.weapon.right, body.weapon);
+  view.updateBullet(interpolationTime, body.weapon.left, body);
+  view.updateBullet(interpolationTime, body.weapon.right, body);
 };
 
 /**
@@ -98,8 +98,8 @@ const updatePhysicBody = (state: State, body: PhysicBodyState) => {
   body.position[2] = Math.max(body.position[2] + velocityVector[2] * dt, config.minimalHeight);
 
   view.updateMesh(body);
-  view.updateBullet(state.time, body.weapon.left, body.weapon);
-  view.updateBullet(state.time, body.weapon.right, body.weapon);
+  view.updateBullet(state.time, body.weapon.left, body);
+  view.updateBullet(state.time, body.weapon.right, body);
 };
 
 const updateCamera = (state: State) => {

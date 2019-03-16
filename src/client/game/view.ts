@@ -5,7 +5,8 @@ import { config as mapConfig, MapOptions, Map, Skybox } from '@2gis/jakarta';
 import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import * as config from '../../config';
 import { degToRad } from '../utils';
-import { CameraState } from '../types';
+import { BodyState, CameraState } from '../types';
+import { Vector3, Geometry, TextureLoader } from 'three';
 
 mapConfig.camera.fov = 45;
 mapConfig.camera.far = 2 ** 32; // Можно оставить 600000, но тогда надо поправить frustum
@@ -22,36 +23,51 @@ export const createRenderer = () => {
   return renderer;
 };
 
+const gltfLoader = new GLTFLoader();
+const textureLoader = new TextureLoader();
+
 export const createMesh = () => {
   const mesh = new THREE.Object3D();
-  const mixer = new THREE.AnimationMixer(mesh);
-  mesh.updateMatrix(); // todo убрать
-  mesh.updateWorldMatrix(true, true);
-  const loader = new GLTFLoader();
-  loader.load('./assets/planeUV.glb', (gltf) => {
-    const scene = gltf.scene;
-    scene.rotateX(Math.PI / 2);
-    const k = config.airplane.scale; // размер соответсвует примерно 50 метрам!
-    scene.scale.set(k, k, k);
-    mesh.add(scene);
+  gltfLoader.load('./assets/new.glb', (gltf) => {
+    textureLoader.load('./assets/propeller.jpg', (texture) => {
+      const scene = gltf.scene;
+      const circleGeom = new THREE.CircleGeometry(config.airplane.propeller.radius, 32);
+      const circleMaterial = new THREE.MeshBasicMaterial({
+        map: texture,
+        opacity: config.airplane.propeller.opacity,
+        side: THREE.DoubleSide,
+      });
+      const circle = new THREE.Mesh(circleGeom, circleMaterial);
+      circle.position.set(
+        config.airplane.propeller.x,
+        config.airplane.propeller.y,
+        config.airplane.propeller.z,
+      );
+      circle.onBeforeRender = (_renderer, _scene, _camera, geometry) => {
+        geometry.rotateZ(0.07);
+      };
 
-    const clips = gltf.animations;
-    clips.forEach((clip) => {
-      mixer.clipAction(clip).play();
+      scene.add(circle);
+
+      scene.scale.set(config.airplane.scale, config.airplane.scale, config.airplane.scale); // размер соответсвует примерно 50 метрам!
+      scene.rotateX(config.airplane.initRotation.x);
+      scene.rotateY(config.airplane.initRotation.y);
+      scene.rotateZ(config.airplane.initRotation.z);
+
+      mesh.add(scene);
     });
   });
 
-  return { mesh, mixer };
+  return mesh;
 };
 
 export const updateMesh = (body: {
-  animation: THREE.AnimationMixer;
   mesh: THREE.Object3D;
   position: number[];
   rotation: number[];
   velocityDirection: number[];
 }) => {
-  const { animation, mesh, position, velocityDirection } = body;
+  const { mesh, position, velocityDirection } = body;
   mesh.position.set(position[0], position[1], position[2]);
 
   // rotate mesh
@@ -59,10 +75,6 @@ export const updateMesh = (body: {
   q1.fromArray(body.rotation);
   mesh.setRotationFromQuaternion(q1);
   mesh.rotateY(-velocityDirection[2] * 1500);
-
-  animation.update(1);
-  mesh.updateMatrix();
-  mesh.updateWorldMatrix(true, true);
 };
 
 export const createScene = () => {
@@ -127,15 +139,30 @@ export const updateShot = (
   }
 };
 
-export const updateBullet = (
-  time: number,
-  mesh: THREE.Object3D,
-  weapon: { lastShotTime: number },
-) => {
-  if (time - weapon.lastShotTime < config.weapon.animationDuration) {
+export const updateBullet = (time: number, mesh: THREE.Line, body: BodyState) => {
+  if (time - body.weapon.lastShotTime < config.weapon.animationDuration) {
     mesh.visible = true;
+    if (body.weapon) {
+      if (body.weapon.target) {
+        let r = new Vector3();
+        let wp = new Vector3();
+        mesh.getWorldPosition(wp);
+        r.subVectors(body.weapon.target, wp);
+        console.log(r);
+        console.log(wp);
+        // r.normalize();
+        // r.setLength(config.weapon.distance);
+        if (mesh.geometry instanceof Geometry) {
+          mesh.geometry.vertices[1] = r;
+        }
+      }
+    }
   } else {
     mesh.visible = false;
+    body.weapon.target = undefined;
+    if (mesh.geometry instanceof Geometry) {
+      mesh.geometry.vertices[1] = new Vector3(0, config.weapon.distance, 0);
+    }
   }
 };
 
