@@ -1,7 +1,7 @@
-import {serializeUser, deserializeUser, authenticate, use as usePassport} from 'passport';
-import {Router, Express} from 'express';
-import {Strategy as BearerStrategy} from 'passport-http-bearer';
-import {connectionDB} from '../models/database';
+import { serializeUser, deserializeUser, authenticate, use as usePassport } from 'passport';
+import { Router, Express } from 'express';
+import { Strategy as BearerStrategy } from 'passport-http-bearer';
+import { connectionDB } from '../models/database';
 import {
   createToken,
   createUser,
@@ -10,10 +10,10 @@ import {
   selectUserByToken,
   updateUserStats,
 } from '../models/user';
-import {getAchievements, getOwnAchievements, setAchievements} from '../models/achievements';
-import {State} from '../types';
-import {mapMap} from '../../utils';
-import {setAccessAllowOrigin} from './cors';
+import { getAchievements, getOwnAchievements, setAchievements } from '../models/achievements';
+import { State } from '../types';
+import { mapMap } from '../../utils';
+import { setAccessAllowOrigin } from './cors';
 
 export function applyApiRouter(app: Express, state: State) {
   const apiRouter = Router();
@@ -44,7 +44,7 @@ export function applyApiRouter(app: Express, state: State) {
             points: result.points,
             token,
           },
-          {scope: 'all'},
+          { scope: 'all' },
         );
       })
       .catch((err) => {
@@ -56,19 +56,22 @@ export function applyApiRouter(app: Express, state: State) {
   /**
    * Preflight block.
    */
-  apiRouter.options([
-    '/register',
-    '/auth',
-    '/gamelist',
-    '/login',
-    '/user/stats',
-    '/achievement/own',
-    '/achievement/set',
-    '/achievement/list',
-  ], (req, res) => {
-    setAccessAllowOrigin(req, res);
-    res.sendStatus(200);
-  });
+  apiRouter.options(
+    [
+      '/register',
+      '/auth',
+      '/gamelist',
+      '/login',
+      '/user/stats',
+      '/achievement/own',
+      '/achievement/set',
+      '/achievement/list',
+    ],
+    (req, res) => {
+      setAccessAllowOrigin(req, res);
+      res.sendStatus(200);
+    },
+  );
 
   apiRouter.post('/register', (req, res) => {
     setAccessAllowOrigin(req, res);
@@ -81,7 +84,7 @@ export function applyApiRouter(app: Express, state: State) {
     }
 
     const username = req.body.username;
-    const token = createToken({name: req.body.username, password: req.body.password});
+    const token = createToken({ name: req.body.username, password: req.body.password });
 
     const connection = connectionDB();
     selectUserByName(connection, username)
@@ -98,7 +101,7 @@ export function applyApiRouter(app: Express, state: State) {
             connection.end();
             res.status(200).send({
               user: {
-                username: req.body.username,
+                name: req.body.username,
                 token,
               },
             });
@@ -124,7 +127,7 @@ export function applyApiRouter(app: Express, state: State) {
       return res.status(422).send('Unprocessed entity');
     }
 
-    const token = createToken({name: req.body.username, password: req.body.password});
+    const token = createToken({ name: req.body.username, password: req.body.password });
 
     const connection = connectionDB();
     const promise = selectUserByToken(connection, token);
@@ -154,11 +157,11 @@ export function applyApiRouter(app: Express, state: State) {
       });
   });
 
-  apiRouter.post('/auth', authenticate('bearer', {failureRedirect: '/'}), (req, res) => {
+  apiRouter.post('/auth', authenticate('bearer', { failureRedirect: '/' }), (req, res) => {
     setAccessAllowOrigin(req, res);
 
     const connection = connectionDB();
-    const {id} = req.user;
+    const { id } = req.user;
     const promise = selectUser(connection, id);
 
     promise
@@ -181,10 +184,10 @@ export function applyApiRouter(app: Express, state: State) {
       });
   });
 
-  apiRouter.post('/user/stats', authenticate('bearer', {failureRedirect: '/'}), (req, res) => {
+  apiRouter.post('/user/stats', authenticate('bearer', { failureRedirect: '/' }), (req, res) => {
     setAccessAllowOrigin(req, res);
 
-    const {deaths, kills, points} = req.body;
+    const { deaths, kills, points } = req.body;
 
     if (typeof deaths === 'undefined' || typeof deaths !== 'number') {
       return res.status(422).send('Unprocessed entity: deaths');
@@ -197,7 +200,7 @@ export function applyApiRouter(app: Express, state: State) {
     }
 
     const connection = connectionDB();
-    const {id} = req.user;
+    const { id } = req.user;
     const promise = updateUserStats(connection, id, {
       kills: req.user.kills + kills,
       deaths: req.user.deaths + deaths,
@@ -217,7 +220,7 @@ export function applyApiRouter(app: Express, state: State) {
 
   apiRouter.get(
     '/achievement/own',
-    authenticate('bearer', {failureRedirect: '/'}),
+    authenticate('bearer', { failureRedirect: '/' }),
     (req, res) => {
       setAccessAllowOrigin(req, res);
 
@@ -227,7 +230,7 @@ export function applyApiRouter(app: Express, state: State) {
       promise
         .then((result) => {
           connection.end();
-          res.send({achievements: result});
+          res.send({ achievements: result });
         })
         .catch((err) => {
           console.log('err', err);
@@ -245,7 +248,7 @@ export function applyApiRouter(app: Express, state: State) {
     promise
       .then((result) => {
         connection.end();
-        res.send({achievements: result});
+        res.send({ achievements: result });
       })
       .catch((err) => {
         console.log('err', err);
@@ -255,12 +258,12 @@ export function applyApiRouter(app: Express, state: State) {
 
   apiRouter.post(
     '/achievement/set',
-    authenticate('bearer', {failureRedirect: '/'}),
+    authenticate('bearer', { failureRedirect: '/' }),
     (req, res) => {
       setAccessAllowOrigin(req, res);
 
-      const {achievementId} = req.body;
-      const {id} = req.user;
+      const { achievementId } = req.body;
+      const { id } = req.user;
 
       if (!id || typeof id !== 'number') {
         return res.status(422).send('Unprocessed entity');
@@ -273,7 +276,7 @@ export function applyApiRouter(app: Express, state: State) {
       promise
         .then((result) => {
           connection.end();
-          res.send({achievement: result});
+          res.send({ achievement: result });
         })
         .catch((err) => {
           console.log('err', err);
@@ -282,15 +285,15 @@ export function applyApiRouter(app: Express, state: State) {
     },
   );
 
-  apiRouter.get('/gamelist', authenticate('bearer', {failureRedirect: '/'}), (req, res) => {
+  apiRouter.get('/gamelist', authenticate('bearer', { failureRedirect: '/' }), (req, res) => {
     setAccessAllowOrigin(req, res);
 
-    const games = mapMap(state.games.map, ({id, players}) => ({
+    const games = mapMap(state.games.map, ({ id, players }) => ({
       id,
       players: players.size,
     }));
 
-    res.send({games});
+    res.send({ games });
   });
 
   usePassport(strategy);

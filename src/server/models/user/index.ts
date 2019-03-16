@@ -49,8 +49,6 @@ export const updateUserStats = (
     WHERE id=${userId};
   `;
 
-  console.log('sql', sql);
-
   return new Promise((resolve, reject) => {
     connection.query(sql, (err, result) => {
       if (err) {

@@ -16,7 +16,7 @@ import { createServerTimeState } from '../common/serverTime';
 import { createNotesState } from '../common/notes';
 
 export const start = (data: ServerMsg['startData']) => {
-  if (!appState.name || !appState.id) {
+  if (!appState.id) {
     return;
   }
 
