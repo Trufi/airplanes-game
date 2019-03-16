@@ -2,6 +2,7 @@ import * as J from '@2gis/jakarta';
 import { PlayerState, CameraState, ServerTimeState, NonPhysicBodyState } from '../types';
 import { NotesState } from '../common/notes';
 import { ControlState } from './control';
+import { KeyboardState } from './keyboard';
 
 export interface ObserverState {
   type: 'observer';
@@ -23,7 +24,8 @@ export interface ObserverState {
   map: J.Map;
   bodies: Map<number, NonPhysicBodyState>;
   serverTime: ServerTimeState;
-  pressedKeys: { [key: string]: boolean };
+
+  keyboard: KeyboardState;
 
   notes: NotesState;
 

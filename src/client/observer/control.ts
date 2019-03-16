@@ -180,6 +180,14 @@ const mouse = new THREE.Vector2();
 const startVector = new THREE.Vector3();
 const moveVector = new THREE.Vector3();
 
+const addPitch = (state: ControlState, deltaY: number) => {
+  state.pitch = clamp(state.pitch + deltaY, -Math.PI / 2, Math.PI / 2);
+};
+
+const addRotation = (state: ControlState, deltaX: number) => {
+  state.rotation += deltaX;
+};
+
 export const updateCamera = (state: ControlState, camera: CameraState) => {
   const {
     action,
@@ -205,13 +213,8 @@ export const updateCamera = (state: ControlState, camera: CameraState) => {
     const deltaY = ((movePoint[1] - startPoint[1]) * 2 * Math.PI) / container.clientHeight;
     vec2.copy(startPoint, movePoint);
 
-    state.pitch = clamp(state.pitch + deltaY, -Math.PI / 2, Math.PI / 2);
-    state.rotation += deltaX;
-
-    quat.rotateX(q1, identity, -state.pitch);
-    quat.rotateZ(q2, identity, state.rotation);
-
-    quat.multiply(orbit, q2, q1);
+    addPitch(state, deltaY);
+    addRotation(state, deltaX);
   } else if (action === 'drag') {
     normalizeMousePosition(mouse, startPoint);
     raycaster.setFromCamera(mouse, camera.object);
@@ -233,6 +236,11 @@ export const updateCamera = (state: ControlState, camera: CameraState) => {
     }
   }
 
+  // Обновляем orbit
+  quat.rotateX(q1, identity, -state.pitch);
+  quat.rotateZ(q2, identity, state.rotation);
+  quat.multiply(orbit, q2, q1);
+
   // Обновляем камеру
   quat.rotateX(camera.rotation, orbit, degToRad(config.camera.pitch));
 
@@ -245,6 +253,7 @@ export const updateCamera = (state: ControlState, camera: CameraState) => {
   camera.position[2] = Math.max(camera.position[2], 0);
 
   if (target) {
+    // На самом деле можно использовать только Ray, без камеры и Raycaster
     mouse.set(0, 0);
     raycaster.setFromCamera(mouse, camera.object);
     const intersect = raycaster.ray.intersectPlane(plane, startVector);
@@ -261,5 +270,71 @@ export const updateCamera = (state: ControlState, camera: CameraState) => {
   } else {
     vec2.copy(planePosition, position);
     state.planeDistance = state.distance;
+  }
+};
+
+const temp = [0, 0, 0];
+const keyRotateDelta = 0.001;
+const keyDragDelta = 100;
+
+const yAxis = [0, 1, 0];
+const setForwardOnPlane = (out: number[], rotation: number[]) => {
+  vec3.transformQuat(out, yAxis, rotation);
+  out[2] = 0;
+  vec3.normalize(out, out);
+};
+
+const xAxis = [1, 0, 0];
+const setLeftOnPlane = (out: number[], rotation: number[]) => {
+  vec3.transformQuat(out, xAxis, rotation);
+  out[2] = 0;
+  vec3.normalize(out, out);
+};
+
+export const up = (state: ControlState, dt: number) => {
+  const { target, orbit, position } = state;
+
+  if (target) {
+    addPitch(state, -keyRotateDelta * dt);
+  } else {
+    setForwardOnPlane(temp, orbit);
+    vec3.scale(temp, temp, keyDragDelta * dt);
+    vec3.add(position, position, temp);
+  }
+};
+
+export const down = (state: ControlState, dt: number) => {
+  const { target, orbit, position } = state;
+
+  if (target) {
+    addPitch(state, keyRotateDelta * dt);
+  } else {
+    setForwardOnPlane(temp, orbit);
+    vec3.scale(temp, temp, -keyDragDelta * dt);
+    vec3.add(position, position, temp);
+  }
+};
+
+export const left = (state: ControlState, dt: number) => {
+  const { target, orbit, position } = state;
+
+  if (target) {
+    addRotation(state, -keyRotateDelta * dt);
+  } else {
+    setLeftOnPlane(temp, orbit);
+    vec3.scale(temp, temp, -keyDragDelta * dt);
+    vec3.add(position, position, temp);
+  }
+};
+
+export const right = (state: ControlState, dt: number) => {
+  const { target, orbit, position } = state;
+
+  if (target) {
+    addRotation(state, keyRotateDelta * dt);
+  } else {
+    setLeftOnPlane(temp, orbit);
+    vec3.scale(temp, temp, keyDragDelta * dt);
+    vec3.add(position, position, temp);
   }
 };
