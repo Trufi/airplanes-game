@@ -40,7 +40,7 @@ export class ObserverList extends React.Component<Props, State> {
             <tr>
               <td>Name</td>
               <td>Health</td>
-              <td>Score</td>
+              <td>Points</td>
             </tr>
           </thead>
           <tbody>
@@ -54,8 +54,8 @@ export class ObserverList extends React.Component<Props, State> {
                   onClick={() => this.followPlayer(player.id)}
                 >
                   <td>{player.name}</td>
-                  <td>{body && body.health}</td>
-                  <td>{player.kills}</td>
+                  <td>{body ? body.health : 'dead'}</td>
+                  <td>{player.points}</td>
                 </tr>
               );
             })}

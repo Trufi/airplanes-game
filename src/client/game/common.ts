@@ -1,15 +1,10 @@
 import { PlayerState, NonPhysicBodyState, PhysicBodyState, BodyState } from '../types';
 import { PlayerData, TickBodyData } from '../../server/messages';
 import { createMesh, createShotMesh, createBulletMesh } from './view';
+import { pick } from '../../utils';
 
-export const createPlayer = ({ id, name, bodyId, live }: PlayerData): PlayerState => ({
-  id,
-  bodyId,
-  name,
-  live,
-  kills: 0,
-  deaths: 0,
-});
+export const createPlayer = (data: PlayerData): PlayerState =>
+  pick(data, ['id', 'bodyId', 'name', 'live', 'kills', 'deaths', 'points']);
 
 export const addBody = (
   state: {

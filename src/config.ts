@@ -49,3 +49,8 @@ export const deathNote = {
 export const clientSendChangesInterval = 50;
 export const clientPingInterval = 500;
 export const minimalHeight = 10000;
+
+export const points = {
+  kills: 250,
+  deaths: -100,
+};

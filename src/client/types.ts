@@ -70,6 +70,7 @@ export interface PlayerState {
   live: boolean;
   kills: number;
   deaths: number;
+  points: number;
 }
 
 export interface ServerTimeState {

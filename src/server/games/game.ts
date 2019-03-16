@@ -39,6 +39,7 @@ export interface GamePlayer {
   live: boolean;
   kills: number;
   deaths: number;
+  points: number;
 }
 
 export interface GameObserver {
@@ -148,6 +149,7 @@ export const joinPlayer = (game: GameState, id: number, name: string): Cmd => {
     live: true,
     kills: 0,
     deaths: 0,
+    points: 0,
   };
   game.players.set(id, gamePlayer);
 

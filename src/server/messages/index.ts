@@ -25,7 +25,8 @@ const gameJoinFail = () => ({
   type: 'gameJoinFail' as 'gameJoinFail',
 });
 
-const getPlayerData = (player: GamePlayer) => pick(player, ['id', 'live', 'name', 'bodyId']);
+const getPlayerData = (player: GamePlayer) =>
+  pick(player, ['id', 'live', 'name', 'bodyId', 'kills', 'deaths', 'points']);
 export type PlayerData = ReturnType<typeof getPlayerData>;
 
 const getTickBodyData = (body: Airplane) =>

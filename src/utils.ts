@@ -1,4 +1,5 @@
 import * as vec2 from '@2gis/gl-matrix/vec2';
+import * as config from './config';
 
 export const mapMap = <K, V, R>(m: Map<K, V>, cb: (v: V, k: K) => R): R[] => {
   const res: R[] = [];
@@ -49,3 +50,12 @@ export function vec2SignedAngle(a: number[], b: number[]): number {
 
   return z > 0 ? angle : -angle;
 }
+
+/**
+ * Возвращает новое количество очков игрока в завимости от смерти или кила
+ * @TODO использовать рейтинг Эло. Для начисления рейтинга. [#ratingElo]
+ * https://ru.wikipedia.org/wiki/%D0%A0%D0%B5%D0%B9%D1%82%D0%B8%D0%BD%D0%B3_%D0%AD%D0%BB%D0%BE
+ */
+export const getNewPoints = (currentPoints: number, type: 'deaths' | 'kills') => {
+  return Math.max(0, currentPoints + config.points[type]);
+};

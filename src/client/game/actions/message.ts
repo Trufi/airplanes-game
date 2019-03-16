@@ -5,6 +5,7 @@ import { createPlayer, createNonPhysicBody, addBody, createPhysicBody } from '..
 import { updatePingAndServerTime } from '../../common/serverTime';
 import { addKillNote } from '../../common/notes';
 import { ObserverState } from '../../observer/types';
+import { getNewPoints } from '../../../utils';
 
 export const message = (state: State, msg: AnyServerMsg): Cmd => {
   switch (msg.type) {
@@ -92,12 +93,14 @@ export const playerDeath = (state: State | ObserverState, msg: ServerMsg['player
   const causePlayer = state.players.get(causePlayerId);
   if (causePlayer) {
     causePlayer.kills++;
+    causePlayer.points = getNewPoints(causePlayer.points, 'kills');
   }
 
   const player = state.players.get(playerId);
   if (player) {
     player.live = false;
     player.deaths++;
+    player.points = getNewPoints(player.points, 'deaths');
     removeBody(state, player.bodyId);
   }
 
