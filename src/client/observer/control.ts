@@ -185,12 +185,16 @@ const mouse = new THREE.Vector2();
 const startVector = new THREE.Vector3();
 const moveVector = new THREE.Vector3();
 
-const addPitch = (state: ControlState, deltaY: number) => {
-  state.pitch = clamp(state.pitch + deltaY, -Math.PI / 2, Math.PI / 2);
+const addPitch = (state: ControlState, delta: number) => {
+  state.pitch = clamp(state.pitch + delta, -Math.PI / 2, Math.PI / 2);
 };
 
-const addRotation = (state: ControlState, deltaX: number) => {
-  state.rotation += deltaX;
+const addRotation = (state: ControlState, delta: number) => {
+  state.rotation += delta;
+};
+
+const addDistance = (state: ControlState, delta: number) => {
+  state.distance = Math.max(minDistance, state.distance - delta);
 };
 
 export const updateCamera = (state: ControlState, camera: CameraState) => {
@@ -210,7 +214,7 @@ export const updateCamera = (state: ControlState, camera: CameraState) => {
   }
 
   // Обработаем изменение расстояния
-  state.distance = Math.max(minDistance, state.distance - state.wheelDelta * 100);
+  addDistance(state, state.wheelDelta * 100);
   state.wheelDelta = 0;
 
   if (action === 'rotate') {
@@ -342,4 +346,13 @@ export const right = (state: ControlState, dt: number) => {
     vec3.scale(temp, temp, keyDragDelta * dt);
     vec3.add(position, position, temp);
   }
+};
+
+const distanceKeyDelta = 100;
+export const farther = (state: ControlState, dt: number) => {
+  addDistance(state, -distanceKeyDelta * dt);
+};
+
+export const closer = (state: ControlState, dt: number) => {
+  addDistance(state, distanceKeyDelta * dt);
 };

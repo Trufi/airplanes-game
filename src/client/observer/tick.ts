@@ -22,20 +22,27 @@ export const tick = (state: ObserverState, time: number) => {
 
 const processPressedKeys = (state: ObserverState) => {
   const pressedKeys = keyboard.getPressedKeys(state.keyboard);
+  const dt = state.time - state.prevTime;
 
   for (const key of pressedKeys) {
     switch (key) {
       case 'KeyW':
-        control.up(state.control, state.time - state.prevTime);
+        control.up(state.control, dt);
         break;
       case 'KeyS':
-        control.down(state.control, state.time - state.prevTime);
+        control.down(state.control, dt);
         break;
       case 'KeyA':
-        control.left(state.control, state.time - state.prevTime);
+        control.left(state.control, dt);
         break;
       case 'KeyD':
-        control.right(state.control, state.time - state.prevTime);
+        control.right(state.control, dt);
+        break;
+      case 'KeyR':
+        control.closer(state.control, dt);
+        break;
+      case 'KeyF':
+        control.farther(state.control, dt);
         break;
     }
   }
