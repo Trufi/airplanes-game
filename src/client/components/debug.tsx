@@ -45,6 +45,8 @@ export class Debug extends React.Component<Props, State> {
         )}
         <div>Ping: {serverTime.ping}</div>
         <div>Time diff: {serverTime.diff}</div>
+        <div>MS: {gameState.time - gameState.prevTime}</div>
+        <div>FPS: {Math.round(1000 / (gameState.time - gameState.prevTime))}</div>
         <div style={{ fontWeight: 700 }}>Other players:</div>
         <table>
           <thead>

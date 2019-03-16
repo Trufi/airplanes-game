@@ -5,8 +5,8 @@ import { config as mapConfig, MapOptions, Map, Skybox } from '@2gis/jakarta';
 import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import * as config from '../../config';
 import { degToRad } from '../utils';
-import { BodyState, CameraState } from '../types';
-import { Vector3, Geometry, TextureLoader } from 'three';
+import { BodyState, CameraState, AnimationPerFrame } from '../types';
+import { TextureLoader } from 'three';
 
 mapConfig.camera.fov = 45;
 mapConfig.camera.far = 2 ** 32; // Можно оставить 600000, но тогда надо поправить frustum
@@ -139,31 +139,24 @@ export const updateShot = (
   }
 };
 
-export const updateBullet = (time: number, mesh: THREE.Line, body: BodyState) => {
-  if (time - body.weapon.lastShotTime < config.weapon.animationDuration) {
-    mesh.visible = true;
-    if (body.weapon) {
-      if (body.weapon.target) {
-        let r = new Vector3();
-        let wp = new Vector3();
-        mesh.getWorldPosition(wp);
-        r.subVectors(body.weapon.target, wp);
-        console.log(r);
-        console.log(wp);
-        // r.normalize();
-        // r.setLength(config.weapon.distance);
-        if (mesh.geometry instanceof Geometry) {
-          mesh.geometry.vertices[1] = r;
-        }
-      }
+const showHideBulletAnimation = (animation: AnimationPerFrame, mesh: THREE.Object3D) => {
+  if (animation.is_running == true) {
+    animation.frames += 1;
+    if (animation.frames < config.weapon.animationDuration) {
+      mesh.visible = true;
+    } else if (animation.frames > config.weapon.animationCooldown) {
+      animation.frames = 0;
+    } else if (animation.frames > config.weapon.animationDuration) {
+      mesh.visible = false;
     }
   } else {
+    animation.frames = 0;
     mesh.visible = false;
-    body.weapon.target = undefined;
-    if (mesh.geometry instanceof Geometry) {
-      mesh.geometry.vertices[1] = new Vector3(0, config.weapon.distance, 0);
-    }
   }
+};
+
+export const updateBullet = (mesh: THREE.Line, body: BodyState) => {
+  showHideBulletAnimation(body.weapon.animation, mesh);
 };
 
 let jakartaMap: Map | undefined;

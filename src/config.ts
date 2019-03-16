@@ -11,15 +11,16 @@ export const weapon = {
    */
   hitAngle: 3,
   cooldown: 200,
-  animationDuration: 40,
+  animationDuration: 5,
+  animationCooldown: 25,
   distance: 300000,
 
   offset: 5000,
   bullet: {
     color: 0xeeee33,
     opacity: 0.5,
-    width: 2,
-    offset: { x: 2000, y: 4000, z: 0 },
+    width: 10,
+    offset: { x: 900, y: 0, z: 500 },
   },
 };
 

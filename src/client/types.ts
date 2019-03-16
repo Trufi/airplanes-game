@@ -18,9 +18,15 @@ export interface Hit {
   bodyId: number;
 }
 
+export interface AnimationPerFrame {
+  frames: number;
+  is_running: boolean;
+}
+
 export interface WeaponState {
   lastShotTime: number;
   lastHitTime: number;
+  animation: AnimationPerFrame;
   hits: Hit[];
   left: THREE.Line;
   right: THREE.Line;
@@ -53,6 +59,7 @@ export interface NonPhysicBodyState {
   velocityDirection: number[];
   health: number;
   weapon: {
+    animation: AnimationPerFrame;
     lastShotTime: number;
     left: THREE.Line;
     right: THREE.Line;

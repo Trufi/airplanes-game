@@ -106,7 +106,7 @@ export const start = (data: ServerMsg['startData']) => {
       return;
     }
 
-    sendMessage(msg.changes(state.body, time() - state.serverTime.diff));
+    sendMessage(msg.changes(state.body, state.time, state.serverTime.diff));
 
     // Сбрасываем попадания после отправки на сервер
     state.body.weapon.hits = [];

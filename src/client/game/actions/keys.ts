@@ -189,9 +189,11 @@ const fire = (state: State) => {
   const { weapon } = body;
 
   if (state.time - weapon.lastShotTime < config.weapon.cooldown) {
+    weapon.animation.is_running = false;
     return;
   }
 
+  weapon.animation.is_running = true;
   weapon.lastShotTime = state.time;
 
   quat.rotateX(bodyRotation, rotation, -degToRad(config.camera.pitch));

@@ -1,5 +1,5 @@
 import { PhysicBodyState } from './types';
-import { ObjectElement, pick } from '../utils';
+import { ObjectElement } from '../utils';
 
 const joinGame = (gameId: number) => ({
   type: 'joinGame' as 'joinGame',
@@ -11,18 +11,22 @@ const joinGameAsObserver = (gameId: number) => ({
   gameId,
 });
 
-const changes = (body: PhysicBodyState, time: number) => {
+const changes = (body: PhysicBodyState, time: number, diffTime: number) => {
   const { position, velocity, rotation, velocityDirection, weapon } = body;
+  const msgWeapon = {
+    lastShotTime: weapon.lastShotTime - diffTime,
+    hits: weapon.hits,
+  };
 
   return {
     type: 'changes' as 'changes',
-    time,
+    time: time - diffTime,
     body: {
       position,
       velocity,
       rotation,
       velocityDirection,
-      weapon: pick(weapon, ['lastShotTime', 'hits']),
+      weapon: msgWeapon,
     },
   };
 };

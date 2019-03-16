@@ -2,7 +2,6 @@ import * as quat from '@2gis/gl-matrix/quat';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import { State, NonPhysicBodyState, BodyStep, PhysicBodyState } from '../../types';
 import * as view from '../view';
-import { lerp } from '../../../utils';
 import * as config from '../../../config';
 import { degToRad } from '../../utils';
 import { hideOldNotes } from '../../common/notes';
@@ -53,13 +52,18 @@ export const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, time
   quat.slerp(body.rotation, startStep.rotation, endStep.rotation, t);
   vec3.lerp(body.velocityDirection, startStep.velocityDirection, endStep.velocityDirection, t);
 
-  body.weapon.lastShotTime = lerp(startStep.weapon.lastShotTime, endStep.weapon.lastShotTime, t);
+  body.weapon.lastShotTime = endStep.weapon.lastShotTime;
+  if (interpolationTime - body.weapon.lastShotTime < config.weapon.cooldown) {
+    body.weapon.animation.is_running = true;
+  } else {
+    body.weapon.animation.is_running = false;
+  }
 
   body.health = endStep.health;
 
   view.updateMesh(body);
-  view.updateBullet(interpolationTime, body.weapon.left, body);
-  view.updateBullet(interpolationTime, body.weapon.right, body);
+  view.updateBullet(body.weapon.left, body);
+  view.updateBullet(body.weapon.right, body);
 };
 
 /**
@@ -98,8 +102,8 @@ const updatePhysicBody = (state: State, body: PhysicBodyState) => {
   body.position[2] = Math.max(body.position[2] + velocityVector[2] * dt, config.minimalHeight);
 
   view.updateMesh(body);
-  view.updateBullet(state.time, body.weapon.left, body);
-  view.updateBullet(state.time, body.weapon.right, body);
+  view.updateBullet(body.weapon.left, body);
+  view.updateBullet(body.weapon.right, body);
 };
 
 const updateCamera = (state: State) => {
