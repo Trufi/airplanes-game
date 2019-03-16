@@ -93,7 +93,6 @@ const updatePhysicBody = (state: State, body: PhysicBodyState) => {
   quat.rotateZ(rotation, rotation, body.velocityDirection[2] * dt);
 
   quat.mul(body.rotation, body.rotation, rotation);
-
   vec3.set(velocityVector, 0, body.velocity, 0);
   vec3.transformQuat(velocityVector, velocityVector, body.rotation);
 

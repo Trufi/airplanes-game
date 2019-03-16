@@ -2,6 +2,7 @@ import { PlayerState, NonPhysicBodyState, PhysicBodyState, BodyState } from '../
 import { PlayerData, TickBodyData } from '../../server/messages';
 import { createMesh, createShotMesh, createBulletMesh } from './view';
 import { pick } from '../../utils';
+import * as config from '../../config';
 
 export const createPlayer = (data: PlayerData): PlayerState =>
   pick(data, ['id', 'bodyId', 'name', 'live', 'kills', 'deaths', 'points']);
@@ -21,18 +22,21 @@ export const addBody = (
 };
 
 export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
-  const { id, position, velocityDirection, velocity, rotation, health } = data;
+  const { id, position, velocityDirection, rotation, health } = data;
   const mesh = createMesh();
   return {
     type: 'physic',
     id,
     position,
-    velocity,
+    velocity: config.airplane.velocity,
     velocityDirection,
     rotation,
     health,
     mesh,
     shotMesh: createShotMesh(),
+    boost: {
+      volume: config.boost.maxVolume,
+    },
     weapon: {
       lastHitTime: 0,
       lastShotTime: 0,
@@ -45,13 +49,13 @@ export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
 };
 
 export const createNonPhysicBody = (data: TickBodyData): NonPhysicBodyState => {
-  const { id, position, velocityDirection, velocity, rotation, health } = data;
+  const { id, position, velocityDirection, rotation, health } = data;
   const mesh = createMesh();
   return {
     type: 'nonPhysic',
     id,
     position,
-    velocity,
+    velocity: config.airplane.velocity,
     velocityDirection,
     rotation,
     health,

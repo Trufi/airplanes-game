@@ -13,6 +13,7 @@ import { msg } from '../messages';
 import { Arrow } from './arrow';
 import { GameStats } from './gameStats';
 import { Health } from './health';
+import { BoostButton } from './boostButton';
 
 interface Props {
   appState: AppState;
@@ -86,6 +87,7 @@ export class Game extends React.Component<Props, {}> {
     return (
       <>
         <Aim weapon={body.weapon} time={game.time} />
+        <BoostButton game={game} />
         <FireButton state={game} />
         <Stick state={game} />
         <Debug

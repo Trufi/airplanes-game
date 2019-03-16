@@ -30,16 +30,7 @@ const getPlayerData = (player: GamePlayer) =>
 export type PlayerData = ReturnType<typeof getPlayerData>;
 
 const getTickBodyData = (body: Airplane) =>
-  pick(body, [
-    'id',
-    'position',
-    'rotation',
-    'velocityDirection',
-    'updateTime',
-    'health',
-    'weapon',
-    'velocity',
-  ]);
+  pick(body, ['id', 'position', 'rotation', 'velocityDirection', 'updateTime', 'health', 'weapon']);
 export type TickBodyData = ReturnType<typeof getTickBodyData>;
 
 const startData = (game: GameState, player: GamePlayer) => {

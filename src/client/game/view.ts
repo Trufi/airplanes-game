@@ -49,7 +49,8 @@ export const createMesh = () => {
 
       scene.add(circle);
 
-      scene.scale.set(config.airplane.scale, config.airplane.scale, config.airplane.scale); // размер соответсвует примерно 50 метрам!
+      // размер соответсвует примерно 50 метрам!
+      scene.scale.set(config.airplane.scale, config.airplane.scale, config.airplane.scale);
       scene.rotateX(config.airplane.initRotation.x);
       scene.rotateY(config.airplane.initRotation.y);
       scene.rotateZ(config.airplane.initRotation.z);
@@ -140,7 +141,7 @@ export const updateShot = (
 };
 
 const showHideBulletAnimation = (animation: AnimationPerFrame, mesh: THREE.Object3D) => {
-  if (animation.is_running == true) {
+  if (animation.is_running) {
     animation.frames += 1;
     if (animation.frames < config.weapon.animationDuration) {
       mesh.visible = true;

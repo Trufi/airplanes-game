@@ -21,6 +21,9 @@ export const processPressedkeys = (dt: number, state: State) => {
   let pitchPressed = false;
   let rollPressed = false;
 
+  let boostPressed = false;
+  resetVelocity(body);
+
   for (const code in pressedKeys) {
     if (!pressedKeys[code]) {
       continue;
@@ -51,10 +54,18 @@ export const processPressedkeys = (dt: number, state: State) => {
         quat.rotateY(body.rotation, body.rotation, -0.001 * dt);
         rollPressed = true;
         break;
+      case 'KeyF':
+        applyBoost(state, body);
+        boostPressed = true;
+        break;
       case 'Space':
         fire(state);
         break;
     }
+  }
+
+  if (!boostPressed) {
+    restoreBoost(state, body);
   }
 
   // Обрабатываем стик для мобилок
@@ -240,4 +251,35 @@ const hitAngle = (target: number[], forward: number[], radius: number) => {
   const p = projection(target, forward);
   const tanBeta = Math.tan(alpha) - radius / p;
   return Math.atan(tanBeta);
+};
+
+const resetVelocity = (body: PhysicBodyState) => {
+  body.velocity = config.airplane.velocity;
+};
+
+const applyBoost = (state: State, body: PhysicBodyState) => {
+  const { boost } = body;
+  const dt = state.time - state.prevTime;
+
+  if (boost.volume > 0) {
+    body.velocity = config.airplane.velocity * config.boost.factor;
+    boost.volume = clamp(
+      boost.volume - (config.boost.spendingSpeed / 1000) * dt,
+      0,
+      config.boost.maxVolume,
+    );
+  }
+};
+
+const restoreBoost = (state: State, body: PhysicBodyState) => {
+  const { boost } = body;
+  const dt = state.time - state.prevTime;
+
+  if (boost.volume < config.boost.maxVolume) {
+    boost.volume = clamp(
+      boost.volume + (config.boost.restoringSpeed / 1000) * dt,
+      0,
+      config.boost.maxVolume,
+    );
+  }
 };

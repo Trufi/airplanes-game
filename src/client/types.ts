@@ -33,6 +33,10 @@ export interface WeaponState {
   target?: THREE.Vector3;
 }
 
+export interface BoostState {
+  volume: number;
+}
+
 export interface PhysicBodyState {
   type: 'physic';
   id: number;
@@ -45,6 +49,7 @@ export interface PhysicBodyState {
   velocityDirection: number[];
   health: number;
   weapon: WeaponState;
+  boost: BoostState;
 }
 
 export interface NonPhysicBodyState {

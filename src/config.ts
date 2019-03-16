@@ -24,6 +24,24 @@ export const weapon = {
   },
 };
 
+export const boost = {
+  /**
+   * Скорость восстановления ускорения в секунду
+   */
+  restoringSpeed: 0.25,
+  /**
+   * Скорость траты ускорения в секунду
+   */
+  spendingSpeed: 1,
+
+  /**
+   * Множитель, на который умножается обычная скорость самолета при ускорении
+   */
+  factor: 2.5,
+
+  maxVolume: 4,
+};
+
 export const airplane = {
   maxHealth: 100,
   scale: 4000,

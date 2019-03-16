@@ -39,11 +39,11 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
       }
     });
 
-    data.bodies.forEach(({ id, position, velocity, rotation }) => {
+    data.bodies.forEach(({ id, position, rotation }) => {
       if (id === bodyId) {
         body = {
           position,
-          velocity,
+          velocity: config.airplane.velocity,
           rotation,
           velocityDirection: [0, 0, 0.0007],
           weapon: {
