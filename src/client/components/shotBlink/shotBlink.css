@@ -1,0 +1,25 @@
+.blink {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 200px 40px #bf0000;
+  opacity: 0.5;
+  animation: blink 1s infinite ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes blink {
+  0% {
+    box-shadow: inset 0 0 200px 40px #bf0000;
+  }
+
+  50% {
+    box-shadow: inset 0 0 200px 40px #b54b4b;
+  }
+
+  100% {
+    box-shadow: inset 0 0 200px 40px #bf0000;
+  }
+}

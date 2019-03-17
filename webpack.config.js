@@ -2,6 +2,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const fs = require('fs-extra');
+const cssnext = require('postcss-cssnext');
 
 const dist = path.join(__dirname, 'dist');
 fs.copySync(path.join(__dirname, 'assets'), path.join(dist, 'assets'));
@@ -21,6 +22,33 @@ module.exports = (_, args) => {
               transpileOnly: true,
             },
           },
+        },
+        {
+          test: /\.css$/,
+          include: /src/,
+          use: [
+            {
+              loader: 'style-loader',
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                importLoaders: 1,
+                localIdentName: '[folder]__[local]-[hash:base64:5]',
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: [
+                  cssnext({
+                    browsers: ['last 2 versions'],
+                  }),
+                ],
+              },
+            },
+          ],
         },
       ],
     },

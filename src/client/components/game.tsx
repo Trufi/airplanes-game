@@ -14,6 +14,7 @@ import { Arrow } from './arrow';
 import { GameStats } from './gameStats';
 import { Health } from './health';
 import { BoostButton } from './boostButton';
+import { ShotBlink } from './shotBlink/shotBlink';
 
 interface Props {
   appState: AppState;
@@ -100,6 +101,7 @@ export class Game extends React.Component<Props, {}> {
           state={game}
         />
         <Health body={body} />
+        <ShotBlink game={game} />
       </>
     );
   }
