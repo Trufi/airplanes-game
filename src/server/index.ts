@@ -21,6 +21,13 @@ const server = app.listen(port, () => console.log(`Server listen on ${port} port
 
 const wsServer = new ws.Server({
   server,
+  perMessageDeflate: {
+    zlibDeflateOptions: {
+      chunkSize: 1024,
+      memLevel: 7,
+      level: 3,
+    },
+  },
 });
 
 const state = createState();
