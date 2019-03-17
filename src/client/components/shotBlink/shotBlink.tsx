@@ -1,15 +1,18 @@
 import * as React from 'react';
-import * as config from '../../../config';
-import { PhysicBodyState } from '../../types';
+import { State as GameState } from '../../types';
 
 import styles from './shotBlink.css';
 
 interface Props {
-  body: PhysicBodyState;
+  game: GameState;
 }
 
-export class ShotBlink extends React.Component {
-  constructor(props) {
+interface State {
+  isBlinking: boolean;
+}
+
+export class ShotBlink extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -17,22 +20,24 @@ export class ShotBlink extends React.Component {
     };
   }
 
-  public componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps: Props) {
     const { game } = this.props;
     const { body } = game;
 
-    if (nextProps.game.body.health < body.health) {
-      this.setState({
-        isBlinking: true,
-      });
-      return;
-    }
+    if (nextProps.game.body && body) {
+      if (nextProps.game.body.health < body.health) {
+        this.setState({
+          isBlinking: true,
+        });
+        return;
+      }
 
-    if (body.health < 50) {
-      this.setState({
-        isBlinking: true,
-      });
-      return;
+      if (body.health < 50) {
+        this.setState({
+          isBlinking: true,
+        });
+        return;
+      }
     }
 
     this.setState({
