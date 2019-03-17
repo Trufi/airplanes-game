@@ -11,7 +11,7 @@ export const tick = (state: ObserverState, time: number) => {
 
   processPressedKeys(state);
 
-  state.bodies.forEach((body) => updateNonPhysicBody(body, time, state.serverTime.diff));
+  state.bodies.forEach((body) => updateNonPhysicBody(state, body));
 
   control.updateCamera(state.control, state.camera);
 

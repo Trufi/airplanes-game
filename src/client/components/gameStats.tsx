@@ -9,7 +9,7 @@ interface Props {
 
 export const GameStats = ({ players, style }: Props) => {
   const playerArray = mapMap(players, (player) => player);
-  playerArray.sort((a, b) => b.kills - a.kills);
+  playerArray.sort((a, b) => b.points - a.points);
 
   return (
     <table style={style}>

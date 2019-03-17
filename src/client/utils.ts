@@ -39,7 +39,12 @@ export const quatToEuler = (q: number[]) => {
   return { roll, pitch, yaw };
 };
 
-export const time = () => Date.now();
+/**
+ * Т.к. на сервер время считается от старта,
+ * то на клиенте делаем что-то похожее, чтобы сильно большой разница не была
+ */
+const startTime = Date.now();
+export const time = () => Date.now() - startTime;
 
 export const unnormalizeMouse = (v: { x: number; y: number }, size: number[]) => {
   const widthHalf = size[0] / 2;

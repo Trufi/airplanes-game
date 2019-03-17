@@ -1,10 +1,10 @@
 import { projectGeoToMap } from '@2gis/jakarta/dist/es6/utils/geo';
-import { msg } from '../messages';
+import { msg, pbfMsg } from '../messages/index';
 import { tick } from './actions/tick';
 import { time } from '../utils';
 import { renderUI } from '../ui';
 import { executeCmd } from '../commands/execute';
-import { sendMessage } from '../socket';
+import { sendMessage, sendPbfMessage } from '../socket';
 import { ServerMsg } from '../../server/messages';
 import { appState } from '../appState';
 import * as config from '../../config';
@@ -103,7 +103,7 @@ export const start = (data: ServerMsg['startData']) => {
       return;
     }
 
-    sendMessage(msg.changes(state.body, state.time, state.serverTime.diff));
+    sendPbfMessage(pbfMsg.changes(state.body, state.time, state.serverTime.diff));
 
     // Сбрасываем попадания после отправки на сервер
     state.body.weapon.hits = [];
@@ -111,5 +111,5 @@ export const start = (data: ServerMsg['startData']) => {
 
   setInterval(() => {
     sendMessage(msg.ping(time()));
-  }, config.clientSendChangesInterval);
+  }, config.clientPingInterval);
 };

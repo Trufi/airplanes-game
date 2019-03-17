@@ -9,7 +9,7 @@ import { DeathNotes } from './deathNotes';
 import { Stick } from './stick';
 import { ExecuteCmd, executeCmd } from '../commands/execute';
 import { cmd } from '../commands';
-import { msg } from '../messages';
+import { msg } from '../messages/index';
 import { Arrow } from './arrow';
 import { GameStats } from './gameStats';
 import { Health } from './health';

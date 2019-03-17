@@ -13,9 +13,16 @@ const sendMsgTo = (connectionIds: number[], msg: AnyServerMsg) => ({
   msg,
 });
 
+const sendPbfMsgTo = (connectionIds: number[], msg: ArrayBuffer) => ({
+  type: 'sendPbfMsgTo' as 'sendPbfMsgTo',
+  connectionIds,
+  msg,
+});
+
 export const cmd = {
   sendMsg,
   sendMsgTo,
+  sendPbfMsgTo,
 };
 
 export const union = (cmds: Cmd[]): Cmd => {

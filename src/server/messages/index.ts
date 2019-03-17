@@ -1,6 +1,9 @@
 import { ObjectElement, mapMap, pick } from '../../utils';
 import { GameState, Airplane, GamePlayer } from '../games/game';
 
+const serverMsgSchema = require('../../protobuf/serverMsg.proto');
+const Pbf = require('pbf');
+
 const connect = (id: number) => ({
   type: 'connect' as 'connect',
   id,
@@ -81,13 +84,40 @@ const playerDeath = (playerId: number, causePlayerId: number) => ({
   causePlayerId,
 });
 
-const tickData = (game: GameState) => {
-  const bodies: TickBodyData[] = [];
-  game.bodies.map.forEach((body) => bodies.push(getTickBodyData(body)));
+const getPbfTickBodyData = (body: Airplane) => {
+  const {
+    id,
+    position,
+    rotation,
+    updateTime,
+    health,
+    weapon: { lastShotTime },
+  } = body;
 
   return {
+    id,
+    position: {
+      x: position[0] | 0,
+      y: position[1] | 0,
+      z: position[2] | 0,
+    },
+    rotation: {
+      x: rotation[0],
+      y: rotation[1],
+      z: rotation[2],
+      w: rotation[3],
+    },
+    updateTime: updateTime | 0,
+    health: health | 0,
+    lastShotTime: lastShotTime | 0,
+  };
+};
+export type PbfTickBodyData = ReturnType<typeof getPbfTickBodyData>;
+
+const tickData = (game: GameState) => {
+  return {
     type: 'tickData' as 'tickData',
-    bodies,
+    bodies: mapMap(game.bodies.map, getPbfTickBodyData),
   };
 };
 
@@ -110,6 +140,15 @@ export const msg = {
   playerDeath,
   tickData,
   pong,
+};
+
+export const pbfMsg = {
+  tickData: (game: GameState) => {
+    const pbf = new Pbf();
+    serverMsgSchema.TickData.write(tickData(game), pbf);
+    const u8 = pbf.finish() as Uint8Array;
+    return u8.buffer.slice(0, u8.byteLength);
+  },
 };
 
 /**

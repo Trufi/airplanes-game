@@ -1,5 +1,5 @@
 import { State } from '../../types';
-import { AnyServerMsg, ServerMsg, TickBodyData } from '../../../server/messages';
+import { AnyServerMsg, ServerMsg, PbfTickBodyData } from '../../../server/messages';
 import { Cmd } from '../../commands';
 import { createPlayer, createNonPhysicBody, addBody, createPhysicBody } from '../common';
 import { updatePingAndServerTime } from '../../common/serverTime';
@@ -28,8 +28,8 @@ export const updateGameData = (state: State | ObserverState, msg: ServerMsg['tic
   msg.bodies.forEach((body) => updateBodyData(state, body));
 };
 
-export const updateBodyData = (state: State | ObserverState, data: TickBodyData) => {
-  const { id, position, rotation, updateTime, health, weapon } = data;
+export const updateBodyData = (state: State | ObserverState, data: PbfTickBodyData) => {
+  const { id, position, rotation, updateTime, health, lastShotTime } = data;
 
   const bodyState = state.bodies.get(id);
   if (!bodyState) {
@@ -40,10 +40,12 @@ export const updateBodyData = (state: State | ObserverState, data: TickBodyData)
     bodyState.health = data.health;
   } else {
     bodyState.steps.push({
-      position,
-      rotation,
+      position: [position.x, position.y, position.z],
+      rotation: [rotation.x, rotation.y, rotation.z, rotation.w],
       health,
-      weapon,
+      weapon: {
+        lastShotTime,
+      },
       time: updateTime,
     });
   }

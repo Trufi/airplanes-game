@@ -4,7 +4,7 @@ import { ExecuteCmd } from '../commands/execute';
 import { userAuth, userLogin, userRegister } from '../services/user';
 import { get, set } from 'js-cookie';
 import { AppState } from '../types';
-import { msg } from '../messages';
+import { msg } from '../messages/index';
 
 interface Props {
   appState: AppState;

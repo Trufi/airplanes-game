@@ -84,7 +84,8 @@ export const deathNote = {
   delay: 5000,
 };
 
-export const clientSendChangesInterval = 50;
+export const serverGameStep = 100;
+export const clientSendChangesInterval = 100;
 export const clientPingInterval = 500;
 export const minimalHeight = 10000;
 

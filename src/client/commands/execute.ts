@@ -1,7 +1,7 @@
 import { set } from 'js-cookie';
 import { Cmd, ExistCmd } from '.';
 import { renderUI } from '../ui';
-import { sendMessage } from '../socket';
+import { sendMessage, sendPbfMessage } from '../socket';
 import { appState } from '../appState';
 
 export type ExecuteCmd = typeof executeCmd;
@@ -21,8 +21,8 @@ const executeOneCmd = (cmd: ExistCmd) => {
     case 'sendMsg':
       sendMessage(cmd.msg);
       break;
-    case 'saveNameToLocalStorage':
-      localStorage.setItem('name', cmd.name);
+    case 'sendPbfMsg':
+      sendPbfMessage(cmd.msg);
       break;
     case 'saveTokenToCookie':
       set('token', cmd.token, { expires: 7 });

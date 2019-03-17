@@ -1,12 +1,15 @@
 import * as ws from 'ws';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
-import { AnyClientMsg, msg, ClientMsg } from '../client/messages';
+import { AnyClientMsg, msg } from '../client/messages';
 import { AnyServerMsg, ServerMsg } from '../server/messages';
 import * as config from '../config';
-import { pick } from '../utils';
 import { BotBody } from './types';
 import { createServerTimeState, updatePingAndServerTime } from '../client/common/serverTime';
+import { time } from '../client/utils';
+
+const clientMsgSchema = require('../protobuf/clientMsg.proto');
+const Pbf = require('pbf');
 
 export const initBot = (serverUrl: string, name: string, gameId: number) => {
   const serverTimeState = createServerTimeState();
@@ -17,6 +20,10 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
 
   const sendMessage = (msg: AnyClientMsg) => {
     socket.send(JSON.stringify(msg));
+  };
+
+  const sendPbfMessage = (msg: ArrayBuffer) => {
+    socket.send(msg);
   };
 
   socket.on('open', () => {
@@ -65,6 +72,10 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
   };
 
   socket.on('message', (data: string) => {
+    if (typeof data !== 'string') {
+      return;
+    }
+
     let msg: AnyServerMsg;
 
     try {
@@ -77,10 +88,11 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
     message(msg);
   });
 
-  const time = () => Date.now();
-
-  const changesMsg = (body: BotBody, time: number): ClientMsg['changes'] => {
-    const { position, velocity, weapon } = body;
+  const changes = (body: BotBody, time: number, diffTime: number) => {
+    const {
+      position,
+      weapon: { lastShotTime, hits },
+    } = body;
 
     // На сервер передаем вращение с учетом угловой скорости
     const rotation = [0, 0, 0, 1];
@@ -92,21 +104,35 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
 
     return {
       type: 'changes' as 'changes',
-      time,
-      body: {
-        position,
-        velocity,
-        rotation,
-        weapon: pick(weapon, ['lastShotTime', 'hits']),
+      time: (time - diffTime) | 0,
+      position: {
+        x: position[0] | 0,
+        y: position[1] | 0,
+        z: position[2] | 0,
       },
+      rotation: {
+        x: rotation[0],
+        y: rotation[1],
+        z: rotation[2],
+        w: rotation[3],
+      },
+      lastShotTime: (lastShotTime - diffTime) | 0,
+      hitBodyIds: hits.map(({ bodyId }) => bodyId),
     };
+  };
+
+  const pbfChanges = (body: BotBody, time: number, diffTime: number) => {
+    const pbf = new Pbf();
+    clientMsgSchema.Changes.write(changes(body, time, diffTime), pbf);
+    const u8 = pbf.finish() as Uint8Array;
+    return u8.buffer.slice(0, u8.byteLength);
   };
 
   setInterval(() => {
     if (!body || !connected) {
       return;
     }
-    sendMessage(changesMsg(body, time() - serverTimeState.diff));
+    sendPbfMessage(pbfChanges(body, time(), serverTimeState.diff));
   }, config.clientSendChangesInterval);
 
   setInterval(() => {
@@ -114,7 +140,7 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
       return;
     }
     sendMessage(msg.ping(time()));
-  }, config.clientSendChangesInterval);
+  }, config.clientPingInterval);
 
   const velocityVector = [0, 0, 0];
   const rotation = [0, 0, 0, 1];

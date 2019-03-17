@@ -13,7 +13,7 @@ import { time } from '../utils';
 import { renderUI } from '../ui';
 import { executeCmd } from '../commands/execute';
 import { sendMessage } from '../socket';
-import { msg } from '../messages';
+import { msg } from '../messages/index';
 import { tick } from './tick';
 
 export const start = (appState: AppState, data: ServerMsg['startObserverData']) => {
@@ -83,8 +83,5 @@ export const start = (appState: AppState, data: ServerMsg['startObserverData']) 
   loopCallback();
 
   state.callbacks.ping = () => sendMessage(msg.ping(time()));
-  state.callbacks.pingId = window.setInterval(
-    state.callbacks.ping,
-    config.clientSendChangesInterval,
-  );
+  state.callbacks.pingId = window.setInterval(state.callbacks.ping, config.clientPingInterval);
 };

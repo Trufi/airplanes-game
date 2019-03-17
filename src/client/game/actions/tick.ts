@@ -7,6 +7,7 @@ import { degToRad } from '../../utils';
 import { hideOldNotes } from '../../common/notes';
 import { processPressedkeys } from './keys';
 import { updateWeaponAnimation } from './weapon';
+import { ObserverState } from '../../observer/types';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
@@ -27,13 +28,18 @@ const updateBody = (state: State, body: PhysicBodyState | NonPhysicBodyState) =>
     case 'physic':
       return updatePhysicBody(state, body);
     case 'nonPhysic':
-      return updateNonPhysicBody(body, state.time, state.serverTime.diff);
+      return updateNonPhysicBody(state, body);
   }
 };
 
-export const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, timeDiff: number) => {
-  // 300ms - порог, чтобы точно данные дошли
-  const interpolationTime = time - timeDiff - 300;
+export const updateNonPhysicBody = (state: State | ObserverState, body: NonPhysicBodyState) => {
+  const {
+    time,
+    serverTime: { ping, diff },
+  } = state;
+
+  const interpolationTime =
+    time - diff - ping * 2 - config.clientSendChangesInterval - config.serverGameStep - 100;
 
   const startIndex = findStepInterval(interpolationTime, body.steps);
   if (startIndex === -1) {

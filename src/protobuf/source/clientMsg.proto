@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+enum MsgType {
+  changes = 0;
+}
+
+message Position {
+  int32 x = 0;
+  int32 y = 1;
+  int32 z = 2;
+}
+
+message Rotation {
+  float x = 0;
+  float y = 1;
+  float z = 2;
+  float w = 3;
+}
+
+message Changes {
+  MsgType type = 0;
+  int32 time = 1;
+  Position position = 2;
+  Rotation rotation = 3;
+  int32 lastShotTime = 4;
+  repeated uint32 hitBodyIds = 5;
+}

@@ -1,14 +1,20 @@
-import { AnyServerMsg } from '../server/messages';
 import { AnyClientMsg } from './messages';
 import { executeCmd } from './commands/execute';
 import { cmd } from './commands';
 import { appState } from './appState';
 import { message } from './reducers';
+import { unpackMessage } from './messages/unpack';
 
 const ws = new WebSocket(`ws://${location.hostname}:3002/`);
 
+ws.binaryType = 'arraybuffer';
+
 export const sendMessage = (msg: AnyClientMsg) => {
   ws.send(JSON.stringify(msg));
+};
+
+export const sendPbfMessage = (msg: ArrayBuffer) => {
+  ws.send(msg);
 };
 
 ws.addEventListener('open', () => {
@@ -22,12 +28,8 @@ ws.addEventListener('close', () => {
 });
 
 ws.addEventListener('message', (ev) => {
-  let msg: AnyServerMsg;
-
-  try {
-    msg = JSON.parse(ev.data);
-  } catch (e) {
-    console.error(`Bad server message ${ev.data}`);
+  const msg = unpackMessage(ev.data);
+  if (!msg) {
     return;
   }
 

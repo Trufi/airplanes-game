@@ -1,11 +1,11 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
+import * as vec4 from '@2gis/gl-matrix/vec4';
 import * as quat from '@2gis/gl-matrix/quat';
 import { Cmd, cmd, union } from '../commands';
-import { msg } from '../messages';
+import { msg, pbfMsg } from '../messages';
 import { findMap, clamp, mapMap, vec2SignedAngle } from '../../utils';
 import { ClientMsg } from '../../client/messages';
 import * as config from '../../config';
-import { Hit } from '../../client/types';
 import { updatePointsByType } from './calcPoints';
 
 export interface Weapon {
@@ -18,7 +18,6 @@ export interface Airplane {
   updateTime: number;
   position: number[];
   rotation: number[];
-  velocity: number;
   health: number;
   weapon: Weapon;
 }
@@ -113,7 +112,6 @@ const createAirplane = (id: number, playerId: number): Airplane => {
     updateTime: 0,
     position,
     rotation: getStartPlayerRotation(position),
-    velocity: config.airplane.velocity,
     health: config.airplane.maxHealth,
     weapon: {
       lastShotTime: 0,
@@ -126,13 +124,13 @@ export const tick = (game: GameState, time: number): Cmd => {
   game.time = time;
 
   // Если от пользователей довно не приходило сообщений, то убиваем их
-  game.bodies.map.forEach((body) => {
-    if (body.updateTime !== 0 && game.time - body.updateTime > 10000) {
-      playerDeath(game, body, 0);
-    }
-  });
+  // game.bodies.map.forEach((body) => {
+  //   if (body.updateTime !== 0 && game.time - body.updateTime > 10000) {
+  //     playerDeath(game, body, 0);
+  //   }
+  // });
 
-  return cmd.sendMsgTo(tickBodyRecipientIds(game), msg.tickData(game));
+  return cmd.sendPbfMsgTo(tickBodyRecipientIds(game), pbfMsg.tickData(game));
 };
 
 export const joinPlayer = (game: GameState, id: number, name: string): Cmd => {
@@ -186,14 +184,12 @@ export const kickPlayer = (game: GameState, id: number): Cmd => {
 
 const updatePlayerBodyState = (
   body: Airplane,
-  clientBody: ClientMsg['changes']['body'],
-  updateTime: number,
+  { position, rotation, lastShotTime, time }: ClientMsg['changes'],
 ): Cmd => {
-  body.updateTime = updateTime;
-  vec3.copy(body.position, clientBody.position);
-  body.velocity = clientBody.velocity;
-  quat.copy(body.rotation, clientBody.rotation);
-  body.weapon.lastShotTime = clientBody.weapon.lastShotTime;
+  body.updateTime = time;
+  vec3.set(body.position, position.x, position.y, position.z);
+  vec4.set(body.rotation, rotation.x, rotation.y, rotation.z, rotation.w);
+  body.weapon.lastShotTime = lastShotTime;
 };
 
 const playerDeath = (game: GameState, body: Airplane, causePlayerId: number): Cmd => {
@@ -225,9 +221,8 @@ const playerDeath = (game: GameState, body: Airplane, causePlayerId: number): Cm
   return cmds;
 };
 
-const applyHit = (game: GameState, hit: Hit, causePlayerId: number): Cmd => {
-  const { bodyId } = hit;
-  const body = game.bodies.map.get(bodyId);
+const applyHit = (game: GameState, hitBodyId: number, causePlayerId: number): Cmd => {
+  const body = game.bodies.map.get(hitBodyId);
   if (!body) {
     return;
   }
@@ -256,9 +251,10 @@ export const updatePlayerChanges = (
     return;
   }
 
-  updatePlayerBodyState(body, clientMsg.body, clientMsg.time);
+  updatePlayerBodyState(body, clientMsg);
 
-  const cmds = clientMsg.body.weapon.hits.map((hit) => applyHit(game, hit, gamePlayer.id));
+  const cmds = clientMsg.hitBodyIds.map((hitBodyId) => applyHit(game, hitBodyId, gamePlayer.id));
+
   return union(cmds);
 };
 

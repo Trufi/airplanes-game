@@ -1,4 +1,4 @@
-import { AnyClientMsg } from '../messages';
+import { AnyClientMsg } from '../messages/index';
 import { ObjectElement } from '../../utils';
 
 const sendMsg = (msg: AnyClientMsg) => ({
@@ -6,9 +6,9 @@ const sendMsg = (msg: AnyClientMsg) => ({
   msg,
 });
 
-const saveNameToLocalStorage = (name: string) => ({
-  type: 'saveNameToLocalStorage' as 'saveNameToLocalStorage',
-  name,
+const sendPbfMsg = (msg: ArrayBuffer) => ({
+  type: 'sendPbfMsg' as 'sendPbfMsg',
+  msg,
 });
 
 const saveTokenToCookie = (token: string) => ({
@@ -22,7 +22,7 @@ const renderUI = () => ({
 
 export const cmd = {
   sendMsg,
-  saveNameToLocalStorage,
+  sendPbfMsg,
   saveTokenToCookie,
   renderUI,
 };

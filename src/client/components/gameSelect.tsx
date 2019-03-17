@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { cmd } from '../commands';
-import { msg } from '../messages';
+import { msg } from '../messages/index';
 import { ExecuteCmd } from '../commands/execute';
 import { AppState } from '../types';
 import { getList } from '../services/game';

@@ -1,5 +1,5 @@
 import * as ws from 'ws';
-import { AnyClientMsg, ClientMsg } from '../../client/messages';
+import { AnyClientMsg, ClientMsg } from '../../client/messages/index';
 import {
   ConnectionsState,
   InitialConnection,

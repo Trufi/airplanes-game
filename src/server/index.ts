@@ -7,10 +7,11 @@ import { Connection } from './types';
 import { ExistCmd, Cmd, cmd } from './commands';
 import { createState } from './state';
 import { AnyServerMsg, msg } from './messages';
-import { AnyClientMsg } from '../client/messages';
 import { time } from './utils';
 import { applyRouter } from './routes';
 import { applyMiddlewares } from './middlewares';
+import { unpackMessage } from './messages/unpack';
+import * as config from '../config';
 
 const port = 3002;
 
@@ -38,11 +39,17 @@ app.use(
 // А index.html — нет
 app.use(express.static(path.join(__dirname, '../../dist')));
 
-const gameStep = 50;
-
 const sendMessage = (connection: Connection, msg: AnyServerMsg): void => {
   try {
     connection.socket.send(JSON.stringify(msg));
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const sendPbfMessage = (connection: Connection, msg: ArrayBuffer): void => {
+  try {
+    connection.socket.send(msg);
   } catch (e) {
     console.error(e);
   }
@@ -77,12 +84,22 @@ const executeOneCmd = (cmdData: ExistCmd) => {
       });
       break;
     }
+
+    case 'sendPbfMsgTo': {
+      cmdData.connectionIds.forEach((id) => {
+        const connection = state.connections.map.get(id);
+        if (connection) {
+          sendPbfMessage(connection, cmdData.msg);
+        }
+      });
+      break;
+    }
   }
 };
 
 const gameLoop = () => {
-  setTimeout(gameLoop, gameStep);
-  const cmd = tick(state, Date.now());
+  setTimeout(gameLoop, config.serverGameStep);
+  const cmd = tick(state, time());
   executeCmd(cmd);
 };
 gameLoop();
@@ -90,13 +107,9 @@ gameLoop();
 wsServer.on('connection', (socket) => {
   const id = createNewConnection(state.connections, socket);
 
-  const onMessage = (data: string) => {
-    let msg: AnyClientMsg;
-
-    try {
-      msg = JSON.parse(data);
-    } catch (e) {
-      console.error(`Bad client message ${data}`);
+  const onMessage = (data: ws.Data) => {
+    const msg = unpackMessage(data);
+    if (!msg) {
       return;
     }
 

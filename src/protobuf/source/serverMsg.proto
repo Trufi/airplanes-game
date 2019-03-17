@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+enum MsgType {
+  tickData = 0;
+}
+
+message Position {
+  int32 x = 0;
+  int32 y = 1;
+  int32 z = 2;
+}
+
+message Rotation {
+  float x = 0;
+  float y = 1;
+  float z = 2;
+  float w = 3;
+}
+
+message TickData {
+  message TickBodyData {
+    uint32 id = 0;
+    Position position = 1;
+    Rotation rotation = 2;
+    int32 updateTime = 3;
+    int32 health = 4;
+    int32 lastShotTime = 5;
+  }
+
+  MsgType type = 0;
+  repeated TickBodyData bodies = 1;
+}

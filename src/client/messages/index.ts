@@ -1,7 +1,10 @@
 import * as quat from '@2gis/gl-matrix/quat';
-import { PhysicBodyState } from './types';
-import { ObjectElement } from '../utils';
-import * as config from '../config';
+import { PhysicBodyState } from '../types';
+import { ObjectElement } from '../../utils';
+import * as config from '../../config';
+
+const clientMsgSchema = require('../../protobuf/clientMsg.proto');
+const Pbf = require('pbf');
 
 const joinGame = (gameId: number) => ({
   type: 'joinGame' as 'joinGame',
@@ -14,11 +17,10 @@ const joinGameAsObserver = (gameId: number) => ({
 });
 
 const changes = (body: PhysicBodyState, time: number, diffTime: number) => {
-  const { position, velocity, weapon } = body;
-  const msgWeapon = {
-    lastShotTime: weapon.lastShotTime - diffTime,
-    hits: weapon.hits,
-  };
+  const {
+    position,
+    weapon: { lastShotTime, hits },
+  } = body;
 
   // На сервер передаем вращение с учетом угловой скорости
   const rotation = [0, 0, 0, 1];
@@ -30,13 +32,20 @@ const changes = (body: PhysicBodyState, time: number, diffTime: number) => {
 
   return {
     type: 'changes' as 'changes',
-    time: time - diffTime,
-    body: {
-      position,
-      velocity,
-      rotation,
-      weapon: msgWeapon,
+    time: (time - diffTime) | 0,
+    position: {
+      x: position[0] | 0,
+      y: position[1] | 0,
+      z: position[2] | 0,
     },
+    rotation: {
+      x: rotation[0],
+      y: rotation[1],
+      z: rotation[2],
+      w: rotation[3],
+    },
+    lastShotTime: (lastShotTime - diffTime) | 0,
+    hitBodyIds: hits.map(({ bodyId }) => bodyId),
   };
 };
 
@@ -67,6 +76,15 @@ export const msg = {
   auth,
   botAuth,
   ping,
+};
+
+export const pbfMsg = {
+  changes: (body: PhysicBodyState, time: number, diffTime: number) => {
+    const pbf = new Pbf();
+    clientMsgSchema.Changes.write(changes(body, time, diffTime), pbf);
+    const u8 = pbf.finish() as Uint8Array;
+    return u8.buffer.slice(0, u8.byteLength);
+  },
 };
 
 /**
