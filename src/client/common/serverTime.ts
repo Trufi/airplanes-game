@@ -52,6 +52,10 @@ export const updatePingAndServerTime = (timeState: ServerTimeState, msg: ServerM
 };
 
 /**
+ * Устанавливает плавный переход между предыдущим пингом и текущим
+ * Этот пинг используется для вычисления времение интерполяции,
+ * поэтому должен изменяться плавно. Иначе тела будут прыгать взыд-вперед при скачках пинга.
+ *
  * @param toTime Тут должно приходить время клиента! Не сервера!
  */
 const setSmoothInterp = (state: ServerTimeState, toTime: number, toValue: number) => {
@@ -79,6 +83,13 @@ export const updateSmoothPing = (state: ServerTimeState, time: number) => {
   smoothPing.time = time;
 };
 
+/**
+ * Для интрерполяции нужно:
+ * 1. Взять время сервера
+ * 2. Вычесть максимальное время, за которое данные могут идти до клиента
+ *
+ * Нужно, чтобы всегда перед началом нового интервала интерполяции были готовы данные
+ */
 export const interpolateTimeShift = (state: ServerTimeState) => {
   return (
     state.smoothPing.value * 2 + config.clientSendChangesInterval + config.serverGameStep + 100
