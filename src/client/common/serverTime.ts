@@ -28,7 +28,7 @@ export type ServerTimeState = ReturnType<typeof createServerTimeState>;
 
 export const updatePingAndServerTime = (timeState: ServerTimeState, msg: ServerMsg['pong']) => {
   const { pingSample, diffSample } = timeState;
-  const maxSampleLength = 100;
+  const maxSampleLength = 20;
 
   const now = time();
   const ping = now - msg.clientTime;
