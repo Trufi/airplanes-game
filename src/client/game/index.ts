@@ -65,7 +65,7 @@ export const start = (data: ServerMsg['startData']) => {
     scene: view.createScene(),
     map: view.createMap(),
     camera: view.createCamera(),
-    serverTime: createServerTimeState(),
+    serverTime: createServerTimeState(now),
     pressedKeys: {},
     notes: createNotesState(),
     stick: { x: 0, y: 0 },

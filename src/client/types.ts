@@ -2,6 +2,7 @@ import * as J from '@2gis/jakarta';
 import * as THREE from 'three';
 import { ObserverState } from './observer/types';
 import { NotesState } from './common/notes';
+import { ServerTimeState } from './common/serverTime';
 
 export interface BodyStep {
   time: number;
@@ -85,14 +86,6 @@ export interface PlayerState {
   kills: number;
   deaths: number;
   points: number;
-}
-
-export interface ServerTimeState {
-  diffSample: number[];
-  diff: number;
-
-  pingSample: number[];
-  ping: number;
 }
 
 export interface StickState {

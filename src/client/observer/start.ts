@@ -47,7 +47,7 @@ export const start = (appState: AppState, data: ServerMsg['startObserverData']) 
     scene: view.createScene(),
     map: view.createMap(),
     camera: view.createCamera(),
-    serverTime: createServerTimeState(),
+    serverTime: createServerTimeState(now),
     keyboard: keyboard.enable(),
     notes: createNotesState(),
     control: control.enable(overlay),

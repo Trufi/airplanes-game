@@ -12,7 +12,7 @@ const clientMsgSchema = require('../protobuf/clientMsg.proto');
 const Pbf = require('pbf');
 
 export const initBot = (serverUrl: string, name: string, gameId: number) => {
-  const serverTimeState = createServerTimeState();
+  const serverTimeState = createServerTimeState(time());
 
   let connected = false;
 

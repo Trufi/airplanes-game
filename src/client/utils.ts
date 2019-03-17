@@ -80,12 +80,21 @@ export const localAxisToXYAngle = (axis: number[], rotation: number[]) => {
  */
 export const median = (sample: number[]) => {
   const array = sample.slice();
-  array.sort();
+  array.sort((a: number, b: number) => a - b);
 
   // Не совсем медиана, ну и пофиг
   const medianIndex = Math.floor(array.length / 2);
 
   return array[medianIndex];
+};
+
+export const p90 = (sample: number[]) => {
+  const array = sample.slice();
+  array.sort((a: number, b: number) => a - b);
+
+  const index = Math.floor(array.length * 0.9);
+
+  return array[index];
 };
 
 /**

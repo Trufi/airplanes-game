@@ -1,8 +1,9 @@
 import * as J from '@2gis/jakarta';
-import { PlayerState, CameraState, ServerTimeState, NonPhysicBodyState } from '../types';
+import { PlayerState, CameraState, NonPhysicBodyState } from '../types';
 import { NotesState } from '../common/notes';
 import { ControlState } from './control';
 import { KeyboardState } from './keyboard';
+import { ServerTimeState } from '../common/serverTime';
 
 export interface ObserverState {
   type: 'observer';

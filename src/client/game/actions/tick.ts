@@ -8,10 +8,13 @@ import { hideOldNotes } from '../../common/notes';
 import { processPressedkeys } from './keys';
 import { updateWeaponAnimation } from './weapon';
 import { ObserverState } from '../../observer/types';
+import { interpolateTimeShift, updateSmoothPing } from '../../common/serverTime';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
   state.time = time;
+
+  updateSmoothPing(state.serverTime, time);
 
   processPressedkeys(state);
 
@@ -33,13 +36,9 @@ const updateBody = (state: State, body: PhysicBodyState | NonPhysicBodyState) =>
 };
 
 export const updateNonPhysicBody = (state: State | ObserverState, body: NonPhysicBodyState) => {
-  const {
-    time,
-    serverTime: { ping, diff },
-  } = state;
+  const { time, serverTime } = state;
 
-  const interpolationTime =
-    time - diff - ping * 2 - config.clientSendChangesInterval - config.serverGameStep - 100;
+  const interpolationTime = time - serverTime.diff - interpolateTimeShift(serverTime);
 
   const startIndex = findStepInterval(interpolationTime, body.steps);
   if (startIndex === -1) {
