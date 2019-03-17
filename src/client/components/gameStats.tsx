@@ -19,6 +19,7 @@ export const GameStats = ({ players, style }: Props) => {
           <td>Name</td>
           <td>Kills</td>
           <td>Deaths</td>
+          <td>Points</td>
         </tr>
       </thead>
       <tbody>
@@ -28,6 +29,7 @@ export const GameStats = ({ players, style }: Props) => {
             <td>{player.name}</td>
             <td>{player.kills}</td>
             <td>{player.deaths}</td>
+            <td>{player.points}</td>
           </tr>
         ))}
       </tbody>
