@@ -19,7 +19,7 @@ export const weapon = {
   bullet: {
     color: 0xeeee33,
     opacity: 0.5,
-    width: 10,
+    width: 2,
     offset: { x: 900, y: 0, z: 500 },
   },
 
