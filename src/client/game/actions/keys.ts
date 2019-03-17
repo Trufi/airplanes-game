@@ -54,8 +54,12 @@ export const processPressedkeys = (state: State) => {
     }
   }
 
-  updateWeapon(state, pressedKeys['Space']);
   updateBoost(body, dt, pressedKeys['KeyF']);
+
+  // Если нажата кнопка ускорения, то не стреляем
+  if (!pressedKeys['KeyF']) {
+    updateWeapon(state, pressedKeys['Space']);
+  }
 
   // Обрабатываем стик для мобилок
   if (stick.x !== 0) {
