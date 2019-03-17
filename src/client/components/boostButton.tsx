@@ -33,11 +33,12 @@ export class BoostButton extends React.Component<Props, {}> {
           border: '1px solid',
           textAlign: 'center',
           lineHeight: `${size}px`,
-          fontSize: '30px',
+          fontSize: '20px',
           userSelect: 'none',
         }}
         onTouchStart={this.onTouchStart}
         onTouchEnd={this.onTouchEnd}
+        onTouchMove={this.onTouchMove}
       >
         <div
           style={{
@@ -58,7 +59,7 @@ export class BoostButton extends React.Component<Props, {}> {
             height: `${size}px`,
           }}
         >
-          B
+          Boost
         </div>
       </div>
     );
@@ -72,5 +73,9 @@ export class BoostButton extends React.Component<Props, {}> {
   private onTouchEnd = (ev: React.TouchEvent) => {
     ev.preventDefault();
     this.props.game.pressedKeys['KeyF'] = false;
+  };
+
+  private onTouchMove = (ev: React.TouchEvent) => {
+    ev.preventDefault();
   };
 }

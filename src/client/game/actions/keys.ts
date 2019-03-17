@@ -1,17 +1,17 @@
-import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
-import { degToRad, projection, restoreRoll } from '../../utils';
-import * as config from '../../../config';
 import { PhysicBodyState, State } from '../../types';
 import { clamp } from '../../../utils';
-import { Vector3 } from 'three';
+import { updateBoost } from './boost';
+import { localAxisToXYAngle, degToRad } from '../../utils';
+import { updateWeapon } from './weapon';
 
 const rotationAcceleration = { x: 0.000004, z: 0.000004 };
 const maxRotationSpeed = { x: 0.0007, z: 0.0007 };
 const restoreYSpeed = 0.0006;
 
-export const processPressedkeys = (dt: number, state: State) => {
+export const processPressedkeys = (state: State) => {
   const { pressedKeys, stick, body } = state;
+  const dt = state.time - state.prevTime;
 
   if (!body) {
     return;
@@ -20,9 +20,6 @@ export const processPressedkeys = (dt: number, state: State) => {
   let yawPressed = false;
   let pitchPressed = false;
   let rollPressed = false;
-
-  let boostPressed = false;
-  resetVelocity(body);
 
   for (const code in pressedKeys) {
     if (!pressedKeys[code]) {
@@ -54,19 +51,11 @@ export const processPressedkeys = (dt: number, state: State) => {
         quat.rotateY(body.rotation, body.rotation, -0.001 * dt);
         rollPressed = true;
         break;
-      case 'KeyF':
-        applyBoost(state, body);
-        boostPressed = true;
-        break;
-      case 'Space':
-        fire(state);
-        break;
     }
   }
 
-  if (!boostPressed) {
-    restoreBoost(state, body);
-  }
+  updateWeapon(state, pressedKeys['Space']);
+  updateBoost(body, dt, pressedKeys['KeyF']);
 
   // Обрабатываем стик для мобилок
   if (stick.x !== 0) {
@@ -93,6 +82,14 @@ export const processPressedkeys = (dt: number, state: State) => {
   }
 };
 
+const setVelocityDirectionX = (body: PhysicBodyState, x: number) => {
+  body.velocityDirection[0] = clamp(x, -maxRotationSpeed.x, maxRotationSpeed.x);
+};
+
+const setVelocityDirectionZ = (body: PhysicBodyState, x: number) => {
+  body.velocityDirection[2] = clamp(x, -maxRotationSpeed.z, maxRotationSpeed.z);
+};
+
 const processStickX = (stick: State['stick'], body: PhysicBodyState, dt: number) => {
   const targetRotSpeedX = -maxRotationSpeed.z * stick.x;
   const currentRotSpeedX = body.velocityDirection[2];
@@ -101,13 +98,9 @@ const processStickX = (stick: State['stick'], body: PhysicBodyState, dt: number)
     Math.sign(targetRotSpeedX - currentRotSpeedX) * rotationAcceleration.z * dt;
 
   if (Math.abs(targetRotSpeedX - currentRotSpeedX) < Math.abs(deltaRotSpeedX)) {
-    body.velocityDirection[2] = clamp(targetRotSpeedX, -maxRotationSpeed.z, maxRotationSpeed.z);
+    setVelocityDirectionZ(body, targetRotSpeedX);
   } else {
-    body.velocityDirection[2] = clamp(
-      currentRotSpeedX + deltaRotSpeedX,
-      -maxRotationSpeed.z,
-      maxRotationSpeed.z,
-    );
+    setVelocityDirectionZ(body, currentRotSpeedX + deltaRotSpeedX);
   }
 };
 
@@ -119,30 +112,18 @@ const processStickY = (stick: State['stick'], body: PhysicBodyState, dt: number)
     Math.sign(targetRotSpeedY - currentRotSpeedY) * rotationAcceleration.x * dt;
 
   if (Math.abs(targetRotSpeedY - currentRotSpeedY) < Math.abs(deltaRotSpeedY)) {
-    body.velocityDirection[0] = clamp(targetRotSpeedY, -maxRotationSpeed.x, maxRotationSpeed.x);
+    setVelocityDirectionX(body, targetRotSpeedY);
   } else {
-    body.velocityDirection[0] = clamp(
-      currentRotSpeedY + deltaRotSpeedY,
-      -maxRotationSpeed.x,
-      maxRotationSpeed.x,
-    );
+    setVelocityDirectionX(body, currentRotSpeedY + deltaRotSpeedY);
   }
 };
 
 const yawLeft = (dt: number, body: PhysicBodyState) => {
-  body.velocityDirection[2] = clamp(
-    body.velocityDirection[2] + rotationAcceleration.z * dt,
-    -maxRotationSpeed.z,
-    maxRotationSpeed.z,
-  );
+  setVelocityDirectionZ(body, body.velocityDirection[2] + rotationAcceleration.z * dt);
 };
 
 const yawRight = (dt: number, body: PhysicBodyState) => {
-  body.velocityDirection[2] = clamp(
-    body.velocityDirection[2] - rotationAcceleration.z * dt,
-    -maxRotationSpeed.z,
-    maxRotationSpeed.z,
-  );
+  setVelocityDirectionZ(body, body.velocityDirection[2] - rotationAcceleration.z * dt);
 };
 
 const restoreYawAcceleration = (dt: number, body: PhysicBodyState) => {
@@ -156,19 +137,11 @@ const restoreYawAcceleration = (dt: number, body: PhysicBodyState) => {
 };
 
 const pitchDown = (dt: number, body: PhysicBodyState) => {
-  body.velocityDirection[0] = clamp(
-    body.velocityDirection[0] - rotationAcceleration.x * dt,
-    -maxRotationSpeed.x,
-    maxRotationSpeed.x,
-  );
+  setVelocityDirectionX(body, body.velocityDirection[0] - rotationAcceleration.x * dt);
 };
 
 const pitchUp = (dt: number, body: PhysicBodyState) => {
-  body.velocityDirection[0] = clamp(
-    body.velocityDirection[0] + rotationAcceleration.x * dt,
-    -maxRotationSpeed.x,
-    maxRotationSpeed.x,
-  );
+  setVelocityDirectionX(body, body.velocityDirection[0] + rotationAcceleration.x * dt);
 };
 
 const restorePitchAcceleration = (dt: number, body: PhysicBodyState) => {
@@ -181,105 +154,27 @@ const restorePitchAcceleration = (dt: number, body: PhysicBodyState) => {
   }
 };
 
-const forwardDirection = [0, 1, 0];
-const bodyForward = [0, 0, 0];
-const toTarget = [0, 0, 0];
-const bodyRotation = [0, 0, 0, 1];
+const xAxis = [1, 0, 0];
+const yAxis = [0, 1, 0];
+const restoreRoll = (
+  rotation: number[],
+  dt: number,
+  restoreSpeed: number,
+  thresholdDegress: number,
+) => {
+  const angleY = localAxisToXYAngle(yAxis, rotation);
+  // TODO: надо обойти кейс, когда X локальный перпендикулярен глобальному
+  // в этом случае горизонт остается перпендикулярным
 
-const fire = (state: State) => {
-  const { body } = state;
-  if (!body) {
-    return;
-  }
+  // Восстанавливаем горизонт, только если прицел смотрит почти на него
+  if (Math.abs(angleY) < degToRad(thresholdDegress)) {
+    const angleX = localAxisToXYAngle(xAxis, rotation);
+    const rotationYAngle = restoreSpeed * dt;
 
-  const {
-    bodies,
-    camera: { rotation, position },
-  } = state;
-
-  const { weapon } = body;
-
-  if (state.time - weapon.lastShotTime < config.weapon.cooldown) {
-    weapon.animation.is_running = false;
-    return;
-  }
-
-  weapon.animation.is_running = true;
-  weapon.lastShotTime = state.time;
-
-  quat.rotateX(bodyRotation, rotation, -degToRad(config.camera.pitch));
-  vec3.transformQuat(bodyForward, forwardDirection, bodyRotation);
-
-  for (const [, targetBody] of bodies) {
-    vec3.sub(toTarget, targetBody.position, position);
-
-    const targetProjection = projection(toTarget, bodyForward);
-    const angle = hitAngle(toTarget, bodyForward, config.weapon.radius);
-
-    if (
-      // Если проекция на направление больше 0, то цель находится впереди
-      targetProjection > 0 &&
-      vec3.len(toTarget) < config.weapon.distance &&
-      angle < degToRad(config.weapon.hitAngle)
-    ) {
-      weapon.lastHitTime = state.time;
-      weapon.hits.push({ bodyId: targetBody.id });
-      weapon.target = new Vector3(
-        targetBody.position[0],
-        targetBody.position[1],
-        targetBody.position[2],
-      );
+    if (rotationYAngle > Math.abs(angleX)) {
+      quat.rotateY(rotation, rotation, angleX);
+    } else {
+      quat.rotateY(rotation, rotation, Math.sign(angleX) * rotationYAngle);
     }
-  }
-};
-
-const hitAngle = (target: number[], forward: number[], radius: number) => {
-  /**
-   *              _ /|
-   *          _ / _/ |
-   *      _ /   _/   | X  α — угл между направлением тела вперед (forward) и целью (target)
-   *    /_β____/_____|    R — меньший ралиус конуса
-   *   |    _/       |    P — проекция вектора D на направление самолета
-   * R | __/         | R  β — угл, который нам надо найти, чтобы понять, что есть попадание
-   *   |/_α__________|
-   *          P
-   * tg α = (X + R) / P  ⇒  X = P * tg α - R
-   * tg β = X / P = tg α - R / P
-   */
-
-  const alpha = vec3.angle(target, forward);
-  const p = projection(target, forward);
-  const tanBeta = Math.tan(alpha) - radius / p;
-  return Math.atan(tanBeta);
-};
-
-const resetVelocity = (body: PhysicBodyState) => {
-  body.velocity = config.airplane.velocity;
-};
-
-const applyBoost = (state: State, body: PhysicBodyState) => {
-  const { boost } = body;
-  const dt = state.time - state.prevTime;
-
-  if (boost.volume > 0) {
-    body.velocity = config.airplane.velocity * config.boost.factor;
-    boost.volume = clamp(
-      boost.volume - (config.boost.spendingSpeed / 1000) * dt,
-      0,
-      config.boost.maxVolume,
-    );
-  }
-};
-
-const restoreBoost = (state: State, body: PhysicBodyState) => {
-  const { boost } = body;
-  const dt = state.time - state.prevTime;
-
-  if (boost.volume < config.boost.maxVolume) {
-    boost.volume = clamp(
-      boost.volume + (config.boost.restoringSpeed / 1000) * dt,
-      0,
-      config.boost.maxVolume,
-    );
   }
 };

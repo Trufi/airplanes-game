@@ -5,10 +5,14 @@ import * as view from '../view';
 import * as config from '../../../config';
 import { degToRad } from '../../utils';
 import { hideOldNotes } from '../../common/notes';
+import { processPressedkeys } from './keys';
+import { updateWeaponAnimation } from './weapon';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
   state.time = time;
+
+  processPressedkeys(state);
 
   state.bodies.forEach((body) => updateBody(state, body));
 
@@ -53,11 +57,7 @@ export const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, time
   vec3.lerp(body.velocityDirection, startStep.velocityDirection, endStep.velocityDirection, t);
 
   body.weapon.lastShotTime = endStep.weapon.lastShotTime;
-  if (interpolationTime - body.weapon.lastShotTime < config.weapon.cooldown) {
-    body.weapon.animation.is_running = true;
-  } else {
-    body.weapon.animation.is_running = false;
-  }
+  updateWeaponAnimation(body.weapon, interpolationTime);
 
   body.health = endStep.health;
 
@@ -99,6 +99,8 @@ const updatePhysicBody = (state: State, body: PhysicBodyState) => {
   body.position[0] += velocityVector[0] * dt;
   body.position[1] += velocityVector[1] * dt;
   body.position[2] = Math.max(body.position[2] + velocityVector[2] * dt, config.minimalHeight);
+
+  updateWeaponAnimation(body.weapon, state.time);
 
   view.updateMesh(body);
   view.updateBullet(body.weapon.left, body);

@@ -3,6 +3,7 @@ import { PlayerData, TickBodyData } from '../../server/messages';
 import { createMesh, createShotMesh, createBulletMesh } from './view';
 import { pick } from '../../utils';
 import * as config from '../../config';
+import { createBoostState } from './actions/boost';
 
 export const createPlayer = (data: PlayerData): PlayerState =>
   pick(data, ['id', 'bodyId', 'name', 'live', 'kills', 'deaths', 'points']);
@@ -34,10 +35,10 @@ export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
     health,
     mesh,
     shotMesh: createShotMesh(),
-    boost: {
-      volume: config.boost.maxVolume,
-    },
+    boost: createBoostState(),
     weapon: {
+      heat: 0,
+      blocked: false,
       lastHitTime: 0,
       lastShotTime: 0,
       animation: { is_running: false, frames: 0 },

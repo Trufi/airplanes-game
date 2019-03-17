@@ -22,6 +22,20 @@ export const weapon = {
     width: 10,
     offset: { x: 900, y: 0, z: 500 },
   },
+
+  /**
+   * Скорость охлаждения в секунду
+   */
+  restoringSpeed: 20,
+  /**
+   * Перегрев за 1 выстрел
+   */
+  heatPerFire: 5,
+
+  /**
+   * Максимальный перегрев
+   */
+  maxHeat: 100,
 };
 
 export const boost = {

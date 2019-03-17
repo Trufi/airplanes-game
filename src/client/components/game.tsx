@@ -88,7 +88,7 @@ export class Game extends React.Component<Props, {}> {
       <>
         <Aim weapon={body.weapon} time={game.time} />
         <BoostButton game={game} />
-        <FireButton state={game} />
+        <FireButton game={game} />
         <Stick state={game} />
         <Debug
           style={{

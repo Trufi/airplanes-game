@@ -24,6 +24,9 @@ export interface AnimationPerFrame {
 }
 
 export interface WeaponState {
+  heat: number;
+  blocked: boolean;
+
   lastShotTime: number;
   lastHitTime: number;
   animation: AnimationPerFrame;
@@ -34,6 +37,7 @@ export interface WeaponState {
 }
 
 export interface BoostState {
+  blocked: boolean;
   volume: number;
 }
 

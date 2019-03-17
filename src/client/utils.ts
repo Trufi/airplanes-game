@@ -1,5 +1,4 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
-import * as quat from '@2gis/gl-matrix/quat';
 
 export const degToRad = (degrees: number) => (degrees * Math.PI) / 180;
 export const radToDeg = (radians: number) => (radians * 180) / Math.PI;
@@ -89,29 +88,4 @@ export const median = (sample: number[]) => {
  */
 export const projection = (a: number[], b: number[]) => {
   return vec3.dot(a, b) / vec3.len(b);
-};
-
-const xAxis = [1, 0, 0];
-const yAxis = [0, 1, 0];
-export const restoreRoll = (
-  rotation: number[],
-  dt: number,
-  restoreSpeed: number,
-  thresholdDegress: number,
-) => {
-  const angleY = localAxisToXYAngle(yAxis, rotation);
-  // TODO: надо обойти кейс, когда X локальный перпендикулярен глобальному
-  // в этом случае горизонт остается перпендикулярным
-
-  // Восстанавливаем горизонт, только если прицел смотрит почти на него
-  if (Math.abs(angleY) < degToRad(thresholdDegress)) {
-    const angleX = localAxisToXYAngle(xAxis, rotation);
-    const rotationYAngle = restoreSpeed * dt;
-
-    if (rotationYAngle > Math.abs(angleX)) {
-      quat.rotateY(rotation, rotation, angleX);
-    } else {
-      quat.rotateY(rotation, rotation, Math.sign(angleX) * rotationYAngle);
-    }
-  }
 };

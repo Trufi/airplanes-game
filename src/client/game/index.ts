@@ -1,6 +1,5 @@
 import { projectGeoToMap } from '@2gis/jakarta/dist/es6/utils/geo';
 import { msg } from '../messages';
-import { processPressedkeys } from './actions/keys';
 import { tick } from './actions/tick';
 import { time } from '../utils';
 import { renderUI } from '../ui';
@@ -91,8 +90,6 @@ export const start = (data: ServerMsg['startData']) => {
     requestAnimationFrame(loop);
 
     const now = time();
-
-    processPressedkeys(now - state.time, state);
 
     tick(state, now);
 
