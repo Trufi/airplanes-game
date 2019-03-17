@@ -23,7 +23,8 @@ export const PlayerLabel = ({ name, position, camera, health, frustum }: Props) 
   }
 
   const distance = vec3.distance(position, camera.position);
-  const color = distance < config.weapon.distance ? '#ff0000' : '#777777';
+  const near = distance < config.weapon.distance;
+  const color = near ? '#ff0000' : 'rgba(128, 128, 128, 0.3)';
 
   v.project(camera.object);
 
@@ -31,8 +32,10 @@ export const PlayerLabel = ({ name, position, camera, health, frustum }: Props) 
 
   const width = 100;
 
+  const height = near ? 40 : 20;
+
   const x = Math.round(v.x - width / 2);
-  const y = Math.round(v.y) - 40;
+  const y = Math.round(v.y) - height;
 
   return (
     <div
@@ -44,11 +47,16 @@ export const PlayerLabel = ({ name, position, camera, health, frustum }: Props) 
         transform: `translate3d(${x}px,${y}px,0)`,
         color,
         textAlign: 'center',
+        userSelect: 'none',
       }}
     >
       {name}
-      <br />
-      {Math.round(health)} / 100
+      {near && (
+        <>
+          <br />
+          {Math.round(health)} / 100
+        </>
+      )}
     </div>
   );
 };
