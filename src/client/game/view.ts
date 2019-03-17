@@ -5,7 +5,13 @@ import { config as mapConfig, MapOptions, Map, Skybox } from '@2gis/jakarta';
 import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import * as config from '../../config';
 import { degToRad } from '../utils';
-import { BodyState, CameraState, AnimationPerFrame } from '../types';
+import {
+  BodyState,
+  CameraState,
+  AnimationPerFrame,
+  NonPhysicBodyState,
+  PhysicBodyState,
+} from '../types';
 import { TextureLoader } from 'three';
 
 mapConfig.camera.fov = 45;
@@ -62,20 +68,26 @@ export const createMesh = () => {
   return mesh;
 };
 
-export const updateMesh = (body: {
-  mesh: THREE.Object3D;
-  position: number[];
-  rotation: number[];
-  velocityDirection: number[];
-}) => {
-  const { mesh, position, velocityDirection } = body;
-  mesh.position.set(position[0], position[1], position[2]);
+/**
+ * Обновление меша интерполируемого тела
+ */
+export const updateNonPhysicMesh = (body: NonPhysicBodyState) => {
+  const { mesh, position, rotation } = body;
+  mesh.position.fromArray(position);
+  mesh.quaternion.fromArray(rotation);
+};
 
-  // rotate mesh
-  const q1 = new THREE.Quaternion();
-  q1.fromArray(body.rotation);
-  mesh.setRotationFromQuaternion(q1);
-  mesh.rotateY(-velocityDirection[2] * 1500);
+/**
+ * Обновление меша тела, физика которого эмулируется на клиент
+ * Разница с `updateNonPhysicMesh` в том, что тут еще добавляет вращение
+ * относительно угловой скорости
+ */
+export const updatePhysicMesh = (body: PhysicBodyState) => {
+  const { mesh, position, rotation, velocityDirection } = body;
+  mesh.position.fromArray(position);
+  mesh.quaternion.fromArray(rotation);
+  // Добавляем вращение относительно угловой скорости
+  mesh.rotateY(-velocityDirection[2] * config.airplane.yRotationFactor);
 };
 
 export const createScene = () => {

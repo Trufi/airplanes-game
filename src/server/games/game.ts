@@ -19,7 +19,6 @@ export interface Airplane {
   position: number[];
   rotation: number[];
   velocity: number;
-  velocityDirection: number[];
   health: number;
   weapon: Weapon;
 }
@@ -115,7 +114,6 @@ const createAirplane = (id: number, playerId: number): Airplane => {
     position,
     rotation: getStartPlayerRotation(position),
     velocity: config.airplane.velocity,
-    velocityDirection: [0, 0, 0],
     health: config.airplane.maxHealth,
     weapon: {
       lastShotTime: 0,
@@ -194,7 +192,6 @@ const updatePlayerBodyState = (
   body.updateTime = updateTime;
   vec3.copy(body.position, clientBody.position);
   body.velocity = clientBody.velocity;
-  vec3.copy(body.velocityDirection, clientBody.velocityDirection);
   quat.copy(body.rotation, clientBody.rotation);
   body.weapon.lastShotTime = clientBody.weapon.lastShotTime;
 };

@@ -80,7 +80,15 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
   const time = () => Date.now();
 
   const changesMsg = (body: BotBody, time: number): ClientMsg['changes'] => {
-    const { position, velocity, rotation, velocityDirection, weapon } = body;
+    const { position, velocity, weapon } = body;
+
+    // На сервер передаем вращение с учетом угловой скорости
+    const rotation = [0, 0, 0, 1];
+    quat.rotateY(
+      rotation,
+      body.rotation,
+      -body.velocityDirection[2] * config.airplane.yRotationFactor,
+    );
 
     return {
       type: 'changes' as 'changes',
@@ -89,7 +97,6 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
         position,
         velocity,
         rotation,
-        velocityDirection,
         weapon: pick(weapon, ['lastShotTime', 'hits']),
       },
     };

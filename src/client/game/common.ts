@@ -23,14 +23,14 @@ export const addBody = (
 };
 
 export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
-  const { id, position, velocityDirection, rotation, health } = data;
+  const { id, position, rotation, health } = data;
   const mesh = createMesh();
   return {
     type: 'physic',
     id,
     position,
     velocity: config.airplane.velocity,
-    velocityDirection,
+    velocityDirection: [0, 0, 0],
     rotation,
     health,
     mesh,
@@ -50,14 +50,13 @@ export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
 };
 
 export const createNonPhysicBody = (data: TickBodyData): NonPhysicBodyState => {
-  const { id, position, velocityDirection, rotation, health } = data;
+  const { id, position, rotation, health } = data;
   const mesh = createMesh();
   return {
     type: 'nonPhysic',
     id,
     position,
     velocity: config.airplane.velocity,
-    velocityDirection,
     rotation,
     health,
     steps: [],

@@ -7,7 +7,6 @@ export interface BodyStep {
   time: number;
   position: number[];
   rotation: number[];
-  velocityDirection: number[];
   health: number;
   weapon: {
     lastShotTime: number;
@@ -65,7 +64,6 @@ export interface NonPhysicBodyState {
   position: number[];
   velocity: number;
   rotation: number[];
-  velocityDirection: number[];
   health: number;
   weapon: {
     animation: AnimationPerFrame;

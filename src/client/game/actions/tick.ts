@@ -54,14 +54,13 @@ export const updateNonPhysicBody = (body: NonPhysicBodyState, time: number, time
 
   vec3.lerp(body.position, startStep.position, endStep.position, t);
   quat.slerp(body.rotation, startStep.rotation, endStep.rotation, t);
-  vec3.lerp(body.velocityDirection, startStep.velocityDirection, endStep.velocityDirection, t);
 
   body.weapon.lastShotTime = endStep.weapon.lastShotTime;
   updateWeaponAnimation(body.weapon, interpolationTime);
 
   body.health = endStep.health;
 
-  view.updateMesh(body);
+  view.updateNonPhysicMesh(body);
   view.updateBullet(body.weapon.left, body);
   view.updateBullet(body.weapon.right, body);
 };
@@ -102,7 +101,7 @@ const updatePhysicBody = (state: State, body: PhysicBodyState) => {
 
   updateWeaponAnimation(body.weapon, state.time);
 
-  view.updateMesh(body);
+  view.updatePhysicMesh(body);
   view.updateBullet(body.weapon.left, body);
   view.updateBullet(body.weapon.right, body);
 };

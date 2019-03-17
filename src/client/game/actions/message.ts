@@ -29,7 +29,7 @@ export const updateGameData = (state: State | ObserverState, msg: ServerMsg['tic
 };
 
 export const updateBodyData = (state: State | ObserverState, data: TickBodyData) => {
-  const { id, position, rotation, updateTime, velocityDirection, health, weapon } = data;
+  const { id, position, rotation, updateTime, health, weapon } = data;
 
   const bodyState = state.bodies.get(id);
   if (!bodyState) {
@@ -42,7 +42,6 @@ export const updateBodyData = (state: State | ObserverState, data: TickBodyData)
     bodyState.steps.push({
       position,
       rotation,
-      velocityDirection,
       health,
       weapon,
       time: updateTime,

@@ -62,6 +62,11 @@ export const airplane = {
   velocity: 30,
   initRotation: { x: -Math.PI / 2, y: 0, z: Math.PI },
   propeller: { x: 0, y: 0, z: 0.666, radius: 0.36, opacity: 0.4 },
+
+  /**
+   * Коэффициент поворота по оси Y в зависимости от угловой скорости
+   */
+  yRotationFactor: 1500,
 };
 
 export const camera = {

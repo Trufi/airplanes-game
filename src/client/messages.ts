@@ -1,5 +1,7 @@
+import * as quat from '@2gis/gl-matrix/quat';
 import { PhysicBodyState } from './types';
 import { ObjectElement } from '../utils';
+import * as config from '../config';
 
 const joinGame = (gameId: number) => ({
   type: 'joinGame' as 'joinGame',
@@ -12,11 +14,19 @@ const joinGameAsObserver = (gameId: number) => ({
 });
 
 const changes = (body: PhysicBodyState, time: number, diffTime: number) => {
-  const { position, velocity, rotation, velocityDirection, weapon } = body;
+  const { position, velocity, weapon } = body;
   const msgWeapon = {
     lastShotTime: weapon.lastShotTime - diffTime,
     hits: weapon.hits,
   };
+
+  // На сервер передаем вращение с учетом угловой скорости
+  const rotation = [0, 0, 0, 1];
+  quat.rotateY(
+    rotation,
+    body.rotation,
+    -body.velocityDirection[2] * config.airplane.yRotationFactor,
+  );
 
   return {
     type: 'changes' as 'changes',
@@ -25,7 +35,6 @@ const changes = (body: PhysicBodyState, time: number, diffTime: number) => {
       position,
       velocity,
       rotation,
-      velocityDirection,
       weapon: msgWeapon,
     },
   };
