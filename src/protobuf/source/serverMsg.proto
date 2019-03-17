@@ -11,10 +11,10 @@ message Position {
 }
 
 message Rotation {
-  float x = 0;
-  float y = 1;
-  float z = 2;
-  float w = 3;
+  int32 x = 0;
+  int32 y = 1;
+  int32 z = 2;
+  int32 w = 3;
 }
 
 message TickData {

@@ -50,8 +50,16 @@ export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
 };
 
 export const createNonPhysicBody = (data: TickBodyData): NonPhysicBodyState => {
-  const { id, position, rotation, health } = data;
+  const {
+    id,
+    position,
+    rotation,
+    health,
+    updateTime,
+    weapon: { lastShotTime },
+  } = data;
   const mesh = createMesh();
+
   return {
     type: 'nonPhysic',
     id,
@@ -59,11 +67,21 @@ export const createNonPhysicBody = (data: TickBodyData): NonPhysicBodyState => {
     velocity: config.airplane.velocity,
     rotation,
     health,
-    steps: [],
+    steps: [
+      {
+        position,
+        rotation,
+        health,
+        time: updateTime,
+        weapon: {
+          lastShotTime,
+        },
+      },
+    ],
     mesh,
     shotMesh: createShotMesh(),
     weapon: {
-      lastShotTime: 0,
+      lastShotTime,
       animation: { is_running: false, frames: 0 },
       left: createBulletMesh(1),
       right: createBulletMesh(-1),

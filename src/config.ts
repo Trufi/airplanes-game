@@ -90,6 +90,11 @@ export const clientPingInterval = 500;
 export const smoothPingTime = 2000;
 export const minimalHeight = 10000;
 
+export const compression = {
+  position: 0.1,
+  rotation: 100,
+};
+
 export const points = {
   kills: 250,
   deaths: -100,

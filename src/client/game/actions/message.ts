@@ -1,3 +1,5 @@
+import * as vec3 from '@2gis/gl-matrix/vec3';
+import * as quat from '@2gis/gl-matrix/quat';
 import { State } from '../../types';
 import { AnyServerMsg, ServerMsg, PbfTickBodyData } from '../../../server/messages';
 import { Cmd } from '../../commands';
@@ -6,6 +8,7 @@ import { updatePingAndServerTime } from '../../common/serverTime';
 import { addKillNote } from '../../common/notes';
 import { ObserverState } from '../../observer/types';
 import { getNewPoints } from '../../../utils';
+import * as config from '../../../config';
 
 export const message = (state: State, msg: AnyServerMsg): Cmd => {
   switch (msg.type) {
@@ -39,7 +42,8 @@ export const updateBodyData = (state: State | ObserverState, data: PbfTickBodyDa
   if (bodyState.type === 'physic') {
     bodyState.health = data.health;
   } else {
-    bodyState.steps.push({
+    const lastStep = bodyState.steps[bodyState.steps.length - 1];
+    const newStep = {
       position: [position.x, position.y, position.z],
       rotation: [rotation.x, rotation.y, rotation.z, rotation.w],
       health,
@@ -47,7 +51,18 @@ export const updateBodyData = (state: State | ObserverState, data: PbfTickBodyDa
         lastShotTime,
       },
       time: updateTime,
-    });
+    };
+    vec3.scale(newStep.position, newStep.position, 1 / config.compression.position);
+    vec3.add(newStep.position, newStep.position, lastStep.position);
+
+    quat.scale(newStep.rotation, newStep.rotation, 1 / config.compression.rotation);
+    quat.add(newStep.rotation, newStep.rotation, lastStep.rotation);
+    quat.normalize(newStep.rotation, newStep.rotation);
+
+    newStep.weapon.lastShotTime += lastStep.weapon.lastShotTime;
+    newStep.time += lastStep.time;
+
+    bodyState.steps.push(newStep);
   }
 };
 

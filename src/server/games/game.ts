@@ -20,6 +20,13 @@ export interface Airplane {
   rotation: number[];
   health: number;
   weapon: Weapon;
+
+  prevSendingData: {
+    position: number[];
+    rotation: number[];
+    updateTime: number;
+    lastShotTime: number;
+  };
 }
 
 export interface BodiesState {
@@ -105,15 +112,22 @@ const getStartPlayerRotation = (position: number[]): number[] => {
 
 const createAirplane = (id: number, playerId: number): Airplane => {
   const position = getStartPlayerPosition();
+  const rotation = getStartPlayerRotation(position);
 
   return {
     id,
     playerId,
     updateTime: 0,
     position,
-    rotation: getStartPlayerRotation(position),
+    rotation,
     health: config.airplane.maxHealth,
     weapon: {
+      lastShotTime: 0,
+    },
+    prevSendingData: {
+      position: position.slice(),
+      rotation: rotation.slice(),
+      updateTime: 0,
       lastShotTime: 0,
     },
   };

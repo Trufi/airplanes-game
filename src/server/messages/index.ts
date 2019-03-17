@@ -1,5 +1,6 @@
 import { ObjectElement, mapMap, pick } from '../../utils';
 import { GameState, Airplane, GamePlayer } from '../games/game';
+import * as config from '../../config';
 
 const serverMsgSchema = require('../../protobuf/serverMsg.proto');
 const Pbf = require('pbf');
@@ -84,22 +85,56 @@ const playerDeath = (playerId: number, causePlayerId: number) => ({
   causePlayerId,
 });
 
+const getDelta = (out: Airplane['prevSendingData'], body: Airplane) => {
+  const { prevSendingData: prev } = body;
+  const posRound = config.compression.position;
+  const rotRound = config.compression.rotation;
+
+  out.position[0] = ((body.position[0] - prev.position[0]) * posRound) | 0;
+  out.position[1] = ((body.position[1] - prev.position[1]) * posRound) | 0;
+  out.position[2] = ((body.position[2] - prev.position[2]) * posRound) | 0;
+
+  prev.position[0] = prev.position[0] + out.position[0] / posRound;
+  prev.position[1] = prev.position[1] + out.position[1] / posRound;
+  prev.position[2] = prev.position[2] + out.position[2] / posRound;
+
+  out.rotation[0] = ((body.rotation[0] - prev.rotation[0]) * rotRound) | 0;
+  out.rotation[1] = ((body.rotation[1] - prev.rotation[1]) * rotRound) | 0;
+  out.rotation[2] = ((body.rotation[2] - prev.rotation[2]) * rotRound) | 0;
+  out.rotation[3] = ((body.rotation[3] - prev.rotation[3]) * rotRound) | 0;
+
+  prev.rotation[0] = prev.rotation[0] + out.rotation[0] / rotRound;
+  prev.rotation[1] = prev.rotation[1] + out.rotation[1] / rotRound;
+  prev.rotation[2] = prev.rotation[2] + out.rotation[2] / rotRound;
+  prev.rotation[3] = prev.rotation[3] + out.rotation[3] / rotRound;
+
+  out.lastShotTime = (body.weapon.lastShotTime - prev.lastShotTime) | 0;
+  prev.lastShotTime += out.lastShotTime;
+
+  out.updateTime = (body.updateTime - prev.updateTime) | 0;
+  prev.updateTime += out.updateTime;
+};
+
+const delta: Airplane['prevSendingData'] = {
+  position: [0, 0, 0],
+  rotation: [0, 0, 0, 0],
+  lastShotTime: 0,
+  updateTime: 0,
+};
+
 const getPbfTickBodyData = (body: Airplane) => {
-  const {
-    id,
-    position,
-    rotation,
-    updateTime,
-    health,
-    weapon: { lastShotTime },
-  } = body;
+  const { id, health } = body;
+
+  getDelta(delta, body);
+
+  const { position, rotation, updateTime, lastShotTime } = delta;
 
   return {
     id,
     position: {
-      x: position[0] | 0,
-      y: position[1] | 0,
-      z: position[2] | 0,
+      x: position[0],
+      y: position[1],
+      z: position[2],
     },
     rotation: {
       x: rotation[0],
@@ -107,9 +142,9 @@ const getPbfTickBodyData = (body: Airplane) => {
       z: rotation[2],
       w: rotation[3],
     },
-    updateTime: updateTime | 0,
-    health: health | 0,
-    lastShotTime: lastShotTime | 0,
+    updateTime,
+    health,
+    lastShotTime,
   };
 };
 export type PbfTickBodyData = ReturnType<typeof getPbfTickBodyData>;
@@ -145,7 +180,9 @@ export const msg = {
 export const pbfMsg = {
   tickData: (game: GameState) => {
     const pbf = new Pbf();
-    serverMsgSchema.TickData.write(tickData(game), pbf);
+    const msg = tickData(game);
+    // console.log(msg.bodies.length > 0 && msg.bodies[0]);
+    serverMsgSchema.TickData.write(msg, pbf);
     const u8 = pbf.finish() as Uint8Array;
     return u8.buffer.slice(0, u8.byteLength);
   },
