@@ -39,17 +39,15 @@ export const updateBodyData = (state: State | ObserverState, data: PbfTickBodyDa
     return;
   }
 
-  if (bodyState.type === 'physic') {
-    bodyState.health = data.health;
-  } else {
+  // Здоровье меняем сразу
+  bodyState.health = health;
+
+  if (bodyState.type === 'nonPhysic') {
     const lastStep = bodyState.steps[bodyState.steps.length - 1];
     const newStep = {
       position: [position.x, position.y, position.z],
       rotation: [rotation.x, rotation.y, rotation.z, rotation.w],
-      health,
-      weapon: {
-        lastShotTime,
-      },
+      lastShotTime,
       time: updateTime,
     };
     vec3.scale(newStep.position, newStep.position, 1 / config.compression.position);
@@ -59,7 +57,7 @@ export const updateBodyData = (state: State | ObserverState, data: PbfTickBodyDa
     quat.add(newStep.rotation, newStep.rotation, lastStep.rotation);
     quat.normalize(newStep.rotation, newStep.rotation);
 
-    newStep.weapon.lastShotTime += lastStep.weapon.lastShotTime;
+    newStep.lastShotTime += lastStep.lastShotTime;
     newStep.time += lastStep.time;
 
     bodyState.steps.push(newStep);

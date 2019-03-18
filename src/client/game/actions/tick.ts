@@ -60,10 +60,8 @@ export const updateNonPhysicBody = (state: State | ObserverState, body: NonPhysi
   vec3.lerp(body.position, startStep.position, endStep.position, t);
   quat.slerp(body.rotation, startStep.rotation, endStep.rotation, t);
 
-  body.weapon.lastShotTime = endStep.weapon.lastShotTime;
+  body.weapon.lastShotTime = endStep.lastShotTime;
   updateWeaponAnimation(body.weapon, interpolationTime);
-
-  body.health = endStep.health;
 
   view.updateNonPhysicMesh(body);
   view.updateBullet(body.weapon.left, body);

@@ -8,10 +8,7 @@ export interface BodyStep {
   time: number;
   position: number[];
   rotation: number[];
-  health: number;
-  weapon: {
-    lastShotTime: number;
-  };
+  lastShotTime: number;
 }
 
 export interface Hit {

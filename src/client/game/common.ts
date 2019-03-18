@@ -71,11 +71,8 @@ export const createNonPhysicBody = (data: TickBodyData): NonPhysicBodyState => {
       {
         position,
         rotation,
-        health,
         time: updateTime,
-        weapon: {
-          lastShotTime,
-        },
+        lastShotTime,
       },
     ],
     mesh,
