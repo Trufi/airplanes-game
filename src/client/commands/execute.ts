@@ -1,7 +1,7 @@
 import { set } from 'js-cookie';
 import { Cmd, ExistCmd } from '.';
 import { renderUI } from '../ui';
-import { sendMessage, sendPbfMessage } from '../socket';
+import { connect, sendMessage, sendPbfMessage } from '../socket';
 import { appState } from '../appState';
 
 export type ExecuteCmd = typeof executeCmd;
@@ -18,6 +18,9 @@ export const executeCmd = (cmd: Cmd) => {
 
 const executeOneCmd = (cmd: ExistCmd) => {
   switch (cmd.type) {
+    case 'connectToGameServer':
+      connect(cmd.url);
+      break;
     case 'sendMsg':
       sendMessage(cmd.msg);
       break;

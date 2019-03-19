@@ -1,5 +1,5 @@
 import { PlayerState, NonPhysicBodyState, PhysicBodyState, BodyState } from '../types';
-import { PlayerData, TickBodyData } from '../../server/messages';
+import { PlayerData, TickBodyData } from '../../gameServer/messages';
 import { createMesh, createShotMesh, createBulletMesh } from './view';
 import { pick } from '../../utils';
 import * as config from '../../config';

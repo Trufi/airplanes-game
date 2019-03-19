@@ -7,17 +7,15 @@ export interface InitialConnection {
   socket: ws;
 }
 
-export interface UserConnection {
-  status: 'user';
-  id: number;
-  socket: ws;
-  name: string;
-}
-
 export interface PlayerConnection {
   status: 'player';
   id: number;
   socket: ws;
+
+  /**
+   * Этот id присылает нам главный сервер
+   */
+  userId: number;
   name: string;
   gameId: number;
 }
@@ -30,7 +28,7 @@ export interface ObserverConnection {
   gameId: number;
 }
 
-export type Connection = InitialConnection | UserConnection | PlayerConnection | ObserverConnection;
+export type Connection = InitialConnection | PlayerConnection | ObserverConnection;
 
 export interface ConnectionsState {
   map: Map<number, Connection>;
@@ -38,6 +36,7 @@ export interface ConnectionsState {
 }
 
 export interface State {
+  token: string;
   connections: ConnectionsState;
   games: {
     map: Map<number, GameState>;

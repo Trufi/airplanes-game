@@ -5,7 +5,6 @@ import { ExecuteCmd } from '../commands/execute';
 import { AppState } from '../types';
 import { Game } from './game';
 import { appState } from '../appState';
-import { Disconnect } from './disconnect';
 import { Observer } from './observer';
 
 interface Props {
@@ -16,13 +15,9 @@ interface Props {
 export class Root extends React.Component<Props, {}> {
   public render() {
     const {
-      appState: { type, game, name, connected, observer },
+      appState: { type, game, name, observer, tryJoin },
       executeCmd,
     } = this.props;
-
-    if (!connected) {
-      return <Disconnect />;
-    }
 
     if (type === 'game' && game) {
       return <Game appState={appState} executeCmd={executeCmd} />;
@@ -37,7 +32,11 @@ export class Root extends React.Component<Props, {}> {
     }
 
     if (type === 'gameSelect') {
-      return <GameSelect appState={appState} executeCmd={executeCmd} />;
+      if (!tryJoin) {
+        return <GameSelect appState={appState} executeCmd={executeCmd} />;
+      } else {
+        return <div>Connect...</div>;
+      }
     }
   }
 }

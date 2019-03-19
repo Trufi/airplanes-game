@@ -2,7 +2,7 @@ import * as ws from 'ws';
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
 import { AnyClientMsg, msg } from '../client/messages';
-import { AnyServerMsg, ServerMsg } from '../server/messages';
+import { AnyServerMsg, ServerMsg } from '../gameServer/messages';
 import * as config from '../config';
 import { BotBody } from './types';
 import { createServerTimeState, updatePingAndServerTime } from '../client/common/serverTime';
@@ -29,8 +29,7 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
   socket.on('open', () => {
     console.log(`Bot ${name} connected to server`);
     connected = true;
-    sendMessage(msg.botAuth(name));
-    sendMessage(msg.joinGame(gameId));
+    sendMessage(msg.joinGameAsBot(gameId, name));
   });
 
   let body: BotBody | undefined;

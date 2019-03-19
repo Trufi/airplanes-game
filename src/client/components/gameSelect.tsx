@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { cmd } from '../commands';
-import { msg } from '../messages/index';
 import { ExecuteCmd } from '../commands/execute';
 import { AppState } from '../types';
 import { getList } from '../services/game';
 
 interface State {
-  gamelist: Array<{ id: number; players: number }>;
+  gamelist: Array<{ id: number; players: number; url: string }>;
 }
 
 interface Props {
@@ -26,7 +25,7 @@ export class GameSelect extends React.Component<Props, State> {
     const { appState } = this.props;
     if (appState.token) {
       getList({ token: appState.token }).then((data) => {
-        this.setState({ gamelist: data.games });
+        this.setState({ gamelist: data });
       });
     }
   }
@@ -45,7 +44,7 @@ export class GameSelect extends React.Component<Props, State> {
         }}
       >
         {gamelist &&
-          gamelist.map(({ id }, i) => (
+          gamelist.map(({ id, url }, i) => (
             <div
               key={i}
               style={{
@@ -60,7 +59,7 @@ export class GameSelect extends React.Component<Props, State> {
                 background: '#fff',
                 cursor: 'pointer',
               }}
-              onClick={() => this.gameSelected(id)}
+              onClick={() => this.gameSelected(id, url)}
             >
               Game {id}
               <div
@@ -71,7 +70,7 @@ export class GameSelect extends React.Component<Props, State> {
                   border: '1px solid',
                   color: '#0000ff',
                 }}
-                onClick={(ev) => this.gameObserve(ev, id)}
+                onClick={(ev) => this.gameObserve(ev, id, url)}
               >
                 obs
               </div>
@@ -81,12 +80,24 @@ export class GameSelect extends React.Component<Props, State> {
     );
   }
 
-  private gameSelected = (id: number) => {
-    this.props.executeCmd(cmd.sendMsg(msg.joinGame(id)));
+  private gameSelected = (id: number, url: string) => {
+    this.props.executeCmd(cmd.connectToGameServer(url));
+
+    this.props.appState.tryJoin = {
+      id,
+      url,
+      type: 'player',
+    };
   };
 
-  private gameObserve = (ev: React.MouseEvent, id: number) => {
+  private gameObserve = (ev: React.MouseEvent, id: number, url: string) => {
     ev.stopPropagation();
-    this.props.executeCmd(cmd.sendMsg(msg.joinGameAsObserver(id)));
+    this.props.executeCmd(cmd.connectToGameServer(url));
+
+    this.props.appState.tryJoin = {
+      id,
+      url,
+      type: 'observer',
+    };
   };
 }

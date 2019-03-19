@@ -19,10 +19,24 @@ const sendPbfMsgTo = (connectionIds: number[], msg: ArrayBuffer) => ({
   msg,
 });
 
+const authPlayer = (
+  connectionId: number,
+  token: string,
+  gameId: number,
+  joinType: 'player' | 'observer',
+) => ({
+  type: 'authPlayer' as 'authPlayer',
+  connectionId,
+  token,
+  gameId,
+  joinType,
+});
+
 export const cmd = {
   sendMsg,
   sendMsgTo,
   sendPbfMsgTo,
+  authPlayer,
 };
 
 export const union = (cmds: Cmd[]): Cmd => {

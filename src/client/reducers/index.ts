@@ -1,10 +1,28 @@
 import { AppState } from '../types';
-import { AnyServerMsg, ServerMsg } from '../../server/messages';
-import { Cmd } from '../commands';
+import { AnyServerMsg, ServerMsg } from '../../gameServer/messages';
+import { Cmd, cmd } from '../commands';
+import { msg } from '../messages';
 import { message as gameMessage } from '../game/actions/message';
 import { message as observerMessage } from '../observer/reducer';
 import { start as startGame } from '../game';
 import { start as startObserver } from '../observer/start';
+
+export const connected = (appState: AppState): Cmd => {
+  if (appState.type !== 'gameSelect' || !appState.tryJoin || !appState.token) {
+    return;
+  }
+
+  const {
+    tryJoin: { id, type },
+    token,
+  } = appState;
+
+  if (type === 'player') {
+    return [cmd.renderUI(), cmd.sendMsg(msg.joinGame(token, id))];
+  } else if (type === 'observer') {
+    return [cmd.renderUI(), cmd.sendMsg(msg.joinGameAsObserver(token, id))];
+  }
+};
 
 export const message = (appState: AppState, msg: AnyServerMsg): Cmd => {
   if (appState.type === 'game' && appState.game) {
@@ -29,10 +47,12 @@ const saveConnectId = (appState: AppState, msg: ServerMsg['connect']): Cmd => {
 
 const startData = (appState: AppState, msg: ServerMsg['startData']): Cmd => {
   appState.type = 'game';
+  appState.tryJoin = undefined;
   startGame(msg);
 };
 
 const startObserverData = (appState: AppState, msg: ServerMsg['startObserverData']): Cmd => {
   appState.type = 'observer';
+  appState.tryJoin = undefined;
   startObserver(appState, msg);
 };

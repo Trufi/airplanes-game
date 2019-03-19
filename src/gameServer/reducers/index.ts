@@ -3,7 +3,6 @@ import { AnyClientMsg, ClientMsg } from '../../client/messages/index';
 import {
   ConnectionsState,
   InitialConnection,
-  UserConnection,
   PlayerConnection,
   State,
   Connection,
@@ -14,8 +13,6 @@ import { msg } from '../messages';
 import { time } from '../utils';
 import * as game from '../games/game';
 import { mapMap } from '../../utils';
-import { selectUserByToken } from '../models/user';
-import { connectionDB } from '../models/database';
 
 export const createNewConnection = (state: ConnectionsState, socket: ws): number => {
   const connection: InitialConnection = {
@@ -26,6 +23,58 @@ export const createNewConnection = (state: ConnectionsState, socket: ws): number
   state.nextId++;
   state.map.set(connection.id, connection);
   return connection.id;
+};
+
+export const authConnection = (
+  state: State,
+  connectionId: number,
+  userId: number,
+  name: string,
+  gameId: number,
+  joinType: 'player' | 'observer',
+): Cmd => {
+  const connection = state.connections.map.get(connectionId);
+  if (!connection || connection.status !== 'initial') {
+    return;
+  }
+
+  const gameState = state.games.map.get(gameId);
+  if (!gameState) {
+    return cmd.sendMsg(connection.id, msg.gameJoinFail());
+  }
+
+  console.log(
+    `User (name: ${name}, userId: ${userId}, connectionId: ${connectionId}) ` +
+      `join game ${gameId} as ${joinType}`,
+  );
+
+  if (joinType === 'player') {
+    // TODO: добавить проверку на возможность добавить пользователя в игру
+    // Что-нибудь вроде game.canJoinPlayer
+
+    state.connections.map.set(connection.id, {
+      status: 'player',
+      id: connection.id,
+      socket: connection.socket,
+      userId,
+      name,
+      gameId: gameState.id,
+    });
+
+    return game.joinPlayer(gameState, connection.id, name);
+  }
+
+  if (joinType === 'observer') {
+    state.connections.map.set(connection.id, {
+      status: 'observer',
+      id: connection.id,
+      socket: connection.socket,
+      name,
+      gameId: gameState.id,
+    });
+
+    return game.joinObserver(gameState, connection.id, name);
+  }
 };
 
 /**
@@ -40,8 +89,6 @@ export const message = (state: State, connectionId: number, msg: AnyClientMsg): 
   switch (connection.status) {
     case 'initial':
       return initialConnectionMessage(state, connection, msg);
-    case 'user':
-      return userConnectionMessage(state, connection, msg);
     case 'player':
       return playerConnectionMessage(state, connection, msg);
     case 'observer':
@@ -55,114 +102,33 @@ export const initialConnectionMessage = (
   clientMsg: AnyClientMsg,
 ): Cmd => {
   switch (clientMsg.type) {
-    case 'auth':
-      return authMessage(state, connection, clientMsg);
-    case 'botAuth':
-      return botAuthMessage(state, connection, clientMsg);
-    case 'ping':
-      return pingMessage(clientMsg, connection);
-  }
-};
-
-const userConnectionMessage = (
-  state: State,
-  connection: UserConnection,
-  clientMsg: AnyClientMsg,
-): Cmd => {
-  switch (clientMsg.type) {
     case 'joinGame':
-      return playerStart(state, connection, clientMsg);
+      return joinGame(state, connection, clientMsg);
+    case 'joinGameAsBot':
+      return authConnection(state, connection.id, -1, clientMsg.name, clientMsg.gameId, 'player');
     case 'joinGameAsObserver':
-      return observerStart(state, connection, clientMsg);
+      return joinGameAsObserver(state, connection, clientMsg);
     case 'ping':
       return pingMessage(clientMsg, connection);
   }
 };
 
-const authMessage = (
-  state: State,
+const joinGame = (
+  _state: State,
   connection: InitialConnection,
-  clientMsg: ClientMsg['auth'],
-): Cmd => {
-  const { token } = clientMsg;
-
-  const dbConnect = connectionDB();
-  selectUserByToken(dbConnect, token).then((result: any) => {
-    dbConnect.end();
-
-    if (!result) {
-      return;
-    }
-
-    state.connections.map.set(connection.id, {
-      status: 'user',
-      id: connection.id,
-      socket: connection.socket,
-      name: result.name,
-    });
-  });
-};
-
-const botAuthMessage = (
-  state: State,
-  connection: InitialConnection,
-  clientMsg: ClientMsg['botAuth'],
-): Cmd => {
-  state.connections.map.set(connection.id, {
-    status: 'user',
-    id: connection.id,
-    socket: connection.socket,
-    name: clientMsg.name,
-  });
-};
-
-const playerStart = (
-  state: State,
-  connection: UserConnection,
   clientMsg: ClientMsg['joinGame'],
 ): Cmd => {
-  const { gameId } = clientMsg;
-
-  const gameState = state.games.map.get(gameId);
-  if (!gameState) {
-    return cmd.sendMsg(connection.id, msg.gameJoinFail());
-  }
-
-  // TODO: добавить проверку на возможность добавить пользователя в игру
-  // Что-нибудь вроде game.canJoinPlayer
-
-  state.connections.map.set(connection.id, {
-    status: 'player',
-    id: connection.id,
-    socket: connection.socket,
-    name: connection.name,
-    gameId: gameState.id,
-  });
-
-  return game.joinPlayer(gameState, connection.id, connection.name);
+  const { token, gameId } = clientMsg;
+  return cmd.authPlayer(connection.id, token, gameId, 'player');
 };
 
-const observerStart = (
-  state: State,
-  connection: UserConnection,
+const joinGameAsObserver = (
+  _state: State,
+  connection: InitialConnection,
   clientMsg: ClientMsg['joinGameAsObserver'],
 ): Cmd => {
-  const { gameId } = clientMsg;
-
-  const gameState = state.games.map.get(gameId);
-  if (!gameState) {
-    return cmd.sendMsg(connection.id, msg.gameJoinFail());
-  }
-
-  state.connections.map.set(connection.id, {
-    status: 'observer',
-    id: connection.id,
-    socket: connection.socket,
-    name: connection.name,
-    gameId: gameState.id,
-  });
-
-  return game.joinObserver(gameState, connection.id, connection.name);
+  const { token, gameId } = clientMsg;
+  return cmd.authPlayer(connection.id, token, gameId, 'observer');
 };
 
 export const playerConnectionMessage = (

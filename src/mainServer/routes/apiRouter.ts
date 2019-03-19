@@ -12,8 +12,9 @@ import {
 } from '../models/user';
 import { getAchievements, getOwnAchievements, setAchievements } from '../models/achievements';
 import { State } from '../types';
-import { mapMap } from '../../utils';
 import { setAccessAllowOrigin } from './cors';
+import { mapMap } from '../../utils';
+import { GamelistResponse } from '../types/api';
 
 export function applyApiRouter(app: Express, state: State) {
   const apiRouter = Router();
@@ -288,12 +289,14 @@ export function applyApiRouter(app: Express, state: State) {
   apiRouter.get('/gamelist', authenticate('bearer', { failureRedirect: '/' }), (req, res) => {
     setAccessAllowOrigin(req, res);
 
-    const games = mapMap(state.games.map, ({ id, players }) => ({
-      id,
-      players: players.size,
+    const result: GamelistResponse = mapMap(state.games.map, ({ players, name, url }) => ({
+      id: 1, // TODO: брать id от гейм сервера
+      name,
+      players,
+      url,
     }));
 
-    res.send({ games });
+    res.send(result);
   });
 
   usePassport(strategy);

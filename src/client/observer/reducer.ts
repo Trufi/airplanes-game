@@ -1,4 +1,4 @@
-import { AnyServerMsg } from '../../server/messages';
+import { AnyServerMsg } from '../../gameServer/messages';
 import { Cmd } from '../commands';
 import { ObserverState } from './types';
 import { updatePingAndServerTime } from '../common/serverTime';

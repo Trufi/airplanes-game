@@ -2,45 +2,58 @@ import { AnyClientMsg } from './messages';
 import { executeCmd } from './commands/execute';
 import { cmd } from './commands';
 import { appState } from './appState';
-import { message } from './reducers';
+import { message, connected } from './reducers';
 import { unpackMessage } from './messages/unpack';
 
-let url = `wss://${location.host}`;
+let ws: WebSocket | undefined;
 
-// Если дев сборка, то порт будет 3000, а сервак смотрит на 3002
-// И выключаем ssl
-if (location.port === '3000') {
-  url = `ws://${location.hostname}:3002`;
-}
+export const connect = (url: string) => {
+  if (ws) {
+    ws.close();
+  }
 
-const ws = new WebSocket(url);
+  // Если дев сборка, то выключаем ssl
+  if (location.port === '3000') {
+    url = `ws://${url}`;
+  } else {
+    url = `wss://${url}`;
+  }
 
-ws.binaryType = 'arraybuffer';
+  ws = new WebSocket(url);
+  ws.binaryType = 'arraybuffer';
+
+  ws.addEventListener('open', () => {
+    console.log('Connected');
+    appState.connected = true;
+    const cmd = connected(appState);
+    executeCmd(cmd);
+  });
+
+  ws.addEventListener('close', () => {
+    console.log('Disconnected');
+    appState.connected = false;
+    executeCmd(cmd.renderUI());
+  });
+
+  ws.addEventListener('message', (ev) => {
+    const msg = unpackMessage(ev.data);
+    if (!msg) {
+      return;
+    }
+
+    const cmd = message(appState, msg);
+    executeCmd(cmd);
+  });
+};
 
 export const sendMessage = (msg: AnyClientMsg) => {
-  ws.send(JSON.stringify(msg));
+  if (ws) {
+    ws.send(JSON.stringify(msg));
+  }
 };
 
 export const sendPbfMessage = (msg: ArrayBuffer) => {
-  ws.send(msg);
-};
-
-ws.addEventListener('open', () => {
-  console.log('Connecte3d');
-});
-
-ws.addEventListener('close', () => {
-  console.log('Disconnected');
-  appState.connected = false;
-  executeCmd(cmd.renderUI());
-});
-
-ws.addEventListener('message', (ev) => {
-  const msg = unpackMessage(ev.data);
-  if (!msg) {
-    return;
+  if (ws) {
+    ws.send(msg);
   }
-
-  const cmd = message(appState, msg);
-  executeCmd(cmd);
-});
+};

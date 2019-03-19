@@ -1,3 +1,8 @@
+export const mainServer = {
+  // url: 'http://demo.webmaps-dev.os-n3.hw:3002',
+  url: 'http://localhost:3002',
+};
+
 export const weapon = {
   damage: 8,
 

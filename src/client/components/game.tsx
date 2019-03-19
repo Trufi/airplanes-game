@@ -16,6 +16,7 @@ import { Health } from './health';
 import { BoostButton } from './boostButton';
 import { ShotBlink } from './shotBlink/shotBlink';
 import { DamageIndicator } from './damageIndicator/damageIndicator';
+import { Disconnect } from './disconnect';
 
 interface Props {
   appState: AppState;
@@ -27,11 +28,15 @@ const projScreenMatrix = new THREE.Matrix4();
 export class Game extends React.Component<Props, {}> {
   public render() {
     const {
-      appState: { game },
+      appState: { game, connected },
     } = this.props;
 
     if (!game) {
       return;
+    }
+
+    if (!connected) {
+      return <Disconnect />;
     }
 
     const { players, bodies, camera, body } = game;

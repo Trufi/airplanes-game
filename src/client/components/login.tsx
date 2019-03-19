@@ -4,7 +4,6 @@ import { ExecuteCmd } from '../commands/execute';
 import { userAuth, userLogin, userRegister } from '../services/user';
 import { get, set } from 'js-cookie';
 import { AppState } from '../types';
-import { msg } from '../messages/index';
 
 interface Props {
   appState: AppState;
@@ -93,8 +92,6 @@ export class Login extends React.Component<Props, {}> {
     appState.type = 'gameSelect';
     appState.token = data.user.token;
     appState.name = data.user.name;
-    // Посылаем также через сокеты, чтобы игровой сервер понял, что это за connection
-    executeCmd(cmd.sendMsg(msg.auth(data.user.token)));
     executeCmd(cmd.renderUI());
   };
 

@@ -5,7 +5,7 @@ import { time } from '../utils';
 import { renderUI } from '../ui';
 import { executeCmd } from '../commands/execute';
 import { sendMessage, sendPbfMessage } from '../socket';
-import { ServerMsg } from '../../server/messages';
+import { ServerMsg } from '../../gameServer/messages';
 import { appState } from '../appState';
 import * as config from '../../config';
 import * as view from './view';

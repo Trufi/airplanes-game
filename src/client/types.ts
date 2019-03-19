@@ -149,10 +149,15 @@ export interface State {
 // TODO: Разбить на несколько
 export interface AppState {
   type: 'login' | 'gameSelect' | 'game' | 'observer';
-  connected: boolean;
   id?: number; // connection id на сервере
+  connected?: boolean;
   name?: string;
   token?: string;
   game?: State;
   observer?: ObserverState;
+  tryJoin?: {
+    id: number;
+    url: string;
+    type: 'player' | 'observer';
+  };
 }

@@ -1,5 +1,5 @@
 import { time, median, p90 } from '../utils';
-import { ServerMsg } from '../../server/messages';
+import { ServerMsg } from '../../gameServer/messages';
 import * as config from '../../config';
 import { clamp, lerp } from '../../utils';
 

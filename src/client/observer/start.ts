@@ -1,6 +1,6 @@
 import { projectGeoToMap } from '@2gis/jakarta/dist/es6/utils/geo';
 import { ObserverState } from './types';
-import { ServerMsg } from '../../server/messages';
+import { ServerMsg } from '../../gameServer/messages';
 import { addBody, createPlayer, createNonPhysicBody } from '../game/common';
 import * as config from '../../config';
 import * as view from '../game/view';

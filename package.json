@@ -5,7 +5,8 @@
   "description": "",
   "scripts": {
     "start": "npm run server",
-    "server": "npm run pbf && node src/server/hook.js",
+    "server": "npm run pbf && node src/mainServer/hook.js",
+    "game": "npm run pbf && node src/gameServer/hook.js",
     "build": "npm run pbf && webpack --mode=production",
     "dev": "npm run pbf && webpack-dev-server --mode=development",
     "bots": "npm run pbf && node src/bot/hook.js",

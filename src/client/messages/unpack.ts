@@ -1,4 +1,4 @@
-import { AnyServerMsg } from '../../server/messages';
+import { AnyServerMsg } from '../../gameServer/messages';
 
 const serverMsgSchema = require('../../protobuf/serverMsg.proto');
 const Pbf = require('pbf');

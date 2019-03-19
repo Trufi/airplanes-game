@@ -1,7 +1,7 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
 import { State } from '../../types';
-import { AnyServerMsg, ServerMsg, PbfTickBodyData } from '../../../server/messages';
+import { AnyServerMsg, ServerMsg, PbfTickBodyData } from '../../../gameServer/messages';
 import { Cmd } from '../../commands';
 import { createPlayer, createNonPhysicBody, addBody, createPhysicBody } from '../common';
 import { updatePingAndServerTime } from '../../common/serverTime';

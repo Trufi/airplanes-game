@@ -6,13 +6,21 @@ import * as config from '../../config';
 const clientMsgSchema = require('../../protobuf/clientMsg.proto');
 const Pbf = require('pbf');
 
-const joinGame = (gameId: number) => ({
+const joinGame = (token: string, gameId: number) => ({
   type: 'joinGame' as 'joinGame',
+  token,
   gameId,
 });
 
-const joinGameAsObserver = (gameId: number) => ({
+const joinGameAsBot = (gameId: number, name: string) => ({
+  type: 'joinGameAsBot' as 'joinGameAsBot',
+  gameId,
+  name,
+});
+
+const joinGameAsObserver = (token: string, gameId: number) => ({
   type: 'joinGameAsObserver' as 'joinGameAsObserver',
+  token,
   gameId,
 });
 
@@ -58,23 +66,12 @@ const ping = (time: number) => ({
   time,
 });
 
-const auth = (token: string) => ({
-  type: 'auth' as 'auth',
-  token,
-});
-
-const botAuth = (name: string) => ({
-  type: 'botAuth' as 'botAuth',
-  name,
-});
-
 export const msg = {
   joinGame,
+  joinGameAsBot,
   joinGameAsObserver,
   changes,
   restart,
-  auth,
-  botAuth,
   ping,
 };
 

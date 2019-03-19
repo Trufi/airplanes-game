@@ -1,6 +1,11 @@
 import { AnyClientMsg } from '../messages/index';
 import { ObjectElement } from '../../utils';
 
+const connectToGameServer = (url: string) => ({
+  type: 'connectToGameServer' as 'connectToGameServer',
+  url,
+});
+
 const sendMsg = (msg: AnyClientMsg) => ({
   type: 'sendMsg' as 'sendMsg',
   msg,
@@ -21,6 +26,7 @@ const renderUI = () => ({
 });
 
 export const cmd = {
+  connectToGameServer,
   sendMsg,
   sendPbfMsg,
   saveTokenToCookie,
