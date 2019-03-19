@@ -13,6 +13,7 @@ import { addBody, createPlayer, createPhysicBody, createNonPhysicBody } from './
 import { State, PlayerState, PhysicBodyState } from '../types';
 import { createServerTimeState } from '../common/serverTime';
 import { createNotesState } from '../common/notes';
+import { createDamageIndicatorState } from './actions/damageIndicator';
 
 export const start = (data: ServerMsg['startData']) => {
   if (!appState.id) {
@@ -69,6 +70,7 @@ export const start = (data: ServerMsg['startData']) => {
     pressedKeys: {},
     notes: createNotesState(),
     stick: { x: 0, y: 0 },
+    damageIndicator: createDamageIndicatorState(),
   };
   appState.game = state;
   state.bodies.forEach((body) => addBody(state, body));

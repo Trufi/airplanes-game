@@ -8,7 +8,6 @@ import { clamp } from '../../../utils';
 
 const forwardDirection = [0, 1, 0];
 const bodyForward = [0, 0, 0];
-const toTarget = [0, 0, 0];
 const bodyRotation = [0, 0, 0, 1];
 
 const fire = (state: State, body: PhysicBodyState) => {
@@ -25,17 +24,7 @@ const fire = (state: State, body: PhysicBodyState) => {
   vec3.transformQuat(bodyForward, forwardDirection, bodyRotation);
 
   for (const [, targetBody] of bodies) {
-    vec3.sub(toTarget, targetBody.position, position);
-
-    const targetProjection = projection(toTarget, bodyForward);
-    const angle = hitAngle(toTarget, bodyForward, config.weapon.radius);
-
-    if (
-      // Если проекция на направление больше 0, то цель находится впереди
-      targetProjection > 0 &&
-      vec3.len(toTarget) < config.weapon.distance &&
-      angle < degToRad(config.weapon.hitAngle)
-    ) {
+    if (checkHit(position, bodyForward, targetBody.position, config.weapon)) {
       weapon.lastHitTime = state.time;
       weapon.hits.push({ bodyId: targetBody.id });
       weapon.target = new Vector3(
@@ -45,6 +34,30 @@ const fire = (state: State, body: PhysicBodyState) => {
       );
     }
   }
+};
+
+const toTarget = [0, 0, 0];
+export const checkHit = (
+  position: number[],
+  direction: number[],
+  targetPosition: number[],
+  weapon: { radius: number; hitAngle: number },
+) => {
+  vec3.sub(toTarget, targetPosition, position);
+
+  if (vec3.len(toTarget) > config.weapon.distance) {
+    return false;
+  }
+
+  const targetProjection = projection(toTarget, direction);
+
+  if (targetProjection <= 0) {
+    return false;
+  }
+
+  const angle = hitAngle(toTarget, direction, weapon.radius);
+
+  return angle < degToRad(weapon.hitAngle);
 };
 
 const hitAngle = (target: number[], forward: number[], radius: number) => {

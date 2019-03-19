@@ -32,7 +32,7 @@ export class ShotBlink extends React.Component<Props, State> {
         return;
       }
 
-      if (body.health < 50) {
+      if (body.health < 30) {
         this.setState({
           isBlinking: true,
         });

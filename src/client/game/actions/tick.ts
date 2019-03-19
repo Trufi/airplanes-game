@@ -9,6 +9,7 @@ import { processPressedkeys } from './keys';
 import { updateWeaponAnimation } from './weapon';
 import { ObserverState } from '../../observer/types';
 import { interpolateTimeShift, updateSmoothPing } from '../../common/serverTime';
+import { updateDamageIndicator } from './damageIndicator';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
@@ -16,11 +17,15 @@ export const tick = (state: State, time: number) => {
 
   updateSmoothPing(state.serverTime, time);
 
+  updateDamageIndicator(state);
+
   processPressedkeys(state);
 
   state.bodies.forEach((body) => updateBody(state, body));
 
-  updateCamera(state);
+  if (state.body) {
+    updateCamera(state.body, state.camera);
+  }
   hideOldNotes(state.notes, time);
 
   view.updateCameraAndMap(state);
@@ -109,13 +114,19 @@ const updatePhysicBody = (state: State, body: PhysicBodyState) => {
   view.updateBullet(body.weapon.right, body);
 };
 
-const updateCamera = (state: State) => {
-  const { body, camera } = state;
-
-  if (!body) {
-    return;
-  }
-
+/**
+ * Устанавливает игровую камеру так, чтобы она находилась за самолетом
+ */
+export const updateCamera = (
+  body: {
+    position: number[];
+    rotation: number[];
+  },
+  camera: {
+    position: number[];
+    rotation: number[];
+  },
+) => {
   // Наклоняем камеру
   quat.rotateX(camera.rotation, body.rotation, degToRad(config.camera.pitch));
 

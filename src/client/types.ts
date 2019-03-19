@@ -96,6 +96,16 @@ export interface CameraState {
   object: THREE.PerspectiveCamera;
 }
 
+export interface ShooterState {
+  direction: number[];
+  hitTime: number;
+}
+
+export interface DamageIndicatorState {
+  prevCheckHealth: number;
+  shooters: Map<number, ShooterState>;
+}
+
 export interface State {
   type: 'game';
   time: number;
@@ -132,6 +142,8 @@ export interface State {
   notes: NotesState;
 
   stick: StickState;
+
+  damageIndicator: DamageIndicatorState;
 }
 
 // TODO: Разбить на несколько

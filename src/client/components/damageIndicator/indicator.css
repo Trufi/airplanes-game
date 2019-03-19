@@ -1,0 +1,9 @@
+.indicator {
+  position: absolute;
+
+  width: 200px;
+  left: -100px;
+
+  height: 40px;
+  top: -20px;
+}

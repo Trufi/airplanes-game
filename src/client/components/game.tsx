@@ -15,6 +15,7 @@ import { GameStats } from './gameStats';
 import { Health } from './health';
 import { BoostButton } from './boostButton';
 import { ShotBlink } from './shotBlink/shotBlink';
+import { DamageIndicator } from './damageIndicator/damageIndicator';
 
 interface Props {
   appState: AppState;
@@ -87,6 +88,8 @@ export class Game extends React.Component<Props, {}> {
   private renderLiveComponents(game: State, body: PhysicBodyState) {
     return (
       <>
+        <ShotBlink game={game} />
+        <DamageIndicator game={game} />
         <Aim weapon={body.weapon} time={game.time} />
         <BoostButton game={game} />
         <FireButton game={game} />
@@ -101,7 +104,6 @@ export class Game extends React.Component<Props, {}> {
           state={game}
         />
         <Health body={body} />
-        <ShotBlink game={game} />
       </>
     );
   }

@@ -99,3 +99,7 @@ export const points = {
   kills: 250,
   deaths: -100,
 };
+
+export const damageIndicator = {
+  delay: 300,
+};

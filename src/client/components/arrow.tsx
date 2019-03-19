@@ -26,11 +26,6 @@ export const Arrow = ({ position, camera, frustum }: Props) => {
 
   v.project(camera.object);
 
-  const width = 6;
-  const height = 16;
-
-  const radius = 200;
-
   if (v.z < 1) {
     vec2.set(t, v.x, -v.y);
   } else {
@@ -40,6 +35,11 @@ export const Arrow = ({ position, camera, frustum }: Props) => {
 
   const angle = Math.atan2(t[1], t[0]) + Math.PI / 2;
 
+  const width = 6;
+  const height = 16;
+
+  const minSize = Math.min(window.innerHeight, window.innerWidth);
+  const radius = minSize * 0.2;
   const x = Math.round(t[0] * radius - width / 2);
   const y = Math.round(t[1] * radius - height / 2);
 
