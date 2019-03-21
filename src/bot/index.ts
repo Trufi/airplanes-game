@@ -1,7 +1,8 @@
 import { initBot } from './bot';
 
-const serverUrl = `localhost:3002`;
+// const serverUrl = `localhost:3002`;
 // const serverUrl = `demo.webmaps-dev.os-n3.hw:3002`;
+const serverUrl = `gods-in-the-sky.web-staging.2gis.ru`;
 
 const botNumber = 10;
 const gameId = 1;
