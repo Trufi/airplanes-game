@@ -5,7 +5,14 @@ import { appState } from './appState';
 import { message } from './reducers';
 import { unpackMessage } from './messages/unpack';
 
-const ws = new WebSocket(`ws://${location.hostname}:3002/`);
+let url = `ws://${location.host}`;
+
+// Если дев сборка, то порт будет 3000, а сервак смотрит на 3002
+if (location.port === '3000') {
+  url = url.replace('3000', '3002');
+}
+
+const ws = new WebSocket(url);
 
 ws.binaryType = 'arraybuffer';
 
@@ -18,7 +25,7 @@ export const sendPbfMessage = (msg: ArrayBuffer) => {
 };
 
 ws.addEventListener('open', () => {
-  console.log('Connected');
+  console.log('Connecte3d');
 });
 
 ws.addEventListener('close', () => {
