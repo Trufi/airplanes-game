@@ -5,11 +5,12 @@ import { appState } from './appState';
 import { message } from './reducers';
 import { unpackMessage } from './messages/unpack';
 
-let url = `ws://${location.host}`;
+let url = `wss://${location.host}`;
 
 // Если дев сборка, то порт будет 3000, а сервак смотрит на 3002
+// И выключаем ssl
 if (location.port === '3000') {
-  url = url.replace('3000', '3002');
+  url = `ws://${location.hostname}:3002`;
 }
 
 const ws = new WebSocket(url);
