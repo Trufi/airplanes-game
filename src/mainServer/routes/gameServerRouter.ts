@@ -1,20 +1,9 @@
 import * as express from 'express';
 import { State } from '../types';
-import { addGame, updateGame } from '../reducers';
+import { updateGameData } from '../reducers';
 import { connectionDB } from '../models/database';
 import { selectUserByToken } from '../models/user';
-import { createHmac } from 'crypto';
-import {
-  RegisterResponse,
-  PlayerResponse,
-  RegisterRequest,
-  PlayerRequest,
-  UpdateRequest,
-} from '../types/gameApi';
-
-const createGameServerToken = (p: { name: string; url: string }) => {
-  return createHmac('sha256', `${p.name}${p.url}`).digest('hex');
-};
+import { NotifyRequest, PlayerResponse, PlayerRequest } from '../types/gameApi';
 
 export const applyGameServerRouter = (app: express.Express, state: State) => {
   const router = express.Router();
@@ -23,29 +12,15 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
    * Регистрация нового игрового сервера
    */
   router.post('/register', (req, res) => {
-    const { name, url } = req.body as RegisterRequest;
-    const token = createGameServerToken({ name, url });
-    const id = addGame(state, { name, url, token });
-    console.log(`Create new game with id: ${id}, name: ${name}, url: ${url}`);
-    const result: RegisterResponse = { token };
-    res.send(result);
-  });
-
-  router.post('/update', (req, res) => {
-    const { token, players } = req.body as UpdateRequest;
-    const error = updateGame(state, { token, players });
-    if (error) {
-      res.sendStatus(400);
-      return;
-    }
-
+    const body = req.body as NotifyRequest;
+    updateGameData(state, body);
     res.sendStatus(200);
   });
 
   router.post('/player', (req, res) => {
-    const { token, playerToken } = req.body as PlayerRequest;
+    const { gameUrl, playerToken } = req.body as PlayerRequest;
 
-    if (!state.games.byToken.has(token)) {
+    if (!state.games.byUrl.has(gameUrl)) {
       res.sendStatus(400);
       return;
     }

@@ -1,27 +1,11 @@
 import axios from 'axios';
 import * as config from '../../config';
-import {
-  RegisterResponse,
-  RegisterRequest,
-  PlayerRequest,
-  PlayerResponse,
-  UpdateRequest,
-} from '../../mainServer/types/gameApi';
+import { NotifyRequest, PlayerRequest, PlayerResponse } from '../../mainServer/types/gameApi';
 
-const baseURL = `${config.servers.main}/game`;
+const baseURL = `${config.mainServer.url}/game`;
 
-export const register = (data: RegisterRequest) => {
-  return axios
-    .post<RegisterResponse>(`${baseURL}/register`, data)
-    .then((data) => data.data)
-    .catch((err) => console.error(err));
-};
-
-export const update = (data: UpdateRequest) => {
-  return axios
-    .post<void>(`${baseURL}/update`, data)
-    .then((data) => data.data)
-    .catch((err) => console.error(err));
+export const notify = (data: NotifyRequest) => {
+  return axios.post<void>(`${baseURL}/register`, data).then((data) => data.data);
 };
 
 export const player = (data: PlayerRequest) => {

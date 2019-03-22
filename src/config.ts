@@ -1,6 +1,15 @@
-export const servers = {
-  // url: 'http://demo.webmaps-dev.os-n3.hw:3002',
-  main: 'http://gods-in-the-sky.web-staging.2gis.ru',
+export const mainServer = {
+  url: 'https://sky.2gis.ru',
+  // url: 'http://localhost:3002',
+
+  /**
+   * Если игровой сервер не прислал информацию о себе за это время, то удаляем его
+   */
+  clearGameThreshold: 30000,
+};
+
+export const gameServer = {
+  updateMainInverval: 10000,
 };
 
 export const weapon = {

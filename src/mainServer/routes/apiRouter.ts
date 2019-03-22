@@ -383,12 +383,16 @@ export function applyApiRouter(app: Express, state: State) {
   apiRouter.get('/gamelist', authenticate('bearer', { failureRedirect: '/' }), (req, res) => {
     setAccessAllowOrigin(req, res);
 
-    const result: GamelistResponse = mapMap(state.games.map, ({ players, name, url }) => ({
-      id: 1, // TODO: брать id от гейм сервера
-      name,
-      players,
-      url,
-    }));
+    const result: GamelistResponse = mapMap(
+      state.games.map,
+      ({ players, maxPlayers, type, url, city }) => ({
+        players,
+        maxPlayers,
+        url,
+        type,
+        city,
+      }),
+    );
 
     res.send(result);
   });

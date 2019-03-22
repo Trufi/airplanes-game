@@ -1,10 +1,10 @@
-import { services } from '../config';
 import axios from 'axios';
+import * as config from '../../../config';
 import { GamelistResponse } from '../../../mainServer/types/api';
 
 export const getList = (p: { token: string }) => {
   return axios
-    .get<GamelistResponse>(services.apiDomain + '/api/gamelist', {
+    .get<GamelistResponse>(config.mainServer.url + '/api/gamelist', {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

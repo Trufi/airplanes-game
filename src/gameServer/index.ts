@@ -17,6 +17,8 @@ import { time } from './utils';
 import { unpackMessage } from './messages/unpack';
 import * as config from '../config';
 import * as api from './services/main';
+import { GameType } from '../types';
+import { mapMap } from '../utils';
 
 const port = 3001;
 
@@ -38,132 +40,154 @@ const wsServer = new ws.Server({
   },
 });
 
-const url = process.env.GAME_SERVER_URL || `localhost:${port}`;
-const name = 'Super death match';
+const maxPlayers = 30;
+const city = 'nsk';
+const type: GameType = 'dm';
+const gameUrl = process.env.GAME_SERVER_URL || `localhost:${port}`;
 
-console.log(`Try register server with url: ${url}, name: ${name}`);
+const state = createState();
+createGame(state, time());
 
-api.register({ url, name }).then((res) => {
-  if (!res) {
-    return;
+app.get('/state', (_req, res) => {
+  const result = {
+    connections: mapMap(state.connections.map, (c) => c),
+    games: mapMap(state.games.map, (c) => c),
+  };
+  res.send(JSON.stringify(result));
+});
+
+const sendMessage = (connection: Connection, msg: AnyServerMsg): void => {
+  try {
+    connection.socket.send(JSON.stringify(msg));
+  } catch (e) {
+    console.error(e);
   }
-  const { token } = res;
+};
 
-  const state = createState(token);
-  createGame(state, time());
+const sendPbfMessage = (connection: Connection, msg: ArrayBuffer): void => {
+  try {
+    connection.socket.send(msg);
+  } catch (e) {
+    console.error(e);
+  }
+};
 
-  const sendMessage = (connection: Connection, msg: AnyServerMsg): void => {
-    try {
-      connection.socket.send(JSON.stringify(msg));
-    } catch (e) {
-      console.error(e);
+const executeCmd = (cmd: Cmd) => {
+  if (cmd) {
+    if (Array.isArray(cmd)) {
+      cmd.forEach(executeOneCmd);
+    } else {
+      executeOneCmd(cmd);
     }
-  };
+  }
+};
 
-  const sendPbfMessage = (connection: Connection, msg: ArrayBuffer): void => {
-    try {
-      connection.socket.send(msg);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const executeCmd = (cmd: Cmd) => {
-    if (cmd) {
-      if (Array.isArray(cmd)) {
-        cmd.forEach(executeOneCmd);
-      } else {
-        executeOneCmd(cmd);
+const executeOneCmd = (cmdData: ExistCmd) => {
+  switch (cmdData.type) {
+    case 'sendMsg': {
+      const connection = state.connections.map.get(cmdData.connectionId);
+      if (connection) {
+        sendMessage(connection, cmdData.msg);
       }
+      break;
     }
-  };
 
-  const executeOneCmd = (cmdData: ExistCmd) => {
-    switch (cmdData.type) {
-      case 'sendMsg': {
-        const connection = state.connections.map.get(cmdData.connectionId);
+    case 'sendMsgTo': {
+      cmdData.connectionIds.forEach((id) => {
+        const connection = state.connections.map.get(id);
         if (connection) {
           sendMessage(connection, cmdData.msg);
         }
-        break;
-      }
-
-      case 'sendMsgTo': {
-        cmdData.connectionIds.forEach((id) => {
-          const connection = state.connections.map.get(id);
-          if (connection) {
-            sendMessage(connection, cmdData.msg);
-          }
-        });
-        break;
-      }
-
-      case 'sendPbfMsgTo': {
-        cmdData.connectionIds.forEach((id) => {
-          const connection = state.connections.map.get(id);
-          if (connection) {
-            sendPbfMessage(connection, cmdData.msg);
-          }
-        });
-        break;
-      }
-
-      case 'authPlayer': {
-        api
-          .player({
-            token: state.token,
-            playerToken: cmdData.token,
-          })
-          .then((res) => {
-            if (!res) {
-              return;
-            }
-            const cmd = authConnection(
-              state,
-              cmdData.connectionId,
-              res.id,
-              res.name,
-              cmdData.gameId,
-              cmdData.joinType,
-            );
-            executeCmd(cmd);
-          });
-        break;
-      }
+      });
+      break;
     }
-  };
 
-  const gameLoop = () => {
-    setTimeout(gameLoop, config.serverGameStep);
-    const cmd = tick(state, time());
+    case 'sendPbfMsgTo': {
+      cmdData.connectionIds.forEach((id) => {
+        const connection = state.connections.map.get(id);
+        if (connection) {
+          sendPbfMessage(connection, cmdData.msg);
+        }
+      });
+      break;
+    }
+
+    case 'authPlayer': {
+      api
+        .player({
+          gameUrl,
+          playerToken: cmdData.token,
+        })
+        .then((res) => {
+          if (!res) {
+            return;
+          }
+          const cmd = authConnection(
+            state,
+            cmdData.connectionId,
+            res.id,
+            res.name,
+            cmdData.joinType,
+          );
+          executeCmd(cmd);
+        });
+      break;
+    }
+  }
+};
+
+const gameLoop = () => {
+  setTimeout(gameLoop, config.serverGameStep);
+  const cmd = tick(state, time());
+  executeCmd(cmd);
+};
+gameLoop();
+
+const notifyMainServer = () => {
+  const game = state.games.map.get(1);
+  if (!game) {
+    return;
+  }
+
+  api
+    .notify({
+      url: gameUrl,
+      type,
+      city,
+      players: game.players.size,
+      maxPlayers,
+    })
+    .catch((err) => {
+      console.log(`Main server notify error: ${err}`);
+    });
+};
+
+setInterval(() => notifyMainServer, config.gameServer.updateMainInverval);
+notifyMainServer();
+
+wsServer.on('connection', (socket) => {
+  const id = createNewConnection(state.connections, socket);
+
+  const onMessage = (data: ws.Data) => {
+    const msg = unpackMessage(data);
+    if (!msg) {
+      return;
+    }
+
+    const cmd = message(state, id, msg);
     executeCmd(cmd);
   };
-  gameLoop();
 
-  wsServer.on('connection', (socket) => {
-    const id = createNewConnection(state.connections, socket);
+  socket.on('message', onMessage);
 
-    const onMessage = (data: ws.Data) => {
-      const msg = unpackMessage(data);
-      if (!msg) {
-        return;
-      }
+  const onClose = () => {
+    const cmd = connectionLost(state, id);
+    executeCmd(cmd);
+    // socket.off('message', onMessage);
+    // socket.off('close', onClose);
+  };
 
-      const cmd = message(state, id, msg);
-      executeCmd(cmd);
-    };
+  socket.on('close', onClose);
 
-    socket.on('message', onMessage);
-
-    const onClose = () => {
-      const cmd = connectionLost(state, id);
-      executeCmd(cmd);
-      // socket.off('message', onMessage);
-      // socket.off('close', onClose);
-    };
-
-    socket.on('close', onClose);
-
-    executeCmd(cmd.sendMsg(id, msg.connect(id)));
-  });
+  executeCmd(cmd.sendMsg(id, msg.connect(id)));
 });

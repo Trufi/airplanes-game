@@ -1,9 +1,11 @@
 import '@2gis/gl-matrix';
 import * as express from 'express';
 import * as path from 'path';
+import * as config from '../config';
 import { applyRouter } from './routes';
 import { applyMiddlewares } from './middlewares';
 import { State } from './types';
+import { clearOldGames } from './reducers';
 
 const port = 3002;
 
@@ -15,7 +17,7 @@ const state: State = {
   games: {
     nextId: 1,
     map: new Map(),
-    byToken: new Map(),
+    byUrl: new Map(),
   },
 };
 
@@ -31,3 +33,6 @@ app.use(
 );
 // А index.html — нет
 app.use(express.static(path.join(__dirname, '../../dist')));
+
+// Удаляем старые игры
+setInterval(() => clearOldGames(state), config.mainServer.clearGameThreshold);

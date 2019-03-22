@@ -1,5 +1,5 @@
 import { ObjectElement, mapMap, pick } from '../../utils';
-import { GameState, Airplane, GamePlayer } from '../games/game';
+import { GameState, Body, GamePlayer } from '../types';
 import * as config from '../../config';
 
 const serverMsgSchema = require('../../protobuf/serverMsg.proto');
@@ -33,7 +33,7 @@ const getPlayerData = (player: GamePlayer) =>
   pick(player, ['id', 'live', 'name', 'bodyId', 'kills', 'deaths', 'points']);
 export type PlayerData = ReturnType<typeof getPlayerData>;
 
-const getTickBodyData = (body: Airplane) =>
+const getTickBodyData = (body: Body) =>
   pick(body, ['id', 'position', 'rotation', 'updateTime', 'health', 'weapon']);
 export type TickBodyData = ReturnType<typeof getTickBodyData>;
 
@@ -62,13 +62,13 @@ const startObserverData = (game: GameState) => {
   };
 };
 
-const playerEnter = (player: GamePlayer, body: Airplane) => ({
+const playerEnter = (player: GamePlayer, body: Body) => ({
   type: 'playerEnter' as 'playerEnter',
   player: getPlayerData(player),
   body: getTickBodyData(body),
 });
 
-const playerNewBody = (player: GamePlayer, body: Airplane) => ({
+const playerNewBody = (player: GamePlayer, body: Body) => ({
   type: 'playerNewBody' as 'playerNewBody',
   playerId: player.id,
   body: getTickBodyData(body),
@@ -85,7 +85,7 @@ const playerDeath = (playerId: number, causePlayerId: number) => ({
   causePlayerId,
 });
 
-const getDelta = (out: Airplane['prevSendingData'], body: Airplane) => {
+const getDelta = (out: Body['prevSendingData'], body: Body) => {
   const { prevSendingData: prev } = body;
   const posRound = config.compression.position;
   const rotRound = config.compression.rotation;
@@ -115,14 +115,14 @@ const getDelta = (out: Airplane['prevSendingData'], body: Airplane) => {
   prev.updateTime += out.updateTime;
 };
 
-const delta: Airplane['prevSendingData'] = {
+const delta: Body['prevSendingData'] = {
   position: [0, 0, 0],
   rotation: [0, 0, 0, 0],
   lastShotTime: 0,
   updateTime: 0,
 };
 
-const getPbfTickBodyData = (body: Airplane) => {
+const getPbfTickBodyData = (body: Body) => {
   const { id, health } = body;
 
   getDelta(delta, body);

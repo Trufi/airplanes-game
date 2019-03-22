@@ -156,7 +156,6 @@ export interface AppState {
   game?: State;
   observer?: ObserverState;
   tryJoin?: {
-    id: number;
     url: string;
     type: 'player' | 'observer' | 'bot';
   };

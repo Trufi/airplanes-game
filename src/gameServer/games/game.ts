@@ -7,62 +7,7 @@ import { findMap, clamp, mapMap, vec2SignedAngle } from '../../utils';
 import { ClientMsg } from '../../client/messages';
 import * as config from '../../config';
 import { updatePointsByType } from './calcPoints';
-
-export interface Weapon {
-  lastShotTime: number;
-}
-
-export interface Airplane {
-  id: number;
-  playerId: number;
-  updateTime: number;
-  position: number[];
-  rotation: number[];
-  health: number;
-  weapon: Weapon;
-
-  prevSendingData: {
-    position: number[];
-    rotation: number[];
-    updateTime: number;
-    lastShotTime: number;
-  };
-}
-
-export interface BodiesState {
-  map: Map<number, Airplane>;
-  nextId: number;
-}
-
-export interface GamePlayer {
-  /**
-   * id равен connectionId
-   */
-  id: number;
-  name: string;
-  bodyId: number;
-  live: boolean;
-  kills: number;
-  deaths: number;
-  points: number;
-}
-
-export interface GameObserver {
-  /**
-   * id равен connectionId
-   */
-  id: number;
-  name: string;
-}
-
-export interface GameState {
-  id: number;
-  prevTime: number;
-  time: number;
-  bodies: BodiesState;
-  players: Map<number, GamePlayer>;
-  observers: Map<number, GameObserver>;
-}
+import { GameState, Body, GamePlayer, GameObserver } from '../types';
 
 export const debugInfo = ({ id, bodies, players }: GameState) => ({
   id,
@@ -110,7 +55,7 @@ const getStartPlayerRotation = (position: number[]): number[] => {
   return rotation;
 };
 
-const createAirplane = (id: number, playerId: number): Airplane => {
+const createAirplane = (id: number, playerId: number): Body => {
   const position = getStartPlayerPosition();
   const rotation = getStartPlayerRotation(position);
 
@@ -197,7 +142,7 @@ export const kickPlayer = (game: GameState, id: number): Cmd => {
 };
 
 const updatePlayerBodyState = (
-  body: Airplane,
+  body: Body,
   { position, rotation, lastShotTime, time }: ClientMsg['changes'],
 ): Cmd => {
   body.updateTime = time;
@@ -206,7 +151,7 @@ const updatePlayerBodyState = (
   body.weapon.lastShotTime = lastShotTime;
 };
 
-const playerDeath = (game: GameState, body: Airplane, causePlayerId: number): Cmd => {
+const playerDeath = (game: GameState, body: Body, causePlayerId: number): Cmd => {
   const cmds: Cmd = [];
 
   const causePlayer = game.players.get(causePlayerId);

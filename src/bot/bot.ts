@@ -29,13 +29,13 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
   socket.on('open', () => {
     console.log(`Bot ${name} connected to server`);
     connected = true;
-    sendMessage(msg.joinGameAsBot(gameId, name));
+    sendMessage(msg.joinGameAsBot(name));
   });
 
   let body: BotBody | undefined;
 
   const startDataMessage = (data: ServerMsg['startData']) => {
-    console.log(`Bot ${name} join game ${gameId}`);
+    console.log(`Bot ${name} join game server ${gameId}`);
 
     let bodyId = -1;
 

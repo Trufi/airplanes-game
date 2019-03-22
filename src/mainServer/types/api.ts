@@ -1,6 +1,7 @@
 export type GamelistResponse = Array<{
-  id: number;
-  name: string;
+  type: string;
+  city: string;
   players: number;
+  maxPlayers: number;
   url: string;
 }>;

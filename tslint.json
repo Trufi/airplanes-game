@@ -8,7 +8,7 @@
     "array-bracket-spacing": [true, "never"],
     "block-spacing": [true, "always"],
     "brace-style": [true, "1tbs", { "allowSingleLine": true }],
-    "ter-indent": [true, 2, { "SwitchCase": 1 }],
+    "ter-indent": [false],
     "linebreak-style": [true, "LF"],
     "ter-max-len": [true, 100, 2],
     "no-bitwise": false,

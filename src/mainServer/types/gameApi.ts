@@ -1,19 +1,13 @@
-export interface RegisterRequest {
-  name: string;
+export interface NotifyRequest {
   url: string;
-}
-
-export interface RegisterResponse {
-  token: string;
-}
-
-export interface UpdateRequest {
-  token: string;
+  type: 'dm' | 'tournament';
+  city: string;
   players: number;
+  maxPlayers: number;
 }
 
 export interface PlayerRequest {
-  token: string;
+  gameUrl: string;
   playerToken: string;
 }
 

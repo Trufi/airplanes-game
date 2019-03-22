@@ -7,7 +7,7 @@ describe('reducers', () => {
   let state: State;
 
   beforeEach(() => {
-    state = createState('token');
+    state = createState();
   });
 
   describe('createNewConnection', () => {

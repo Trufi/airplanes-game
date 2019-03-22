@@ -1,8 +1,7 @@
 import { State } from './types';
 
-export const createState = (token: string): State => {
+export const createState = (): State => {
   return {
-    token,
     connections: {
       map: new Map(),
       nextId: 1,

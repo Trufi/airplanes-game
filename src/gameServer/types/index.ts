@@ -1,5 +1,4 @@
 import * as ws from 'ws';
-import { GameState } from '../games/game';
 
 export interface InitialConnection {
   status: 'initial';
@@ -35,8 +34,63 @@ export interface ConnectionsState {
   nextId: number;
 }
 
+export interface Weapon {
+  lastShotTime: number;
+}
+
+export interface Body {
+  id: number;
+  playerId: number;
+  updateTime: number;
+  position: number[];
+  rotation: number[];
+  health: number;
+  weapon: Weapon;
+
+  prevSendingData: {
+    position: number[];
+    rotation: number[];
+    updateTime: number;
+    lastShotTime: number;
+  };
+}
+
+export interface BodiesState {
+  map: Map<number, Body>;
+  nextId: number;
+}
+
+export interface GamePlayer {
+  /**
+   * id равен connectionId
+   */
+  id: number;
+  name: string;
+  bodyId: number;
+  live: boolean;
+  kills: number;
+  deaths: number;
+  points: number;
+}
+
+export interface GameObserver {
+  /**
+   * id равен connectionId
+   */
+  id: number;
+  name: string;
+}
+
+export interface GameState {
+  id: number;
+  prevTime: number;
+  time: number;
+  bodies: BodiesState;
+  players: Map<number, GamePlayer>;
+  observers: Map<number, GameObserver>;
+}
+
 export interface State {
-  token: string;
   connections: ConnectionsState;
   games: {
     map: Map<number, GameState>;

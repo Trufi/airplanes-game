@@ -2,7 +2,6 @@ import './socket';
 import { appState } from './appState';
 import { renderUI } from './ui';
 import { executeCmd } from './commands/execute';
-// import { cmd } from './commands';
 
 renderUI(appState, executeCmd);
 
@@ -18,7 +17,9 @@ const resize = () => {
 window.addEventListener('resize', resize);
 resize();
 
-// // Вход без регистрации
+/**
+ * Расскоментируй это 👇, если хочешь входить без регистрации и смс
+ */
 // appState.type = 'gameSelect';
 // appState.name = 'Anon';
 // appState.token = '123';

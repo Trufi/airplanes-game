@@ -59,7 +59,7 @@ const group_apply = (group: any, model: THREE.Object3D) => {
   group.names.forEach((name: string) => {
     const child = model.getObjectByName(name) as THREE.Mesh | undefined;
     if (child && child.material instanceof THREE.MeshStandardMaterial) {
-      let newMaterial = child.material.clone();
+      const newMaterial = child.material.clone();
       newMaterial.color = group.color;
       child.material = newMaterial;
     }

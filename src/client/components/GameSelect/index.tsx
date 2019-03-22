@@ -3,10 +3,11 @@ import { cmd } from '../../commands';
 import { ExecuteCmd } from '../../commands/execute';
 import { AppState } from '../../types';
 import { getList } from '../../services/game';
+import { GamelistResponse } from '../../../mainServer/types/api';
 import styles from './index.css';
 
 interface State {
-  gamelist: Array<{ id: number; players: number; url: string }>;
+  gamelist: GamelistResponse;
 }
 
 interface Props {
@@ -38,39 +39,41 @@ export class GameSelect extends React.Component<Props, State> {
     return (
       <div className={styles.container}>
         <div className={styles.list}>
-          {gamelist &&
-            gamelist.map(({ id, url }, i) => (
-              <div key={i} className={styles.gameItem} onClick={() => this.gameSelected(id, url)}>
+          {gamelist.length === 0 ? (
+            <div>These aren't the games you're looking for.</div>
+          ) : (
+            gamelist.map(({ url, type, players, maxPlayers, city }, i) => (
+              <div key={i} className={styles.gameItem} onClick={() => this.gameSelected(url)}>
                 <div className={styles.itemRounded}>
-                  <div>Game</div>
-                  <div>{id}</div>
+                  <div>
+                    {city} {type} {players}/{maxPlayers}
+                  </div>
                 </div>
-                <div className={styles.obsLink} onClick={(ev) => this.gameObserve(ev, id, url)}>
+                <div className={styles.obsLink} onClick={(ev) => this.gameObserve(ev, url)}>
                   Observer
                 </div>
               </div>
-            ))}
+            ))
+          )}
         </div>
       </div>
     );
   }
 
-  private gameSelected = (id: number, url: string) => {
+  private gameSelected = (url: string) => {
     this.props.executeCmd(cmd.connectToGameServer(url));
 
     this.props.appState.tryJoin = {
-      id,
       url,
       type: 'player',
     };
   };
 
-  private gameObserve = (ev: React.MouseEvent, id: number, url: string) => {
+  private gameObserve = (ev: React.MouseEvent, url: string) => {
     ev.stopPropagation();
     this.props.executeCmd(cmd.connectToGameServer(url));
 
     this.props.appState.tryJoin = {
-      id,
       url,
       type: 'observer',
     };

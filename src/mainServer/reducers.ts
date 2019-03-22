@@ -1,38 +1,45 @@
 import { State, Game } from './types';
+import { NotifyRequest } from './types/gameApi';
+import * as config from '../config';
 
-export interface GameData {
-  token: string;
-  name: string;
-  url: string;
-}
+export const updateGameData = (state: State, data: NotifyRequest) => {
+  const { type, city, url, maxPlayers, players } = data;
+  const now = Date.now();
 
-export const addGame = (state: State, data: GameData) => {
-  const { name, url, token } = data;
-
-  const game: Game = {
-    id: state.games.nextId,
-    token,
-    name,
-    url,
-    players: 0,
-  };
-  state.games.nextId++;
-  state.games.map.set(game.id, game);
-  state.games.byToken.set(game.token, game);
-  return game.id;
+  const game = state.games.byUrl.get(url);
+  if (game) {
+    game.players = players;
+    game.maxPlayers = maxPlayers;
+    game.city = city;
+    game.type = type;
+    game.lastNotifyTime = now;
+  } else {
+    const game: Game = {
+      id: state.games.nextId,
+      type,
+      url,
+      players,
+      maxPlayers,
+      city,
+      lastNotifyTime: now,
+    };
+    state.games.nextId++;
+    state.games.map.set(game.id, game);
+    state.games.byUrl.set(game.url, game);
+    console.log(`Register new game server with id: ${game.id}, type: ${type}, url: ${url}`);
+  }
 };
 
-export interface UpdateGameData {
-  token: string;
-  players: number;
-}
+export const clearOldGames = (state: State) => {
+  const now = Date.now();
 
-export const updateGame = (state: State, data: UpdateGameData) => {
-  const { token, players } = data;
-  const game = state.games.byToken.get(token);
-  if (!game) {
-    return new Error('Game not found');
-  }
-
-  game.players = players;
+  state.games.map.forEach((game, key) => {
+    if (now - game.lastNotifyTime > config.mainServer.clearGameThreshold) {
+      console.log(
+        `Delete old game server with id: ${game.id}, type: ${game.type}, url: ${game.url}`,
+      );
+      state.games.map.delete(key);
+      state.games.byUrl.delete(game.url);
+    }
+  });
 };

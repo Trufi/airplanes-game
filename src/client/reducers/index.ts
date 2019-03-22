@@ -13,16 +13,16 @@ export const connected = (appState: AppState): Cmd => {
   }
 
   const {
-    tryJoin: { id, type },
+    tryJoin: { type },
     token,
   } = appState;
 
   if (type === 'player') {
-    return [cmd.renderUI(), cmd.sendMsg(msg.joinGame(token, id))];
+    return [cmd.renderUI(), cmd.sendMsg(msg.joinGame(token))];
   } else if (type === 'observer') {
-    return [cmd.renderUI(), cmd.sendMsg(msg.joinGameAsObserver(token, id))];
+    return [cmd.renderUI(), cmd.sendMsg(msg.joinGameAsObserver(token))];
   } else if (type === 'bot' && appState.name) {
-    return [cmd.renderUI(), cmd.sendMsg(msg.joinGameAsBot(id, appState.name))];
+    return [cmd.renderUI(), cmd.sendMsg(msg.joinGameAsBot(appState.name))];
   }
 };
 

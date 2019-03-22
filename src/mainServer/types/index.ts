@@ -1,15 +1,19 @@
+import { GameType } from '../../types';
+
 export interface Game {
   id: number;
-  token: string;
+  type: GameType;
   url: string;
-  name: string;
   players: number;
+  maxPlayers: number;
+  city: string;
+  lastNotifyTime: number;
 }
 
 export interface State {
   games: {
     nextId: number;
     map: Map<number, Game>;
-    byToken: Map<string, Game>;
+    byUrl: Map<string, Game>;
   };
 }

@@ -19,16 +19,10 @@ const sendPbfMsgTo = (connectionIds: number[], msg: ArrayBuffer) => ({
   msg,
 });
 
-const authPlayer = (
-  connectionId: number,
-  token: string,
-  gameId: number,
-  joinType: 'player' | 'observer',
-) => ({
+const authPlayer = (connectionId: number, token: string, joinType: 'player' | 'observer') => ({
   type: 'authPlayer' as 'authPlayer',
   connectionId,
   token,
-  gameId,
   joinType,
 });
 

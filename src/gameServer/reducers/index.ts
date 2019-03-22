@@ -30,7 +30,6 @@ export const authConnection = (
   connectionId: number,
   userId: number,
   name: string,
-  gameId: number,
   joinType: 'player' | 'observer',
 ): Cmd => {
   const connection = state.connections.map.get(connectionId);
@@ -38,14 +37,13 @@ export const authConnection = (
     return;
   }
 
-  const gameState = state.games.map.get(gameId);
+  const gameState = state.games.map.get(1);
   if (!gameState) {
     return cmd.sendMsg(connection.id, msg.gameJoinFail());
   }
 
   console.log(
-    `User (name: ${name}, userId: ${userId}, connectionId: ${connectionId}) ` +
-      `join game ${gameId} as ${joinType}`,
+    `User (name: ${name}, userId: ${userId}, connectionId: ${connectionId}) as ${joinType}`,
   );
 
   if (joinType === 'player') {
@@ -105,7 +103,7 @@ export const initialConnectionMessage = (
     case 'joinGame':
       return joinGame(state, connection, clientMsg);
     case 'joinGameAsBot':
-      return authConnection(state, connection.id, -1, clientMsg.name, clientMsg.gameId, 'player');
+      return authConnection(state, connection.id, -1, clientMsg.name, 'player');
     case 'joinGameAsObserver':
       return joinGameAsObserver(state, connection, clientMsg);
     case 'ping':
@@ -118,8 +116,8 @@ const joinGame = (
   connection: InitialConnection,
   clientMsg: ClientMsg['joinGame'],
 ): Cmd => {
-  const { token, gameId } = clientMsg;
-  return cmd.authPlayer(connection.id, token, gameId, 'player');
+  const { token } = clientMsg;
+  return cmd.authPlayer(connection.id, token, 'player');
 };
 
 const joinGameAsObserver = (
@@ -127,8 +125,8 @@ const joinGameAsObserver = (
   connection: InitialConnection,
   clientMsg: ClientMsg['joinGameAsObserver'],
 ): Cmd => {
-  const { token, gameId } = clientMsg;
-  return cmd.authPlayer(connection.id, token, gameId, 'observer');
+  const { token } = clientMsg;
+  return cmd.authPlayer(connection.id, token, 'observer');
 };
 
 export const playerConnectionMessage = (
@@ -223,7 +221,7 @@ export const tick = (state: State, time: number): Cmd => {
   return union(cmds);
 };
 
-export const createGame = (state: State, time: number): Cmd => {
+export const createGame = (state: State, time: number) => {
   const gameState = game.createGameState(state.games.nextId, time);
   state.games.nextId++;
   state.games.map.set(gameState.id, gameState);

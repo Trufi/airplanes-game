@@ -1,4 +1,5 @@
-import { GamePlayer } from './game';
+import { GamePlayer } from '../types';
+
 // import { getNewPoints } from '../../utils';
 
 export const updatePointsByType = (_player: GamePlayer, _type: 'deaths' | 'kills') => {

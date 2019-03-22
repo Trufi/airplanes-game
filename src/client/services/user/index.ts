@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { services } from '../config';
+import * as config from '../../../config';
 
 export const userRegister = (p: { password: string; username: string }) => {
   return axios
     .post(
-      services.apiDomain + '/api/register',
+      config.mainServer.url + '/api/register',
       {
         password: p.password,
         username: p.username,
@@ -21,7 +21,7 @@ export const userRegister = (p: { password: string; username: string }) => {
 export const userLogin = (p: { password: string; username: string }) => {
   return axios
     .post(
-      services.apiDomain + '/api/login',
+      config.mainServer.url + '/api/login',
       {
         password: p.password,
         username: p.username,
@@ -43,7 +43,7 @@ export const userLogin = (p: { password: string; username: string }) => {
 export const userAuth = (p: { token: string }) => {
   return axios
     .post(
-      services.apiDomain + '/api/auth',
+      config.mainServer.url + '/api/auth',
       {},
       {
         headers: {
@@ -68,7 +68,7 @@ export const userUpdateStat = (p: {
 }) => {
   return axios
     .post(
-      services.apiDomain + '/api/login',
+      config.mainServer.url + '/api/login',
       {
         deaths: p.deaths,
         kills: p.kills,
