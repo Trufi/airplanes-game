@@ -12,7 +12,7 @@ import { cmd } from '../../commands';
 import { msg } from '../../messages/index';
 import { Arrow } from '../arrow';
 import { GameStats } from '../gameStats';
-import { Health } from '../health';
+import { Health } from '../Health';
 import { BoostButton } from '../BoostButton';
 import { ShotBlink } from '../shotBlink/shotBlink';
 import { DamageIndicator } from '../damageIndicator/damageIndicator';

@@ -1,0 +1,28 @@
+.healthBar {
+  background-image: url('/assets/healthBar.png');
+  width: 199px;
+  height: 23px;
+  background-size: cover;
+  margin: 0 auto;
+  margin-top: 9px;
+  position: relative;
+}
+
+.healthInner {
+  width: 185px;
+  height: 11px;
+  position: absolute;
+  top: 5px;
+  left: 7px;
+  border-radius: 3px;
+}
+
+.healthValue {
+  height: 100%;
+  border-radius: 3px;
+  background: rgb(117, 248, 111);
+  background: -moz-linear-gradient(top, rgba(117, 248, 111, 1) 0%, rgba(95, 214, 10, 1) 98%);
+  background: -webkit-linear-gradient(top, rgba(117, 248, 111, 1) 0%, rgba(95, 214, 10, 1) 98%);
+  background: linear-gradient(to bottom, rgba(117, 248, 111, 1) 0%, rgba(95, 214, 10, 1) 98%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#75f86f', endColorstr='#5fd60a',GradientType=0 );
+}
