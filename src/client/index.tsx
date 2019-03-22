@@ -18,14 +18,14 @@ const resize = () => {
 window.addEventListener('resize', resize);
 resize();
 
-// Вход без регистрации
-appState.type = 'gameSelect';
-appState.name = 'Anon';
-appState.token = '123';
-appState.tryJoin = {
-  id: 1,
-  type: 'bot',
-  url: 'localhost:3001',
-};
-executeCmd(cmd.renderUI());
-executeCmd(cmd.connectToGameServer('localhost:3001'));
+// // Вход без регистрации
+// appState.type = 'gameSelect';
+// appState.name = 'Anon';
+// appState.token = '123';
+// appState.tryJoin = {
+//   id: 1,
+//   type: 'bot',
+//   url: 'localhost:3001',
+// };
+// executeCmd(cmd.renderUI());
+// executeCmd(cmd.connectToGameServer('localhost:3001'));
