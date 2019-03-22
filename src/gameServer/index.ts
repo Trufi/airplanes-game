@@ -22,6 +22,9 @@ const port = 3001;
 
 const app = express();
 
+// health check для k8s
+app.get('/', (_req, res) => res.sendStatus(200));
+
 const server = app.listen(port, () => console.log(`Server listen on ${port} port`));
 
 const wsServer = new ws.Server({
