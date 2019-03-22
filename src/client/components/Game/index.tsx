@@ -11,14 +11,13 @@ import { ExecuteCmd, executeCmd } from '../../commands/execute';
 import { cmd } from '../../commands';
 import { msg } from '../../messages/index';
 import { Arrow } from '../arrow';
-import { GameStats } from '../gameStats';
 import { Health } from '../Health';
 import { BoostButton } from '../BoostButton';
 import { ShotBlink } from '../shotBlink/shotBlink';
 import { DamageIndicator } from '../damageIndicator/damageIndicator';
 import { Disconnect } from '../disconnect';
 import styles from './index.css';
-
+import { DeathScreen } from './DeathScreen';
 interface Props {
   appState: AppState;
   executeCmd: ExecuteCmd;
@@ -86,7 +85,11 @@ export class Game extends React.Component<Props, {}> {
         <DeathNotes state={game} />
         <div>{playerNames}</div>
         <div>{playerArrows}</div>
-        {body ? this.renderLiveComponents(game, body) : this.renderDeath(game)}
+        {body ? (
+          this.renderLiveComponents(game, body)
+        ) : (
+          <DeathScreen game={game} restart={this.restart} />
+        )}
       </div>
     );
   }
@@ -113,23 +116,6 @@ export class Game extends React.Component<Props, {}> {
         />
         <Health body={body} />
       </>
-    );
-  }
-
-  private renderDeath(game: State) {
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          zIndex: 100,
-        }}
-      >
-        <div>ПОТРАЧЕНО!</div>
-        <button onClick={this.restart}>Restart</button>
-        <GameStats players={game.players} />
-      </div>
     );
   }
 
