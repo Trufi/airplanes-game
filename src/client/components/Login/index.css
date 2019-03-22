@@ -1,0 +1,83 @@
+.logo {
+  background-image: url('/assets/logo.png');
+  width: 198px;
+  height: 118px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-bottom: 33px;
+}
+
+.container {
+  background-color: #343434;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('/assets/mapWeb.png');
+  width: 100%;
+  justify-content: center;
+  background-size: cover;
+}
+
+.inputContainer {
+  border: 8px solid #343434;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 57px 10px #51d85a9e;
+  border-radius: 15px;
+  position: relative;
+}
+
+.input {
+  border: none;
+  background-color: #212121;
+  margin-bottom: 8px;
+  outline: none;
+  color: #51d85a;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  line-height: 29px;
+  padding-left: 20.5px;
+  padding-right: 20.5px;
+  padding-top: 12.5px;
+  padding-bottom: 14.5px;
+  border-radius: 7px 7px 0 0;
+}
+
+.input:nth-child(2) {
+  margin-bottom: 0;
+  border-radius: 0 0 7px 7px;
+}
+
+.relativeContainer {
+  background: #343434;
+  border-radius: 15px;
+  position: relative;
+}
+
+.button {
+  font-size: 24px;
+  line-height: 29px;
+  background-color: gray;
+  border: none;
+  outline: none;
+  padding-left: 20.5px;
+  padding-right: 20.5px;
+  padding-top: 12.5px;
+  padding-bottom: 14.5px;
+  color: #ffffff;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  border-radius: 0 0 15px 0;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#7d7e7d+0,0e0e0e+100;Black+3D */
+  background: #7d7e7d; /* Old browsers */
+  background: -moz-linear-gradient(top, #7d7e7d 0%, #262626 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #7d7e7d 0%, #262626 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #7d7e7d 0%,
+    #262626 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#262626',GradientType=0 ); /* IE6-9 */
+}

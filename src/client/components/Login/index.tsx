@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { cmd } from '../commands';
-import { ExecuteCmd } from '../commands/execute';
-import { userAuth, userLogin, userRegister } from '../services/user';
+import { cmd } from '../../commands';
+import { ExecuteCmd } from '../../commands/execute';
+import { userAuth, userLogin, userRegister } from '../../services/user';
 import { get, set } from 'js-cookie';
-import { AppState } from '../types';
+import { AppState } from '../../types';
+import styles from './index.css';
 
 interface Props {
   appState: AppState;
@@ -34,20 +35,27 @@ export class Login extends React.Component<Props, {}> {
 
   public render() {
     return (
-      <div
-        style={{
-          width: '200px',
-          height: '100px',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          margin: '-50px 0 0 -100px',
-        }}
-      >
-        <h3>Login</h3>
-        <input ref={this.inputNameRef} type='text' onKeyPress={this.onKeyPress} />
-        <input ref={this.inputPassRef} type='password' onKeyPress={this.onKeyPress} />
-        <button onClick={this.submit}>Start</button>
+      <div className={styles.container}>
+        <div className={styles.logo} />
+        <div className={styles.relativeContainer}>
+          <div className={styles.inputContainer}>
+            <input
+              className={styles.input}
+              ref={this.inputNameRef}
+              type='text'
+              onKeyPress={this.onKeyPress}
+            />
+            <input
+              className={styles.input}
+              ref={this.inputPassRef}
+              type='password'
+              onKeyPress={this.onKeyPress}
+            />
+          </div>
+          <button className={styles.button} onClick={this.submit}>
+            Start
+          </button>
+        </div>
       </div>
     );
   }

@@ -27,16 +27,30 @@
       }
       #fullscreen {
         position: absolute;
-        bottom: 0;
+        top: 0;
         right: 0;
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         background: #fff;
         border: 1px solid;
         text-align: center;
-        line-height: 50px;
+        line-height: 40px;
         font-size: 30px;
         user-select: none;
+        border-radius: 50%;
+        font-family: Arial;
+        font-size: 20px;
+        margin: 8px;
+        background: #7d7e7d;
+        background: -webkit-gradient(linear, left top, left bottom, from(#7d7e7d), to(#262626));
+        background: linear-gradient(to bottom, #7d7e7d 0%, #262626 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#262626',GradientType=0 );
+        color: #fff;
+        outline: none;
+        background-image: url('/assets/icons/fullScreen.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        border: none;
       }
     </style>
   </head>
@@ -44,6 +58,6 @@
     <div id="map"></div>
     <canvas id="overlay"></canvas>
     <div id="root"></div>
-    <div id="fullscreen">FS</div>
+    <div id="fullscreen"></div>
   </body>
 </html>

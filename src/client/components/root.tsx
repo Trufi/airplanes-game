@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Login } from './login';
+import { Login } from './Login';
 import { GameSelect } from './gameSelect';
 import { ExecuteCmd } from '../commands/execute';
 import { AppState } from '../types';
