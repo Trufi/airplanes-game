@@ -167,19 +167,18 @@ export function applyApiRouter(app: Express, state: State) {
 
     const connection = connectionDB();
     const { id } = req.user;
-    const promise = selectUser(connection, id);
 
-    promise
+    selectUser(connection, id)
       .then((result: any) => {
         connection.end();
         res.send({
           user: {
             deaths: result.deaths,
             id: result.id,
-            kills: 0,
-            name: 0,
-            token: 0,
-            points: 0,
+            kills: result.kills,
+            name: result.name,
+            token: result.token,
+            points: result.points,
           },
         });
       })

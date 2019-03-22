@@ -2,7 +2,7 @@ import './socket';
 import { appState } from './appState';
 import { renderUI } from './ui';
 import { executeCmd } from './commands/execute';
-import { cmd } from './commands';
+// import { cmd } from './commands';
 
 renderUI(appState, executeCmd);
 

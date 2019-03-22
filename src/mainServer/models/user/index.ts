@@ -136,7 +136,7 @@ export const selectUser = (connection: Client, userId: User['id']) => {
     SELECT u.id, u.name, u.password, tpr.kills, tpr.deaths, tpr.points
     FROM users as u
     LEFT JOIN tournaments_per_user as tpr ON tpr.user_id = u.id
-    WHERE users.id = ${userId}
+    WHERE u.id = ${userId}
     LIMIT 1
   `;
 
