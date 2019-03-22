@@ -49,7 +49,7 @@ export class HeatCircle extends React.Component<Props, {}> {
           version='1.1'
         >
           <circle
-            stroke='#eaeaee'
+            stroke='#d4d3cc59'
             strokeWidth={strokeWidth}
             cx={center}
             cy={center}

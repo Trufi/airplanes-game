@@ -3,6 +3,7 @@ import { State } from '../../types';
 import * as config from '../../../config';
 import styles from './index.css';
 import { HeatCircle } from './HeatCircle';
+import classnames from 'classnames';
 
 interface Props {
   game: State;
@@ -16,14 +17,22 @@ export class FireButton extends React.Component<Props, {}> {
 
     const size = 100;
     let volume = 1;
+    let isHeated = false;
 
     if (body) {
       const { weapon } = body;
       volume = 1 - weapon.heat / config.weapon.maxHeat;
+
+      if (weapon) {
+        isHeated = body.weapon.blocked;
+      }
     }
-    console.log('size: ', size);
-    console.log('volume: ', volume);
-    console.log('size vol: ', size * volume);
+    const fillPercent = 100 - size * volume;
+    const buttonClass = classnames({
+      [styles.fireButtonInner]: true,
+      [styles.fireInProgress]: fillPercent > 0,
+      [styles.fireDisabled]: isHeated,
+    });
     return (
       <div
         className={styles.container}
@@ -31,14 +40,13 @@ export class FireButton extends React.Component<Props, {}> {
         onTouchEnd={this.onTouchEnd}
         onTouchMove={this.onTouchMove}
       >
-        <div
-          style={{
-            position: 'absolute',
-          }}
-        >
-          <HeatCircle percentage={size * volume} strokeWidth={10} diametr={92} />
+        <div className={styles.heatContainer}>
+          <HeatCircle percentage={fillPercent} strokeWidth={8} diametr={92} />
         </div>
-        <div className={styles.fireButton}>Fire</div>
+        <div className={styles.fireButton}>
+          <div className={styles.fireButtonCircle} />
+          <div className={buttonClass}>Fire</div>
+        </div>
       </div>
     );
   }
