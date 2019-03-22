@@ -1,5 +1,6 @@
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const path = require('path');
 const fs = require('fs-extra');
 const cssnext = require('postcss-cssnext');
@@ -66,6 +67,7 @@ module.exports = (_, args) => {
     },
 
     plugins: [
+      new Dotenv(),
       new ForkTsCheckerWebpackPlugin({
         watch: ['./src'],
       }),
@@ -73,6 +75,10 @@ module.exports = (_, args) => {
         template: 'src/client/index.html',
       }),
     ],
+
+    node: {
+      fs: 'empty',
+    },
 
     devtool: production ? false : 'source-map',
 

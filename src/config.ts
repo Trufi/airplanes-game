@@ -1,6 +1,9 @@
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
 export const mainServer = {
-  url: 'https://sky.2gis.ru',
-  // url: 'http://localhost:3002',
+  url: process.env.MAIN_SERVER_URL || 'https://sky.2gis.ru',
 
   /**
    * Если игровой сервер не прислал информацию о себе за это время, то удаляем его
@@ -9,6 +12,7 @@ export const mainServer = {
 };
 
 export const gameServer = {
+  url: process.env.GAME_SERVER_URL || 'sky.2gis.ru/city/nsk',
   updateMainInverval: 10000,
 };
 

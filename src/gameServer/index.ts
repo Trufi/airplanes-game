@@ -39,11 +39,17 @@ const wsServer = new ws.Server({
   },
 });
 
+let url = config.gameServer.url;
+
+// Если случайно передали протокол, то убираем его
+url = url.replace('http://', '');
+url = url.replace('https://', '');
+
 const state = createState({
   maxPlayers: 30,
   city: 'nsk',
   type: 'dm',
-  url: process.env.GAME_SERVER_URL || `localhost:${port}`,
+  url,
 });
 createGame(state, time());
 
@@ -160,7 +166,6 @@ const notifyMainServer = () => {
 
   const { url, type, city, maxPlayers } = state;
 
-  console.log(`Notify main server about me with url: ${url}`);
   api
     .notify({
       url,
