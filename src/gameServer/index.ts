@@ -50,7 +50,7 @@ createGame(state, time());
 console.log(
   `Start game server with url: ${state.url}, type: ${state.type}, city: ${
     state.city
-  }, maxPlayers: ${state.maxPlayers}`,
+  }, maxPlayers: ${state.maxPlayers}, main server url: ${config.mainServer.url}`,
 );
 
 app.get('/state', (_req, res) => {
@@ -174,7 +174,7 @@ const notifyMainServer = () => {
     });
 };
 
-setInterval(() => notifyMainServer, config.gameServer.updateMainInverval);
+setInterval(() => notifyMainServer(), config.gameServer.updateMainInverval);
 notifyMainServer();
 
 wsServer.on('connection', (socket) => {
