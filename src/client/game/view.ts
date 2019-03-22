@@ -71,7 +71,6 @@ export const createMesh = (id: number) => {
   const paletteId = id % airplane_palettes.length;
   gltfLoader.load('./assets/new.glb', (gltf) => {
     const scene = gltf.scene;
-    console.log(scene);
     const airplane_model = scene.getObjectByName('Самолет');
     if (airplane_model) {
       airplane_palettes[paletteId].forEach((group) => {
@@ -165,22 +164,31 @@ export const createShotMesh = () => {
 };
 
 export const createBulletMesh = (offsetXDirection: number) => {
-  const material = new THREE.LineBasicMaterial({
-    color: config.weapon.bullet.color,
-    linewidth: config.weapon.bullet.width,
+  const meshGroup = new THREE.Group();
+  const lineMat = new THREE.MeshBasicMaterial({
+    color: config.weapon.bullet.color.line,
     opacity: config.weapon.bullet.opacity,
   });
-  const geometry = new THREE.Geometry();
-  geometry.vertices.push(
-    new THREE.Vector3(0, 0, 0),
-    new THREE.Vector3(0, config.weapon.distance, 0),
-  );
-  const mesh = new THREE.Line(geometry, material);
-  mesh.position.setX(config.weapon.bullet.offset.x * offsetXDirection);
-  mesh.position.setZ(config.weapon.bullet.offset.z);
-  mesh.position.setY(config.weapon.bullet.offset.y);
-  mesh.visible = false;
-  return mesh;
+  const flashMat = new THREE.MeshBasicMaterial({
+    color: config.weapon.bullet.color.flash,
+    opacity: config.weapon.bullet.opacity,
+  });
+
+  const bg = new THREE.CylinderGeometry(10, 100, config.weapon.distance);
+  const line = new THREE.Mesh(bg, lineMat);
+  line.position.setY(config.weapon.distance / 2);
+
+  const sg = new THREE.SphereGeometry(300, 32, 32);
+  const sphere = new THREE.Mesh(sg, flashMat);
+
+  meshGroup.add(line);
+  meshGroup.add(sphere);
+
+  meshGroup.position.setX(config.weapon.bullet.offset.x * offsetXDirection);
+  meshGroup.position.setZ(config.weapon.bullet.offset.z);
+  meshGroup.position.setY(config.weapon.bullet.offset.y);
+
+  return meshGroup;
 };
 
 export const updateShot = (
@@ -211,7 +219,7 @@ const showHideBulletAnimation = (animation: AnimationPerFrame, mesh: THREE.Objec
   }
 };
 
-export const updateBullet = (mesh: THREE.Line, body: BodyState) => {
+export const updateBullet = (mesh: THREE.Group, body: BodyState) => {
   showHideBulletAnimation(body.weapon.animation, mesh);
 };
 

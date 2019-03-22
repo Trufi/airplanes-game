@@ -22,10 +22,13 @@ export const weapon = {
 
   offset: 5000,
   bullet: {
-    color: 0xeeee33,
-    opacity: 0.5,
+    color: {
+      flash: 0xd1780c,
+      line: 0xd8c70d,
+    },
+    opacity: 0.8,
     width: 2,
-    offset: { x: 900, y: 0, z: 500 },
+    offset: { x: 920, y: 1550, z: 470 },
   },
 
   /**
@@ -66,7 +69,7 @@ export const airplane = {
   scale: 4000,
   velocity: 30,
   initRotation: { x: -Math.PI / 2, y: 0, z: Math.PI },
-  propeller: { x: 0, y: 0, z: 0.666, radius: 0.36, opacity: 0.4 },
+  propeller: { x: 0, y: 0.03, z: 0.666, radius: 0.26, opacity: 0.4 },
 
   /**
    * Коэффициент поворота по оси Y в зависимости от угловой скорости

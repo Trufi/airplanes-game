@@ -28,8 +28,8 @@ export interface WeaponState {
   lastHitTime: number;
   animation: AnimationPerFrame;
   hits: Hit[];
-  left: THREE.Line;
-  right: THREE.Line;
+  left: THREE.Group;
+  right: THREE.Group;
   target?: THREE.Vector3;
 }
 
@@ -66,8 +66,8 @@ export interface NonPhysicBodyState {
   weapon: {
     animation: AnimationPerFrame;
     lastShotTime: number;
-    left: THREE.Line;
-    right: THREE.Line;
+    left: THREE.Group;
+    right: THREE.Group;
     target?: THREE.Vector3;
   };
   steps: BodyStep[];
