@@ -29,29 +29,31 @@ export function applyApiRouter(app: Express, state: State) {
 
     promise
       .then((result: any) => {
-        connection.end();
-        console.log('BearerStrategy:result', result);
-        if (!result) {
-          return done(null, false);
-        }
+        connection.end().then(() => {
+          console.log('BearerStrategy:result', result);
+          if (!result) {
+            return done(null, false);
+          }
 
-        return done(
-          null,
-          {
-            id: result.id,
-            name: result.name,
-            kills: result.kills,
-            deaths: result.deaths,
-            points: result.points,
-            token,
-          },
-          { scope: 'all' },
-        );
+          return done(
+            null,
+            {
+              id: result.id,
+              name: result.name,
+              kills: result.kills,
+              deaths: result.deaths,
+              points: result.points,
+              token,
+            },
+            { scope: 'all' },
+          );
+        });
       })
       .catch((err) => {
-        connection.end();
-        console.log('BearerStrategy:err', err);
-        return done(null, false);
+        connection.end().then(() => {
+          console.log('BearerStrategy:err', err);
+          return done(null, false);
+        });
       });
   });
 
@@ -100,24 +102,27 @@ export function applyApiRouter(app: Express, state: State) {
           password: token,
         })
           .then(() => {
-            connection.end();
-            res.status(200).send({
-              user: {
-                name: req.body.username,
-                token,
-              },
+            connection.end().then(() => {
+              res.status(200).send({
+                user: {
+                  name: req.body.username,
+                  token,
+                },
+              });
             });
           })
           .catch((err) => {
-            connection.end();
-            console.log('createUser:err', err);
-            res.sendStatus(ERROR_CODE);
+            connection.end().then(() => {
+              console.log('createUser:err', err);
+              res.sendStatus(ERROR_CODE);
+            });
           });
       })
       .catch((err) => {
-        connection.end();
-        console.log('createUser:err', err);
-        res.sendStatus(ERROR_CODE);
+        connection.end().then(() => {
+          console.log('createUser:err', err);
+          res.sendStatus(ERROR_CODE);
+        });
       });
   });
 
@@ -139,26 +144,28 @@ export function applyApiRouter(app: Express, state: State) {
     promise
       .then((result: any) => {
         console.log('/login:result', result);
-        connection.end();
-        if (!result) {
-          return res.sendStatus(401);
-        }
+        connection.end().then(() => {
+          if (!result) {
+            return res.sendStatus(401);
+          }
 
-        res.send({
-          user: {
-            id: result.id,
-            name: result.name,
-            kills: 0,
-            deaths: 0,
-            points: 0,
-            token,
-          },
+          res.send({
+            user: {
+              id: result.id,
+              name: result.name,
+              kills: 0,
+              deaths: 0,
+              points: 0,
+              token,
+            },
+          });
         });
       })
       .catch((err) => {
-        connection.end();
-        console.log('/login:err', err);
-        res.sendStatus(ERROR_CODE);
+        connection.end().then(() => {
+          console.log('/login:err', err);
+          return res.sendStatus(ERROR_CODE);
+        });
       });
   });
 
@@ -170,22 +177,24 @@ export function applyApiRouter(app: Express, state: State) {
 
     selectUser(connection, id)
       .then((result: any) => {
-        connection.end();
-        res.send({
-          user: {
-            deaths: result.deaths,
-            id: result.id,
-            kills: result.kills,
-            name: result.name,
-            token: result.token,
-            points: result.points,
-          },
+        connection.end().then(() => {
+          return res.send({
+            user: {
+              deaths: result.deaths,
+              id: result.id,
+              kills: result.kills,
+              name: result.name,
+              token: result.token,
+              points: result.points,
+            },
+          });
         });
       })
       .catch((err) => {
-        connection.end();
-        console.log('/auth:err', err);
-        res.sendStatus(ERROR_CODE);
+        connection.end().then(() => {
+          console.log('/auth:err', err);
+          res.sendStatus(ERROR_CODE);
+        });
       });
   });
 
@@ -216,13 +225,15 @@ export function applyApiRouter(app: Express, state: State) {
       points: req.user.points + points,
     })
       .then(() => {
-        connection.end();
-        res.sendStatus(200);
+        connection.end().then(() => {
+          res.sendStatus(200);
+        });
       })
       .catch((err) => {
-        connection.end();
-        console.log('/user/stats:err', err);
-        res.sendStatus(ERROR_CODE);
+        connection.end().then(() => {
+          console.log('/user/stats:err', err);
+          res.sendStatus(ERROR_CODE);
+        });
       });
   });
 
@@ -237,13 +248,15 @@ export function applyApiRouter(app: Express, state: State) {
 
       promise
         .then((result) => {
-          connection.end();
-          res.send({ achievements: result });
+          connection.end().then(() => {
+            res.send({ achievements: result });
+          });
         })
         .catch((err) => {
-          connection.end();
-          console.log('err', err);
-          res.sendStatus(ERROR_CODE);
+          connection.end().then(() => {
+            console.log('err', err);
+            res.sendStatus(ERROR_CODE);
+          });
         });
     },
   );
@@ -256,13 +269,15 @@ export function applyApiRouter(app: Express, state: State) {
 
     promise
       .then((result) => {
-        connection.end();
-        res.send({ achievements: result });
+        connection.end().then(() => {
+          res.send({ achievements: result });
+        });
       })
       .catch((err) => {
-        connection.end();
-        console.log('err', err);
-        res.sendStatus(ERROR_CODE);
+        connection.end().then(() => {
+          console.log('err', err);
+          res.sendStatus(ERROR_CODE);
+        });
       });
   });
 
@@ -285,13 +300,15 @@ export function applyApiRouter(app: Express, state: State) {
       const promise = setAchievements(connection, id, achievementId);
       promise
         .then((result) => {
-          connection.end();
-          res.send({ achievement: result });
+          connection.end().then(() => {
+            res.send({ achievement: result });
+          });
         })
         .catch((err) => {
-          connection.end();
-          console.log('err', err);
-          res.sendStatus(ERROR_CODE);
+          connection.end().then(() => {
+            console.log('err', err);
+            res.sendStatus(ERROR_CODE);
+          });
         });
     },
   );
