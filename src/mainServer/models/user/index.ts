@@ -1,13 +1,8 @@
 import { Client } from 'pg';
 import { Tournament, User, UserCreation } from '../types';
 import { createHmac } from 'crypto';
-
-const DEFAULT_TOURNAMENT_NAME = 'infinity';
-
-const parseResult = (result: any) => {
-  const string = JSON.stringify(result.rows);
-  return JSON.parse(string);
-};
+import { parseResult } from '../utils';
+import { selectDefaultTournament } from '../tournaments';
 
 export const createToken = (p: { name: string; password: string }) => {
   return createHmac('sha256', `${p.name}${p.password}`).digest('hex');
@@ -27,81 +22,41 @@ export const createUser = (connection: Client, user: UserCreation) => {
     selectUserAfterInsert(connection, user.name).then((userData: any) =>
       selectDefaultTournament(connection).then((defaultTournament: any) => {
         const sqlLinkWithDefaultTournament = `
-              INSERT INTO tournaments_per_user (user_id, tournament_id)
-              VALUES
-                (
-                  '${userData.id}',
-                  '${defaultTournament.id}'
-                )
-            `;
+          INSERT INTO tournaments_per_user (user_id, tournament_id)
+          VALUES
+            (
+              '${userData.id}',
+              '${defaultTournament.id}'
+            )
+        `;
 
         return connection.query(sqlLinkWithDefaultTournament);
       }),
     ),
   );
-
-  // return new Promise((resolve, reject) => {
-  //   connection.query(sqlUserCreate, (err) => {
-  //     if (err) {
-  //       return reject(err);
-  //     }
-  //
-  //     return selectUserAfterInsert(connection, user.name)
-  //       .then((userData: any) => {
-  //         return selectDefaultTournament(connection)
-  //           .then((defaultTournament: any) => {
-  //             const sqlLinkWithDefaultTournament = `
-  //               INSERT INTO tournaments_per_user (user_id, tournament_id)
-  //               VALUES
-  //                 (
-  //                   '${userData.id}',
-  //                   '${defaultTournament.id}'
-  //                 )
-  //             `;
-  //
-  //             connection.query(sqlLinkWithDefaultTournament, (err, result) => {
-  //               if (err) {
-  //                 return reject(err);
-  //               }
-  //               const tournamentData = parseResult(result)[0];
-  //
-  //               return resolve({
-  //                 user,
-  //                 tournamentData,
-  //               });
-  //             });
-  //           })
-  //           .catch((err) => {
-  //             console.log('err', err);
-  //             if (err) {
-  //               return reject(err);
-  //             }
-  //           });
-  //       })
-  //       .catch((err) => {
-  //         console.log('err', err);
-  //         if (err) {
-  //           return reject(err);
-  //         }
-  //       });
-  //   });
-  // });
 };
 
-const selectDefaultTournament = (connection: Client) => {
+export const attachUserToTournament = (
+  connection: Client,
+  userId: User['id'],
+  tournamentId: Tournament['id'],
+) => {
+  // @TODO Уставновить рейтинг Эло. 1200 [#ratingElo]
   const sql = `
-    SELECT id
-    FROM tournament as t
-    WHERE t.name = '${DEFAULT_TOURNAMENT_NAME}'
-    LIMIT 1
+    INSERT INTO tournaments_per_user (user_id, tournament_id)
+    VALUES
+      (
+        '${userId}',
+        '${tournamentId}'
+      )
   `;
 
   return new Promise((resolve, reject) => {
-    connection.query(sql, (err, result) => {
+    connection.query(sql, (err) => {
       if (err) {
         return reject(err);
       }
-      return resolve(parseResult(result)[0]);
+      return resolve();
     });
   });
 };

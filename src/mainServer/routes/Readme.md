@@ -22,3 +22,7 @@
 
 ####SET
 `curl -v -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer 123456789" --request POST --data '{"userId":1, "achievementId":1}' http://127.0.0.1:3002/api/achievement/set`
+
+###TOURNAMENT
+###ATTACH
+`curl -v -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer 123456789" --request POST --data '{"tournamentId":1}' http://127.0.0.1:3002/api/tournament/attach`

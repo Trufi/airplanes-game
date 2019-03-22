@@ -3,6 +3,7 @@ import { Router, Express } from 'express';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import { connectionDB } from '../models/database';
 import {
+  attachUserToTournament,
   createToken,
   createUser,
   selectUser,
@@ -15,6 +16,7 @@ import { State } from '../types';
 import { setAccessAllowOrigin } from './cors';
 import { mapMap } from '../../utils';
 import { GamelistResponse } from '../types/api';
+import { getPretenders, getTournamentList } from '../models/tournaments';
 
 export function applyApiRouter(app: Express, state: State) {
   const apiRouter = Router();
@@ -232,6 +234,71 @@ export function applyApiRouter(app: Express, state: State) {
       .catch((err) => {
         connection.end().then(() => {
           console.log('/user/stats:err', err);
+          res.sendStatus(ERROR_CODE);
+        });
+      });
+  });
+
+  apiRouter.get('/tournament/list', (req, res) => {
+    setAccessAllowOrigin(req, res);
+
+    const connection = connectionDB();
+    getTournamentList(connection)
+      .then((result) => {
+        connection.end().then(() => {
+          res.send({ tournaments: result });
+        });
+      })
+      .catch((err: any) => {
+        connection.end().then(() => {
+          console.log('/tournament/list:err', err);
+          res.sendStatus(ERROR_CODE);
+        });
+      });
+  });
+
+  apiRouter.post(
+    '/tournament/attach',
+    authenticate('bearer', { failureRedirect: '/' }),
+    (req, res) => {
+      setAccessAllowOrigin(req, res);
+
+      const { tournamentId } = req.body;
+
+      if (typeof tournamentId === 'undefined' || typeof tournamentId !== 'number') {
+        return res.status(422).send('Unprocessed entity: tournamentId');
+      }
+
+      const connection = connectionDB();
+      const { id } = req.user;
+      attachUserToTournament(connection, id, tournamentId)
+        .then(() => {
+          connection.end().then(() => {
+            return res.status(200).send('OK');
+          });
+        })
+        .catch((err) => {
+          connection.end().then(() => {
+            console.log('createUser:err', err);
+            res.sendStatus(ERROR_CODE);
+          });
+        });
+    },
+  );
+
+  apiRouter.get('/tournament/pretenders', (req, res) => {
+    setAccessAllowOrigin(req, res);
+
+    const connection = connectionDB();
+    getPretenders(connection)
+      .then((pretenders: any) => {
+        connection.end().then(() => {
+          res.send({ pretenders });
+        });
+      })
+      .catch((err: any) => {
+        connection.end().then(() => {
+          console.log('/tournament/pretenders:err', err);
           res.sendStatus(ERROR_CODE);
         });
       });
