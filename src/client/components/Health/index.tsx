@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as config from '../../../config';
 import { PhysicBodyState } from '../../types';
 import styles from './index.css';
 
@@ -8,11 +7,6 @@ interface Props {
 }
 
 export const Health = ({ body: { health } }: Props) => {
-  const width = 300;
-  const height = 15;
-
-  const innerWidth = (health / config.airplane.maxHealth) * width;
-
   return (
     <div className={styles.healthBar}>
       <div className={styles.healthInner}>
