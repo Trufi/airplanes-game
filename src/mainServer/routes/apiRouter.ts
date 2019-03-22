@@ -207,13 +207,13 @@ export function applyApiRouter(app: Express, state: State) {
 
     const connection = connectionDB();
     const { id } = req.user;
-    const promise = updateUserStats(connection, id, {
+    const tournamentId = req.body.tournamentId;
+
+    updateUserStats(connection, id, tournamentId, {
       kills: req.user.kills + kills,
       deaths: req.user.deaths + deaths,
       points: req.user.points + points,
-    });
-
-    promise
+    })
       .then(() => {
         connection.end();
         res.sendStatus(200);

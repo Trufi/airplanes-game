@@ -8,9 +8,15 @@ export interface User {
   name: string;
   password: string;
   sessionId: string;
-  kills?: number;
-  deaths?: number;
-  points?: number;
+}
+
+export interface Tournament {
+  id: number;
+  name: string;
+  description: string;
+  kills: number;
+  deaths: number;
+  points: number;
 }
 
 export interface Achievement {

@@ -1,5 +1,5 @@
 import { Client } from 'pg';
-import { User, UserCreation } from '../types';
+import { Tournament, User, UserCreation } from '../types';
 import { createHmac } from 'crypto';
 
 const DEFAULT_TOURNAMENT_NAME = 'infinity';
@@ -78,15 +78,16 @@ const selectDefaultTournament = (connection: Client) => {
 export const updateUserStats = (
   connection: Client,
   userId: User['id'],
-  stats: { kills: User['kills']; deaths: User['deaths']; points: User['points'] },
+  tournamentId: Tournament['id'],
+  stats: { kills: Tournament['kills']; deaths: Tournament['deaths']; points: Tournament['points'] },
 ) => {
   const sql = `
-    UPDATE users
+    UPDATE tournament_per_user
     SET
       deaths=${stats.deaths},
       kills=${stats.kills},
       points=${stats.points}
-    WHERE id=${userId};
+    WHERE user_id=${userId} AND tournament_id=${tournamentId};
   `;
 
   return new Promise((resolve, reject) => {
@@ -101,8 +102,9 @@ export const updateUserStats = (
 
 export const selectUser = (connection: Client, userId: User['id']) => {
   const sql = `
-    SELECT id, name, password
-    FROM users
+    SELECT u.id, u.name, u.password, tpr.kills, tpr.deaths, tpr.points
+    FROM users as u
+    LEFT JOIN tournament_per_user as tpr ON tpr.user_id = u.id
     WHERE users.id = ${userId}
     LIMIT 1
   `;
@@ -119,8 +121,9 @@ export const selectUser = (connection: Client, userId: User['id']) => {
 
 export const selectUserByName = (connection: Client, name: User['name']) => {
   const sql = `
-    SELECT u.id, u.name
+    SELECT u.id, u.name, tpr.kills, tpr.deaths, tpr.points
     FROM users as u
+    LEFT JOIN tournament_per_user as tpr ON tpr.user_id = u.id
     WHERE u.name = '${name}'
     LIMIT 1
   `;
@@ -136,8 +139,9 @@ export const selectUserByName = (connection: Client, name: User['name']) => {
 
 export const selectUserByToken = (connection: Client, password: User['password']) => {
   const sql = `
-    SELECT u.id, u.name
+    SELECT u.id, u.name, tpr.kills, tpr.deaths, tpr.points
     FROM users as u
+    LEFT JOIN tournament_per_user as tpr ON tpr.user_id = u.id
     WHERE u.password = '${password}'
     LIMIT 1
   `;
