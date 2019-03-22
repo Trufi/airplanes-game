@@ -24,7 +24,7 @@ export const addBody = (
 
 export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
   const { id, position, rotation, health } = data;
-  const mesh = createMesh();
+  const mesh = createMesh(id);
   return {
     type: 'physic',
     id,
@@ -58,7 +58,7 @@ export const createNonPhysicBody = (data: TickBodyData): NonPhysicBodyState => {
     updateTime,
     weapon: { lastShotTime },
   } = data;
-  const mesh = createMesh();
+  const mesh = createMesh(id);
 
   return {
     type: 'nonPhysic',

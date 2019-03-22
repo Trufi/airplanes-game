@@ -31,12 +31,55 @@ export const createRenderer = () => {
 
 const gltfLoader = new GLTFLoader();
 const textureLoader = new TextureLoader();
+const airplane_palettes = [
+  [
+    {
+      color: new THREE.Color(0xcc0000),
+      names: ['Закрылки', 'Закрылки_хвостовые', 'КрышкаНоса002', 'Дуло', 'Хвост005'],
+    },
+    { color: new THREE.Color(0x00cc00), names: ['Корпус', 'Крылья', 'Крылья_хвостовые', 'Нос007'] },
+    {
+      color: new THREE.Color(0x0000cc),
+      names: ['Пулеметы', 'Кабина002', 'Колено001', 'Ноги001', 'Пимпа002', 'Cylinder8283'],
+    },
+  ],
+  [
+    {
+      color: new THREE.Color(0x0000cc),
+      names: ['Закрылки', 'Закрылки_хвостовые', 'КрышкаНоса002', 'Дуло', 'Хвост005'],
+    },
+    { color: new THREE.Color(0xcc0000), names: ['Корпус', 'Крылья', 'Крылья_хвостовые', 'Нос007'] },
+    {
+      color: new THREE.Color(0x00cc00),
+      names: ['Пулеметы', 'Кабина002', 'Колено001', 'Ноги001', 'Пимпа002', 'Cylinder8283'],
+    },
+  ],
+];
+const group_apply = (group: any, model: THREE.Object3D) => {
+  group.names.forEach((name: string) => {
+    const child = model.getObjectByName(name) as THREE.Mesh | undefined;
+    if (child && child.material instanceof THREE.MeshStandardMaterial) {
+      let newMaterial = child.material.clone();
+      newMaterial.color = group.color;
+      child.material = newMaterial;
+    }
+  });
+};
 
-export const createMesh = () => {
+export const createMesh = (id: number) => {
   const mesh = new THREE.Object3D();
+  const paletteId = id % airplane_palettes.length;
   gltfLoader.load('./assets/new.glb', (gltf) => {
+    const scene = gltf.scene;
+    console.log(scene);
+    const airplane_model = scene.getObjectByName('Самолет');
+    if (airplane_model) {
+      airplane_palettes[paletteId].forEach((group) => {
+        group_apply(group, airplane_model);
+      });
+    }
+
     textureLoader.load('./assets/propeller.jpg', (texture) => {
-      const scene = gltf.scene;
       const circleGeom = new THREE.CircleGeometry(config.airplane.propeller.radius, 32);
       const circleMaterial = new THREE.MeshBasicMaterial({
         map: texture,
@@ -54,15 +97,15 @@ export const createMesh = () => {
       };
 
       scene.add(circle);
-
-      // размер соответсвует примерно 50 метрам!
-      scene.scale.set(config.airplane.scale, config.airplane.scale, config.airplane.scale);
-      scene.rotateX(config.airplane.initRotation.x);
-      scene.rotateY(config.airplane.initRotation.y);
-      scene.rotateZ(config.airplane.initRotation.z);
-
-      mesh.add(scene);
     });
+
+    // размер соответсвует примерно 50 метрам!
+    scene.scale.set(config.airplane.scale, config.airplane.scale, config.airplane.scale);
+    scene.rotateX(config.airplane.initRotation.x);
+    scene.rotateY(config.airplane.initRotation.y);
+    scene.rotateZ(config.airplane.initRotation.z);
+
+    mesh.add(scene);
   });
 
   return mesh;
