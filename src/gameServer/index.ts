@@ -35,8 +35,10 @@ const wsServer = new ws.Server({
   },
 });
 
-const url = `localhost:${port}`;
+const url = process.env.GAME_SERVER_URL || `localhost:${port}`;
 const name = 'Super death match';
+
+console.log(`Try register server with url: ${url}, name: ${name}`);
 
 api.register({ url, name }).then((res) => {
   if (!res) {

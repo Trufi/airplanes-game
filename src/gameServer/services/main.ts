@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { mainServer } from '../../config';
+import * as config from '../../config';
 import {
   RegisterResponse,
   RegisterRequest,
@@ -8,7 +8,7 @@ import {
   UpdateRequest,
 } from '../../mainServer/types/gameApi';
 
-const baseURL = `${mainServer.url}/game`;
+const baseURL = `${config.servers.main}/game`;
 
 export const register = (data: RegisterRequest) => {
   return axios

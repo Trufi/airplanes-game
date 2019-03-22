@@ -2,17 +2,15 @@ FROM node:10-alpine
 
 ARG container_version=0.1
 
-LABEL description="Игра на CodeFest 2019 (игровой сервер)" \
+LABEL description="Игра на CodeFest 2019" \
       version=$container_version \
       maintainer="<Mstislav Zhivodkov> m.zhivodkov@2gis.ru" \
       source="https://gitlab.2gis.ru/gamedev/airplanes"
 
 WORKDIR /airplanes
 
-ENV GAME_SERVER_URL $GAME_SERVER_URL
-
 COPY . ./
 
-EXPOSE 3001
+EXPOSE 3002
 
-CMD [ "npm", "run", "game" ]
+CMD [ "npm", "start" ]

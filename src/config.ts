@@ -1,6 +1,6 @@
-export const mainServer = {
+export const servers = {
   // url: 'http://demo.webmaps-dev.os-n3.hw:3002',
-  url: 'http://localhost:3002',
+  main: 'http://localhost:3002',
 };
 
 export const weapon = {
