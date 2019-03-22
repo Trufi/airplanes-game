@@ -4,7 +4,7 @@ import { AppState, State, PhysicBodyState } from '../types';
 import { PlayerLabel } from './playerLabel';
 import { Debug } from './debug';
 import { Aim } from './aim';
-import { FireButton } from './fireButton';
+import { FireButton } from './FireButton';
 import { DeathNotes } from './deathNotes';
 import { Stick } from './stick';
 import { ExecuteCmd, executeCmd } from '../commands/execute';

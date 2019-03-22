@@ -1,0 +1,30 @@
+.container {
+  position: absolute;
+  right: 60px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff0000;
+  text-align: center;
+  font-size: 20px;
+  user-select: none;
+  margin: 100px 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.fireButton {
+  width: 48px;
+  height: 48px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-family: Arial;
+  font-weight: bold;
+}

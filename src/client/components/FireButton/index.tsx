@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { State } from '../types';
-import * as config from '../../config';
+import { State } from '../../types';
+import * as config from '../../../config';
+import styles from './index.css';
+import { HeatCircle } from './HeatCircle';
 
 interface Props {
   game: State;
@@ -12,29 +14,19 @@ export class FireButton extends React.Component<Props, {}> {
       game: { body },
     } = this.props;
 
-    const size = 50;
+    const size = 100;
     let volume = 1;
 
     if (body) {
       const { weapon } = body;
       volume = 1 - weapon.heat / config.weapon.maxHeat;
     }
+    console.log('size: ', size);
+    console.log('volume: ', volume);
+    console.log('size vol: ', size * volume);
     return (
       <div
-        style={{
-          position: 'absolute',
-          right: '60px',
-          bottom: 0,
-          display: 'inline-block',
-          width: `${size}px`,
-          height: `${size}px`,
-          background: '#ff0000',
-          border: '1px solid',
-          textAlign: 'center',
-          lineHeight: `${size}px`,
-          fontSize: '20px',
-          userSelect: 'none',
-        }}
+        className={styles.container}
         onTouchStart={this.onTouchStart}
         onTouchEnd={this.onTouchEnd}
         onTouchMove={this.onTouchMove}
@@ -42,24 +34,11 @@ export class FireButton extends React.Component<Props, {}> {
         <div
           style={{
             position: 'absolute',
-            top: 0,
-            left: 0,
-            width: `${size}px`,
-            height: `${size * volume}px`,
-            background: '#fff',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: `${size}px`,
-            height: `${size}px`,
           }}
         >
-          Fire
+          <HeatCircle percentage={size * volume} strokeWidth={10} diametr={92} />
         </div>
+        <div className={styles.fireButton}>Fire</div>
       </div>
     );
   }

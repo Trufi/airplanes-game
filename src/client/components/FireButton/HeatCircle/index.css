@@ -1,0 +1,14 @@
+.circle {
+  font-family: Arial, Helvetica, sans-serif;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  font-size: inherit;
+  color: #afafb9;
+  white-space: nowrap;
+}
+
+.svg {
+  position: relative;
+  vertical-align: top;
+}
