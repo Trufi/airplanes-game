@@ -6,4 +6,3 @@ yarn.lock
 node_modules/
 dist/
 db/
-*.proto.js
