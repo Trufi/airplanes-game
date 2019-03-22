@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Login } from './Login';
-import { GameSelect } from './gameSelect';
+import { GameSelect } from './GameSelect';
 import { ExecuteCmd } from '../commands/execute';
 import { AppState } from '../types';
 import { Game } from './Game';

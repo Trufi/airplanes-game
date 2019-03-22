@@ -26,6 +26,11 @@
   box-shadow: 0 0 57px 10px #51d85a9e;
   border-radius: 15px;
   position: relative;
+  transition: 150ms;
+}
+
+.inputContainerError {
+  box-shadow: 0 0 57px 10px rgba(185, 50, 50, 0.61961);
 }
 
 .input {
@@ -80,4 +85,9 @@
     #262626 100%
   ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#262626',GradientType=0 ); /* IE6-9 */
+  transition: 150ms;
+}
+
+.buttonActive {
+  background: linear-gradient(to bottom, #65ff65 0%, #0d100e 100%);
 }

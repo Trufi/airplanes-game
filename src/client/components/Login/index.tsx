@@ -5,19 +5,27 @@ import { userAuth, userLogin, userRegister } from '../../services/user';
 import { get, set } from 'js-cookie';
 import { AppState } from '../../types';
 import styles from './index.css';
-
+import classNames from 'classnames';
 interface Props {
   appState: AppState;
   executeCmd: ExecuteCmd;
 }
 
-export class Login extends React.Component<Props, {}> {
+interface State {
+  isError: boolean;
+  isFilled: boolean;
+}
+
+export class Login extends React.Component<Props, State> {
   private inputNameRef: React.RefObject<HTMLInputElement>;
   private inputPassRef: React.RefObject<HTMLInputElement>;
 
   constructor(props: Props) {
     super(props);
-
+    this.state = {
+      isError: false,
+      isFilled: false,
+    };
     this.inputNameRef = React.createRef();
     this.inputPassRef = React.createRef();
   }
@@ -34,25 +42,36 @@ export class Login extends React.Component<Props, {}> {
   }
 
   public render() {
+    const containerClass = classNames({
+      [styles.inputContainer]: true,
+      [styles.inputContainerError]: this.state.isError,
+    });
+    const buttonClass = classNames({
+      [styles.button]: true,
+      [styles.buttonActive]: this.state.isFilled,
+    });
+
     return (
       <div className={styles.container}>
         <div className={styles.logo} />
         <div className={styles.relativeContainer}>
-          <div className={styles.inputContainer}>
+          <div className={containerClass}>
             <input
               className={styles.input}
+              onChange={this.handleChange}
               ref={this.inputNameRef}
               type='text'
               onKeyPress={this.onKeyPress}
             />
             <input
               className={styles.input}
+              onChange={this.handleChange}
               ref={this.inputPassRef}
               type='password'
               onKeyPress={this.onKeyPress}
             />
           </div>
-          <button className={styles.button} onClick={this.submit}>
+          <button className={buttonClass} onClick={this.submit}>
             Start
           </button>
         </div>
@@ -60,15 +79,40 @@ export class Login extends React.Component<Props, {}> {
     );
   }
 
-  private submit = () => {
+  private handleChange = () => {
     const usernameInput = this.inputNameRef.current;
     const passwordInput = this.inputPassRef.current;
+
     if (!usernameInput || !passwordInput) {
       return;
     }
 
     const username = usernameInput.value;
     const password = passwordInput.value;
+
+    if (username && password) {
+      this.setState({
+        isFilled: true,
+      });
+    }
+  };
+
+  private submit = () => {
+    const usernameInput = this.inputNameRef.current;
+    const passwordInput = this.inputPassRef.current;
+
+    if (!usernameInput || !passwordInput) {
+      return;
+    }
+
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+
+    if (!username || !password) {
+      this.setState({
+        isError: true,
+      });
+    }
 
     if (username.length > 3 || password.length > 3) {
       // @TODO КОСТЫЛЬ PIZDEC NAHOY BLYAT
