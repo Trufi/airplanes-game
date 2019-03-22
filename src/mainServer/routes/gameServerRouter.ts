@@ -52,9 +52,8 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
 
     const dbConnect = connectionDB();
     selectUserByToken(dbConnect, playerToken)
+      .then(() => dbConnect.end())
       .then((result: any) => {
-        dbConnect.end();
-
         if (!result) {
           res.sendStatus(404);
           return;
@@ -69,7 +68,11 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
 
         res.send(data);
       })
-      .catch(() => dbConnect.end());
+      .catch(() => {
+        return dbConnect.end().then(() => {
+          res.sendStatus(500);
+        });
+      });
   });
 
   app.use('/game', router);
