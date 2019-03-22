@@ -27,7 +27,7 @@ export class FireButton extends React.Component<Props, {}> {
         isHeated = body.weapon.blocked;
       }
     }
-    const fillPercent = 100 - size * volume;
+    const fillPercent = size - size * volume;
     const buttonClass = classnames({
       [styles.fireButtonInner]: true,
       [styles.fireInProgress]: fillPercent > 0,

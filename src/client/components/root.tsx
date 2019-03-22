@@ -3,7 +3,7 @@ import { Login } from './Login';
 import { GameSelect } from './gameSelect';
 import { ExecuteCmd } from '../commands/execute';
 import { AppState } from '../types';
-import { Game } from './game';
+import { Game } from './Game';
 import { appState } from '../appState';
 import { Observer } from './observer';
 

@@ -1,22 +1,23 @@
 import * as React from 'react';
 import * as THREE from 'three';
-import { AppState, State, PhysicBodyState } from '../types';
-import { PlayerLabel } from './playerLabel';
-import { Debug } from './debug';
-import { Aim } from './aim';
-import { FireButton } from './FireButton';
-import { DeathNotes } from './deathNotes';
-import { Stick } from './stick';
-import { ExecuteCmd, executeCmd } from '../commands/execute';
-import { cmd } from '../commands';
-import { msg } from '../messages/index';
-import { Arrow } from './arrow';
-import { GameStats } from './gameStats';
-import { Health } from './health';
-import { BoostButton } from './boostButton';
-import { ShotBlink } from './shotBlink/shotBlink';
-import { DamageIndicator } from './damageIndicator/damageIndicator';
-import { Disconnect } from './disconnect';
+import { AppState, State, PhysicBodyState } from '../../types';
+import { PlayerLabel } from '../playerLabel';
+import { Debug } from '../debug';
+import { Aim } from '../aim';
+import { FireButton } from '../FireButton';
+import { DeathNotes } from '../deathNotes';
+import { Stick } from '../stick';
+import { ExecuteCmd, executeCmd } from '../../commands/execute';
+import { cmd } from '../../commands';
+import { msg } from '../../messages/index';
+import { Arrow } from '../arrow';
+import { GameStats } from '../gameStats';
+import { Health } from '../health';
+import { BoostButton } from '../BoostButton';
+import { ShotBlink } from '../shotBlink/shotBlink';
+import { DamageIndicator } from '../damageIndicator/damageIndicator';
+import { Disconnect } from '../disconnect';
+import styles from './index.css';
 
 interface Props {
   appState: AppState;
@@ -96,8 +97,10 @@ export class Game extends React.Component<Props, {}> {
         <ShotBlink game={game} />
         <DamageIndicator game={game} />
         <Aim weapon={body.weapon} time={game.time} />
-        <BoostButton game={game} />
-        <FireButton game={game} />
+        <div className={styles.controllers}>
+          <BoostButton game={game} />
+          <FireButton game={game} />
+        </div>
         <Stick state={game} />
         <Debug
           style={{

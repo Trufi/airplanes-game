@@ -1,0 +1,12 @@
+.controllers {
+  display: flex;
+  position: absolute;
+  flex-direction: row;
+  right: 0;
+  bottom: 0;
+  align-items: center;
+  bottom: 0;
+  height: 100px;
+  margin-bottom: 27px;
+  margin-right: 20px;
+}

@@ -69,7 +69,7 @@
   position: absolute;
   bottom: 8px;
   right: 8px;
-  border-radius: 0 0 15px 0;
+  border-radius: 0 0 5px 0;
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#7d7e7d+0,0e0e0e+100;Black+3D */
   background: #7d7e7d; /* Old browsers */
   background: -moz-linear-gradient(top, #7d7e7d 0%, #262626 100%); /* FF3.6-15 */
