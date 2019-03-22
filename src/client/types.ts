@@ -158,6 +158,6 @@ export interface AppState {
   tryJoin?: {
     id: number;
     url: string;
-    type: 'player' | 'observer';
+    type: 'player' | 'observer' | 'bot';
   };
 }

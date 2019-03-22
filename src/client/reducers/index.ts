@@ -21,6 +21,8 @@ export const connected = (appState: AppState): Cmd => {
     return [cmd.renderUI(), cmd.sendMsg(msg.joinGame(token, id))];
   } else if (type === 'observer') {
     return [cmd.renderUI(), cmd.sendMsg(msg.joinGameAsObserver(token, id))];
+  } else if (type === 'bot' && appState.name) {
+    return [cmd.renderUI(), cmd.sendMsg(msg.joinGameAsBot(id, appState.name))];
   }
 };
 
