@@ -29,8 +29,8 @@ export function applyApiRouter(app: Express, state: State) {
 
     promise
       .then((result: any) => {
-        console.log('result', result);
         connection.end();
+        console.log('BearerStrategy:result', result);
         if (!result) {
           return done(null, false);
         }
@@ -40,7 +40,7 @@ export function applyApiRouter(app: Express, state: State) {
           {
             id: result.id,
             name: result.name,
-            kills: 0,
+            kills: result.kills,
             deaths: result.deaths,
             points: result.points,
             token,
@@ -50,7 +50,7 @@ export function applyApiRouter(app: Express, state: State) {
       })
       .catch((err) => {
         connection.end();
-        console.log('err', err);
+        console.log('BearerStrategy:err', err);
         return done(null, false);
       });
   });
@@ -95,7 +95,7 @@ export function applyApiRouter(app: Express, state: State) {
           res.status(400).send('Username already exists');
           return;
         }
-        createUser(connection, {
+        return createUser(connection, {
           name: req.body.username,
           password: token,
         })
@@ -109,14 +109,14 @@ export function applyApiRouter(app: Express, state: State) {
             });
           })
           .catch((err) => {
-            console.log('createUser err', err);
             connection.end();
+            console.log('createUser:err', err);
             res.sendStatus(ERROR_CODE);
           });
       })
       .catch((err) => {
-        console.log('err', err);
         connection.end();
+        console.log('createUser:err', err);
         res.sendStatus(ERROR_CODE);
       });
   });
@@ -138,10 +138,10 @@ export function applyApiRouter(app: Express, state: State) {
 
     promise
       .then((result: any) => {
-        console.log('result', result);
+        console.log('/login:result', result);
         connection.end();
         if (!result) {
-          res.sendStatus(401);
+          return res.sendStatus(401);
         }
 
         res.send({
@@ -156,8 +156,8 @@ export function applyApiRouter(app: Express, state: State) {
         });
       })
       .catch((err) => {
-        console.log('err', err);
         connection.end();
+        console.log('/login:err', err);
         res.sendStatus(ERROR_CODE);
       });
   });
@@ -185,7 +185,7 @@ export function applyApiRouter(app: Express, state: State) {
       })
       .catch((err) => {
         connection.end();
-        console.log('err', err);
+        console.log('/auth:err', err);
         res.sendStatus(ERROR_CODE);
       });
   });
@@ -193,8 +193,11 @@ export function applyApiRouter(app: Express, state: State) {
   apiRouter.post('/user/stats', authenticate('bearer', { failureRedirect: '/' }), (req, res) => {
     setAccessAllowOrigin(req, res);
 
-    const { deaths, kills, points } = req.body;
+    const { deaths, kills, points, tournamentId } = req.body;
 
+    if (typeof tournamentId === 'undefined' || typeof tournamentId !== 'number') {
+      return res.status(422).send('Unprocessed entity: tournamentId');
+    }
     if (typeof deaths === 'undefined' || typeof deaths !== 'number') {
       return res.status(422).send('Unprocessed entity: deaths');
     }
@@ -207,7 +210,6 @@ export function applyApiRouter(app: Express, state: State) {
 
     const connection = connectionDB();
     const { id } = req.user;
-    const tournamentId = req.body.tournamentId;
 
     updateUserStats(connection, id, tournamentId, {
       kills: req.user.kills + kills,
@@ -220,7 +222,7 @@ export function applyApiRouter(app: Express, state: State) {
       })
       .catch((err) => {
         connection.end();
-        console.log('err', err);
+        console.log('/user/stats:err', err);
         res.sendStatus(ERROR_CODE);
       });
   });

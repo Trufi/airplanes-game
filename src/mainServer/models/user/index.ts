@@ -23,45 +23,76 @@ export const createUser = (connection: Client, user: UserCreation) => {
         '${user.password}'
       )
   `;
-
-  return new Promise((resolve, reject) => {
-    connection.query(sqlUserCreate, (err, result) => {
-      if (err) {
-        return reject(err);
-      }
-      const user = parseResult(result)[0];
-
+  return connection.query(sqlUserCreate).then(() =>
+    selectUserAfterInsert(connection, user.name).then((userData: any) =>
       selectDefaultTournament(connection).then((defaultTournament: any) => {
         const sqlLinkWithDefaultTournament = `
-            INSERT INTO tournaments_per_user (user_id, tournament_id)
-            VALUES
-              (
-                '${user.id}',
-                '${defaultTournament.id}'
-              )
-          `;
+              INSERT INTO tournaments_per_user (user_id, tournament_id)
+              VALUES
+                (
+                  '${userData.id}',
+                  '${defaultTournament.id}'
+                )
+            `;
 
-        connection.query(sqlLinkWithDefaultTournament, (err, result) => {
-          if (err) {
-            return reject(err);
-          }
-          const tournamentData = parseResult(result)[0];
+        return connection.query(sqlLinkWithDefaultTournament);
+      }),
+    ),
+  );
 
-          return resolve({
-            user,
-            tournamentData,
-          });
-        });
-      });
-    });
-  });
+  // return new Promise((resolve, reject) => {
+  //   connection.query(sqlUserCreate, (err) => {
+  //     if (err) {
+  //       return reject(err);
+  //     }
+  //
+  //     return selectUserAfterInsert(connection, user.name)
+  //       .then((userData: any) => {
+  //         return selectDefaultTournament(connection)
+  //           .then((defaultTournament: any) => {
+  //             const sqlLinkWithDefaultTournament = `
+  //               INSERT INTO tournaments_per_user (user_id, tournament_id)
+  //               VALUES
+  //                 (
+  //                   '${userData.id}',
+  //                   '${defaultTournament.id}'
+  //                 )
+  //             `;
+  //
+  //             connection.query(sqlLinkWithDefaultTournament, (err, result) => {
+  //               if (err) {
+  //                 return reject(err);
+  //               }
+  //               const tournamentData = parseResult(result)[0];
+  //
+  //               return resolve({
+  //                 user,
+  //                 tournamentData,
+  //               });
+  //             });
+  //           })
+  //           .catch((err) => {
+  //             console.log('err', err);
+  //             if (err) {
+  //               return reject(err);
+  //             }
+  //           });
+  //       })
+  //       .catch((err) => {
+  //         console.log('err', err);
+  //         if (err) {
+  //           return reject(err);
+  //         }
+  //       });
+  //   });
+  // });
 };
 
 const selectDefaultTournament = (connection: Client) => {
   const sql = `
     SELECT id
     FROM tournament as t
-    WHERE t.name = ${DEFAULT_TOURNAMENT_NAME}
+    WHERE t.name = '${DEFAULT_TOURNAMENT_NAME}'
     LIMIT 1
   `;
 
@@ -82,7 +113,7 @@ export const updateUserStats = (
   stats: { kills: Tournament['kills']; deaths: Tournament['deaths']; points: Tournament['points'] },
 ) => {
   const sql = `
-    UPDATE tournament_per_user
+    UPDATE tournaments_per_user
     SET
       deaths=${stats.deaths},
       kills=${stats.kills},
@@ -104,7 +135,7 @@ export const selectUser = (connection: Client, userId: User['id']) => {
   const sql = `
     SELECT u.id, u.name, u.password, tpr.kills, tpr.deaths, tpr.points
     FROM users as u
-    LEFT JOIN tournament_per_user as tpr ON tpr.user_id = u.id
+    LEFT JOIN tournaments_per_user as tpr ON tpr.user_id = u.id
     WHERE users.id = ${userId}
     LIMIT 1
   `;
@@ -123,7 +154,7 @@ export const selectUserByName = (connection: Client, name: User['name']) => {
   const sql = `
     SELECT u.id, u.name, tpr.kills, tpr.deaths, tpr.points
     FROM users as u
-    LEFT JOIN tournament_per_user as tpr ON tpr.user_id = u.id
+    LEFT JOIN tournaments_per_user as tpr ON tpr.user_id = u.id
     WHERE u.name = '${name}'
     LIMIT 1
   `;
@@ -141,8 +172,26 @@ export const selectUserByToken = (connection: Client, password: User['password']
   const sql = `
     SELECT u.id, u.name, tpr.kills, tpr.deaths, tpr.points
     FROM users as u
-    LEFT JOIN tournament_per_user as tpr ON tpr.user_id = u.id
+    LEFT JOIN tournaments_per_user as tpr ON tpr.user_id = u.id
     WHERE u.password = '${password}'
+    LIMIT 1
+  `;
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(parseResult(result)[0]);
+    });
+  });
+};
+
+const selectUserAfterInsert = (connection: Client, username: User['name']) => {
+  const sql = `
+    SELECT u.id, u.name, u.password
+    FROM users as u
+    WHERE u.name = '${username}'
     LIMIT 1
   `;
 
