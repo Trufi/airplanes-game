@@ -1,6 +1,6 @@
 export const servers = {
   // url: 'http://demo.webmaps-dev.os-n3.hw:3002',
-  main: 'http://localhost:3002',
+  main: 'http://gods-in-the-sky.web-staging.2gis.ru',
 };
 
 export const weapon = {
