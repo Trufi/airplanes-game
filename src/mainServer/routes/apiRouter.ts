@@ -184,7 +184,7 @@ export function applyApiRouter(app: Express, state: State) {
               id: result.id,
               kills: result.kills,
               name: result.name,
-              token: result.token,
+              token: result.password,
               points: result.points,
             },
           });
