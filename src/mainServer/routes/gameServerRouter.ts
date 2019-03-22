@@ -51,23 +51,25 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
     }
 
     const dbConnect = connectionDB();
-    selectUserByToken(dbConnect, playerToken).then((result: any) => {
-      dbConnect.end();
+    selectUserByToken(dbConnect, playerToken)
+      .then((result: any) => {
+        dbConnect.end();
 
-      if (!result) {
-        res.sendStatus(404);
-        return;
-      }
+        if (!result) {
+          res.sendStatus(404);
+          return;
+        }
 
-      const { id, name } = result;
+        const { id, name } = result;
 
-      const data: PlayerResponse = {
-        id,
-        name,
-      };
+        const data: PlayerResponse = {
+          id,
+          name,
+        };
 
-      res.send(data);
-    });
+        res.send(data);
+      })
+      .catch(() => dbConnect.end());
   });
 
   app.use('/game', router);
