@@ -40,7 +40,7 @@ export function applyApiRouter(app: Express, state: State) {
           {
             id: result.id,
             name: result.name,
-            kills: result.kills,
+            kills: 0,
             deaths: result.deaths,
             points: result.points,
             token,
@@ -49,6 +49,7 @@ export function applyApiRouter(app: Express, state: State) {
         );
       })
       .catch((err) => {
+        connection.end();
         console.log('err', err);
         return done(null, false);
       });
@@ -108,12 +109,14 @@ export function applyApiRouter(app: Express, state: State) {
             });
           })
           .catch((err) => {
-            console.log('err', err);
+            console.log('createUser err', err);
+            connection.end();
             res.sendStatus(ERROR_CODE);
           });
       })
       .catch((err) => {
         console.log('err', err);
+        connection.end();
         res.sendStatus(ERROR_CODE);
       });
   });
@@ -145,15 +148,16 @@ export function applyApiRouter(app: Express, state: State) {
           user: {
             id: result.id,
             name: result.name,
-            kills: result.kills,
-            deaths: result.deaths,
-            points: result.points,
+            kills: 0,
+            deaths: 0,
+            points: 0,
             token,
           },
         });
       })
       .catch((err) => {
         console.log('err', err);
+        connection.end();
         res.sendStatus(ERROR_CODE);
       });
   });
@@ -172,14 +176,15 @@ export function applyApiRouter(app: Express, state: State) {
           user: {
             deaths: result.deaths,
             id: result.id,
-            kills: result.kills,
-            name: result.name,
-            token: result.password,
-            points: result.points,
+            kills: 0,
+            name: 0,
+            token: 0,
+            points: 0,
           },
         });
       })
       .catch((err) => {
+        connection.end();
         console.log('err', err);
         res.sendStatus(ERROR_CODE);
       });
@@ -214,6 +219,7 @@ export function applyApiRouter(app: Express, state: State) {
         res.sendStatus(200);
       })
       .catch((err) => {
+        connection.end();
         console.log('err', err);
         res.sendStatus(ERROR_CODE);
       });
@@ -234,6 +240,7 @@ export function applyApiRouter(app: Express, state: State) {
           res.send({ achievements: result });
         })
         .catch((err) => {
+          connection.end();
           console.log('err', err);
           res.sendStatus(ERROR_CODE);
         });
@@ -252,6 +259,7 @@ export function applyApiRouter(app: Express, state: State) {
         res.send({ achievements: result });
       })
       .catch((err) => {
+        connection.end();
         console.log('err', err);
         res.sendStatus(ERROR_CODE);
       });
@@ -280,6 +288,7 @@ export function applyApiRouter(app: Express, state: State) {
           res.send({ achievement: result });
         })
         .catch((err) => {
+          connection.end();
           console.log('err', err);
           res.sendStatus(ERROR_CODE);
         });
