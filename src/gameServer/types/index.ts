@@ -1,4 +1,5 @@
 import * as ws from 'ws';
+import { GameType } from '../../types';
 
 export interface InitialConnection {
   status: 'initial';
@@ -91,6 +92,10 @@ export interface GameState {
 }
 
 export interface State {
+  type: GameType;
+  url: string;
+  maxPlayers: number;
+  city: string;
   connections: ConnectionsState;
   games: {
     map: Map<number, GameState>;

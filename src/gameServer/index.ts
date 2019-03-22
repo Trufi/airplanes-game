@@ -17,7 +17,6 @@ import { time } from './utils';
 import { unpackMessage } from './messages/unpack';
 import * as config from '../config';
 import * as api from './services/main';
-import { GameType } from '../types';
 import { mapMap } from '../utils';
 
 const port = 3001;
@@ -27,7 +26,7 @@ const app = express();
 // health check для k8s
 app.get('/', (_req, res) => res.sendStatus(200));
 
-const server = app.listen(port, () => console.log(`Server listen on ${port} port`));
+const server = app.listen(port, () => console.log(`Game server listen on ${port} port`));
 
 const wsServer = new ws.Server({
   server,
@@ -40,16 +39,26 @@ const wsServer = new ws.Server({
   },
 });
 
-const maxPlayers = 30;
-const city = 'nsk';
-const type: GameType = 'dm';
-const gameUrl = process.env.GAME_SERVER_URL || `localhost:${port}`;
-
-const state = createState();
+const state = createState({
+  maxPlayers: 30,
+  city: 'nsk',
+  type: 'dm',
+  url: process.env.GAME_SERVER_URL || `localhost:${port}`,
+});
 createGame(state, time());
+
+console.log(
+  `Start game server with url: ${state.url}, type: ${state.type}, city: ${
+    state.city
+  }, maxPlayers: ${state.maxPlayers}`,
+);
 
 app.get('/state', (_req, res) => {
   const result = {
+    city: state.city,
+    type: state.type,
+    maxPlayers: state.maxPlayers,
+    url: state.url,
     connections: mapMap(state.connections.map, (c) => c),
     games: mapMap(state.games.map, (c) => c),
   };
@@ -115,13 +124,10 @@ const executeOneCmd = (cmdData: ExistCmd) => {
     case 'authPlayer': {
       api
         .player({
-          gameUrl,
+          gameUrl: state.url,
           playerToken: cmdData.token,
         })
         .then((res) => {
-          if (!res) {
-            return;
-          }
           const cmd = authConnection(
             state,
             cmdData.connectionId,
@@ -130,6 +136,9 @@ const executeOneCmd = (cmdData: ExistCmd) => {
             cmdData.joinType,
           );
           executeCmd(cmd);
+        })
+        .catch((err) => {
+          console.log(`Auth player main server request error: ${err}`);
         });
       break;
     }
@@ -149,9 +158,12 @@ const notifyMainServer = () => {
     return;
   }
 
+  const { url, type, city, maxPlayers } = state;
+
+  console.log(`Notify main server about me with url: ${url}`);
   api
     .notify({
-      url: gameUrl,
+      url,
       type,
       city,
       players: game.players.size,

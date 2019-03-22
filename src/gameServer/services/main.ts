@@ -9,8 +9,5 @@ export const notify = (data: NotifyRequest) => {
 };
 
 export const player = (data: PlayerRequest) => {
-  return axios
-    .post<PlayerResponse>(`${baseURL}/player`, data)
-    .then((data) => data.data)
-    .catch((err) => console.error(err));
+  return axios.post<PlayerResponse>(`${baseURL}/player`, data).then((data) => data.data);
 };
