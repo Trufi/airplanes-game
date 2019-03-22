@@ -52,24 +52,28 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
 
     const dbConnect = connectionDB();
     selectUserByToken(dbConnect, playerToken)
-      .then(() => dbConnect.end())
       .then((result: any) => {
-        if (!result) {
-          res.sendStatus(404);
-          return;
-        }
+        return dbConnect.end().then(() => {
+          console.log('selectUserByToken:result', result);
+          if (!result) {
+            console.log('selectUserByToken:err', 404);
+            res.sendStatus(404);
+            return;
+          }
 
-        const { id, name } = result;
+          const { id, name } = result;
 
-        const data: PlayerResponse = {
-          id,
-          name,
-        };
+          const data: PlayerResponse = {
+            id,
+            name,
+          };
 
-        res.send(data);
+          res.send(data);
+        });
       })
       .catch(() => {
         return dbConnect.end().then(() => {
+          console.log('selectUserByToken:err', 500);
           res.sendStatus(500);
         });
       });
