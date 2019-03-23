@@ -86,6 +86,7 @@ ALTER SEQUENCE public.achievements_id_seq OWNED BY public.achievements.id;
 
 CREATE TABLE public.tournament (
     name text NOT NULL,
+    machine_name text NOT NULL,
     description text,
     start_on timestamp without time zone NOT NULL,
     duration_min bigint DEFAULT '10'::bigint NOT NULL,
@@ -217,12 +218,12 @@ SELECT pg_catalog.setval('public.achievements_id_seq', 1, true);
 -- Data for Name: tournament; Type: TABLE DATA; Schema: public; Owner: codefest
 --
 
-COPY public.tournament (name, description, start_on, duration_min, input_count, output_count, id, is_grand_final) FROM stdin;
-Tournament #1	\N	2019-03-22 10:30:00.527492	10	4	2	2	0
-Tournament #2	\N	2019-03-22 11:30:00.527492	10	4	2	3	0
-Tournament #3	\N	2019-03-22 12:30:00.527492	10	4	2	4	0
-Tournament #4	\N	2019-03-22 13:30:00.527492	10	4	2	5	0
-infinity	Death Match	2019-03-22 04:00:25.202974	-1	50	50	1	0
+COPY public.tournament (name, machine_name, description, start_on, duration_min, input_count, output_count, id, is_grand_final) FROM stdin;
+Tournament #1	t1	\N	2019-03-22 10:30:00.527492	10	4	2	2	0
+Tournament #2	t2	\N	2019-03-22 11:30:00.527492	10	4	2	3	0
+Tournament #3	t3	\N	2019-03-22 12:30:00.527492	10	4	2	4	0
+Tournament #4	t4	\N	2019-03-22 13:30:00.527492	10	4	2	5	0
+infinity	infinity	Death Match	2019-03-22 04:00:25.202974	-1	50	50	1	0
 \.
 
 

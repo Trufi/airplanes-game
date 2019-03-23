@@ -29,6 +29,7 @@ export interface Pretender {
 export interface Tournament {
   id: number;
   name: string;
+  machine_name: string;
   description: string;
   kills?: number;
   deaths?: number;

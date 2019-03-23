@@ -309,6 +309,16 @@ export function applyApiRouter(app: Express, state: State) {
       });
     },
   );
+  //
+  // apiRouter.get(
+  //   '/',
+  //   authenticate('bearer', { failureRedirect: '/' }),
+  //   (req, res) => {
+  //     setAccessAllowOrigin(req, res);
+  //
+  //     // const connection = connectionDB();
+  //   },
+  // );
 
   apiRouter.get('/tournament/list', (req, res) => {
     setAccessAllowOrigin(req, res);

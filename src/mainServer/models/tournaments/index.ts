@@ -48,6 +48,7 @@ export const getTournamentList = (connection: Client): Promise<Tournament[]> => 
     SELECT
      t.id,
      t.name,
+     t.machine_name,
      t.description,
      t.start_on,
      t.duration_min,
