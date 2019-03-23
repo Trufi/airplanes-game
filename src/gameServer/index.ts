@@ -58,7 +58,7 @@ const state = createState(
     city: 'nsk',
     type: 'dm',
     url,
-    duration: Number.MAX_SAFE_INTEGER,
+    duration: 345600000, // 4 суток
   },
   time(),
 );

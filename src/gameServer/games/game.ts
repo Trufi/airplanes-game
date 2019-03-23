@@ -40,7 +40,7 @@ export const createGameState = (time: number, maxPlayers: number, duration: numb
       need: false,
       time: 0,
       tournamentId: -1,
-      duration: Number.MAX_SAFE_INTEGER,
+      duration: 345600000, // 4 суток
     },
     startTime: time,
     tournamentId: -1,
@@ -110,7 +110,20 @@ export const tick = (game: GameState, time: number): Cmd => {
   cmds.push(cmd.sendPbfMsgTo(tickBodyRecipientIds(game), pbfMsg.tickData(game)));
 
   if (game.restart.need && game.time > game.restart.time) {
+    console.log(`Restart game!`);
     cmds.push(restart(game));
+  } else {
+    // Если время игры истекло, то включаем бесконечную игру
+    if (!game.restart.need && game.startTime + game.duration < game.time) {
+      console.log(`Game end, prepare to return to infinity game`);
+      cmds.push(
+        restartInSeconds(game, {
+          tournamentId: -1,
+          inSeconds: 30,
+          duration: 345600000, // 4 суток
+        }),
+      );
+    }
   }
 
   return union(cmds);

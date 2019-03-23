@@ -93,7 +93,9 @@ export class Game extends React.Component<Props, {}> {
         {timeToRestart >= 0 && (
           <div style={{ fontSize: '50px' }}>Start at {Math.floor(timeToRestart / 1000)}</div>
         )}
-        {timeLast <= 60 * 1000 * 15 && <div>Last time: {Math.floor(timeLast / 1000)}</div>}
+        {timeLast <= 60 * 1000 * 15 && (
+          <div style={{ fontSize: '30px' }}>Last time: {Math.floor(timeLast / 1000)}</div>
+        )}
         {body ? (
           this.renderLiveComponents(game, body)
         ) : (
