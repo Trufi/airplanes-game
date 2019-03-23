@@ -95,3 +95,35 @@
   width: 50px;
   height: 63px;
 }
+
+.dmIcon {
+  background-image: url('/assets/deathmatch.png');
+  background-size: cover;
+  width: 285px;
+  cursor: pointer;
+  height: 276px;
+}
+
+.tourIcon {
+  background-image: url('/assets/tour.png');
+  background-size: cover;
+  width: 285px;
+  cursor: pointer;
+  height: 276px;
+}
+
+.entersContainer {
+  display: flex;
+}
+
+.enterItem {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 24px;
+  text-transform: uppercase;
+}
