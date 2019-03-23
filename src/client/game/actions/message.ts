@@ -163,9 +163,10 @@ export const restartAt = (state: State | ObserverState, msg: ServerMsg['restartA
 };
 
 export const restartData = (state: State | ObserverState, msg: ServerMsg['restartData']) => {
-  const { duration, players, bodies } = msg;
+  const { endTime, players, bodies } = msg;
 
-  state.duration = duration;
+  state.serverEndTime = endTime;
+
   players.forEach(({ id, bodyId, kills, deaths, points, live }) => {
     const player = getPlayer(state, id);
     if (!player) {

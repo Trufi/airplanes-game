@@ -9,19 +9,12 @@ import * as config from '../../config';
 import { updatePointsByType } from './calcPoints';
 import { GameState, Body, GamePlayer, GameObserver } from '../types';
 
-export const debugInfo = ({ id, bodies, players }: GameState) => ({
-  id,
-  bodies: Array.from(bodies.map),
-  players: Array.from(players),
-});
-
 const tickBodyRecipientIds = (gameState: GameState) => {
   return [...mapMap(gameState.players, (p) => p.id), ...mapMap(gameState.observers, (o) => o.id)];
 };
 
-export const createGameState = (id: number, time: number): GameState => {
+export const createGameState = (time: number): GameState => {
   return {
-    id,
     prevTime: time,
     time,
     bodies: {
@@ -34,6 +27,7 @@ export const createGameState = (id: number, time: number): GameState => {
       need: false,
       time: 0,
     },
+    startTime: time,
     duration: 0,
   };
 };
@@ -253,6 +247,8 @@ export const restartInSeconds = (game: GameState, inSeconds: number): Cmd => {
 };
 
 const restart = (game: GameState): Cmd => {
+  game.startTime = game.time;
+
   game.bodies.map.forEach((body) => {
     game.bodies.map.delete(body.id);
   });

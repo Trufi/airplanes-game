@@ -11,7 +11,7 @@ export interface ObserverState {
   prevTime: number;
 
   restartTime: number;
-  duration: number;
+  serverEndTime: number;
 
   /**
    * Начало системы отсчета.

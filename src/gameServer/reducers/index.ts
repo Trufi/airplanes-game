@@ -8,11 +8,10 @@ import {
   Connection,
   ObserverConnection,
 } from '../types';
-import { Cmd, cmd, union } from '../commands';
+import { Cmd, cmd } from '../commands';
 import { msg } from '../messages';
 import { time } from '../utils';
 import * as game from '../games/game';
-import { mapMap } from '../../utils';
 
 export const createNewConnection = (state: ConnectionsState, socket: ws): number => {
   const connection: InitialConnection = {
@@ -37,11 +36,6 @@ export const authConnection = (
     return;
   }
 
-  const gameState = state.games.map.get(1);
-  if (!gameState) {
-    return cmd.sendMsg(connection.id, msg.gameJoinFail());
-  }
-
   console.log(
     `User (name: ${name}, userId: ${userId}, connectionId: ${connectionId}) as ${joinType}`,
   );
@@ -56,10 +50,9 @@ export const authConnection = (
       socket: connection.socket,
       userId,
       name,
-      gameId: gameState.id,
     });
 
-    return game.joinPlayer(gameState, connection.id, name);
+    return game.joinPlayer(state.game, connection.id, name);
   }
 
   if (joinType === 'observer') {
@@ -68,10 +61,9 @@ export const authConnection = (
       id: connection.id,
       socket: connection.socket,
       name,
-      gameId: gameState.id,
     });
 
-    return game.joinObserver(gameState, connection.id, name);
+    return game.joinObserver(state.game, connection.id, name);
   }
 };
 
@@ -150,12 +142,7 @@ const restartMessage = (state: State, connectionId: number): Cmd => {
     return;
   }
 
-  const playerGame = state.games.map.get(connection.gameId);
-  if (!playerGame) {
-    return;
-  }
-
-  return game.playerRestart(playerGame, connectionId);
+  return game.playerRestart(state.game, connectionId);
 };
 
 export const observerConnectionMessage = (
@@ -183,16 +170,10 @@ export const connectionLost = (state: State, connectionId: number): Cmd => {
 
   switch (connection.status) {
     case 'player': {
-      const gameState = state.games.map.get(connection.gameId);
-      if (gameState) {
-        return game.kickPlayer(gameState, connection.id);
-      }
+      return game.kickPlayer(state.game, connection.id);
     }
     case 'observer': {
-      const gameState = state.games.map.get(connection.gameId);
-      if (gameState) {
-        return game.kickObserver(gameState, connection.id);
-      }
+      return game.kickObserver(state.game, connection.id);
     }
   }
 };
@@ -207,22 +188,9 @@ const updatePlayerChanges = (
     return;
   }
 
-  const gameState = state.games.map.get(connection.gameId);
-  if (gameState) {
-    return game.updatePlayerChanges(gameState, connectionId, msg);
-  }
+  return game.updatePlayerChanges(state.game, connectionId, msg);
 };
 
 export const tick = (state: State, time: number): Cmd => {
-  const cmds = mapMap(state.games.map, (gameState) => {
-    return game.tick(gameState, time);
-  });
-
-  return union(cmds);
-};
-
-export const createGame = (state: State, time: number) => {
-  const gameState = game.createGameState(state.games.nextId, time);
-  state.games.nextId++;
-  state.games.map.set(gameState.id, gameState);
+  return game.tick(state.game, time);
 };

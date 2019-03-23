@@ -10,21 +10,6 @@ const connect = (id: number) => ({
   id,
 });
 
-const loginSuccess = (name: string, token: string, games: Map<number, GameState>) => {
-  return {
-    type: 'loginSuccess' as 'loginSuccess',
-    name,
-    token,
-    game: mapMap(games, (game) => ({
-      id: game.id,
-    })),
-  };
-};
-
-const loginFail = () => ({
-  type: 'loginFail' as 'loginFail',
-});
-
 const gameJoinFail = () => ({
   type: 'gameJoinFail' as 'gameJoinFail',
 });
@@ -44,7 +29,7 @@ const startData = (game: GameState, player: GamePlayer) => {
   return {
     type: 'startData' as 'startData',
     playerId: player.id,
-    duration: game.duration,
+    endTime: game.startTime + game.duration,
     players,
     bodies,
   };
@@ -56,7 +41,7 @@ const startObserverData = (game: GameState) => {
 
   return {
     type: 'startObserverData' as 'startObserverData',
-    duration: game.duration,
+    endTime: game.startTime + game.duration,
     players,
     bodies,
   };
@@ -68,7 +53,7 @@ const restartData = (game: GameState) => {
 
   return {
     type: 'restartData' as 'restartData',
-    duration: game.duration,
+    endTime: game.startTime + game.duration,
     players,
     bodies,
   };
@@ -181,8 +166,6 @@ const restartAt = (game: GameState) => ({
 
 export const msg = {
   connect,
-  loginSuccess,
-  loginFail,
   gameJoinFail,
   startData,
   startObserverData,

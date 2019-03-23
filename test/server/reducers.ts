@@ -7,12 +7,15 @@ describe('reducers', () => {
   let state: State;
 
   beforeEach(() => {
-    state = createState({
-      url: 'testurl',
-      type: 'dm',
-      maxPlayers: 30,
-      city: 'nsk',
-    });
+    state = createState(
+      {
+        url: 'testurl',
+        type: 'dm',
+        maxPlayers: 30,
+        city: 'nsk',
+      },
+      0,
+    );
   });
 
   describe('createNewConnection', () => {

@@ -17,7 +17,6 @@ export interface PlayerConnection {
    */
   userId: number;
   name: string;
-  gameId: number;
 }
 
 export interface ObserverConnection {
@@ -25,7 +24,6 @@ export interface ObserverConnection {
   id: number;
   socket: ws;
   name: string;
-  gameId: number;
 }
 
 export type Connection = InitialConnection | PlayerConnection | ObserverConnection;
@@ -83,7 +81,6 @@ export interface GameObserver {
 }
 
 export interface GameState {
-  id: number;
   prevTime: number;
   time: number;
   bodies: BodiesState;
@@ -93,6 +90,7 @@ export interface GameState {
     need: boolean;
     time: number;
   };
+  startTime: number;
   duration: number;
 }
 
@@ -102,8 +100,5 @@ export interface State {
   maxPlayers: number;
   city: string;
   connections: ConnectionsState;
-  games: {
-    map: Map<number, GameState>;
-    nextId: number;
-  };
+  game: GameState;
 }

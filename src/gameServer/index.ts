@@ -1,14 +1,7 @@
 import '@2gis/gl-matrix';
 import * as express from 'express';
 import * as ws from 'ws';
-import {
-  createNewConnection,
-  message,
-  connectionLost,
-  tick,
-  createGame,
-  authConnection,
-} from './reducers';
+import { createNewConnection, message, connectionLost, tick, authConnection } from './reducers';
 import { Connection } from './types';
 import { ExistCmd, Cmd, cmd } from './commands';
 import { createState } from './state';
@@ -64,13 +57,15 @@ let url = config.gameServer.url;
 url = url.replace('http://', '');
 url = url.replace('https://', '');
 
-const state = createState({
-  maxPlayers: 30,
-  city: 'nsk',
-  type: 'dm',
-  url,
-});
-createGame(state, time());
+const state = createState(
+  {
+    maxPlayers: 30,
+    city: 'nsk',
+    type: 'dm',
+    url,
+  },
+  time(),
+);
 
 console.log(
   `Start game server with url: ${state.url}, type: ${state.type}, city: ${
@@ -85,23 +80,18 @@ app.get('/state', (_req, res) => {
     maxPlayers: state.maxPlayers,
     url: state.url,
     connections: mapMap(state.connections.map, (c) => c),
-    games: mapMap(state.games.map, (c) => c),
+    game: state.game,
   };
   res.send(JSON.stringify(result));
 });
 
 app.get('/restart/:sec', (req, res) => {
-  const game = state.games.map.get(1);
-  if (!game) {
-    return res.sendStatus(500);
-  }
-
   const secret = req.query.secret;
   if (secret === 'fdsa') {
     const seconds = Number(req.params.sec);
     if (seconds && seconds > 0) {
       console.log(`Restart game after ${seconds} seconds`);
-      executeCmd(restartInSeconds(game, seconds));
+      executeCmd(restartInSeconds(state.game, seconds));
       return res.sendStatus(200);
     }
   }
@@ -197,11 +187,6 @@ const gameLoop = () => {
 gameLoop();
 
 const notifyMainServer = () => {
-  const game = state.games.map.get(1);
-  if (!game) {
-    return;
-  }
-
   const { url, type, city, maxPlayers } = state;
 
   api
@@ -209,7 +194,7 @@ const notifyMainServer = () => {
       url,
       type,
       city,
-      players: game.players.size,
+      players: state.game.players.size,
       maxPlayers,
     })
     .catch((err) => {

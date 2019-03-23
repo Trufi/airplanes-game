@@ -119,8 +119,8 @@ export interface State {
   time: number;
   prevTime: number;
 
+  serverEndTime: number;
   restartTime: number;
-  duration: number;
 
   /**
    * Текущий игрок

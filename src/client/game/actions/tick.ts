@@ -15,6 +15,11 @@ export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
   state.time = time;
 
+  // Если время игры вышло, то ничего не делаем
+  if (state.serverEndTime > state.time) {
+    return;
+  }
+
   updateSmoothPing(state.serverTime, time);
 
   updateDamageIndicator(state);

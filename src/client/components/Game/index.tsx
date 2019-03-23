@@ -76,6 +76,7 @@ export class Game extends React.Component<Props, {}> {
     });
 
     const timeToRestart = game.restartTime - game.time;
+    const timeLast = game.serverEndTime + game.serverTime.diff - game.time;
 
     return (
       <div
@@ -90,9 +91,7 @@ export class Game extends React.Component<Props, {}> {
         {timeToRestart >= 0 && (
           <div style={{ fontSize: '50px' }}>Start at {Math.floor(timeToRestart / 1000)}</div>
         )}
-        {game.duration && (
-          <div>Last time: {Math.floor(game.restartTime + game.duration - game.time / 1000)}</div>
-        )}
+        {timeLast <= 60 * 1000 * 10 && <div>Last time: {Math.floor(timeLast / 1000)}</div>}
         {body ? (
           this.renderLiveComponents(game, body)
         ) : (
