@@ -22,19 +22,11 @@ app.get('/', (_req, res) => res.sendStatus(200));
 
 // Metrics
 app.get('/metrics', (_, res) => {
-  const game = state.games.map.get(1);
-  if (!game) {
-    return res.sendStatus(500);
-  }
-  let players = 0;
-  state.games.map.forEach((game) => {
-    players += game.players.size;
-  });
   res.send(`
     <pre style="word-wrap: break-word; white-space: pre-wrap;">
 # HELP sky_game_active_players Active players in game
 # TYPE sky_game_active_players gauge
-sky_game_active_players ${players || 0}</pre>
+sky_game_active_players ${state.game.players.size}</pre>
     `);
 });
 
@@ -59,7 +51,7 @@ url = url.replace('https://', '');
 
 const state = createState(
   {
-    maxPlayers: 1,
+    maxPlayers: 30,
     city: 'nsk',
     type: 'dm',
     url,
