@@ -98,7 +98,9 @@ function getPretendersQuery(tournaments: Tournament[]) {
           FROM users as u
           LEFT JOIN tournaments_per_user as tpu ON u.id = tpu.user_id
           LEFT JOIN tournament as t ON tpu.tournament_id = t.id
-          WHERE t.name <> 'infinity' AND tpu.tournament_id = ${tournament.id}
+          WHERE t.name <> 'infinity'
+            AND tpu.tournament_id = ${tournament.id}
+            AND t.is_grand_final <> 1
           ORDER BY t.id, tpu.points DESC
           LIMIT ${tournament.output_count}
         `;

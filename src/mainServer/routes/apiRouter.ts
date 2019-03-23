@@ -291,6 +291,27 @@ export function applyApiRouter(app: Express, state: State) {
     },
   );
 
+  apiRouter.get(
+    '/user/canIjoinToGrandFinal',
+    authenticate('bearer', { failureRedirect: '/' }),
+    (req, res) => {
+      setAccessAllowOrigin(req, res);
+      const { id } = req.user;
+
+      const connection = connectionDB();
+
+      getPretenders(connection).then((pretenders: Pretender[]) => {
+        connection.end().then(() => {
+          const isApproved = pretenders.find((pretender) => pretender.user_id === id);
+          if (isApproved) {
+            return res.sendStatus(200);
+          }
+          return res.sendStatus(403);
+        });
+      });
+    },
+  );
+
   apiRouter.get('/tournament/list', (req, res) => {
     setAccessAllowOrigin(req, res);
 

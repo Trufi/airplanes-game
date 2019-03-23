@@ -10,6 +10,7 @@
 `curl -v -d '{"username":"andrew", "password":"GiveMeMyBestShot", "sessionId": "mySession"}' -H "Content-Type: application/json" -X POST http://localhost:3002/api/register`
 
 ###USER
+`curl -v -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer 123456789" http://127.0.0.1:3002/api/user/canIjoinToGrandFinal`
 
 ###ACHIEVEMENT
 ####LIST
