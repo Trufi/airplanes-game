@@ -30,6 +30,11 @@ export const createGameState = (id: number, time: number): GameState => {
     },
     players: new Map(),
     observers: new Map(),
+    restart: {
+      need: false,
+      time: 0,
+    },
+    duration: 0,
   };
 };
 
@@ -89,7 +94,16 @@ export const tick = (game: GameState, time: number): Cmd => {
   //   }
   // });
 
-  return cmd.sendPbfMsgTo(tickBodyRecipientIds(game), pbfMsg.tickData(game));
+  const cmds: Cmd[] = [];
+
+  cmds.push(cmd.sendPbfMsgTo(tickBodyRecipientIds(game), pbfMsg.tickData(game)));
+
+  if (game.restart.need && game.time > game.restart.time) {
+    game.restart.need = false;
+    cmds.push(restart(game));
+  }
+
+  return union(cmds);
 };
 
 export const joinPlayer = (game: GameState, id: number, name: string): Cmd => {
@@ -229,4 +243,34 @@ export const joinObserver = (game: GameState, id: number, name: string): Cmd => 
 
 export const kickObserver = (game: GameState, id: number): Cmd => {
   game.observers.delete(id);
+};
+
+export const restartInSeconds = (game: GameState, inSeconds: number): Cmd => {
+  game.restart.need = true;
+  game.restart.time = game.time + inSeconds * 1000;
+
+  return cmd.sendMsgTo(tickBodyRecipientIds(game), msg.restartAt(game));
+};
+
+const restart = (game: GameState): Cmd => {
+  game.bodies.map.forEach((body) => {
+    game.bodies.map.delete(body.id);
+  });
+
+  game.players.forEach((player) => {
+    // сбрасываем очки
+    player.kills = 0;
+    player.deaths = 0;
+    player.points = 0;
+
+    // Выдаем новые тела
+    const body = createAirplane(game.bodies.nextId, player.id);
+    game.bodies.nextId++;
+    game.bodies.map.set(body.id, body);
+
+    player.bodyId = body.id;
+    player.live = true;
+  });
+
+  return cmd.sendMsgTo(tickBodyRecipientIds(game), msg.restartData(game));
 };

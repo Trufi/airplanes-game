@@ -1,6 +1,6 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as quat from '@2gis/gl-matrix/quat';
-import { State } from '../../types';
+import { State, PlayerState } from '../../types';
 import { AnyServerMsg, ServerMsg, PbfTickBodyData } from '../../../gameServer/messages';
 import { Cmd } from '../../commands';
 import { createPlayer, createNonPhysicBody, addBody, createPhysicBody } from '../common';
@@ -24,6 +24,10 @@ export const message = (state: State, msg: AnyServerMsg): Cmd => {
       return playerNewBody(state, msg);
     case 'pong':
       return updatePingAndServerTime(state.serverTime, msg);
+    case 'restartAt':
+      return restartAt(state, msg);
+    case 'restartData':
+      return restartData(state, msg);
   }
 };
 
@@ -101,16 +105,29 @@ const removeBody = (state: State | ObserverState, bodyId: number) => {
   }
 };
 
+const getPlayer = (state: State | ObserverState, id: number) => {
+  let player: PlayerState | undefined;
+
+  // может игрок это мы
+  if (state.type === 'game' && state.player.id === id) {
+    player = state.player;
+  } else {
+    player = state.players.get(id);
+  }
+
+  return player;
+};
+
 export const playerDeath = (state: State | ObserverState, msg: ServerMsg['playerDeath']) => {
   const { playerId, causePlayerId } = msg;
 
-  const causePlayer = state.players.get(causePlayerId);
+  const causePlayer = getPlayer(state, causePlayerId);
   if (causePlayer) {
     causePlayer.kills++;
     causePlayer.points = getNewPoints(causePlayer.points, 'kills');
   }
 
-  const player = state.players.get(playerId);
+  const player = getPlayer(state, playerId);
   if (player) {
     player.live = false;
     player.deaths++;
@@ -123,19 +140,54 @@ export const playerDeath = (state: State | ObserverState, msg: ServerMsg['player
 };
 
 export const playerNewBody = (state: State | ObserverState, msg: ServerMsg['playerNewBody']) => {
-  if (state.type === 'game' && msg.playerId === state.player.id) {
-    const body = createPhysicBody(msg.body);
-    addBody(state, body);
-    state.body = body;
-  } else {
-    const body = createNonPhysicBody(msg.body);
-    addBody(state, body);
-  }
-
-  const player = state.players.get(msg.playerId);
+  const player = getPlayer(state, msg.playerId);
   if (!player) {
     return;
   }
 
-  player.bodyId = msg.body.id;
+  if (state.type === 'game' && state.player === player) {
+    const body = createPhysicBody(msg.body);
+    addBody(state, body);
+    state.player.bodyId = body.id;
+    state.body = body;
+  } else {
+    const body = createNonPhysicBody(msg.body);
+    addBody(state, body);
+    player.bodyId = msg.body.id;
+  }
+};
+
+export const restartAt = (state: State | ObserverState, msg: ServerMsg['restartAt']) => {
+  const { time } = msg;
+  state.restartTime = time + state.serverTime.diff;
+};
+
+export const restartData = (state: State | ObserverState, msg: ServerMsg['restartData']) => {
+  const { duration, players, bodies } = msg;
+
+  state.duration = duration;
+  players.forEach(({ id, bodyId, kills, deaths, points, live }) => {
+    const player = getPlayer(state, id);
+    if (!player) {
+      return;
+    }
+
+    player.bodyId = bodyId;
+    player.kills = kills;
+    player.deaths = deaths;
+    player.points = points;
+    player.live = live;
+  });
+
+  state.bodies.forEach((body) => removeBody(state, body.id));
+
+  bodies.forEach((bodyData) => {
+    if (state.type === 'game' && state.player.bodyId === bodyData.id) {
+      const body = createPhysicBody(bodyData);
+      addBody(state, body);
+      state.body = body;
+    } else {
+      addBody(state, createNonPhysicBody(bodyData));
+    }
+  });
 };

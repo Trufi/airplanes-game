@@ -111,6 +111,9 @@ export interface State {
   time: number;
   prevTime: number;
 
+  restartTime: number;
+  duration: number;
+
   /**
    * Текущий игрок
    */

@@ -57,6 +57,8 @@ export const start = (data: ServerMsg['startData']) => {
     type: 'game',
     time: now,
     prevTime: now,
+    restartTime: 0,
+    duration: data.duration,
     player: currentPlayer,
     body: currentBody,
     origin: [mapOrigin[0], mapOrigin[1], 0],

@@ -89,6 +89,11 @@ export interface GameState {
   bodies: BodiesState;
   players: Map<number, GamePlayer>;
   observers: Map<number, GameObserver>;
+  restart: {
+    need: boolean;
+    time: number;
+  };
+  duration: number;
 }
 
 export interface State {

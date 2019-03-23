@@ -18,6 +18,7 @@ import { unpackMessage } from './messages/unpack';
 import * as config from '../config';
 import * as api from './services/main';
 import { mapMap } from '../utils';
+import { restartInSeconds } from './games/game';
 
 const port = 3001;
 
@@ -69,6 +70,25 @@ app.get('/state', (_req, res) => {
     games: mapMap(state.games.map, (c) => c),
   };
   res.send(JSON.stringify(result));
+});
+
+app.get('/restart/:sec', (req, res) => {
+  const game = state.games.map.get(1);
+  if (!game) {
+    return res.sendStatus(500);
+  }
+
+  const secret = req.query.secret;
+  if (secret === 'fdsa') {
+    const seconds = Number(req.params.sec);
+    if (seconds && seconds > 0) {
+      console.log(`Restart game after ${seconds} seconds`);
+      executeCmd(restartInSeconds(game, seconds));
+      return res.sendStatus(200);
+    }
+  }
+
+  res.sendStatus(404);
 });
 
 const sendMessage = (connection: Connection, msg: AnyServerMsg): void => {

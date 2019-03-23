@@ -10,6 +10,9 @@ export interface ObserverState {
   time: number;
   prevTime: number;
 
+  restartTime: number;
+  duration: number;
+
   /**
    * Начало системы отсчета.
    * Нужен для того, чтобы глобальные координаты не выходили за int32 (максимум точности в шейдерах)

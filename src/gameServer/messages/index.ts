@@ -44,8 +44,7 @@ const startData = (game: GameState, player: GamePlayer) => {
   return {
     type: 'startData' as 'startData',
     playerId: player.id,
-    name: player.name,
-
+    duration: game.duration,
     players,
     bodies,
   };
@@ -57,6 +56,19 @@ const startObserverData = (game: GameState) => {
 
   return {
     type: 'startObserverData' as 'startObserverData',
+    duration: game.duration,
+    players,
+    bodies,
+  };
+};
+
+const restartData = (game: GameState) => {
+  const players = mapMap(game.players, getPlayerData);
+  const bodies = mapMap(game.bodies.map, getTickBodyData);
+
+  return {
+    type: 'restartData' as 'restartData',
+    duration: game.duration,
     players,
     bodies,
   };
@@ -162,6 +174,11 @@ const pong = (serverTime: number, clientTime: number) => ({
   clientTime,
 });
 
+const restartAt = (game: GameState) => ({
+  type: 'restartAt' as 'restartAt',
+  time: game.restart.time,
+});
+
 export const msg = {
   connect,
   loginSuccess,
@@ -175,6 +192,8 @@ export const msg = {
   playerDeath,
   tickData,
   pong,
+  restartAt,
+  restartData,
 };
 
 export const pbfMsg = {

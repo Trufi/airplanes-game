@@ -75,6 +75,8 @@ export class Game extends React.Component<Props, {}> {
       );
     });
 
+    const timeToRestart = game.restartTime - game.time;
+
     return (
       <div
         style={{
@@ -85,6 +87,12 @@ export class Game extends React.Component<Props, {}> {
         <DeathNotes state={game} />
         <div>{playerNames}</div>
         <div>{playerArrows}</div>
+        {timeToRestart >= 0 && (
+          <div style={{ fontSize: '50px' }}>Start at {Math.floor(timeToRestart / 1000)}</div>
+        )}
+        {game.duration && (
+          <div>Last time: {Math.floor(game.restartTime + game.duration - game.time / 1000)}</div>
+        )}
         {body ? (
           this.renderLiveComponents(game, body)
         ) : (

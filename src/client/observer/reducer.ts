@@ -8,6 +8,8 @@ import {
   playerDeath,
   playerNewBody,
   playerEnter,
+  restartAt,
+  restartData,
 } from '../game/actions/message';
 
 export const message = (state: ObserverState, msg: AnyServerMsg): Cmd => {
@@ -24,5 +26,9 @@ export const message = (state: ObserverState, msg: AnyServerMsg): Cmd => {
       return playerNewBody(state, msg);
     case 'pong':
       return updatePingAndServerTime(state.serverTime, msg);
+    case 'restartAt':
+      return restartAt(state, msg);
+    case 'restartData':
+      return restartData(state, msg);
   }
 };

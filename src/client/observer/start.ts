@@ -40,6 +40,8 @@ export const start = (appState: AppState, data: ServerMsg['startObserverData']) 
     type: 'observer',
     time: now,
     prevTime: now,
+    restartTime: 0,
+    duration: data.duration,
     origin: [mapOrigin[0], mapOrigin[1], 0],
     players,
     bodies,
