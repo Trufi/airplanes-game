@@ -12,6 +12,9 @@
 ###USER
 `curl -v -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer 123456789" http://127.0.0.1:3002/api/user/canIjoinToGrandFinal`
 
+####LADDER
+`curl -v -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer 123456789" http://127.0.0.1:3002/api/user/tournament/2/ladder`
+
 ###ACHIEVEMENT
 ####LIST
 `curl -v -H "Accept: application/json" -H "Content-Type: application/json" http://127.0.0.1:3002/api/achievement/list`

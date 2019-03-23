@@ -11,14 +11,15 @@ import {
   selectUserByName,
   selectUserByToken,
   updateUserStats,
+  getUserLadder,
 } from '../models/user';
 import { getAchievements, getOwnAchievements, setAchievements } from '../models/achievements';
 import { State } from '../types';
 import { setAccessAllowOrigin } from './cors';
 import { mapMap } from '../../utils';
-import { GamelistResponse, TournamentListResponse } from '../types/api';
+import { GamelistResponse, LadderResponse, TournamentListResponse } from '../types/api';
 import { getPretenders, getTournamentList } from '../models/tournaments';
-import { Pretender, Tournament, User } from '../models/types';
+import { Pretender, Tournament, User, UserStats } from '../models/types';
 
 export function applyApiRouter(app: Express, state: State) {
   const apiRouter = Router();
@@ -309,16 +310,55 @@ export function applyApiRouter(app: Express, state: State) {
       });
     },
   );
-  //
-  // apiRouter.get(
-  //   '/',
-  //   authenticate('bearer', { failureRedirect: '/' }),
-  //   (req, res) => {
-  //     setAccessAllowOrigin(req, res);
-  //
-  //     // const connection = connectionDB();
-  //   },
-  // );
+
+  apiRouter.get(
+    '/user/tournament/:id/ladder',
+    authenticate('bearer', { failureRedirect: '/' }),
+    (req, res) => {
+      setAccessAllowOrigin(req, res);
+
+      const connection = connectionDB();
+      const userId = req.user.id;
+
+      const tournamentId = Number(req.params.id);
+
+      if (typeof tournamentId === 'undefined' || typeof tournamentId !== 'number') {
+        return res.status(422).send('Unprocessed entity: tournamentId');
+      }
+
+      getUserLadder(connection, tournamentId)
+        .then((ladder: UserStats[]) => {
+          connection.end().then(() => {
+            const myIndex = ladder.findIndex((stats) => stats.id === userId);
+
+            if (myIndex === -1) {
+              return res.status(403).send('Not Found');
+            }
+
+            if (myIndex === 0) {
+              const result: LadderResponse = { ladder: [ladder[myIndex], ladder[myIndex + 1]] };
+              return res.send(result);
+            }
+            if (myIndex === ladder.length - 1) {
+              const result: LadderResponse = { ladder: [ladder[myIndex - 1], ladder[myIndex]] };
+              return res.send(result);
+            }
+            console.log('ladder', ladder, 2);
+            console.log('myIndex', myIndex, 2);
+            const result: LadderResponse = {
+              ladder: [ladder[myIndex - 1], ladder[myIndex], ladder[myIndex + 1]],
+            };
+            return res.send(result);
+          });
+        })
+        .catch((err: any) => {
+          connection.end().then(() => {
+            console.log('/tournament/list:err', err);
+            res.sendStatus(ERROR_CODE);
+          });
+        });
+    },
+  );
 
   apiRouter.get('/tournament/list', (req, res) => {
     setAccessAllowOrigin(req, res);

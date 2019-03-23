@@ -145,13 +145,13 @@ export const selectUserByToken = (
 export const getUserStatsByTournament = (
   connection: Client,
   userId: User['id'],
-  tournamemtId: Tournament['id'],
+  tournamentId: Tournament['id'],
 ) => {
   const sql = `
     SELECT u.id, u.name, tpr.kills, tpr.deaths, tpr.points
     FROM users as u
     LEFT JOIN tournaments_per_user as tpr ON tpr.user_id = u.id
-    WHERE u.id = ${userId} AND tpr.tournament_id = ${tournamemtId}
+    WHERE u.id = ${userId} AND tpr.tournament_id = ${tournamentId}
     LIMIT 1
   `;
 
@@ -161,6 +161,28 @@ export const getUserStatsByTournament = (
         return reject(err);
       }
       return resolve(parseResult<UserStats>(result)[0]);
+    });
+  });
+};
+
+export const getUserLadder = (
+  connection: Client,
+  tournamentId: Tournament['id'],
+): Promise<UserStats[]> => {
+  const sql = `
+    SELECT u.id, u.name, tpr.kills, tpr.deaths, tpr.points
+    FROM users as u
+    LEFT JOIN tournaments_per_user as tpr ON tpr.user_id = u.id
+    WHERE tpr.tournament_id = ${tournamentId}
+    ORDER BY tpr.points DESC
+  `;
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(parseResult<UserStats>(result));
     });
   });
 };
