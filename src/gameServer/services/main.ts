@@ -6,7 +6,7 @@ import { TournamentListResponse } from '../../mainServer/types/api';
 const baseURL = `${config.mainServer.url}/game`;
 
 export const notify = (data: NotifyRequest) => {
-  return axios.post<void>(`${baseURL}/register`, data).then((data) => data.data);
+  return axios.post<void>(`${baseURL}/notify`, data).then((data) => data.data);
 };
 
 export const player = (data: PlayerRequest) => {

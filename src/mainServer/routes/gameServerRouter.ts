@@ -11,7 +11,7 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
   /**
    * Регистрация нового игрового сервера
    */
-  router.post('/register', (req, res) => {
+  router.post('/notify', (req, res) => {
     const body = req.body as NotifyRequest;
     updateGameData(state, body);
     res.sendStatus(200);

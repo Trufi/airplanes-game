@@ -1,5 +1,6 @@
 import '@2gis/gl-matrix';
 import * as express from 'express';
+import { json } from 'body-parser';
 import * as ws from 'ws';
 import { createNewConnection, message, connectionLost, tick, authConnection } from './reducers';
 import { Connection } from './types';
@@ -12,10 +13,13 @@ import * as config from '../config';
 import * as api from './services/main';
 import { mapMap } from '../utils';
 import * as game from './games/game';
+import { RestartRequest } from './types/api';
 
 const port = 3001;
 
 const app = express();
+
+app.use(json());
 
 // health check для k8s
 app.get('/', (_req, res) => res.sendStatus(200));
@@ -76,18 +80,19 @@ app.get('/state', (_req, res) => {
   res.send(JSON.stringify(result));
 });
 
-app.get('/restart/:sec', (req, res) => {
-  const secret = req.query.secret;
-  if (secret === 'fdsa') {
-    const seconds = Number(req.params.sec);
-    if (seconds && seconds > 0) {
-      console.log(`Restart game after ${seconds} seconds`);
-      executeCmd(game.restartInSeconds(state.game, seconds));
-      return res.sendStatus(200);
-    }
-  }
+app.post('/restart', (req, res) => {
+  const body = req.body as RestartRequest;
 
-  res.sendStatus(404);
+  const duration = Number(body.durationMinutes) * 60 * 1000;
+  const tournamentId = Number(body.tournamentId);
+  const inSeconds = Number(body.inSeconds);
+
+  console.log(
+    `Restart game after ${inSeconds} seconds with tournament id: ${tournamentId}, ` +
+      `duration: ${duration}`,
+  );
+  executeCmd(game.restartInSeconds(state.game, { tournamentId, duration, inSeconds }));
+  return res.sendStatus(200);
 });
 
 const sendMessage = (connection: Connection, msg: AnyServerMsg): void => {
@@ -182,7 +187,7 @@ const notifyMainServer = () => {
     url,
     type,
     city,
-    game: { maxPlayers, players },
+    game: { maxPlayers, players, tournamentId },
   } = state;
 
   api
@@ -192,6 +197,7 @@ const notifyMainServer = () => {
       city,
       players: players.size,
       maxPlayers,
+      tournamentId,
     })
     .catch((err) => {
       console.log(`Main server notify error: ${err}`);

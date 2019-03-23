@@ -1,8 +1,11 @@
+import { GameType } from '../../types';
+
 export interface NotifyRequest {
   url: string;
-  type: 'dm' | 'tournament';
+  type: GameType;
   city: string;
   players: number;
+  tournamentId: number;
   maxPlayers: number;
 }
 

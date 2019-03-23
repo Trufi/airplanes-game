@@ -3,7 +3,7 @@ import { NotifyRequest } from './types/gameApi';
 import * as config from '../config';
 
 export const updateGameData = (state: State, data: NotifyRequest) => {
-  const { type, city, url, maxPlayers, players } = data;
+  const { type, city, url, maxPlayers, players, tournamentId } = data;
   const now = Date.now();
 
   const game = state.games.byUrl.get(url);
@@ -13,6 +13,7 @@ export const updateGameData = (state: State, data: NotifyRequest) => {
     game.city = city;
     game.type = type;
     game.lastNotifyTime = now;
+    game.tournamentId = tournamentId;
   } else {
     const game: Game = {
       id: state.games.nextId,
@@ -22,6 +23,7 @@ export const updateGameData = (state: State, data: NotifyRequest) => {
       maxPlayers,
       city,
       lastNotifyTime: now,
+      tournamentId,
     };
     state.games.nextId++;
     state.games.map.set(game.id, game);

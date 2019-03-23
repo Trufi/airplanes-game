@@ -39,8 +39,11 @@ export const createGameState = (time: number, maxPlayers: number, duration: numb
     restart: {
       need: false,
       time: 0,
+      tournamentId: -1,
+      duration: Number.MAX_SAFE_INTEGER,
     },
     startTime: time,
+    tournamentId: -1,
     duration,
     maxPlayers,
   };
@@ -107,7 +110,6 @@ export const tick = (game: GameState, time: number): Cmd => {
   cmds.push(cmd.sendPbfMsgTo(tickBodyRecipientIds(game), pbfMsg.tickData(game)));
 
   if (game.restart.need && game.time > game.restart.time) {
-    game.restart.need = false;
     cmds.push(restart(game));
   }
 
@@ -263,14 +265,33 @@ export const kickObserver = (game: GameState, id: number): Cmd => {
   game.observers.delete(id);
 };
 
-export const restartInSeconds = (game: GameState, inSeconds: number): Cmd => {
+export const restartInSeconds = (
+  game: GameState,
+  data: {
+    tournamentId: number;
+    inSeconds: number;
+    duration: number;
+  },
+): Cmd => {
+  const { tournamentId, inSeconds, duration } = data;
+
   game.restart.need = true;
   game.restart.time = game.time + inSeconds * 1000;
+  game.restart.duration = duration;
+  game.restart.tournamentId = tournamentId;
 
   return cmd.sendMsgTo(tickBodyRecipientIds(game), msg.restartAt(game));
 };
 
 const restart = (game: GameState): Cmd => {
+  game.restart.need = false;
+
+  const {
+    restart: { duration, tournamentId },
+  } = game;
+  game.tournamentId = tournamentId;
+  game.duration = duration;
+
   game.startTime = game.time;
 
   game.bodies.map.forEach((body) => {

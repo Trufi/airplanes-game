@@ -8,6 +8,7 @@ export interface Game {
   maxPlayers: number;
   city: string;
   lastNotifyTime: number;
+  tournamentId: number;
 }
 
 export interface State {

@@ -96,8 +96,11 @@ export interface GameState {
   restart: {
     need: boolean;
     time: number;
+    duration: number;
+    tournamentId: number;
   };
   startTime: number;
+  tournamentId: number;
   duration: number;
   maxPlayers: number;
 }
