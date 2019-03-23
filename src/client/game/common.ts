@@ -56,7 +56,7 @@ export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
       config.animations.fireFlash.duration,
       config.animations.fireFlash.cooldown,
       'fireflash',
-      2,
+      1,
     ),
   };
 };

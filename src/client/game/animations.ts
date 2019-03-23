@@ -65,15 +65,15 @@ export const actionShowHide = (animation: AnimationPerFrame, obj: THREE.Object3D
 };
 
 const material = new MeshBasicMaterial();
-const prevMaterials: Map<number, THREE.Material> = new Map();
+const prevMaterials: Map<string, THREE.Material> = new Map();
 material.color.setHex(0xcc4444);
 
 export const actionFireFlash = (animation: AnimationPerFrame, obj: THREE.Scene) => {
   const setNew = (children: THREE.Object3D[]) => {
     children.forEach((child) => {
       if (child instanceof THREE.Mesh && child.material instanceof THREE.Material) {
-        if (!prevMaterials.has(child.id)) {
-          prevMaterials.set(child.id, child.material.clone());
+        if (!prevMaterials.has(child.name)) {
+          prevMaterials.set(child.name, child.material.clone());
           child.material = material;
         }
       } else if (child.children.length) {
@@ -82,11 +82,11 @@ export const actionFireFlash = (animation: AnimationPerFrame, obj: THREE.Scene) 
     });
   };
   const setOld = () => {
-    prevMaterials.forEach((material, id) => {
-      let child = obj.getObjectById(id) as THREE.Mesh;
+    prevMaterials.forEach((material, name) => {
+      let child = obj.getObjectByName(name) as THREE.Mesh;
       if (child) {
         child.material = material;
-        prevMaterials.delete(id);
+        prevMaterials.delete(name);
       }
     });
   };
