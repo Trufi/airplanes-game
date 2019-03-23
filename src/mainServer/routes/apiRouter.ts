@@ -343,8 +343,7 @@ export function applyApiRouter(app: Express, state: State) {
               const result: LadderResponse = { ladder: [ladder[myIndex - 1], ladder[myIndex]] };
               return res.send(result);
             }
-            console.log('ladder', ladder, 2);
-            console.log('myIndex', myIndex, 2);
+
             const result: LadderResponse = {
               ladder: [ladder[myIndex - 1], ladder[myIndex], ladder[myIndex + 1]],
             };
@@ -353,7 +352,7 @@ export function applyApiRouter(app: Express, state: State) {
         })
         .catch((err: any) => {
           connection.end().then(() => {
-            console.log('/tournament/list:err', err);
+            console.log('/ladder:err', err);
             res.sendStatus(ERROR_CODE);
           });
         });
