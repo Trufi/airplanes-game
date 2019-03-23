@@ -15,9 +15,16 @@ export interface Hit {
   bodyId: number;
 }
 
+export type AnimationType = 'shoot' | 'fireflash';
+export type AnimationRepeatType = 'always' | number;
+
 export interface AnimationPerFrame {
   frames: number;
   is_running: boolean;
+  duration: number;
+  cooldown: number;
+  type: AnimationType;
+  repeat: AnimationRepeatType;
 }
 
 export interface WeaponState {
@@ -51,6 +58,7 @@ export interface PhysicBodyState {
   health: number;
   weapon: WeaponState;
   boost: BoostState;
+  animation: AnimationPerFrame;
 }
 
 export interface NonPhysicBodyState {

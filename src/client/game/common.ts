@@ -4,6 +4,7 @@ import { createMesh, createShotMesh, createBulletMesh } from './view';
 import { pick } from '../../utils';
 import * as config from '../../config';
 import { createBoostState } from './actions/boost';
+import { createAnimation } from './animations';
 
 export const createPlayer = (data: PlayerData): PlayerState =>
   pick(data, ['id', 'bodyId', 'name', 'live', 'kills', 'deaths', 'points']);
@@ -41,11 +42,22 @@ export const createPhysicBody = (data: TickBodyData): PhysicBodyState => {
       blocked: false,
       lastHitTime: 0,
       lastShotTime: 0,
-      animation: { is_running: false, frames: 0 },
+      animation: createAnimation(
+        config.animations.shoot.duration,
+        config.animations.shoot.cooldown,
+        'shoot',
+        'always',
+      ),
       hits: [],
       left: createBulletMesh(1),
       right: createBulletMesh(-1),
     },
+    animation: createAnimation(
+      config.animations.fireFlash.duration,
+      config.animations.fireFlash.cooldown,
+      'fireflash',
+      2,
+    ),
   };
 };
 
@@ -79,7 +91,12 @@ export const createNonPhysicBody = (data: TickBodyData): NonPhysicBodyState => {
     shotMesh: createShotMesh(),
     weapon: {
       lastShotTime,
-      animation: { is_running: false, frames: 0 },
+      animation: createAnimation(
+        config.animations.shoot.duration,
+        config.animations.shoot.cooldown,
+        'shoot',
+        'always',
+      ),
       left: createBulletMesh(1),
       right: createBulletMesh(-1),
     },

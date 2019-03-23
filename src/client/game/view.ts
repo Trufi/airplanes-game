@@ -5,14 +5,9 @@ import { config as mapConfig, MapOptions, Map, Skybox } from '@2gis/jakarta';
 import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import * as config from '../../config';
 import { degToRad } from '../utils';
-import {
-  BodyState,
-  CameraState,
-  AnimationPerFrame,
-  NonPhysicBodyState,
-  PhysicBodyState,
-} from '../types';
+import { BodyState, CameraState, NonPhysicBodyState, PhysicBodyState } from '../types';
 import { TextureLoader } from 'three';
+import { updateAnimation } from './animations';
 
 mapConfig.camera.fov = 45;
 mapConfig.camera.far = 2 ** 32; // Можно оставить 600000, но тогда надо поправить frustum
@@ -76,35 +71,36 @@ export const createMesh = (id: number) => {
       airplane_palettes[paletteId].forEach((group) => {
         group_apply(group, airplane_model);
       });
-    }
 
-    textureLoader.load('./assets/propeller.jpg', (texture) => {
-      const circleGeom = new THREE.CircleGeometry(config.airplane.propeller.radius, 32);
-      const circleMaterial = new THREE.MeshBasicMaterial({
-        map: texture,
-        opacity: config.airplane.propeller.opacity,
-        side: THREE.DoubleSide,
+      textureLoader.load('./assets/propeller.jpg', (texture) => {
+        const circleGeom = new THREE.CircleGeometry(config.airplane.propeller.radius, 32);
+        const circleMaterial = new THREE.MeshBasicMaterial({
+          map: texture,
+          opacity: config.airplane.propeller.opacity,
+          side: THREE.DoubleSide,
+        });
+        const circle = new THREE.Mesh(circleGeom, circleMaterial);
+        circle.position.set(
+          config.airplane.propeller.x,
+          config.airplane.propeller.y,
+          config.airplane.propeller.z,
+        );
+        circle.onBeforeRender = (_renderer, _scene, _camera, geometry) => {
+          geometry.rotateZ(0.07);
+        };
+
+        airplane_model.add(circle);
       });
-      const circle = new THREE.Mesh(circleGeom, circleMaterial);
-      circle.position.set(
-        config.airplane.propeller.x,
-        config.airplane.propeller.y,
-        config.airplane.propeller.z,
-      );
-      circle.onBeforeRender = (_renderer, _scene, _camera, geometry) => {
-        geometry.rotateZ(0.07);
-      };
 
-      scene.add(circle);
-    });
+      // размер соответсвует примерно 50 метрам!
+      airplane_model.scale.set(config.airplane.scale, config.airplane.scale, config.airplane.scale);
+      airplane_model.rotateX(config.airplane.initRotation.x);
+      airplane_model.rotateY(config.airplane.initRotation.y);
+      airplane_model.rotateZ(config.airplane.initRotation.z);
 
-    // размер соответсвует примерно 50 метрам!
-    scene.scale.set(config.airplane.scale, config.airplane.scale, config.airplane.scale);
-    scene.rotateX(config.airplane.initRotation.x);
-    scene.rotateY(config.airplane.initRotation.y);
-    scene.rotateZ(config.airplane.initRotation.z);
-
-    mesh.add(scene);
+      scene.add(airplane_model);
+      mesh.add(scene);
+    }
   });
 
   return mesh;
@@ -203,24 +199,8 @@ export const updateShot = (
   }
 };
 
-const showHideBulletAnimation = (animation: AnimationPerFrame, mesh: THREE.Object3D) => {
-  if (animation.is_running) {
-    animation.frames += 1;
-    if (animation.frames < config.weapon.animationDuration) {
-      mesh.visible = true;
-    } else if (animation.frames > config.weapon.animationCooldown) {
-      animation.frames = 0;
-    } else if (animation.frames > config.weapon.animationDuration) {
-      mesh.visible = false;
-    }
-  } else {
-    animation.frames = 0;
-    mesh.visible = false;
-  }
-};
-
-export const updateBullet = (mesh: THREE.Group, body: BodyState) => {
-  showHideBulletAnimation(body.weapon.animation, mesh);
+export const updateBullet = (bulletObject: THREE.Group, body: BodyState) => {
+  updateAnimation(body.weapon.animation, bulletObject);
 };
 
 let jakartaMap: Map | undefined;

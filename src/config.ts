@@ -29,8 +29,6 @@ export const weapon = {
    */
   hitAngle: 2,
   cooldown: 200,
-  animationDuration: 5,
-  animationCooldown: 25,
   distance: 300000,
 
   offset: 5000,
@@ -79,7 +77,7 @@ export const boost = {
 
 export const airplane = {
   maxHealth: 100,
-  scale: 4000,
+  scale: 4,
   velocity: 30,
   initRotation: { x: -Math.PI / 2, y: 0, z: Math.PI },
   propeller: { x: 0, y: 0.03, z: 0.666, radius: 0.26, opacity: 0.4 },
@@ -123,4 +121,15 @@ export const points = {
 
 export const damageIndicator = {
   delay: 300,
+};
+
+export const animations = {
+  shoot: {
+    duration: 5,
+    cooldown: 25,
+  },
+  fireFlash: {
+    duration: 5,
+    cooldown: 20,
+  },
 };

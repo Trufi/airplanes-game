@@ -7,6 +7,7 @@ import { checkHit } from './weapon';
 import { updateCamera } from './tick';
 import { State, PhysicBodyState, DamageIndicatorState, BodyState, CameraState } from '../../types';
 import * as THREE from 'three';
+import { updateAnimation } from '../animations';
 
 export const createDamageIndicatorState = (): DamageIndicatorState => ({
   prevCheckHealth: config.airplane.maxHealth,
@@ -22,7 +23,9 @@ export const updateDamageIndicator = (state: State) => {
 
   if (body.health < damageIndicator.prevCheckHealth) {
     findShooter(state, body);
+    body.animation.is_running = true;
   }
+  updateAnimation(body.animation, body.mesh.getObjectByName('Scene'));
   damageIndicator.prevCheckHealth = body.health;
 
   // Удаляем старые индикаторы
