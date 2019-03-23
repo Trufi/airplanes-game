@@ -17,6 +17,7 @@ import { setAccessAllowOrigin } from './cors';
 import { mapMap } from '../../utils';
 import { GamelistResponse } from '../types/api';
 import { getPretenders, getTournamentList } from '../models/tournaments';
+import { Pretender, Tournament, User } from '../models/types';
 
 export function applyApiRouter(app: Express, state: State) {
   const apiRouter = Router();
@@ -27,9 +28,8 @@ export function applyApiRouter(app: Express, state: State) {
 
   const strategy = new BearerStrategy((token: string, done: any) => {
     const connection = connectionDB();
-    const promise = selectUserByToken(connection, token);
 
-    promise
+    selectUserByToken(connection, token)
       .then((result: any) => {
         connection.end().then(() => {
           console.log('BearerStrategy:result', result);
@@ -42,9 +42,6 @@ export function applyApiRouter(app: Express, state: State) {
             {
               id: result.id,
               name: result.name,
-              kills: result.kills,
-              deaths: result.deaths,
-              points: result.points,
               token,
             },
             { scope: 'all' },
@@ -155,9 +152,6 @@ export function applyApiRouter(app: Express, state: State) {
             user: {
               id: result.id,
               name: result.name,
-              kills: 0,
-              deaths: 0,
-              points: 0,
               token,
             },
           });
@@ -178,16 +172,13 @@ export function applyApiRouter(app: Express, state: State) {
     const { id } = req.user;
 
     selectUser(connection, id)
-      .then((result: any) => {
+      .then((result: User) => {
         connection.end().then(() => {
           return res.send({
             user: {
-              deaths: result.deaths,
               id: result.id,
-              kills: result.kills,
               name: result.name,
               token: result.password,
-              points: result.points,
             },
           });
         });
@@ -244,7 +235,7 @@ export function applyApiRouter(app: Express, state: State) {
 
     const connection = connectionDB();
     getTournamentList(connection)
-      .then((result) => {
+      .then((result: Tournament[]) => {
         connection.end().then(() => {
           res.send({ tournaments: result });
         });
@@ -291,12 +282,12 @@ export function applyApiRouter(app: Express, state: State) {
 
     const connection = connectionDB();
     getPretenders(connection)
-      .then((pretenders: any) => {
+      .then((pretenders: Pretender[]) => {
         connection.end().then(() => {
           res.send({ pretenders });
         });
       })
-      .catch((err: any) => {
+      .catch((err) => {
         connection.end().then(() => {
           console.log('/tournament/pretenders:err', err);
           res.sendStatus(ERROR_CODE);

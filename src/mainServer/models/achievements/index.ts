@@ -1,7 +1,8 @@
 import { Client } from 'pg';
 import { Achievement, User } from '../types';
+import { parseResult } from '../utils';
 
-export const getAchievements = (connection: Client) => {
+export const getAchievements = (connection: Client): Promise<Achievement[]> => {
   const sql = `
     SELECT id, name, description
     FROM achievements
@@ -12,12 +13,15 @@ export const getAchievements = (connection: Client) => {
       if (err) {
         return reject(err);
       }
-      return resolve(result);
+      return resolve(parseResult<Achievement>(result));
     });
   });
 };
 
-export const getOwnAchievements = (connection: Client, userId: User['id']) => {
+export const getOwnAchievements = (
+  connection: Client,
+  userId: User['id'],
+): Promise<Achievement[]> => {
   const sql = `
     SELECT ach.id, ach.name, ach.description
     FROM achievements AS ach
@@ -31,7 +35,7 @@ export const getOwnAchievements = (connection: Client, userId: User['id']) => {
       if (err) {
         return reject(err);
       }
-      return resolve(result);
+      return resolve(parseResult<Achievement>(result));
     });
   });
 };

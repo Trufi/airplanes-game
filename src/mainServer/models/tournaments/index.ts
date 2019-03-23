@@ -1,10 +1,10 @@
-import { Client } from 'pg';
+import { Client, QueryResult } from 'pg';
 import { Tournament, Pretender } from '../types';
 import { parseResult } from '../utils';
 
 export const DEFAULT_TOURNAMENT_NAME = 'infinity';
 
-export const selectDefaultTournament = (connection: Client) => {
+export const selectDefaultTournament = (connection: Client): Promise<Tournament> => {
   const sql = `
     SELECT id
     FROM tournament as t
@@ -17,12 +17,15 @@ export const selectDefaultTournament = (connection: Client) => {
       if (err) {
         return reject(err);
       }
-      return resolve(parseResult(result)[0]);
+      return resolve(parseResult<Tournament>(result)[0]);
     });
   });
 };
 
-export const selectTournamentById = (connection: Client, tournamentId: Tournament['id']) => {
+export const selectTournamentById = (
+  connection: Client,
+  tournamentId: Tournament['id'],
+): Promise<Tournament> => {
   const sql = `
     SELECT id
     FROM tournament as t
@@ -35,12 +38,12 @@ export const selectTournamentById = (connection: Client, tournamentId: Tournamen
       if (err) {
         return reject(err);
       }
-      return resolve(parseResult(result)[0]);
+      return resolve(parseResult<Tournament>(result)[0]);
     });
   });
 };
 
-export const getTournamentList = (connection: Client) => {
+export const getTournamentList = (connection: Client): Promise<Tournament[]> => {
   const sql = `
     SELECT
      t.id,
@@ -61,18 +64,31 @@ export const getTournamentList = (connection: Client) => {
       if (err) {
         return reject(err);
       }
-      return resolve((result.rows as any) as Tournament[]);
+      return resolve(parseResult<Tournament>(result));
     });
   });
 };
 
-export const getPretenders = (connection: Client) => {
-  return getTournamentList(connection).then((tournaments: any) => {
-    let sql = '';
-    tournaments.map((tournament: Tournament, idx: number) => {
-      // Тянем всех лидеров существующих турниров
-      sql += '(';
-      sql += `
+export const getPretenders = (connection: Client): Promise<Pretender[]> => {
+  return new Promise((resolve, reject) => {
+    getTournamentList(connection).then((tournaments: Tournament[]) => {
+      const sql = getPretendersQuery(tournaments);
+
+      connection.query(sql, (err, result: QueryResult) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(parseResult<Pretender>(result));
+      });
+    });
+  });
+};
+
+function getPretendersQuery(tournaments: Tournament[]) {
+  return tournaments.reduce((sql: string, tournament: Tournament, idx: number) => {
+    // Тянем всех лидеров существующих турниров
+    sql += '(';
+    sql += `
           SELECT
             t.id as tournament_id,
             u.id as user_id,
@@ -86,36 +102,28 @@ export const getPretenders = (connection: Client) => {
           ORDER BY t.id, tpu.points DESC
           LIMIT ${tournament.output_count}
         `;
+    sql += ')';
+    if (tournaments.length - 1 !== idx) {
+      sql += `UNION`;
+    } else {
+      // Тянем всех игроков с флагом FORCE
+      sql += 'UNION';
+      sql += '(';
+      sql += `
+          SELECT
+            t.id as tournament_id,
+            u.id as user_id,
+            t.name as tournament,
+            u.name as username,
+            tpu.points
+          FROM users as u
+          LEFT JOIN tournaments_per_user as tpu ON u.id = tpu.user_id
+          LEFT JOIN tournament as t ON tpu.tournament_id = t.id
+          WHERE t.name <> 'infinity' AND tpu.force = 1
+          ORDER BY t.id, tpu.points DESC
+        `;
       sql += ')';
-      if (tournaments.length - 1 !== idx) {
-        sql += `UNION`;
-      } else {
-        // Тянем всех игроков с флагом FORCE
-        sql += 'UNION';
-        sql += '(';
-        sql += `
-            SELECT
-              t.id as tournament_id,
-              u.id as user_id,
-              t.name as tournament,
-              u.name as username,
-              tpu.points
-            FROM users as u
-            LEFT JOIN tournaments_per_user as tpu ON u.id = tpu.user_id
-            LEFT JOIN tournament as t ON tpu.tournament_id = t.id
-            WHERE t.name <> 'infinity' AND tpu.force = 1
-            ORDER BY t.id, tpu.points DESC
-          `;
-        sql += ')';
-      }
-    });
-    return new Promise((resolve, reject) => {
-      connection.query(sql, (err, result) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve((result.rows as any) as Pretender[]);
-      });
-    });
-  });
-};
+    }
+    return sql;
+  }, '');
+}
