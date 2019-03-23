@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "sourceMap": false,
+    "outDir": "./dist/node"
+  },
+  "include": ["project.d.ts", "src/**/*.ts", "src/**/*.js", "node_modules/@2gis/gl-matrix/*.js"]
+}
