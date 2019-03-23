@@ -4,6 +4,7 @@ import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import { connectionDB } from '../models/database';
 import {
   attachUserToTournament,
+  getUserStatsByTournament,
   createToken,
   createUser,
   selectUser,
@@ -230,6 +231,66 @@ export function applyApiRouter(app: Express, state: State) {
       });
   });
 
+  apiRouter.get(
+    '/user/tournament/:id/stats',
+    authenticate('bearer', { failureRedirect: '/' }),
+    (req, res) => {
+      setAccessAllowOrigin(req, res);
+
+      const tournamentId = Number(req.params.id);
+
+      if (typeof tournamentId === 'undefined' || typeof tournamentId !== 'number') {
+        return res.status(422).send('Unprocessed entity: tournamentId');
+      }
+
+      const connection = connectionDB();
+      const { id } = req.user;
+      getUserStatsByTournament(connection, id, tournamentId)
+        .then((stats) => {
+          connection.end().then(() => {
+            return res.status(200).send({
+              stats,
+            });
+          });
+        })
+        .catch((err) => {
+          connection.end().then(() => {
+            console.log('GET tournament/stats:err', err);
+            res.sendStatus(ERROR_CODE);
+          });
+        });
+    },
+  );
+
+  apiRouter.post(
+    '/user/tournament/:id/stats',
+    authenticate('bearer', { failureRedirect: '/' }),
+    (req, res) => {
+      setAccessAllowOrigin(req, res);
+
+      const tournamentId = Number(req.params.id);
+
+      if (typeof tournamentId === 'undefined' || typeof tournamentId !== 'number') {
+        return res.status(422).send('Unprocessed entity: tournamentId');
+      }
+
+      const connection = connectionDB();
+      const { id } = req.user;
+      attachUserToTournament(connection, id, tournamentId)
+        .then(() => {
+          connection.end().then(() => {
+            return res.sendStatus(200);
+          });
+        })
+        .catch((err) => {
+          connection.end().then(() => {
+            console.log('POST tournament/stats:err', err);
+            res.sendStatus(ERROR_CODE);
+          });
+        });
+    },
+  );
+
   apiRouter.get('/tournament/list', (req, res) => {
     setAccessAllowOrigin(req, res);
 
@@ -247,35 +308,6 @@ export function applyApiRouter(app: Express, state: State) {
         });
       });
   });
-
-  apiRouter.post(
-    '/tournament/attach',
-    authenticate('bearer', { failureRedirect: '/' }),
-    (req, res) => {
-      setAccessAllowOrigin(req, res);
-
-      const { tournamentId } = req.body;
-
-      if (typeof tournamentId === 'undefined' || typeof tournamentId !== 'number') {
-        return res.status(422).send('Unprocessed entity: tournamentId');
-      }
-
-      const connection = connectionDB();
-      const { id } = req.user;
-      attachUserToTournament(connection, id, tournamentId)
-        .then(() => {
-          connection.end().then(() => {
-            return res.status(200).send('OK');
-          });
-        })
-        .catch((err) => {
-          connection.end().then(() => {
-            console.log('createUser:err', err);
-            res.sendStatus(ERROR_CODE);
-          });
-        });
-    },
-  );
 
   apiRouter.get('/tournament/pretenders', (req, res) => {
     setAccessAllowOrigin(req, res);

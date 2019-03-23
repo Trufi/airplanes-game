@@ -1,5 +1,5 @@
 import { Client } from 'pg';
-import { Tournament, User, UserCreation } from '../types';
+import { Tournament, User, UserCreation, UserStats } from '../types';
 import { createHmac } from 'crypto';
 import { parseResult } from '../utils';
 import { selectDefaultTournament } from '../tournaments';
@@ -138,6 +138,29 @@ export const selectUserByToken = (
         return reject(err);
       }
       return resolve(parseResult<User>(result)[0]);
+    });
+  });
+};
+
+export const getUserStatsByTournament = (
+  connection: Client,
+  userId: User['id'],
+  tournamemtId: Tournament['id'],
+) => {
+  const sql = `
+    SELECT u.id, u.name, tpr.kills, tpr.deaths, tpr.points
+    FROM users as u
+    LEFT JOIN tournaments_per_user as tpr ON tpr.user_id = u.id
+    WHERE u.id = ${userId} AND tpr.tournament_id = ${tournamemtId}
+    LIMIT 1
+  `;
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(parseResult<UserStats>(result)[0]);
     });
   });
 };

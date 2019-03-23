@@ -10,6 +10,14 @@ export interface User {
   sessionId: string;
 }
 
+export interface UserStats {
+  id: number;
+  name: string;
+  kills: number;
+  deaths: number;
+  points: number;
+}
+
 export interface Pretender {
   tournament_id: number;
   user_id: number;

@@ -10,8 +10,6 @@
 `curl -v -d '{"username":"andrew", "password":"GiveMeMyBestShot", "sessionId": "mySession"}' -H "Content-Type: application/json" -X POST http://localhost:3002/api/register`
 
 ###USER
-####UPDATE_STATS
-`curl -v -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer 123456789" --request POST --data '{"deaths":2, "kills":5, "points":1000}' http://127.0.0.1:3002/api/user/set`
 
 ###ACHIEVEMENT
 ####LIST
@@ -29,3 +27,12 @@
 
 ###LIST
 `curl -v -H "Accept: application/json" -H "Content-Type: application/json" http://127.0.0.1:3002/api/tournament/list`
+
+###PRETENDERS
+`curl -v -H "Accept: application/json" -H "Content-Type: application/json" --request GET http://localhost:3002/api/tournament/pretenders`
+
+###GET STATS
+`curl -v -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer 123456789" http://127.0.0.1:3002/api/user/tournament/1/stats`
+
+###UPDATE_STATS
+`curl -v -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer 12345678" --request POST --data '{"deaths":20, "kills":50, "points":1}' http://127.0.0.1:3002/api/user/tournament/1/stats`
