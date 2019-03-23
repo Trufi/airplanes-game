@@ -7,6 +7,10 @@ export const mapMap = <K, V, R>(m: Map<K, V>, cb: (v: V, k: K) => R): R[] => {
   return res;
 };
 
+export const mapToArray = <K, V>(m: Map<K, V>): V[] => {
+  return mapMap(m, (v) => v);
+};
+
 export const findMap = <K, V>(m: Map<K, V>, cb: (v: V, k: K) => boolean): V | undefined => {
   for (const [k, v] of m) {
     const res = cb(v, k);

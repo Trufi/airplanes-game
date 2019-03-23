@@ -11,7 +11,7 @@ import { unpackMessage } from './messages/unpack';
 import * as config from '../config';
 import * as api from './services/main';
 import { mapMap } from '../utils';
-import { restartInSeconds } from './games/game';
+import * as game from './games/game';
 
 const port = 3001;
 
@@ -59,10 +59,11 @@ url = url.replace('https://', '');
 
 const state = createState(
   {
-    maxPlayers: 30,
+    maxPlayers: 1,
     city: 'nsk',
     type: 'dm',
     url,
+    duration: Number.MAX_SAFE_INTEGER,
   },
   time(),
 );
@@ -70,17 +71,16 @@ const state = createState(
 console.log(
   `Start game server with url: ${state.url}, type: ${state.type}, city: ${
     state.city
-  }, maxPlayers: ${state.maxPlayers}, main server url: ${config.mainServer.url}`,
+  }, maxPlayers: ${state.game.maxPlayers}, main server url: ${config.mainServer.url}`,
 );
 
 app.get('/state', (_req, res) => {
   const result = {
     city: state.city,
     type: state.type,
-    maxPlayers: state.maxPlayers,
     url: state.url,
-    connections: mapMap(state.connections.map, (c) => c),
-    game: state.game,
+    connections: mapMap(state.connections.map, ({ id, status }) => ({ id, status })),
+    game: game.debugInfo(state.game),
   };
   res.send(JSON.stringify(result));
 });
@@ -91,7 +91,7 @@ app.get('/restart/:sec', (req, res) => {
     const seconds = Number(req.params.sec);
     if (seconds && seconds > 0) {
       console.log(`Restart game after ${seconds} seconds`);
-      executeCmd(restartInSeconds(state.game, seconds));
+      executeCmd(game.restartInSeconds(state.game, seconds));
       return res.sendStatus(200);
     }
   }
@@ -187,14 +187,19 @@ const gameLoop = () => {
 gameLoop();
 
 const notifyMainServer = () => {
-  const { url, type, city, maxPlayers } = state;
+  const {
+    url,
+    type,
+    city,
+    game: { maxPlayers, players },
+  } = state;
 
   api
     .notify({
       url,
       type,
       city,
-      players: state.game.players.size,
+      players: players.size,
       maxPlayers,
     })
     .catch((err) => {

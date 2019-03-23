@@ -23,6 +23,11 @@ export interface ObserverConnection {
   status: 'observer';
   id: number;
   socket: ws;
+
+  /**
+   * Этот id присылает нам главный сервер
+   */
+  userId: number;
   name: string;
 }
 
@@ -64,6 +69,7 @@ export interface GamePlayer {
    * id равен connectionId
    */
   id: number;
+  userId: number;
   name: string;
   bodyId: number;
   live: boolean;
@@ -77,6 +83,7 @@ export interface GameObserver {
    * id равен connectionId
    */
   id: number;
+  userId: number;
   name: string;
 }
 
@@ -92,12 +99,12 @@ export interface GameState {
   };
   startTime: number;
   duration: number;
+  maxPlayers: number;
 }
 
 export interface State {
   type: GameType;
   url: string;
-  maxPlayers: number;
   city: string;
   connections: ConnectionsState;
   game: GameState;

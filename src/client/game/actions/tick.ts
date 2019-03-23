@@ -16,7 +16,7 @@ export const tick = (state: State, time: number) => {
   state.time = time;
 
   // Если время игры вышло, то ничего не делаем
-  if (state.serverEndTime > state.time) {
+  if (state.time > state.serverEndTime) {
     return;
   }
 

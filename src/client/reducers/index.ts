@@ -40,6 +40,8 @@ export const message = (appState: AppState, msg: AnyServerMsg): Cmd => {
       return startData(appState, msg);
     case 'startObserverData':
       return startObserverData(appState, msg);
+    case 'gameJoinFail':
+      return gameJoinFail(appState, msg);
   }
 };
 
@@ -57,4 +59,9 @@ const startObserverData = (appState: AppState, msg: ServerMsg['startObserverData
   appState.type = 'observer';
   appState.tryJoin = undefined;
   startObserver(appState, msg);
+};
+
+const gameJoinFail = (appState: AppState, _msg: ServerMsg['gameJoinFail']): Cmd => {
+  appState.tryJoin = undefined;
+  return cmd.renderUI();
 };

@@ -13,6 +13,7 @@ describe('reducers', () => {
         type: 'dm',
         maxPlayers: 30,
         city: 'nsk',
+        duration: 0,
       },
       0,
     );

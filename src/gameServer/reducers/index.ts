@@ -36,13 +36,16 @@ export const authConnection = (
     return;
   }
 
-  console.log(
-    `User (name: ${name}, userId: ${userId}, connectionId: ${connectionId}) as ${joinType}`,
-  );
-
   if (joinType === 'player') {
-    // TODO: добавить проверку на возможность добавить пользователя в игру
-    // Что-нибудь вроде game.canJoinPlayer
+    const can = game.canJoinPlayer(state.game, userId);
+    if (!can) {
+      console.log(`User userId: ${userId} game join fail`);
+      return cmd.sendMsg(connection.id, msg.gameJoinFail());
+    }
+
+    console.log(
+      `User (name: ${name}, userId: ${userId}, connectionId: ${connectionId}) as ${joinType}`,
+    );
 
     state.connections.map.set(connection.id, {
       status: 'player',
@@ -52,7 +55,7 @@ export const authConnection = (
       name,
     });
 
-    return game.joinPlayer(state.game, connection.id, name);
+    return game.joinPlayer(state.game, connection.id, userId, name);
   }
 
   if (joinType === 'observer') {
@@ -60,10 +63,11 @@ export const authConnection = (
       status: 'observer',
       id: connection.id,
       socket: connection.socket,
+      userId,
       name,
     });
 
-    return game.joinObserver(state.game, connection.id, name);
+    return game.joinObserver(state.game, connection.id, userId, name);
   }
 };
 
@@ -166,6 +170,10 @@ export const connectionLost = (state: State, connectionId: number): Cmd => {
   if (!connection) {
     return;
   }
+  console.log(
+    `Connection lost id: ${connection.id}, userId: ${connection.status !== 'initial' &&
+      connection.userId} status: ${connection.status}`,
+  );
   state.connections.map.delete(connectionId);
 
   switch (connection.status) {

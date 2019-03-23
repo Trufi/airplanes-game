@@ -8,19 +8,19 @@ export const createState = (
     type: GameType;
     maxPlayers: number;
     city: string;
+    duration: number;
   },
   time: number,
 ): State => {
-  const { url, type, maxPlayers, city } = settings;
+  const { url, type, maxPlayers, city, duration } = settings;
   return {
     url,
     type,
-    maxPlayers,
     city,
     connections: {
       map: new Map(),
       nextId: 1,
     },
-    game: game.createGameState(time),
+    game: game.createGameState(time, maxPlayers, duration),
   };
 };

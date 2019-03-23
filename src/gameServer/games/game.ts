@@ -3,17 +3,30 @@ import * as vec4 from '@2gis/gl-matrix/vec4';
 import * as quat from '@2gis/gl-matrix/quat';
 import { Cmd, cmd, union } from '../commands';
 import { msg, pbfMsg } from '../messages';
-import { findMap, clamp, mapMap, vec2SignedAngle } from '../../utils';
+import { findMap, clamp, mapMap, vec2SignedAngle, mapToArray } from '../../utils';
 import { ClientMsg } from '../../client/messages';
 import * as config from '../../config';
 import { updatePointsByType } from './calcPoints';
 import { GameState, Body, GamePlayer, GameObserver } from '../types';
 
+export const debugInfo = (state: GameState) => {
+  const { time, bodies, players, observers, startTime, duration, maxPlayers } = state;
+  return {
+    time,
+    bodies: mapToArray(bodies.map),
+    players: mapToArray(players),
+    observers: mapToArray(observers),
+    startTime,
+    duration,
+    maxPlayers,
+  };
+};
+
 const tickBodyRecipientIds = (gameState: GameState) => {
   return [...mapMap(gameState.players, (p) => p.id), ...mapMap(gameState.observers, (o) => o.id)];
 };
 
-export const createGameState = (time: number): GameState => {
+export const createGameState = (time: number, maxPlayers: number, duration: number): GameState => {
   return {
     prevTime: time,
     time,
@@ -28,7 +41,8 @@ export const createGameState = (time: number): GameState => {
       time: 0,
     },
     startTime: time,
-    duration: 0,
+    duration,
+    maxPlayers,
   };
 };
 
@@ -100,13 +114,22 @@ export const tick = (game: GameState, time: number): Cmd => {
   return union(cmds);
 };
 
-export const joinPlayer = (game: GameState, id: number, name: string): Cmd => {
+export const canJoinPlayer = (game: GameState, userId: number) => {
+  if (game.players.size >= game.maxPlayers) {
+    return false;
+  }
+  const hasSamePlayer = findMap(game.players, (p) => p.userId === userId);
+  return !hasSamePlayer;
+};
+
+export const joinPlayer = (game: GameState, id: number, userId: number, name: string): Cmd => {
   const body = createAirplane(game.bodies.nextId, id);
   game.bodies.nextId++;
   game.bodies.map.set(body.id, body);
 
   const gamePlayer: GamePlayer = {
     id,
+    userId,
     bodyId: body.id,
     name,
     live: true,
@@ -225,9 +248,10 @@ export const updatePlayerChanges = (
   return union(cmds);
 };
 
-export const joinObserver = (game: GameState, id: number, name: string): Cmd => {
+export const joinObserver = (game: GameState, id: number, userId: number, name: string): Cmd => {
   const gameObserver: GameObserver = {
     id,
+    userId,
     name,
   };
   game.observers.set(id, gameObserver);
