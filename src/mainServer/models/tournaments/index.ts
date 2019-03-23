@@ -27,7 +27,16 @@ export const selectTournamentById = (
   tournamentId: Tournament['id'],
 ): Promise<Tournament> => {
   const sql = `
-    SELECT id
+    SELECT
+     t.id,
+     t.name,
+     t.machine_name,
+     t.description,
+     t.start_on,
+     t.duration_min,
+     t.input_count,
+     t.output_count,
+     t.is_grand_final
     FROM tournament as t
     WHERE t.id = ${tournamentId}
     LIMIT 1
