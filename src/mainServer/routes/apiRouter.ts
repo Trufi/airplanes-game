@@ -16,7 +16,7 @@ import { getAchievements, getOwnAchievements, setAchievements } from '../models/
 import { State } from '../types';
 import { setAccessAllowOrigin } from './cors';
 import { mapMap } from '../../utils';
-import { GamelistResponse } from '../types/api';
+import { GamelistResponse, TournamentListResponse } from '../types/api';
 import { getPretenders, getTournamentList } from '../models/tournaments';
 import { Pretender, Tournament, User } from '../models/types';
 
@@ -248,9 +248,7 @@ export function applyApiRouter(app: Express, state: State) {
       getUserStatsByTournament(connection, id, tournamentId)
         .then((stats) => {
           connection.end().then(() => {
-            return res.status(200).send({
-              stats,
-            });
+            return res.status(200).send({ stats });
           });
         })
         .catch((err) => {
@@ -317,9 +315,10 @@ export function applyApiRouter(app: Express, state: State) {
 
     const connection = connectionDB();
     getTournamentList(connection)
-      .then((result: Tournament[]) => {
+      .then((tournaments: Tournament[]) => {
         connection.end().then(() => {
-          res.send({ tournaments: result });
+          const result: TournamentListResponse = { tournaments };
+          res.send(result);
         });
       })
       .catch((err: any) => {
