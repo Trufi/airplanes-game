@@ -10,3 +10,10 @@
   margin-bottom: 27px;
   margin-right: 20px;
 }
+
+.deathNotesWrapper {
+  position: absolute;
+  top: 30%;
+  left: 20px;
+  overflow: hidden;
+}

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as THREE from 'three';
 import { AppState } from '../types';
 import { PlayerLabel } from './playerLabel';
-import { DeathNotes } from './deathNotes';
+import { DeathNotes } from './DeathNotes';
 import { ExecuteCmd } from '../commands/execute';
 import { Debug } from './debug';
 import { ObserverList } from './observerList';

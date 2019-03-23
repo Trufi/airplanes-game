@@ -5,8 +5,8 @@ import { PlayerLabel } from '../playerLabel';
 import { Debug } from '../debug';
 import { Aim } from '../aim';
 import { FireButton } from '../FireButton';
-import { DeathNotes } from '../deathNotes';
-import { Stick } from '../stick';
+import { DeathNotes } from '../DeathNotes';
+import { Stick } from '../Stick';
 import { ExecuteCmd, executeCmd } from '../../commands/execute';
 import { cmd } from '../../commands';
 import { msg } from '../../messages/index';
@@ -85,7 +85,9 @@ export class Game extends React.Component<Props, {}> {
           touchAction: 'none',
         }}
       >
-        <DeathNotes state={game} />
+        <div className={styles.deathNotesWrapper}>
+          <DeathNotes state={game} />
+        </div>
         <div>{playerNames}</div>
         <div>{playerArrows}</div>
         {timeToRestart >= 0 && (

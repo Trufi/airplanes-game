@@ -5,6 +5,7 @@ import { AppState } from '../../types';
 import { getList } from '../../services/game';
 import { GamelistResponse } from '../../../mainServer/types/api';
 import styles from './index.css';
+import classNames from 'classnames';
 
 interface State {
   gamelist: GamelistResponse;
@@ -35,6 +36,14 @@ export class GameSelect extends React.Component<Props, State> {
 
   public render() {
     const { gamelist } = this.state;
+    const CITY_NAMES_MAP: any = {
+      nsk: 'Novosibirsk',
+      omsk: 'Omsk',
+      tomsk: 'Tomsk',
+      barnaul: 'Barnaul',
+      kemerovo: 'Kemerovo',
+      krasnoyarsk: 'Krasnoyarsk',
+    };
 
     return (
       <div className={styles.container}>
@@ -42,18 +51,26 @@ export class GameSelect extends React.Component<Props, State> {
           {gamelist.length === 0 ? (
             <div>These aren't the games you're looking for.</div>
           ) : (
-            gamelist.map(({ url, type, players, maxPlayers, city }, i) => (
-              <div key={i} className={styles.gameItem} onClick={() => this.gameSelected(url)}>
-                <div className={styles.itemRounded}>
-                  <div>
-                    {city} {type} {players}/{maxPlayers}
+            gamelist.map(({ url, players, maxPlayers, city }, i) => {
+              const cityName = CITY_NAMES_MAP[city];
+              const iconClass = classNames({
+                [styles.icon]: true,
+                [styles[city]]: true,
+              });
+
+              return (
+                <div key={i} className={styles.gameItem} onClick={() => this.gameSelected(url)}>
+                  <div className={styles.itemRounded}>
+                    <div className={iconClass} />
+                  </div>
+                  <div className={styles.cityName}>
+                    {cityName}
+                    <br />
+                    {players}/{maxPlayers}
                   </div>
                 </div>
-                <div className={styles.obsLink} onClick={(ev) => this.gameObserve(ev, url)}>
-                  Observer
-                </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>
@@ -69,13 +86,13 @@ export class GameSelect extends React.Component<Props, State> {
     };
   };
 
-  private gameObserve = (ev: React.MouseEvent, url: string) => {
-    ev.stopPropagation();
-    this.props.executeCmd(cmd.connectToGameServer(url));
+  // private gameObserve = (ev: React.MouseEvent, url: string) => {
+  //   ev.stopPropagation();
+  //   this.props.executeCmd(cmd.connectToGameServer(url));
 
-    this.props.appState.tryJoin = {
-      url,
-      type: 'observer',
-    };
-  };
+  //   this.props.appState.tryJoin = {
+  //     url,
+  //     type: 'observer',
+  //   };
+  // };
 }

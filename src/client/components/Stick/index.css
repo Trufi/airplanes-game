@@ -1,0 +1,14 @@
+.controlWrapper {
+  background-image: url('/assets/controls/stickOut.png');
+  background-size: cover;
+  width: 107px;
+  height: 107px;
+  opacity: 0.7;
+  border-radius: 50px;
+}
+
+.controlStick {
+  background-image: url('/assets/controls/stickInner.png');
+  background-size: cover;
+  opacity: 0.8;
+}

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as vec2 from '@2gis/gl-matrix/vec2';
-import { State } from '../types';
+import { State } from '../../types';
+import styles from './index.css';
 
 interface Props {
   state: State;
@@ -26,8 +27,8 @@ export class Stick extends React.Component<Props, ComponentState> {
       shiftY: 0,
       originX: 0,
       originY: 0,
-      radius: 50,
-      buttonRadius: 15,
+      radius: 53,
+      buttonRadius: 28,
     };
   }
   public render() {
@@ -118,6 +119,7 @@ export class Stick extends React.Component<Props, ComponentState> {
 
     return (
       <div
+        className={styles.controlWrapper}
         style={{
           pointerEvents: 'none',
           position: 'absolute',
@@ -125,18 +127,17 @@ export class Stick extends React.Component<Props, ComponentState> {
           left: `${originX - radius}px`,
           width: `${radius * 2}px`,
           height: `${radius * 2}px`,
-          border: '1px solid',
           borderRadius: `${radius}px`,
         }}
       >
         <div
+          className={styles.controlStick}
           style={{
             position: 'absolute',
             top: `${radius - buttonRadius - shiftY}px`,
             left: `${radius - buttonRadius + shiftX}px`,
             width: `${buttonRadius * 2}px`,
             height: `${buttonRadius * 2}px`,
-            border: '1px solid',
             borderRadius: `${buttonRadius}px`,
           }}
         />

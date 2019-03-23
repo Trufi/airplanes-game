@@ -1,20 +1,24 @@
 .itemRounded {
   padding: 24px;
-  width: 48px;
-  border: 1px solid black;
-  height: 48px;
+  width: 95px;
+  height: 95px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgb(52, 52, 52);
+  box-shadow: 0 0 64px 5px rgb(88, 214, 97);
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .gameItem {
   display: flex;
   flex-direction: column;
-  width: 98px;
-  margin: 12px;
+  width: auto;
+  margin: 20px 40px;
   margin-bottom: 24px;
+  align-items: center;
 }
 
 .obsLink {
@@ -27,11 +31,67 @@
 .container {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  background-image: url('/assets/mapWeb.png');
+  background-color: rgb(52, 52, 52);
+  background-size: cover;
+  justify-content: center;
 }
 
 .list {
-  padding: 24px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  padding: 48px;
+  width: 100%;
+  flex-wrap: nowrap;
+  overflow: auto;
+}
+
+.cityName {
+  margin-top: 20px;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
+}
+
+.icon {
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.nsk {
+  background-image: url('/assets/cities/nsk.png');
+  width: 42px;
+  height: 64px;
+}
+
+.omsk {
+  background-image: url('/assets/cities/omsk.png');
+  width: 64px;
+  height: 64px;
+}
+
+.tomsk {
+  background-image: url('/assets/cities/tomsk.png');
+  width: 64px;
+  height: 64px;
+}
+
+.barnaul {
+  background-image: url('/assets/cities/barnaul.png');
+  width: 64px;
+  height: 64px;
+}
+
+.kemerovo {
+  background-image: url('/assets/cities/kemerovo.png');
+  width: 64px;
+  height: 55px;
+}
+
+.krasnoyarsk {
+  background-image: url('/assets/cities/krasnoyarsk.png');
+  width: 50px;
+  height: 63px;
 }

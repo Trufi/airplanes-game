@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { State } from '../types';
-import { DeathNote } from '../common/notes';
-import { ObserverState } from '../observer/types';
+import { State } from '../../types';
+import { DeathNote } from '../../common/notes';
+import { ObserverState } from '../../observer/types';
+import styles from './index.css';
 
 const Note = ({ state, note }: { state: State | ObserverState; note: DeathNote }): JSX.Element => {
   let deadName: string | undefined;
@@ -16,6 +17,7 @@ const Note = ({ state, note }: { state: State | ObserverState; note: DeathNote }
   }
 
   let causeName: string | undefined;
+
   if (state.type === 'game' && note.causePlayerId === state.player.id) {
     causeName = state.player.name;
   } else {
@@ -30,9 +32,9 @@ const Note = ({ state, note }: { state: State | ObserverState; note: DeathNote }
   }
 
   return (
-    <div>
-      <span style={{ color: '#ff0000' }}>{causeName}</span> kill{' '}
-      <span style={{ color: '#0000ff' }}>{deadName}</span>
+    <div className={styles.container}>
+      <span className={styles.killer}>{causeName}</span>&nbsp;➔&nbsp;
+      <span className={styles.deadMan}>{deadName}</span>
     </div>
   );
 };
@@ -46,14 +48,7 @@ export class DeathNotes extends React.Component<Props, {}> {
     const { state } = this.props;
 
     return (
-      <div
-        style={{
-          position: 'absolute',
-          top: '0',
-          right: '0',
-          zIndex: 200,
-        }}
-      >
+      <div>
         {state.notes.notes.map((note, i) => (
           <Note note={note} state={state} key={i} />
         ))}
