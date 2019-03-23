@@ -27,6 +27,24 @@ const app = express();
 // health check для k8s
 app.get('/', (_req, res) => res.sendStatus(200));
 
+// Metrics
+app.get('/metrics', (_, res) => {
+  const game = state.games.map.get(1);
+  if (!game) {
+    return res.sendStatus(500);
+  }
+  let players = 0;
+  state.games.map.forEach((game) => {
+    players += game.players.size;
+  });
+  res.send(`
+    <pre style="word-wrap: break-word; white-space: pre-wrap;">
+# HELP sky_game_active_players Active players in game
+# TYPE sky_game_active_players gauge
+sky_game_active_players ${players || 0}</pre>
+    `);
+});
+
 const server = app.listen(port, () => console.log(`Game server listen on ${port} port`));
 
 const wsServer = new ws.Server({
