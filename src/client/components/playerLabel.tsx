@@ -11,11 +11,12 @@ interface Props {
   camera: CameraState;
   health: number;
   frustum: THREE.Frustum;
+  observer?: boolean;
 }
 
 const v = new THREE.Vector3();
 
-export const PlayerLabel = ({ name, position, camera, health, frustum }: Props) => {
+export const PlayerLabel = ({ name, position, camera, health, frustum, observer }: Props) => {
   v.fromArray(position);
 
   if (!frustum.containsPoint(v)) {
@@ -23,7 +24,10 @@ export const PlayerLabel = ({ name, position, camera, health, frustum }: Props) 
   }
 
   const distance = vec3.distance(position, camera.position);
-  const near = distance < config.weapon.distance;
+
+  // В обсервер моде всегда показывае полную информацию
+  const near = observer || distance < config.weapon.distance;
+
   const color = near ? '#ff0000' : 'rgba(128, 128, 128, 0.3)';
 
   v.project(camera.object);

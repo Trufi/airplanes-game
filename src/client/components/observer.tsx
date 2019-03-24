@@ -17,7 +17,7 @@ const projScreenMatrix = new THREE.Matrix4();
 export class Observer extends React.Component<Props, {}> {
   public render() {
     const {
-      appState: { observer },
+      appState: { observer, query },
     } = this.props;
 
     if (!observer) {
@@ -37,8 +37,6 @@ export class Observer extends React.Component<Props, {}> {
 
     players.forEach(({ id, name, bodyId }) => {
       const targetBody = bodies.get(bodyId);
-
-      // Не показываем подпись на своим самолетом
       if (!targetBody) {
         return;
       }
@@ -51,6 +49,7 @@ export class Observer extends React.Component<Props, {}> {
           camera={camera}
           health={targetBody.health}
           frustum={frustum}
+          observer={true}
         />,
       );
     });
@@ -64,15 +63,17 @@ export class Observer extends React.Component<Props, {}> {
       >
         <DeathNotes state={observer} />
         <div>{playerNames}</div>
-        <Debug
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            zIndex: 400,
-          }}
-          state={observer}
-        />
+        {query.debug && (
+          <Debug
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              zIndex: 400,
+            }}
+            state={observer}
+          />
+        )}
         <ObserverList observer={observer} />
       </div>
     );

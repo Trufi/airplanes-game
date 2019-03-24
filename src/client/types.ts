@@ -170,4 +170,5 @@ export interface AppState {
     url: string;
     type: JoinGameType;
   };
+  query: { [key: string]: string | boolean };
 }
