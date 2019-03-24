@@ -10,6 +10,7 @@ import { updateWeaponAnimation } from './weapon';
 import { ObserverState } from '../../observer/types';
 import { interpolateTimeShift, updateSmoothPing } from '../../common/serverTime';
 import { updateDamageIndicator } from './damageIndicator';
+import { clamp } from '../../../utils';
 
 export const tick = (state: State, time: number) => {
   state.prevTime = state.time;
@@ -59,19 +60,17 @@ export const updateNonPhysicBody = (state: State | ObserverState, body: NonPhysi
 
   // С сервера всегда приходит последний стейт, поэтому они могут повторятся,
   // если у другого игрока зависла игра
-  if (startStep.time - endStep.time === 0) {
-    return;
+  if (startStep.time - endStep.time !== 0) {
+    // Чистим массив от старых steps
+    body.steps.splice(0, startIndex);
+    const t = (interpolationTime - startStep.time) / (endStep.time - startStep.time);
+
+    vec3.lerp(body.position, startStep.position, endStep.position, t);
+    quat.slerp(body.rotation, startStep.rotation, endStep.rotation, t);
+
+    body.weapon.lastShotTime = endStep.lastShotTime;
+    updateWeaponAnimation(body.weapon, interpolationTime);
   }
-
-  // Чистим массив от старых steps
-  body.steps.splice(0, startIndex);
-  const t = (interpolationTime - startStep.time) / (endStep.time - startStep.time);
-
-  vec3.lerp(body.position, startStep.position, endStep.position, t);
-  quat.slerp(body.rotation, startStep.rotation, endStep.rotation, t);
-
-  body.weapon.lastShotTime = endStep.lastShotTime;
-  updateWeaponAnimation(body.weapon, interpolationTime);
 
   view.updateNonPhysicMesh(body);
   view.updateBullet(body.weapon.left, body);
@@ -97,7 +96,7 @@ const velocityVector = [0, 0, 0];
 const rotation = [0, 0, 0, 1];
 
 const updatePhysicBody = (state: State, body: PhysicBodyState) => {
-  const dt = state.time - state.prevTime;
+  const dt = clamp(state.time - state.prevTime, 0, 100);
 
   quat.identity(rotation);
   quat.rotateX(rotation, rotation, body.velocityDirection[0] * dt);
