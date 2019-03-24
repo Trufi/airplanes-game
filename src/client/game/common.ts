@@ -6,8 +6,14 @@ import * as config from '../../config';
 import { createBoostState } from './actions/boost';
 import { createAnimation } from './animations';
 
-export const createPlayer = (data: PlayerData): PlayerState =>
-  pick(data, ['id', 'bodyId', 'name', 'live', 'kills', 'deaths', 'points']);
+export const createPlayer = (data: PlayerData): PlayerState => {
+  const player = pick(data, ['id', 'bodyId', 'name', 'live', 'kills', 'deaths', 'points']);
+
+  // Обрезаем слишком длинные ники
+  player.name = player.name.slice(0, 15);
+
+  return player;
+};
 
 export const addBody = (
   state: {
