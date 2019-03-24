@@ -1,4 +1,3 @@
-import { set } from 'js-cookie';
 import { Cmd, ExistCmd } from '.';
 import { renderUI } from '../ui';
 import { connect, sendMessage, sendPbfMessage } from '../socket';
@@ -26,9 +25,6 @@ const executeOneCmd = (cmd: ExistCmd) => {
       break;
     case 'sendPbfMsg':
       sendPbfMessage(cmd.msg);
-      break;
-    case 'saveTokenToCookie':
-      set('token', cmd.token, { expires: 7 });
       break;
     case 'renderUI':
       renderUI(appState, executeCmd);

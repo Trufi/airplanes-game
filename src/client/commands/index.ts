@@ -16,11 +16,6 @@ const sendPbfMsg = (msg: ArrayBuffer) => ({
   msg,
 });
 
-const saveTokenToCookie = (token: string) => ({
-  type: 'saveTokenToCookie' as 'saveTokenToCookie',
-  token,
-});
-
 const renderUI = () => ({
   type: 'renderUI' as 'renderUI',
 });
@@ -29,7 +24,6 @@ export const cmd = {
   connectToGameServer,
   sendMsg,
   sendPbfMsg,
-  saveTokenToCookie,
   renderUI,
 };
 

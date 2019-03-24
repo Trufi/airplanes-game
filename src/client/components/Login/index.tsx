@@ -2,7 +2,7 @@ import * as React from 'react';
 import { cmd } from '../../commands';
 import { ExecuteCmd } from '../../commands/execute';
 import { userAuth, userLogin, userRegister } from '../../services/user';
-import { get, set } from 'js-cookie';
+import * as cookie from 'js-cookie';
 import { AppState } from '../../types';
 import styles from './index.css';
 import classNames from 'classnames';
@@ -31,7 +31,12 @@ export class Login extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
-    const token = get('token');
+    const login = this.inputNameRef.current;
+    if (login) {
+      login.focus();
+    }
+
+    const token = cookie.get('token');
     if (token) {
       userAuth({ token })
         .then(this.userAuthSignal)
@@ -61,14 +66,18 @@ export class Login extends React.Component<Props, State> {
               onChange={this.handleChange}
               ref={this.inputNameRef}
               type='text'
-              onKeyPress={this.onKeyPress}
+              onKeyPress={this.onLoginKeyPress}
+              maxLength={30}
+              autoFocus
+              placeholder={'Nickname'}
             />
             <input
               className={styles.input}
               onChange={this.handleChange}
               ref={this.inputPassRef}
               type='password'
-              onKeyPress={this.onKeyPress}
+              onKeyPress={this.onPasswordKeyPress}
+              placeholder={'Password'}
             />
           </div>
           <button className={buttonClass} onClick={this.submit}>
@@ -133,7 +142,7 @@ export class Login extends React.Component<Props, State> {
   };
 
   private userAuthSignal = (data: any) => {
-    set('token', data.user.token);
+    cookie.set('token', data.user.token, { expires: 7 });
     this.notifySignal(data);
   };
 
@@ -147,7 +156,16 @@ export class Login extends React.Component<Props, State> {
     executeCmd(cmd.renderUI());
   };
 
-  private onKeyPress = (ev: React.KeyboardEvent<HTMLInputElement>) => {
+  private onLoginKeyPress = (ev: React.KeyboardEvent<HTMLInputElement>) => {
+    if (ev.which === 13) {
+      const password = this.inputPassRef.current;
+      if (password) {
+        password.focus();
+      }
+    }
+  };
+
+  private onPasswordKeyPress = (ev: React.KeyboardEvent<HTMLInputElement>) => {
     if (ev.which === 13) {
       this.submit();
     }
