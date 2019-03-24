@@ -155,6 +155,8 @@ export interface State {
   damageIndicator: DamageIndicatorState;
 }
 
+export type JoinGameType = 'player' | 'observer' | 'bot';
+
 // TODO: Разбить на несколько
 export interface AppState {
   type: 'login' | 'gameSelect' | 'game' | 'observer';
@@ -166,6 +168,6 @@ export interface AppState {
   observer?: ObserverState;
   tryJoin?: {
     url: string;
-    type: 'player' | 'observer' | 'bot';
+    type: JoinGameType;
   };
 }

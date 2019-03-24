@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { cmd } from '../../commands';
 import { ExecuteCmd } from '../../commands/execute';
 import { AppState } from '../../types';
 import { getList } from '../../services/game';
 import { GamelistResponse } from '../../../mainServer/types/api';
 import styles from './index.css';
 import classNames from 'classnames';
+import { joinGame } from '../../reducers';
 
 interface State {
   gamelist: GamelistResponse;
@@ -93,12 +93,7 @@ export class GameSelect extends React.Component<Props, State> {
   }
 
   private gameSelected = (url: string) => {
-    this.props.executeCmd(cmd.connectToGameServer(url));
-
-    this.props.appState.tryJoin = {
-      url,
-      type: 'player',
-    };
+    this.props.executeCmd(joinGame(this.props.appState, url));
   };
 
   private setGameMode = (mode: string) => {
@@ -106,14 +101,4 @@ export class GameSelect extends React.Component<Props, State> {
       gameMode: mode,
     });
   };
-
-  // private gameObserve = (ev: React.MouseEvent, url: string) => {
-  //   ev.stopPropagation();
-  //   this.props.executeCmd(cmd.connectToGameServer(url));
-
-  //   this.props.appState.tryJoin = {
-  //     url,
-  //     type: 'observer',
-  //   };
-  // };
 }

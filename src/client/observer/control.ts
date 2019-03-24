@@ -304,7 +304,7 @@ export const up = (state: ControlState, dt: number) => {
   const { target, orbit, position } = state;
 
   if (target) {
-    addPitch(state, -keyRotateDelta * dt);
+    addPitch(state, keyRotateDelta * dt);
   } else {
     setForwardOnPlane(temp, orbit);
     vec3.scale(temp, temp, keyDragDelta * dt);
@@ -316,7 +316,7 @@ export const down = (state: ControlState, dt: number) => {
   const { target, orbit, position } = state;
 
   if (target) {
-    addPitch(state, keyRotateDelta * dt);
+    addPitch(state, -keyRotateDelta * dt);
   } else {
     setForwardOnPlane(temp, orbit);
     vec3.scale(temp, temp, -keyDragDelta * dt);

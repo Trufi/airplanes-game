@@ -6,6 +6,17 @@ import { message as gameMessage } from '../game/actions/message';
 import { message as observerMessage } from '../observer/reducer';
 import { start as startGame } from '../game';
 import { start as startObserver } from '../observer/start';
+import { parseQuery } from '../utils';
+
+export const joinGame = (appState: AppState, url: string): Cmd => {
+  const query = parseQuery();
+  const type = query.observer ? 'observer' : 'player';
+  appState.tryJoin = {
+    url,
+    type,
+  };
+  return cmd.connectToGameServer(url);
+};
 
 export const connected = (appState: AppState): Cmd => {
   if (appState.type !== 'gameSelect' || !appState.tryJoin || !appState.token) {

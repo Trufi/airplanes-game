@@ -103,3 +103,15 @@ export const p90 = (sample: number[]) => {
 export const projection = (a: number[], b: number[]) => {
   return vec3.dot(a, b) / vec3.len(b);
 };
+
+export const parseQuery = () => {
+  const res: { [key: string]: string | boolean } = {};
+  location.search
+    .slice(1)
+    .split('&')
+    .map((str) => str.split('='))
+    .forEach((couple) => {
+      res[couple[0]] = couple[1] || true;
+    });
+  return res;
+};

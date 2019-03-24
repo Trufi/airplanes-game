@@ -19,3 +19,7 @@ GAME_SERVER_URL=localhost:3001
 ```
 MAIN_SERVER_URL=http://localhost:3002
 ```
+
+# URLs
+
+Чтобы зайти как обсервер, нужно в URL добавить GET-параметр `?observer`, например, https://sky.2gis.ru?observer
