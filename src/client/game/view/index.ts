@@ -1,11 +1,10 @@
 import * as THREE from 'three';
-import GLTFLoader from 'three-gltf-loader';
-import * as config from '../../config';
-import { degToRad } from '../utils';
-import { BodyState, CameraState, NonPhysicBodyState, PhysicBodyState } from '../types';
-import { TextureLoader } from 'three';
-import { updateAnimation } from './animations';
+import * as config from '../../../config';
+import { degToRad } from '../../utils';
+import { BodyState, CameraState, NonPhysicBodyState, PhysicBodyState } from '../../types';
+import { updateAnimation } from '../animations';
 import { initMap, updateMap, invalidateMapSize } from './map';
+import { getGltfLoader } from './gltfLoader';
 
 let renderer: THREE.WebGLRenderer | undefined;
 export const createRenderer = () => {
@@ -19,8 +18,7 @@ export const createRenderer = () => {
   return renderer;
 };
 
-const gltfLoader = new GLTFLoader();
-const textureLoader = new TextureLoader();
+const textureLoader = new THREE.TextureLoader();
 const airplane_palettes = [
   [
     {
@@ -59,44 +57,51 @@ const group_apply = (group: any, model: THREE.Object3D) => {
 export const createMesh = (id: number) => {
   const mesh = new THREE.Object3D();
   const paletteId = id % airplane_palettes.length;
-  gltfLoader.load('./assets/new.glb', (gltf) => {
-    const scene = gltf.scene;
-    const airplane_model = scene.getObjectByName('Самолет');
-    if (airplane_model) {
-      airplane_palettes[paletteId].forEach((group) => {
-        group_apply(group, airplane_model);
-      });
 
-      textureLoader.load('./assets/propeller.jpg', (texture) => {
-        const circleGeom = new THREE.CircleGeometry(config.airplane.propeller.radius, 32);
-        const circleMaterial = new THREE.MeshBasicMaterial({
-          map: texture,
-          opacity: config.airplane.propeller.opacity,
-          side: THREE.DoubleSide,
+  getGltfLoader().then((loader) =>
+    loader.load('./assets/new.glb', (gltf) => {
+      const scene = gltf.scene;
+      const airplane_model = scene.getObjectByName('Самолет');
+      if (airplane_model) {
+        airplane_palettes[paletteId].forEach((group) => {
+          group_apply(group, airplane_model);
         });
-        const circle = new THREE.Mesh(circleGeom, circleMaterial);
-        circle.position.set(
-          config.airplane.propeller.x,
-          config.airplane.propeller.y,
-          config.airplane.propeller.z,
+
+        textureLoader.load('./assets/propeller.jpg', (texture) => {
+          const circleGeom = new THREE.CircleGeometry(config.airplane.propeller.radius, 32);
+          const circleMaterial = new THREE.MeshBasicMaterial({
+            map: texture,
+            opacity: config.airplane.propeller.opacity,
+            side: THREE.DoubleSide,
+          });
+          const circle = new THREE.Mesh(circleGeom, circleMaterial);
+          circle.position.set(
+            config.airplane.propeller.x,
+            config.airplane.propeller.y,
+            config.airplane.propeller.z,
+          );
+          circle.onBeforeRender = (_renderer, _scene, _camera, geometry) => {
+            geometry.rotateZ(0.07);
+          };
+
+          airplane_model.add(circle);
+        });
+
+        // размер соответсвует примерно 50 метрам!
+        airplane_model.scale.set(
+          config.airplane.scale,
+          config.airplane.scale,
+          config.airplane.scale,
         );
-        circle.onBeforeRender = (_renderer, _scene, _camera, geometry) => {
-          geometry.rotateZ(0.07);
-        };
+        airplane_model.rotateX(config.airplane.initRotation.x);
+        airplane_model.rotateY(config.airplane.initRotation.y);
+        airplane_model.rotateZ(config.airplane.initRotation.z);
 
-        airplane_model.add(circle);
-      });
-
-      // размер соответсвует примерно 50 метрам!
-      airplane_model.scale.set(config.airplane.scale, config.airplane.scale, config.airplane.scale);
-      airplane_model.rotateX(config.airplane.initRotation.x);
-      airplane_model.rotateY(config.airplane.initRotation.y);
-      airplane_model.rotateZ(config.airplane.initRotation.z);
-
-      scene.add(airplane_model);
-      mesh.add(scene);
-    }
-  });
+        scene.add(airplane_model);
+        mesh.add(scene);
+      }
+    }),
+  );
 
   return mesh;
 };

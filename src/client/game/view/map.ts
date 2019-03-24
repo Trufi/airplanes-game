@@ -1,6 +1,6 @@
 import * as vec3 from '@2gis/gl-matrix/vec3';
-import * as config from '../../config';
-import { CameraState } from '../types';
+import * as config from '../../../config';
+import { CameraState } from '../../types';
 
 let map: import('@2gis/jakarta').Map | undefined;
 let jakartaModule: typeof import('@2gis/jakarta') | undefined;
@@ -10,7 +10,7 @@ export const initMap = () => {
     return;
   }
 
-  Promise.all([import(/* webpackChunkName: "map" */ '@2gis/jakarta')]).then(([jakarta]) => {
+  import(/* webpackChunkName: "map" */ '@2gis/jakarta').then((jakarta) => {
     jakartaModule = jakarta;
 
     const { Map, Skybox, config: mapConfig } = jakarta;

@@ -11,7 +11,7 @@
     "brace-style": [true, "1tbs", { "allowSingleLine": true }],
     "ter-indent": [false],
     "linebreak-style": [true, "LF"],
-    "ter-max-len": [true, 100, 2],
+    "ter-max-len": [false],
     "no-bitwise": false,
     "indent": [true, "spaces", 2],
     "no-trailing-whitespace": true,
