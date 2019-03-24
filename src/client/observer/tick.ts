@@ -44,6 +44,15 @@ const processPressedKeys = (state: ObserverState) => {
       case 'KeyF':
         control.farther(state.control, dt);
         break;
+      case 'Digit1':
+        control.playerView(state.control);
+        break;
+      case 'Digit2':
+        control.nearView(state.control);
+        break;
+      case 'Digit3':
+        control.topView(state.control);
+        break;
     }
   }
 };

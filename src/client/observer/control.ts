@@ -6,6 +6,7 @@ import * as config from '../../config';
 import { CameraState } from '../types';
 import { degToRad } from '../utils';
 import { clamp } from '../../utils';
+import { updateCamera as updateCameraAsGame } from '../game/actions/tick';
 
 const dragButton = 0; // left button
 const rotateButton = 2; // right button
@@ -23,7 +24,8 @@ export interface ControlState {
   rotation: number;
   distance: number;
 
-  target?: { id: number; position: number[] };
+  target?: { id: number; position: number[]; rotation: number[] };
+  view: boolean;
 
   /**
    * Если есть цель, то эта позиция становится равной позиции цели и не лежит в плоскости карты
@@ -124,6 +126,7 @@ export const enable = (container: HTMLElement): ControlState => {
     startPoint: [0, 0],
     movePoint: [0, 0],
     wheelDelta: 0,
+    view: false,
     handlers: {
       mouseUp: () => {},
       mouseDown: () => {},
@@ -166,6 +169,7 @@ export const setTarget = (state: ControlState, target?: ControlState['target']) 
   if (target === undefined) {
     vec3.copy(state.position, state.planePosition);
     state.distance = state.planeDistance;
+    state.view = false;
   }
 };
 
@@ -185,17 +189,28 @@ const mouse = new THREE.Vector2();
 const startVector = new THREE.Vector3();
 const moveVector = new THREE.Vector3();
 
-const addPitch = (state: ControlState, delta: number) => {
-  state.pitch = clamp(state.pitch + delta, -Math.PI / 2, Math.PI / 2);
+const setPitch = (state: ControlState, x: number) => {
+  state.pitch = clamp(x, -Math.PI / 2, Math.PI / 2);
+  state.view = false;
 };
 
-const addRotation = (state: ControlState, delta: number) => {
-  state.rotation += delta;
+const addPitch = (state: ControlState, delta: number) => setPitch(state, state.pitch + delta);
+
+const setRotation = (state: ControlState, x: number) => {
+  state.rotation = x;
+  state.view = false;
 };
 
-const addDistance = (state: ControlState, delta: number) => {
-  state.distance = Math.max(minDistance, state.distance - delta);
+const addRotation = (state: ControlState, delta: number) =>
+  setRotation(state, state.rotation + delta);
+
+const setDistance = (state: ControlState, x: number) => {
+  state.distance = Math.max(minDistance, x);
+  state.view = false;
 };
+
+const addDistance = (state: ControlState, delta: number) =>
+  setDistance(state, state.distance - delta);
 
 export const updateCamera = (state: ControlState, camera: CameraState) => {
   const {
@@ -207,59 +222,64 @@ export const updateCamera = (state: ControlState, camera: CameraState) => {
     position,
     target,
     planePosition,
+    view: playerView,
   } = state;
 
   if (target) {
     vec3.copy(position, target.position);
   }
 
-  // Обработаем изменение расстояния
-  addDistance(state, state.wheelDelta * 100);
-  state.wheelDelta = 0;
+  if (target && playerView) {
+    updateCameraAsGame(target, camera);
+  } else {
+    // Обработаем изменение расстояния
+    addDistance(state, state.wheelDelta * 100);
+    state.wheelDelta = 0;
 
-  if (action === 'rotate') {
-    const deltaX = ((movePoint[0] - startPoint[0]) * 2 * Math.PI) / container.clientWidth;
-    const deltaY = ((movePoint[1] - startPoint[1]) * 2 * Math.PI) / container.clientHeight;
-    vec2.copy(startPoint, movePoint);
+    if (action === 'rotate') {
+      const deltaX = ((movePoint[0] - startPoint[0]) * 2 * Math.PI) / container.clientWidth;
+      const deltaY = ((movePoint[1] - startPoint[1]) * 2 * Math.PI) / container.clientHeight;
+      vec2.copy(startPoint, movePoint);
 
-    addPitch(state, deltaY);
-    addRotation(state, deltaX);
-  } else if (action === 'drag') {
-    normalizeMousePosition(mouse, startPoint);
-    raycaster.setFromCamera(mouse, camera.object);
-
-    const startIntersect = raycaster.ray.intersectPlane(plane, startVector);
-
-    if (startIntersect !== null) {
-      normalizeMousePosition(mouse, movePoint);
+      addPitch(state, deltaY);
+      addRotation(state, deltaX);
+    } else if (action === 'drag') {
+      normalizeMousePosition(mouse, startPoint);
       raycaster.setFromCamera(mouse, camera.object);
 
-      const moveIntersection = raycaster.ray.intersectPlane(plane, moveVector);
+      const startIntersect = raycaster.ray.intersectPlane(plane, startVector);
 
-      if (moveIntersection !== null) {
-        position[0] += startVector.x - moveVector.x;
-        position[1] += startVector.y - moveVector.y;
+      if (startIntersect !== null) {
+        normalizeMousePosition(mouse, movePoint);
+        raycaster.setFromCamera(mouse, camera.object);
 
-        vec2.copy(startPoint, movePoint);
+        const moveIntersection = raycaster.ray.intersectPlane(plane, moveVector);
+
+        if (moveIntersection !== null) {
+          position[0] += startVector.x - moveVector.x;
+          position[1] += startVector.y - moveVector.y;
+
+          vec2.copy(startPoint, movePoint);
+        }
       }
     }
+
+    // Обновляем orbit
+    quat.rotateX(q1, identity, -state.pitch);
+    quat.rotateZ(q2, identity, state.rotation);
+    quat.multiply(orbit, q2, q1);
+
+    // Обновляем камеру
+    quat.rotateX(camera.rotation, orbit, degToRad(config.camera.pitch));
+
+    // Отодвигаем камеру от самолета
+    vec3.set(shift, 0, state.distance, 0);
+    vec3.transformQuat(shift, shift, orbit);
+    vec3.negate(shift, shift);
+    vec3.add(camera.position, state.position, shift);
+
+    camera.position[2] = Math.max(camera.position[2], 0);
   }
-
-  // Обновляем orbit
-  quat.rotateX(q1, identity, -state.pitch);
-  quat.rotateZ(q2, identity, state.rotation);
-  quat.multiply(orbit, q2, q1);
-
-  // Обновляем камеру
-  quat.rotateX(camera.rotation, orbit, degToRad(config.camera.pitch));
-
-  // Отодвигаем камеру от самолета
-  vec3.set(shift, 0, state.distance, 0);
-  vec3.transformQuat(shift, shift, orbit);
-  vec3.negate(shift, shift);
-  vec3.add(camera.position, state.position, shift);
-
-  camera.position[2] = Math.max(camera.position[2], 0);
 
   if (target) {
     // На самом деле можно использовать только Ray, без камеры и Raycaster
@@ -355,4 +375,22 @@ export const farther = (state: ControlState, dt: number) => {
 
 export const closer = (state: ControlState, dt: number) => {
   addDistance(state, distanceKeyDelta * dt);
+};
+
+export const topView = (state: ControlState) => {
+  setPitch(state, Math.PI / 2);
+  setRotation(state, 0);
+  setDistance(state, 1000000);
+};
+
+export const nearView = (state: ControlState) => {
+  setDistance(state, defaultDistance);
+  setPitch(state, Math.PI / 8);
+};
+
+export const playerView = (state: ControlState) => {
+  if (!state.target) {
+    return;
+  }
+  state.view = true;
 };
