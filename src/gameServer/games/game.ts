@@ -8,6 +8,8 @@ import { ClientMsg } from '../../client/messages';
 import * as config from '../../config';
 import { updatePointsByType } from './calcPoints';
 import { GameState, Body, GamePlayer, GameObserver } from '../types';
+import { createHealPointsState, updateHealPoints, restartHealPoints } from './healPoints';
+import { City } from '../../types';
 
 export const debugInfo = (state: GameState) => {
   const { time, bodies, players, observers, startTime, duration, maxPlayers } = state;
@@ -26,7 +28,12 @@ const tickBodyRecipientIds = (gameState: GameState) => {
   return [...mapMap(gameState.players, (p) => p.id), ...mapMap(gameState.observers, (o) => o.id)];
 };
 
-export const createGameState = (time: number, maxPlayers: number, duration: number): GameState => {
+export const createGameState = (
+  time: number,
+  maxPlayers: number,
+  duration: number,
+  city: City,
+): GameState => {
   return {
     prevTime: time,
     time,
@@ -46,6 +53,7 @@ export const createGameState = (time: number, maxPlayers: number, duration: numb
     tournamentId: -1,
     duration,
     maxPlayers,
+    healPoints: createHealPointsState(city),
   };
 };
 
@@ -106,6 +114,8 @@ export const tick = (game: GameState, time: number): Cmd => {
   // });
 
   const cmds: Cmd[] = [];
+
+  cmds.push(updateHealPoints(game.healPoints, game.time));
 
   cmds.push(cmd.sendPbfMsgTo(tickBodyRecipientIds(game), pbfMsg.tickData(game)));
 
@@ -325,6 +335,8 @@ const restart = (game: GameState): Cmd => {
     player.bodyId = body.id;
     player.live = true;
   });
+
+  restartHealPoints(game.healPoints);
 
   return cmd.sendMsgTo(tickBodyRecipientIds(game), msg.restartData(game));
 };

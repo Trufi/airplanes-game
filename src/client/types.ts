@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { ObserverState } from './observer/types';
 import { NotesState } from './common/notes';
 import { ServerTimeState } from './common/serverTime';
+import { HealPointsState } from './game/actions/healPoints';
 
 export interface BodyStep {
   time: number;
@@ -145,6 +146,9 @@ export interface State {
   camera: CameraState;
 
   bodies: Map<number, BodyState>;
+
+  healPoints: HealPointsState;
+
   serverTime: ServerTimeState;
   pressedKeys: { [key: string]: boolean };
 

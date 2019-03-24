@@ -14,6 +14,7 @@ import { executeCmd } from '../commands/execute';
 import { sendMessage } from '../socket';
 import { msg } from '../messages/index';
 import { tick } from './tick';
+import { createHealPointsState, setHealPointState } from '../game/actions/healPoints';
 
 export const start = (appState: AppState, data: ServerMsg['startObserverData']) => {
   const players: ObserverState['players'] = new Map();
@@ -42,6 +43,7 @@ export const start = (appState: AppState, data: ServerMsg['startObserverData']) 
     origin: [config.origin[0], config.origin[1], 0],
     players,
     bodies,
+    healPoints: createHealPointsState(),
     renderer: view.createRenderer(),
     scene: view.createScene(),
     camera: view.createCamera(),
@@ -63,6 +65,7 @@ export const start = (appState: AppState, data: ServerMsg['startObserverData']) 
   appState.observer = state;
 
   bodies.forEach((body) => addBody(state, body));
+  setHealPointState(state, data.healPoints);
 
   state.callbacks.resize = () => {
     view.resize(state.camera.object, state.renderer);

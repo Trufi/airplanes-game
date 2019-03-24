@@ -1,5 +1,6 @@
 import * as ws from 'ws';
 import { GameType } from '../../types';
+import { HealPointsState } from '../games/healPoints';
 
 export interface InitialConnection {
   status: 'initial';
@@ -103,6 +104,7 @@ export interface GameState {
   tournamentId: number;
   duration: number;
   maxPlayers: number;
+  healPoints: HealPointsState;
 }
 
 export interface State {

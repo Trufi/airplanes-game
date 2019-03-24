@@ -137,3 +137,10 @@ export const animations = {
     cooldown: 20,
   },
 };
+
+export const healPoints = {
+  respawnTime: 30000,
+  healValue: 50,
+  radius: 10000,
+  height: 20000,
+};

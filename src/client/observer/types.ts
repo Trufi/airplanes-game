@@ -3,6 +3,7 @@ import { NotesState } from '../common/notes';
 import { ControlState } from './control';
 import { KeyboardState } from './keyboard';
 import { ServerTimeState } from '../common/serverTime';
+import { HealPointsState } from '../game/actions/healPoints';
 
 export interface ObserverState {
   type: 'observer';
@@ -25,6 +26,7 @@ export interface ObserverState {
   camera: CameraState;
 
   bodies: Map<number, NonPhysicBodyState>;
+  healPoints: HealPointsState;
   serverTime: ServerTimeState;
 
   keyboard: KeyboardState;

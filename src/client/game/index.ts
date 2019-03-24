@@ -13,6 +13,7 @@ import { State, PlayerState, PhysicBodyState } from '../types';
 import { createServerTimeState } from '../common/serverTime';
 import { createNotesState } from '../common/notes';
 import { createDamageIndicatorState } from './actions/damageIndicator';
+import { createHealPointsState, setHealPointState } from './actions/healPoints';
 
 export const start = (data: ServerMsg['startData']) => {
   if (!appState.id) {
@@ -61,6 +62,7 @@ export const start = (data: ServerMsg['startData']) => {
     origin: [config.origin[0], config.origin[1], 0],
     players,
     bodies,
+    healPoints: createHealPointsState(),
     renderer: view.createRenderer(),
     scene: view.createScene(),
     camera: view.createCamera(),
@@ -72,6 +74,8 @@ export const start = (data: ServerMsg['startData']) => {
   };
   appState.game = state;
   state.bodies.forEach((body) => addBody(state, body));
+
+  setHealPointState(state, data.healPoints);
 
   view.createMap();
 
@@ -93,7 +97,7 @@ export const start = (data: ServerMsg['startData']) => {
 
     const now = time();
 
-    tick(state, now);
+    executeCmd(tick(state, now));
 
     state.renderer.render(state.scene, state.camera.object);
     renderUI(appState, executeCmd);

@@ -116,15 +116,17 @@ export class Game extends React.Component<Props, {}> {
           <FireButton game={game} />
         </div>
         <Stick state={game} />
-        <Debug
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            zIndex: 400,
-          }}
-          state={game}
-        />
+        {this.props.appState.query.debug && (
+          <Debug
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              zIndex: 400,
+            }}
+            state={game}
+          />
+        )}
         <Health body={body} />
       </>
     );

@@ -54,6 +54,9 @@ export class Observer extends React.Component<Props, {}> {
       );
     });
 
+    const timeToRestart = observer.restartTime - observer.time;
+    const timeLast = observer.serverEndTime + observer.serverTime.diff - observer.time;
+
     return (
       <div
         style={{
@@ -73,6 +76,12 @@ export class Observer extends React.Component<Props, {}> {
             }}
             state={observer}
           />
+        )}
+        {timeToRestart >= 0 && (
+          <div style={{ fontSize: '50px' }}>Start at {Math.floor(timeToRestart / 1000)}</div>
+        )}
+        {timeLast <= 60 * 1000 * 15 && (
+          <div style={{ fontSize: '30px' }}>Last time: {Math.floor(timeLast / 1000)}</div>
         )}
         <ObserverList observer={observer} />
       </div>

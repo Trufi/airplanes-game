@@ -151,6 +151,15 @@ const executeOneCmd = (cmdData: ExistCmd) => {
       break;
     }
 
+    case 'sendMsgToAllInGame': {
+      state.connections.map.forEach((connection) => {
+        if (connection.status === 'player' || connection.status === 'observer') {
+          sendMessage(connection, cmdData.msg);
+        }
+      });
+      break;
+    }
+
     case 'authPlayer': {
       api
         .player({

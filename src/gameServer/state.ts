@@ -1,5 +1,5 @@
 import { State } from './types';
-import { GameType } from '../types';
+import { GameType, City } from '../types';
 import * as game from './games/game';
 
 export const createState = (
@@ -7,7 +7,7 @@ export const createState = (
     url: string;
     type: GameType;
     maxPlayers: number;
-    city: string;
+    city: City;
     duration: number;
   },
   time: number,
@@ -21,6 +21,6 @@ export const createState = (
       map: new Map(),
       nextId: 1,
     },
-    game: game.createGameState(time, maxPlayers, duration),
+    game: game.createGameState(time, maxPlayers, duration, city),
   };
 };

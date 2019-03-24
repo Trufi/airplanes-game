@@ -12,6 +12,7 @@ import { Cmd, cmd } from '../commands';
 import { msg } from '../messages';
 import { time } from '../utils';
 import * as game from '../games/game';
+import { healPointWasTaken } from '../games/healPoints';
 
 export const createNewConnection = (state: ConnectionsState, socket: ws): number => {
   const connection: InitialConnection = {
@@ -137,6 +138,8 @@ export const playerConnectionMessage = (
       return pingMessage(clientMsg, connection);
     case 'restart':
       return restartMessage(state, connection.id);
+    case 'takeHealPoint':
+      return takeHealPoint(state, clientMsg, connection);
   }
 };
 
@@ -201,4 +204,12 @@ const updatePlayerChanges = (
 
 export const tick = (state: State, time: number): Cmd => {
   return game.tick(state.game, time);
+};
+
+const takeHealPoint = (
+  state: State,
+  msg: ClientMsg['takeHealPoint'],
+  connection: PlayerConnection,
+): Cmd => {
+  return healPointWasTaken(state.game, state.game.time, msg.id, connection.id);
 };

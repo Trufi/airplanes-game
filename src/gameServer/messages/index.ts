@@ -1,6 +1,7 @@
 import { ObjectElement, mapMap, pick } from '../../utils';
 import { GameState, Body, GamePlayer } from '../types';
 import * as config from '../../config';
+import { HealPoint } from '../games/healPoints';
 
 const serverMsgSchema = require('../../protobuf/serverMsg.proto');
 const Pbf = require('pbf');
@@ -22,9 +23,13 @@ const getTickBodyData = (body: Body) =>
   pick(body, ['id', 'position', 'rotation', 'updateTime', 'health', 'weapon']);
 export type TickBodyData = ReturnType<typeof getTickBodyData>;
 
+const getHealPointsData = (hp: HealPoint) => pick(hp, ['id', 'live', 'position']);
+export type HealPointData = ReturnType<typeof getHealPointsData>;
+
 const startData = (game: GameState, player: GamePlayer) => {
   const players = mapMap(game.players, getPlayerData);
   const bodies = mapMap(game.bodies.map, getTickBodyData);
+  const healPoints = mapMap(game.healPoints.points, getHealPointsData);
 
   return {
     type: 'startData' as 'startData',
@@ -32,30 +37,35 @@ const startData = (game: GameState, player: GamePlayer) => {
     endTime: game.startTime + game.duration,
     players,
     bodies,
+    healPoints,
   };
 };
 
 const startObserverData = (game: GameState) => {
   const players = mapMap(game.players, getPlayerData);
   const bodies = mapMap(game.bodies.map, getTickBodyData);
+  const healPoints = mapMap(game.healPoints.points, getHealPointsData);
 
   return {
     type: 'startObserverData' as 'startObserverData',
     endTime: game.startTime + game.duration,
     players,
     bodies,
+    healPoints,
   };
 };
 
 const restartData = (game: GameState) => {
   const players = mapMap(game.players, getPlayerData);
   const bodies = mapMap(game.bodies.map, getTickBodyData);
+  const healPoints = mapMap(game.healPoints.points, getHealPointsData);
 
   return {
     type: 'restartData' as 'restartData',
     endTime: game.startTime + game.duration,
     players,
     bodies,
+    healPoints,
   };
 };
 
@@ -164,6 +174,16 @@ const restartAt = (game: GameState) => ({
   time: game.restart.time,
 });
 
+const healPointAlive = (id: number) => ({
+  type: 'healPointAlive' as 'healPointAlive',
+  id,
+});
+
+const healPointWasTaken = (id: number) => ({
+  type: 'healPointWasTaken' as 'healPointWasTaken',
+  id,
+});
+
 export const msg = {
   connect,
   gameJoinFail,
@@ -177,6 +197,8 @@ export const msg = {
   pong,
   restartAt,
   restartData,
+  healPointAlive,
+  healPointWasTaken,
 };
 
 export const pbfMsg = {

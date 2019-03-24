@@ -11,6 +11,7 @@ import {
   restartAt,
   restartData,
 } from '../game/actions/message';
+import { healPointAlive, healPointWasTaken } from '../game/actions/healPoints';
 
 export const message = (state: ObserverState, msg: AnyServerMsg): Cmd => {
   switch (msg.type) {
@@ -30,5 +31,9 @@ export const message = (state: ObserverState, msg: AnyServerMsg): Cmd => {
       return restartAt(state, msg);
     case 'restartData':
       return restartData(state, msg);
+    case 'healPointAlive':
+      return healPointAlive(state.healPoints, msg);
+    case 'healPointWasTaken':
+      return healPointWasTaken(state.healPoints, msg);
   }
 };

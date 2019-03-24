@@ -5,6 +5,7 @@ import { BodyState, CameraState, NonPhysicBodyState, PhysicBodyState } from '../
 import { updateAnimation } from '../animations';
 import { initMap, updateMap, invalidateMapSize } from './map';
 import { getGltfLoader } from './gltfLoader';
+import { HealPoint } from '../actions/healPoints';
 
 let renderer: THREE.WebGLRenderer | undefined;
 export const createRenderer = () => {
@@ -244,37 +245,20 @@ export const resize = (camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRen
   camera.updateProjectionMatrix();
 };
 
-export const createText = (text: string) => {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+const healPointMaterial = new THREE.MeshLambertMaterial({
+  color: 0x66b1ff,
+  transparent: true,
+  opacity: 0.5,
+});
+healPointMaterial.emissive = new THREE.Color(0x4e83b9);
+const healPointGeometry = new THREE.SphereGeometry(config.healPoints.radius, 20, 20);
+export const createHealPointMesh = (position: number[]) => {
+  const mesh = new THREE.Mesh(healPointGeometry, healPointMaterial);
+  mesh.position.set(position[0], position[1], position[2]);
+  return mesh;
+};
 
-  const fontSize = 300;
-
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.font = `${fontSize}px serif`;
-
-  const textMetrics = ctx.measureText(text);
-  canvas.width = textMetrics.width;
-  canvas.height = fontSize;
-
-  ctx.fillStyle = '#ff0000';
-  ctx.font = `${fontSize}px monospace`;
-  ctx.fillText(text, 0, fontSize);
-
-  const texture = new THREE.CanvasTexture(canvas);
-
-  const material = new THREE.SpriteMaterial({
-    map: texture,
-    transparent: true,
-  });
-  texture.generateMipmaps = false;
-  texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
-  texture.minFilter = THREE.LinearFilter;
-
-  const sprite = new THREE.Sprite(material);
-  sprite.scale.set(1500, 1500, 1);
-  sprite.position.z += 3000;
-
-  return sprite;
+export const updateHealPointMesh = (healPoint: HealPoint) => {
+  const { live, mesh } = healPoint;
+  mesh.visible = live;
 };

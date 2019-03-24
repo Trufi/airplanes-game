@@ -11,8 +11,10 @@ import { ObserverState } from '../../observer/types';
 import { interpolateTimeShift, updateSmoothPing } from '../../common/serverTime';
 import { updateDamageIndicator } from './damageIndicator';
 import { clamp } from '../../../utils';
+import { Cmd, union } from '../../commands';
+import { updateHealPoints } from './healPoints';
 
-export const tick = (state: State, time: number) => {
+export const tick = (state: State, time: number): Cmd => {
   state.prevTime = state.time;
   state.time = time;
 
@@ -20,6 +22,8 @@ export const tick = (state: State, time: number) => {
   if (state.time > state.serverEndTime + state.serverTime.diff) {
     return;
   }
+
+  const cmds: Cmd[] = [];
 
   updateSmoothPing(state.serverTime, time);
 
@@ -29,12 +33,16 @@ export const tick = (state: State, time: number) => {
 
   state.bodies.forEach((body) => updateBody(state, body));
 
+  cmds.push(updateHealPoints(state));
+
   if (state.body) {
     updateCamera(state.body, state.camera);
   }
   hideOldNotes(state.notes, time);
 
   view.updateCameraAndMap(state);
+
+  return union(cmds);
 };
 
 const updateBody = (state: State, body: PhysicBodyState | NonPhysicBodyState) => {

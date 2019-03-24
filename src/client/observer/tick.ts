@@ -4,6 +4,7 @@ import { updateNonPhysicBody } from '../game/actions/tick';
 import * as view from '../game/view';
 import * as control from './control';
 import { keyboard } from './keyboard';
+import { updateHealPoints } from '../game/actions/healPoints';
 
 export const tick = (state: ObserverState, time: number) => {
   state.prevTime = state.time;
@@ -12,6 +13,8 @@ export const tick = (state: ObserverState, time: number) => {
   processPressedKeys(state);
 
   state.bodies.forEach((body) => updateNonPhysicBody(state, body));
+
+  updateHealPoints(state);
 
   control.updateCamera(state.control, state.camera);
 

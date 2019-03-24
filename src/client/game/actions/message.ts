@@ -9,6 +9,7 @@ import { addKillNote } from '../../common/notes';
 import { ObserverState } from '../../observer/types';
 import { getNewPoints } from '../../../utils';
 import * as config from '../../../config';
+import { healPointAlive, healPointWasTaken, setHealPointState } from './healPoints';
 
 export const message = (state: State, msg: AnyServerMsg): Cmd => {
   switch (msg.type) {
@@ -28,6 +29,10 @@ export const message = (state: State, msg: AnyServerMsg): Cmd => {
       return restartAt(state, msg);
     case 'restartData':
       return restartData(state, msg);
+    case 'healPointAlive':
+      return healPointAlive(state.healPoints, msg);
+    case 'healPointWasTaken':
+      return healPointWasTaken(state.healPoints, msg);
   }
 };
 
@@ -163,7 +168,7 @@ export const restartAt = (state: State | ObserverState, msg: ServerMsg['restartA
 };
 
 export const restartData = (state: State | ObserverState, msg: ServerMsg['restartData']) => {
-  const { endTime, players, bodies } = msg;
+  const { endTime, players, bodies, healPoints } = msg;
 
   state.serverEndTime = endTime;
 
@@ -191,4 +196,6 @@ export const restartData = (state: State | ObserverState, msg: ServerMsg['restar
       addBody(state, createNonPhysicBody(bodyData));
     }
   });
+
+  setHealPointState(state, healPoints);
 };

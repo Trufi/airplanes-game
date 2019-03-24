@@ -19,6 +19,11 @@ const sendPbfMsgTo = (connectionIds: number[], msg: ArrayBuffer) => ({
   msg,
 });
 
+const sendMsgToAllInGame = (msg: AnyServerMsg) => ({
+  type: 'sendMsgToAllInGame' as 'sendMsgToAllInGame',
+  msg,
+});
+
 const authPlayer = (connectionId: number, token: string, joinType: 'player' | 'observer') => ({
   type: 'authPlayer' as 'authPlayer',
   connectionId,
@@ -30,6 +35,7 @@ export const cmd = {
   sendMsg,
   sendMsgTo,
   sendPbfMsgTo,
+  sendMsgToAllInGame,
   authPlayer,
 };
 

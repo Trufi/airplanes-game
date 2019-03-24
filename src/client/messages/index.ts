@@ -63,6 +63,11 @@ const ping = (time: number) => ({
   time,
 });
 
+const takeHealPoint = (id: number) => ({
+  type: 'takeHealPoint' as 'takeHealPoint',
+  id,
+});
+
 export const msg = {
   joinGame,
   joinGameAsBot,
@@ -70,6 +75,7 @@ export const msg = {
   changes,
   restart,
   ping,
+  takeHealPoint,
 };
 
 export const pbfMsg = {
