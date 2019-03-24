@@ -1,4 +1,3 @@
-import { projectGeoToMap } from '@2gis/jakarta/dist/es6/utils/geo';
 import { ObserverState } from './types';
 import { ServerMsg } from '../../gameServer/messages';
 import { addBody, createPlayer, createNonPhysicBody } from '../game/common';
@@ -17,8 +16,6 @@ import { msg } from '../messages/index';
 import { tick } from './tick';
 
 export const start = (appState: AppState, data: ServerMsg['startObserverData']) => {
-  const mapOrigin = projectGeoToMap(config.origin);
-
   const players: ObserverState['players'] = new Map();
 
   data.players.forEach((playerData) => {
@@ -42,12 +39,11 @@ export const start = (appState: AppState, data: ServerMsg['startObserverData']) 
     prevTime: now,
     restartTime: 0,
     serverEndTime: data.endTime,
-    origin: [mapOrigin[0], mapOrigin[1], 0],
+    origin: [config.origin[0], config.origin[1], 0],
     players,
     bodies,
     renderer: view.createRenderer(),
     scene: view.createScene(),
-    map: view.createMap(),
     camera: view.createCamera(),
     serverTime: createServerTimeState(now),
     keyboard: keyboard.enable(),
@@ -62,12 +58,14 @@ export const start = (appState: AppState, data: ServerMsg['startObserverData']) 
     },
   };
 
+  view.createMap();
+
   appState.observer = state;
 
   bodies.forEach((body) => addBody(state, body));
 
   state.callbacks.resize = () => {
-    view.resize(state.map, state.camera.object, state.renderer);
+    view.resize(state.camera.object, state.renderer);
   };
   window.addEventListener('resize', state.callbacks.resize);
   state.callbacks.resize();

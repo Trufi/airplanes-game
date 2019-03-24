@@ -3,6 +3,8 @@ import { appState } from './appState';
 import { renderUI } from './ui';
 import { executeCmd } from './commands/execute';
 
+import(/* webpackPrefetch: true */ '@2gis/jakarta');
+
 renderUI(appState, executeCmd);
 
 const fullscreenButton = document.getElementById('fullscreen') as HTMLElement;

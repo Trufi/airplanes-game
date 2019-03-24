@@ -90,9 +90,13 @@ export const airplane = {
 
 export const camera = {
   pitch: 90,
+  near: 1000,
+  far: 2 ** 32, // Можно оставить 600000, но тогда надо поправить frustum
+  fov: 45,
 };
 
-export const origin = [82.920412, 55.030111];
+// Точка в координатах карты
+export const origin = [989279049, 789621208];
 
 export const resurrection = {
   radius: 500000,

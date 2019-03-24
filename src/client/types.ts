@@ -1,4 +1,3 @@
-import * as J from '@2gis/jakarta';
 import * as THREE from 'three';
 import { ObserverState } from './observer/types';
 import { NotesState } from './common/notes';
@@ -145,7 +144,6 @@ export interface State {
   renderer: THREE.WebGLRenderer;
   camera: CameraState;
 
-  map: J.Map;
   bodies: Map<number, BodyState>;
   serverTime: ServerTimeState;
   pressedKeys: { [key: string]: boolean };

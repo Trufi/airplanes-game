@@ -1,4 +1,3 @@
-import * as J from '@2gis/jakarta';
 import { PlayerState, CameraState, NonPhysicBodyState } from '../types';
 import { NotesState } from '../common/notes';
 import { ControlState } from './control';
@@ -25,7 +24,6 @@ export interface ObserverState {
   scene: THREE.Scene;
   camera: CameraState;
 
-  map: J.Map;
   bodies: Map<number, NonPhysicBodyState>;
   serverTime: ServerTimeState;
 

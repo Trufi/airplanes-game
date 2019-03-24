@@ -1,6 +1,7 @@
 {
   "extends": ["tslint:recommended", "tslint-eslint-rules"],
   "rules": {
+    "whitespace": false,
     "no-console": false,
     "no-constant-condition": true,
     "triple-equals": true,
@@ -17,7 +18,7 @@
     "object-curly-spacing": [false],
     "object-literal-key-quotes": [true, "as-needed"],
     "quotemark": [true, "single", "avoid-escape"],
-    "space-in-parens": [true, "never"],
+    "space-in-parens": [false],
     "ter-no-tabs": true,
     "ter-arrow-parens": [true],
     "no-shadowed-variable": false,

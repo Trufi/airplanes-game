@@ -1,16 +1,11 @@
 import * as THREE from 'three';
 import GLTFLoader from 'three-gltf-loader';
-import * as vec3 from '@2gis/gl-matrix/vec3';
-import { config as mapConfig, MapOptions, Map, Skybox } from '@2gis/jakarta';
-import { projectMapToGeo, heightToZoom } from '@2gis/jakarta/dist/es6/utils/geo';
 import * as config from '../../config';
 import { degToRad } from '../utils';
 import { BodyState, CameraState, NonPhysicBodyState, PhysicBodyState } from '../types';
 import { TextureLoader } from 'three';
 import { updateAnimation } from './animations';
-
-mapConfig.camera.fov = 45;
-mapConfig.camera.far = 2 ** 32; // Можно оставить 600000, но тогда надо поправить frustum
+import { initMap, updateMap, invalidateMapSize } from './map';
 
 let renderer: THREE.WebGLRenderer | undefined;
 export const createRenderer = () => {
@@ -203,41 +198,16 @@ export const updateBullet = (bulletObject: THREE.Group, body: BodyState) => {
   updateAnimation(body.weapon.animation, bulletObject);
 };
 
-let jakartaMap: Map | undefined;
-
 export const createMap = () => {
-  // Если карта уже была создана, то второй раз не создаем
-  if (jakartaMap) {
-    return jakartaMap;
-  }
-
-  const container = document.getElementById('map') as HTMLElement;
-  const options: Partial<MapOptions> = {
-    center: [82.920412, 55.030111],
-    zoom: 17,
-    sendAnalytics: false,
-    fontUrl: './assets/fonts',
-    floorsEnabled: false,
-  };
-  const map = (jakartaMap = (window as any).map = new Map(container, options));
-  mapConfig.render.alwaysRerender = true;
-
-  const skyImage = document.createElement('img');
-  skyImage.onload = () => {
-    const skybox = new Skybox(skyImage);
-    skybox.addTo(map);
-  };
-  skyImage.src = './assets/skybox3.jpg';
-
-  return map;
+  initMap();
 };
 
 export const createCamera = (): CameraState => {
   const object = new THREE.PerspectiveCamera(
-    mapConfig.camera.fov,
+    config.camera.fov,
     window.innerWidth / window.innerHeight,
-    mapConfig.camera.near,
-    mapConfig.camera.far,
+    config.camera.near,
+    config.camera.far,
   );
   object.position.z = 1;
   object.up.set(0, 0, 1);
@@ -250,17 +220,10 @@ export const createCamera = (): CameraState => {
   };
 };
 
-const mapBodyPosition = [0, 0, 0];
-export const updateCameraAndMap = (state: { map: Map; origin: number[]; camera: CameraState }) => {
-  const { map, origin, camera } = state;
+export const updateCameraAndMap = (state: { origin: number[]; camera: CameraState }) => {
+  const { camera } = state;
 
-  map.setQuat(camera.rotation);
-
-  vec3.add(mapBodyPosition, camera.position, origin);
-  map.setCenter(projectMapToGeo(mapBodyPosition), { animate: false });
-  map.setZoom(heightToZoom(mapBodyPosition[2], [window.innerWidth, window.innerHeight]), {
-    animate: false,
-  });
+  updateMap(state);
 
   camera.object.quaternion.fromArray(camera.rotation);
   camera.object.position.fromArray(camera.position);
@@ -268,14 +231,10 @@ export const updateCameraAndMap = (state: { map: Map; origin: number[]; camera: 
   camera.object.updateWorldMatrix(true, true);
 };
 
-export const resize = (
-  map: Map,
-  camera: THREE.PerspectiveCamera,
-  renderer: THREE.WebGLRenderer,
-) => {
+export const resize = (camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer) => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
-  map.invalidateSize();
+  invalidateMapSize();
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 };

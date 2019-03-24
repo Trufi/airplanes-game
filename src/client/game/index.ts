@@ -1,4 +1,3 @@
-import { projectGeoToMap } from '@2gis/jakarta/dist/es6/utils/geo';
 import { msg, pbfMsg } from '../messages/index';
 import { tick } from './actions/tick';
 import { time } from '../utils';
@@ -19,8 +18,6 @@ export const start = (data: ServerMsg['startData']) => {
   if (!appState.id) {
     return;
   }
-
-  const mapOrigin = projectGeoToMap(config.origin);
 
   const players: State['players'] = new Map();
   let currentPlayer: PlayerState | undefined;
@@ -61,12 +58,11 @@ export const start = (data: ServerMsg['startData']) => {
     serverEndTime: data.endTime,
     player: currentPlayer,
     body: currentBody,
-    origin: [mapOrigin[0], mapOrigin[1], 0],
+    origin: [config.origin[0], config.origin[1], 0],
     players,
     bodies,
     renderer: view.createRenderer(),
     scene: view.createScene(),
-    map: view.createMap(),
     camera: view.createCamera(),
     serverTime: createServerTimeState(now),
     pressedKeys: {},
@@ -77,6 +73,8 @@ export const start = (data: ServerMsg['startData']) => {
   appState.game = state;
   state.bodies.forEach((body) => addBody(state, body));
 
+  view.createMap();
+
   window.addEventListener('keydown', (ev) => {
     state.pressedKeys[ev.code] = true;
   });
@@ -86,9 +84,9 @@ export const start = (data: ServerMsg['startData']) => {
   });
 
   window.addEventListener('resize', () => {
-    view.resize(state.map, state.camera.object, state.renderer);
+    view.resize(state.camera.object, state.renderer);
   });
-  view.resize(state.map, state.camera.object, state.renderer);
+  view.resize(state.camera.object, state.renderer);
 
   function loop() {
     requestAnimationFrame(loop);

@@ -13,7 +13,7 @@ export const connect = (url: string) => {
   }
 
   // Если дев сборка, то выключаем ssl
-  if (location.port === '3000') {
+  if (location.port === '3000' && url.indexOf('2gis') === -1) {
     url = `ws://${url}`;
   } else {
     url = `wss://${url}`;
