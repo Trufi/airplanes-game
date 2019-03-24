@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const cssnext = require('postcss-cssnext');
 
-const dist = path.join(__dirname, 'dist');
+const dist = path.join(__dirname, 'dist', 'client');
 fs.copySync(path.join(__dirname, 'assets'), path.join(dist, 'assets'));
 
 module.exports = (_, args) => {
@@ -62,7 +62,7 @@ module.exports = (_, args) => {
 
     output: {
       filename: '[name].[contenthash].js',
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, 'dist', 'client'),
       publicPath: '/',
     },
 
@@ -83,7 +83,7 @@ module.exports = (_, args) => {
     devtool: production ? false : 'source-map',
 
     devServer: {
-      contentBase: path.resolve(__dirname, 'dist'),
+      contentBase: path.resolve(__dirname, 'dist', 'client'),
       host: '0.0.0.0',
       port: 3000,
       stats: {

@@ -11,7 +11,7 @@ const port = 3002;
 
 const app = express();
 
-app.listen(port, () => console.log(`Server listen on ${port} port`));
+app.listen(port, () => console.log(`Main server listen on ${port} port`));
 
 const state: State = {
   games: {
@@ -26,13 +26,13 @@ applyRouter(app, state);
 
 // Всю статику заставляем кэшироваться
 app.use(
-  express.static(path.join(process.cwd(), 'dist'), {
+  express.static(path.join(process.cwd(), 'dist', 'client'), {
     maxAge: 86400000, // сутки
     index: false,
   }),
 );
 // А index.html — нет
-app.use(express.static(path.join(process.cwd(), 'dist')));
+app.use(express.static(path.join(process.cwd(), 'dist', 'client')));
 
 // Удаляем старые игры
 setInterval(() => clearOldGames(state), config.mainServer.clearGameThreshold);
