@@ -220,7 +220,7 @@ wsServer.on('connection', (socket) => {
   const id = createNewConnection(state.connections, socket);
 
   const onMessage = (data: ws.Data) => {
-    const msg = unpackMessage(data);
+    const msg = unpackMessage(data, id);
     if (!msg) {
       return;
     }

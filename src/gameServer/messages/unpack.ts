@@ -1,5 +1,6 @@
 import * as ws from 'ws';
 import { AnyClientMsg } from '../../client/messages';
+import { check } from './validation';
 
 const clientMsgSchema = require('../../protobuf/clientMsg.proto');
 const Pbf = require('pbf');
@@ -9,16 +10,28 @@ for (const type in clientMsgSchema.MsgType) {
   tagToMsgType[clientMsgSchema.MsgType[type].value] = type;
 }
 
-const unpackPbf = (buffer: ArrayBuffer): AnyClientMsg | undefined => {
-  const pbf = new Pbf(buffer);
-  const msg = clientMsgSchema.Changes.read(pbf);
-  msg.type = tagToMsgType[msg.type];
-  return msg;
+const unpackPbf = (buffer: ArrayBuffer, id: number): AnyClientMsg | undefined => {
+  let msg: AnyClientMsg | undefined;
+
+  try {
+    const pbf = new Pbf(buffer);
+    const pbfMsg = clientMsgSchema.Changes.read(pbf);
+    pbfMsg.type = tagToMsgType[pbfMsg.type];
+
+    msg = pbfMsg;
+  } catch (err) {
+    console.log(`Client pbf msg parse error: ${err}`);
+    return;
+  }
+
+  if (msg && check(msg, id)) {
+    return msg;
+  }
 };
 
-export const unpackMessage = (data: ws.Data): AnyClientMsg | undefined => {
+export const unpackMessage = (data: ws.Data, id: number): AnyClientMsg | undefined => {
   if (data instanceof Buffer) {
-    return unpackPbf(data);
+    return unpackPbf(data, id);
   }
 
   if (typeof data !== 'string') {
@@ -29,10 +42,12 @@ export const unpackMessage = (data: ws.Data): AnyClientMsg | undefined => {
 
   try {
     msg = JSON.parse(data);
-  } catch (e) {
-    console.error(`Bad client message ${data}`);
+  } catch (err) {
+    console.error(`Client msg parse error: ${err}`);
     return;
   }
 
-  return msg;
+  if (check(msg, id)) {
+    return msg;
+  }
 };

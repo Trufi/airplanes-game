@@ -45,7 +45,7 @@ export const authConnection = (
     }
 
     console.log(
-      `User (name: ${name}, userId: ${userId}, connectionId: ${connectionId}) as ${joinType}`,
+      `User (name: ${name}, userId: ${userId}, connectionId: ${connectionId}) join as ${joinType}`,
     );
 
     state.connections.map.set(connection.id, {
@@ -60,6 +60,10 @@ export const authConnection = (
   }
 
   if (joinType === 'observer') {
+    console.log(
+      `User (name: ${name}, userId: ${userId}, connectionId: ${connectionId}) join as ${joinType}`,
+    );
+
     state.connections.map.set(connection.id, {
       status: 'observer',
       id: connection.id,
