@@ -13,7 +13,7 @@ export interface HealPoint {
   id: number;
   position: number[];
   live: boolean;
-  mesh: THREE.Mesh;
+  mesh: THREE.Object3D;
 }
 
 export interface HealPointsState {

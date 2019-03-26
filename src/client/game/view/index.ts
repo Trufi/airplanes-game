@@ -248,14 +248,29 @@ export const resize = (camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRen
 const healPointMaterial = new THREE.MeshLambertMaterial({
   color: 0x66b1ff,
   transparent: true,
+  opacity: 0.3,
+});
+healPointMaterial.emissive = new THREE.Color(0xffffff);
+const healPointGeometry = new THREE.SphereGeometry(config.healPoints.radius, 20, 20);
+
+const healSpriteMap = textureLoader.load('./assets/heal.png');
+const healSpriteMaterial = new THREE.SpriteMaterial({
+  map: healSpriteMap,
+  color: 0xffffff,
+  transparent: true,
   opacity: 0.5,
 });
-healPointMaterial.emissive = new THREE.Color(0x4e83b9);
-const healPointGeometry = new THREE.SphereGeometry(config.healPoints.radius, 20, 20);
+
 export const createHealPointMesh = (position: number[]) => {
+  const object = new THREE.Object3D();
+  object.position.set(position[0], position[1], position[2]);
   const mesh = new THREE.Mesh(healPointGeometry, healPointMaterial);
-  mesh.position.set(position[0], position[1], position[2]);
-  return mesh;
+  mesh.renderOrder = 1;
+  const sprite = new THREE.Sprite(healSpriteMaterial);
+  sprite.scale.set(15000, 15000, 1);
+  object.add(sprite);
+  object.add(mesh);
+  return object;
 };
 
 export const updateHealPointMesh = (healPoint: HealPoint) => {
