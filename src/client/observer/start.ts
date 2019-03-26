@@ -15,6 +15,7 @@ import { sendMessage } from '../socket';
 import { msg } from '../messages/index';
 import { tick } from './tick';
 import { createHealPointsState, setHealPointState } from '../game/actions/healPoints';
+import { originByCity } from '../../cities';
 
 export const start = (appState: AppState, data: ServerMsg['startObserverData']) => {
   const players: ObserverState['players'] = new Map();
@@ -34,13 +35,15 @@ export const start = (appState: AppState, data: ServerMsg['startObserverData']) 
 
   const overlay = document.getElementById('root') as HTMLElement;
 
+  const origin = originByCity[data.city];
+
   const state: ObserverState = {
     type: 'observer',
     time: now,
     prevTime: now,
     restartTime: 0,
     serverEndTime: data.endTime,
-    origin: [config.origin[0], config.origin[1], 0],
+    origin: [origin[0], origin[1], 0],
     players,
     bodies,
     healPoints: createHealPointsState(),

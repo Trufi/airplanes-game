@@ -1,5 +1,5 @@
 import * as ws from 'ws';
-import { GameType } from '../../types';
+import { GameType, City } from '../../types';
 import { HealPointsState } from '../games/healPoints';
 
 export interface InitialConnection {
@@ -100,6 +100,7 @@ export interface GameState {
     duration: number;
     tournamentId: number;
   };
+  city: City;
   startTime: number;
   tournamentId: number;
   duration: number;
@@ -110,7 +111,6 @@ export interface GameState {
 export interface State {
   type: GameType;
   url: string;
-  city: string;
   connections: ConnectionsState;
   game: GameState;
 }

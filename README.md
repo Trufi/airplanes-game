@@ -20,6 +20,21 @@ GAME_SERVER_URL=localhost:3001
 MAIN_SERVER_URL=http://localhost:3002
 ```
 
+Для переопределения города, в котором будет проходить игра, нужна добавить:
+
+```
+CITY=nsk
+```
+
+где вместо nsk могут быть любые следущие значения:
+
+- nsk
+- tomsk
+- omsk
+- kemerovo
+- barnaul
+- krasnoyarsk
+
 # URLs
 
 Чтобы зайти как обсервер, нужно в URL добавить GET-параметр `?observer`, например, https://sky.2gis.ru?observer

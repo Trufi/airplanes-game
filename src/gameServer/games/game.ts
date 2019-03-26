@@ -12,7 +12,7 @@ import { createHealPointsState, updateHealPoints, restartHealPoints } from './he
 import { City } from '../../types';
 
 export const debugInfo = (state: GameState) => {
-  const { time, bodies, players, observers, startTime, duration, maxPlayers } = state;
+  const { time, bodies, players, observers, startTime, duration, maxPlayers, city } = state;
   return {
     time,
     bodies: mapToArray(bodies.map),
@@ -21,6 +21,7 @@ export const debugInfo = (state: GameState) => {
     startTime,
     duration,
     maxPlayers,
+    city,
   };
 };
 
@@ -49,6 +50,7 @@ export const createGameState = (
       tournamentId: -1,
       duration: 345600000, // 4 суток
     },
+    city,
     startTime: time,
     tournamentId: -1,
     duration,

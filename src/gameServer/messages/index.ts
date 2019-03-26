@@ -38,6 +38,7 @@ const startData = (game: GameState, player: GamePlayer) => {
     players,
     bodies,
     healPoints,
+    city: game.city,
   };
 };
 
@@ -52,6 +53,7 @@ const startObserverData = (game: GameState) => {
     players,
     bodies,
     healPoints,
+    city: game.city,
   };
 };
 

@@ -16,7 +16,6 @@ export const createState = (
   return {
     url,
     type,
-    city,
     connections: {
       map: new Map(),
       nextId: 1,

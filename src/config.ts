@@ -13,6 +13,7 @@ export const mainServer = {
 
 export const gameServer = {
   url: process.env.GAME_SERVER_URL || 'sky.2gis.ru/city/nsk',
+  city: process.env.CITY || 'nsk',
   updateMainInverval: 10000,
 };
 
@@ -94,9 +95,6 @@ export const camera = {
   far: 2 ** 32, // Можно оставить 600000, но тогда надо поправить frustum
   fov: 45,
 };
-
-// Точка в координатах карты
-export const origin = [989279049, 789621208];
 
 export const resurrection = {
   radius: 500000,

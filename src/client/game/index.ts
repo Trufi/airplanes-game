@@ -14,6 +14,7 @@ import { createServerTimeState } from '../common/serverTime';
 import { createNotesState } from '../common/notes';
 import { createDamageIndicatorState } from './actions/damageIndicator';
 import { createHealPointsState, setHealPointState } from './actions/healPoints';
+import { originByCity } from '../../cities';
 
 export const start = (data: ServerMsg['startData']) => {
   if (!appState.id) {
@@ -51,6 +52,8 @@ export const start = (data: ServerMsg['startData']) => {
 
   const now = time();
 
+  const origin = originByCity[data.city];
+
   const state: State = {
     type: 'game',
     time: now,
@@ -59,7 +62,7 @@ export const start = (data: ServerMsg['startData']) => {
     serverEndTime: data.endTime,
     player: currentPlayer,
     body: currentBody,
-    origin: [config.origin[0], config.origin[1], 0],
+    origin: [origin[0], origin[1], 0],
     players,
     bodies,
     healPoints: createHealPointsState(),

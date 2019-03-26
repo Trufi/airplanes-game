@@ -5,6 +5,7 @@ import { msg } from '../messages';
 import { State, PlayerConnection } from '../types';
 import { clamp } from '../../utils';
 import { ClientMsg } from '../../client/messages';
+import { healPointsByCity } from '../../cities';
 
 export interface HealPoint {
   id: number;
@@ -17,16 +18,6 @@ export interface HealPointsState {
   points: Map<number, HealPoint>;
 }
 
-const pointsPositionByCity: { [key in City]: number[][] } = {
-  nsk: [
-    [989329080, 789625871], // Оперный
-    [988990162, 789736310], // Вокзал
-    [989345854, 789964008], // Повыше Гелереи
-    [989013840, 788583552], // Сан-Сити
-    [989787138, 788478977], // Бугринский мост
-  ],
-};
-
 const createHealPoint = (position: number[], id: number): HealPoint => ({
   id,
   live: true,
@@ -35,7 +26,7 @@ const createHealPoint = (position: number[], id: number): HealPoint => ({
 });
 
 export const createHealPointsState = (city: City): HealPointsState => {
-  const cityPoints = pointsPositionByCity[city];
+  const cityPoints = healPointsByCity[city];
 
   const points = new Map<number, HealPoint>();
   let nextId = 1;

@@ -14,6 +14,7 @@ import * as api from './services/main';
 import { mapMap } from '../utils';
 import * as game from './games/game';
 import { RestartRequest } from './types/api';
+import { City } from '../types';
 
 const port = 3001;
 
@@ -55,7 +56,7 @@ url = url.replace('https://', '');
 const state = createState(
   {
     maxPlayers: 30,
-    city: 'nsk',
+    city: config.gameServer.city as City,
     type: 'dm',
     url,
     duration: 345600000, // 4 суток
@@ -65,13 +66,12 @@ const state = createState(
 
 console.log(
   `Start game server with url: ${state.url}, type: ${state.type}, city: ${
-    state.city
+    state.game.city
   }, maxPlayers: ${state.game.maxPlayers}, main server url: ${config.mainServer.url}`,
 );
 
 app.get('/state', (_req, res) => {
   const result = {
-    city: state.city,
     type: state.type,
     url: state.url,
     connections: mapMap(state.connections.map, ({ id, status }) => ({ id, status })),
@@ -195,8 +195,7 @@ const notifyMainServer = () => {
   const {
     url,
     type,
-    city,
-    game: { maxPlayers, players, tournamentId },
+    game: { maxPlayers, players, tournamentId, city },
   } = state;
 
   api
