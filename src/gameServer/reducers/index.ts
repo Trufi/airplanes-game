@@ -143,7 +143,7 @@ export const playerConnectionMessage = (
     case 'restart':
       return restartMessage(state, connection.id);
     case 'takeHealPoint':
-      return takeHealPoint(state, clientMsg, connection);
+      return healPointWasTaken(state, clientMsg, connection);
   }
 };
 
@@ -208,12 +208,4 @@ const updatePlayerChanges = (
 
 export const tick = (state: State, time: number): Cmd => {
   return game.tick(state.game, time);
-};
-
-const takeHealPoint = (
-  state: State,
-  msg: ClientMsg['takeHealPoint'],
-  connection: PlayerConnection,
-): Cmd => {
-  return healPointWasTaken(state.game, state.game.time, msg.id, connection.id);
 };

@@ -54,6 +54,9 @@ const takeHealPoint = Joi.object().keys({
     .required()
     .strict()
     .positive(),
+  time: Joi.number()
+    .required()
+    .strict(),
 });
 
 const integer = Joi.number()

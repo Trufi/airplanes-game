@@ -63,9 +63,10 @@ const ping = (time: number) => ({
   time,
 });
 
-const takeHealPoint = (id: number) => ({
+const takeHealPoint = (id: number, time: number, diffTime: number) => ({
   type: 'takeHealPoint' as 'takeHealPoint',
   id,
+  time: time - diffTime,
 });
 
 export const msg = {

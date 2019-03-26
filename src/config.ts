@@ -118,6 +118,12 @@ export const compression = {
   rotation: 100,
 };
 
+/**
+ * Если на сервер приходят сообщения старее, чем этот порог, то мы их не принимаем
+ * Сделано для того, чтобы игрок в офлайне всех не убил
+ */
+export const discardMessageThreshold = 1000;
+
 export const points = {
   kills: 250,
   deaths: -100,

@@ -256,6 +256,13 @@ export const updatePlayerChanges = (
   playerId: number,
   clientMsg: ClientMsg['changes'],
 ): Cmd => {
+  const { time } = clientMsg;
+
+  // Если сообщение слишком старое, то не принимаем его
+  if (game.time - time > config.discardMessageThreshold) {
+    return;
+  }
+
   const gamePlayer = game.players.get(playerId);
   if (!gamePlayer || !gamePlayer.live) {
     return;

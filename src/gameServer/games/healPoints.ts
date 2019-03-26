@@ -2,8 +2,9 @@ import * as config from '../../config';
 import { City } from '../../types';
 import { Cmd, cmd, union } from '../commands';
 import { msg } from '../messages';
-import { GameState } from '../types';
+import { State, PlayerConnection } from '../types';
 import { clamp } from '../../utils';
+import { ClientMsg } from '../../client/messages';
 
 export interface HealPoint {
   id: number;
@@ -69,19 +70,24 @@ export const restartHealPoints = (state: HealPointsState): Cmd => {
 };
 
 export const healPointWasTaken = (
-  game: GameState,
-  time: number,
-  pointId: number,
-  playerId: number,
+  state: State,
+  clientMsg: ClientMsg['takeHealPoint'],
+  connection: PlayerConnection,
 ): Cmd => {
+  const { game } = state;
   const {
     healPoints: { points },
     bodies,
     players,
   } = game;
+  const { id, time } = clientMsg;
 
-  const point = points.get(pointId);
-  const player = players.get(playerId);
+  if (game.time - time > config.discardMessageThreshold) {
+    return;
+  }
+
+  const point = points.get(id);
+  const player = players.get(connection.id);
   if (!player || !point) {
     return;
   }
@@ -95,5 +101,5 @@ export const healPointWasTaken = (
 
   point.live = false;
   point.takeTime = time;
-  return cmd.sendMsgToAllInGame(msg.healPointWasTaken(pointId));
+  return cmd.sendMsgToAllInGame(msg.healPointWasTaken(id));
 };

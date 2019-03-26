@@ -67,7 +67,7 @@ export const updateHealPoints = (state: State | ObserverState): Cmd => {
     for (const [, healPoint] of points) {
       if (healPoint.live && bodyInHealPoint(state.body.position, healPoint.position)) {
         healPoint.live = false;
-        return cmd.sendMsg(msg.takeHealPoint(healPoint.id));
+        return cmd.sendMsg(msg.takeHealPoint(healPoint.id, state.time, state.serverTime.diff));
       }
     }
   }
