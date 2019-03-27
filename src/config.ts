@@ -40,7 +40,7 @@ export const weapon = {
     },
     opacity: 0.8,
     width: 2,
-    offset: { x: 920, y: 1550, z: 470 },
+    offset: { x: 920, y: 1200, z: 500 },
   },
 
   /**
@@ -81,7 +81,7 @@ export const airplane = {
   scale: 4,
   velocity: 30,
   initRotation: { x: -Math.PI / 2, y: 0, z: Math.PI },
-  propeller: { x: 0, y: 0.03, z: 0.666, radius: 0.26, opacity: 0.4 },
+  propeller: { x: 0, y: 30, z: 666, radius: 250, opacity: 0.4 },
 
   /**
    * Коэффициент поворота по оси Y в зависимости от угловой скорости
