@@ -61,8 +61,9 @@ const group_apply = (group: any, model: THREE.Object3D) => {
 
 export const createMesh = (id: number) => {
   const mesh = new THREE.Object3D();
-  const paletteId = id % config.mainAirplaneColors.length;
-  groups.main.color = new THREE.Color(config.mainAirplaneColors[paletteId]);
+  const colorId = id % config.mainAirplaneColors.length;
+  const mainColor = config.mainAirplaneColors[colorId];
+  groups.main.color = new THREE.Color(mainColor.r / 255, mainColor.g / 255, mainColor.b / 255);
 
   getGltfLoader().then((loader) =>
     loader.load('./assets/new.glb', (gltf) => {
