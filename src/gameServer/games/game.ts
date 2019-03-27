@@ -3,10 +3,10 @@ import * as vec4 from '@2gis/gl-matrix/vec4';
 import * as quat from '@2gis/gl-matrix/quat';
 import { Cmd, cmd, union } from '../commands';
 import { msg, pbfMsg } from '../messages';
-import { findMap, clamp, mapMap, vec2SignedAngle, mapToArray } from '../../utils';
+import { findMap, clamp, mapMap, vec2SignedAngle, mapToArray, getNewPoints } from '../../utils';
 import { ClientMsg } from '../../client/messages';
 import * as config from '../../config';
-import { updatePointsByType } from './calcPoints';
+import { updatePoints } from './calcPoints';
 import { GameState, Body, GamePlayer, GameObserver, RestartData } from '../types';
 import { createHealPointsState, updateHealPoints, restartHealPoints } from './healPoints';
 import { City } from '../../types';
@@ -196,7 +196,8 @@ const playerDeath = (game: GameState, body: Body, causePlayerId: number): Cmd =>
   const causePlayer = game.players.get(causePlayerId);
   if (causePlayer) {
     causePlayer.kills++;
-    updatePointsByType(causePlayer, 'kills');
+    causePlayer.points = getNewPoints(causePlayer.points, 'kills');
+    updatePoints(causePlayer);
   }
 
   // Превращаем живого игрока в мертвого
@@ -204,7 +205,8 @@ const playerDeath = (game: GameState, body: Body, causePlayerId: number): Cmd =>
   if (player) {
     player.live = false;
     player.deaths++;
-    updatePointsByType(player, 'deaths');
+    player.points = getNewPoints(player.points, 'deaths');
+    updatePoints(player);
 
     // TODO: если игра на вылет, то тут нужно как-то прокинуть команду
     // чтобы игрока выкинуло из игры

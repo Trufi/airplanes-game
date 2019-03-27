@@ -212,5 +212,6 @@ export const tick = (state: State, time: number): Cmd => {
 };
 
 export const restartInSeconds = (state: State, data: RestartData) => {
+  state.isGrandFinal = data.isGrandFinal;
   return game.restartInSeconds(state.game, data);
 };

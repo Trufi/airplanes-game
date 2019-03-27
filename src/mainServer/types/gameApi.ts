@@ -12,6 +12,7 @@ export interface NotifyRequest {
 export interface PlayerRequest {
   gameUrl: string;
   playerToken: string;
+  toFinal: boolean;
 }
 
 export interface PlayerResponse {

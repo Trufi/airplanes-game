@@ -2,7 +2,7 @@ import { GamePlayer } from '../types';
 
 // import { getNewPoints } from '../../utils';
 
-export const updatePointsByType = (_player: GamePlayer, _type: 'deaths' | 'kills') => {
+export const updatePoints = (_player: GamePlayer) => {
   // const connection = connectionDB();
   // selectUserByName(connection, player.name)
   //   .then((user: any) =>

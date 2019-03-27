@@ -4,6 +4,7 @@ import { updateGameData } from '../reducers';
 import { connectionDB } from '../models/database';
 import { selectUserByToken } from '../models/user';
 import { NotifyRequest, PlayerResponse, PlayerRequest } from '../types/gameApi';
+import { getPretenders } from '../models/tournaments';
 
 export const applyGameServerRouter = (app: express.Express, state: State) => {
   const router = express.Router();
@@ -17,41 +18,41 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
     res.sendStatus(200);
   });
 
-  router.post('/player', (req, res) => {
-    const { gameUrl, playerToken } = req.body as PlayerRequest;
-
-    if (!state.games.byUrl.has(gameUrl)) {
-      res.sendStatus(400);
-      return;
-    }
+  router.post('/player', async (req, res) => {
+    const { playerToken, toFinal } = req.body as PlayerRequest;
 
     const dbConnect = connectionDB();
-    selectUserByToken(dbConnect, playerToken)
-      .then((result: any) => {
-        return dbConnect.end().then(() => {
-          console.log('selectUserByToken:result', result);
-          if (!result) {
-            console.log('selectUserByToken:err', 404);
+
+    try {
+      const user = await selectUserByToken(dbConnect, playerToken);
+      if (!user) {
+        console.log(`Game server router /player with token: ${playerToken} not found`);
+        res.sendStatus(404);
+      } else {
+        const { id, name } = user;
+        const data: PlayerResponse = {
+          id,
+          name,
+        };
+
+        if (toFinal) {
+          const pretenders = await getPretenders(dbConnect);
+          const canJoinFinal = pretenders.find((p) => p.user_id === id);
+          if (canJoinFinal) {
+            res.send(data);
+          } else {
             res.sendStatus(404);
-            return;
           }
-
-          const { id, name } = result;
-
-          const data: PlayerResponse = {
-            id,
-            name,
-          };
-
+        } else {
           res.send(data);
-        });
-      })
-      .catch(() => {
-        return dbConnect.end().then(() => {
-          console.log('selectUserByToken:err', 500);
-          res.sendStatus(500);
-        });
-      });
+        }
+      }
+    } catch (err) {
+      console.log(`Game server router /player error: ${err}`);
+      res.sendStatus(500);
+    }
+
+    await dbConnect.end();
   });
 
   app.use('/game', router);

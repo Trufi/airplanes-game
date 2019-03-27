@@ -112,6 +112,7 @@ export interface State {
   type: GameType;
   url: string;
   connections: ConnectionsState;
+  isGrandFinal: boolean;
   game: GameState;
 }
 
