@@ -22,6 +22,5 @@ export const createState = (
       nextId: 1,
     },
     game: game.createGameState(time, maxPlayers, duration, city, tournamentId),
-    isGrandFinal: false,
   };
 };

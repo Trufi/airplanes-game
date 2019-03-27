@@ -407,12 +407,14 @@ export function applyApiRouter(app: Express, state: State) {
 
     const result: GamelistResponse = mapMap(
       state.games.map,
-      ({ players, maxPlayers, type, url, city }) => ({
+      ({ players, maxPlayers, url, city, isGrandFinal, type, enable }) => ({
+        type,
         players,
         maxPlayers,
         url,
-        type,
+        isGrandFinal,
         city,
+        enable,
       }),
     );
 

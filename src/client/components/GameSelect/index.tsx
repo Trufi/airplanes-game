@@ -51,7 +51,7 @@ export class GameSelect extends React.PureComponent<Props, State> {
   }
 
   private renderSelectMode = () => {
-    const { gameMode } = this.state;
+    const { gameMode, gamelist } = this.state;
 
     if (gameMode) {
       return null;
@@ -67,16 +67,27 @@ export class GameSelect extends React.PureComponent<Props, State> {
       [styles.tourIcon]: true,
     });
 
+    const tournament = getTournament(gamelist);
+
     return (
       <div className={styles.entersContainer}>
         <div className={styles.enterItem}>
           <div className={dmIcon} onClick={() => this.setGameMode('dm')} />
           <div>DeathMatch</div>
         </div>
-        <div className={styles.enterItem}>
-          <div className={tourIcon} onClick={() => this.setGameMode('tour')} />
-          <div>Tournament</div>
-        </div>
+        {tournament &&
+        tournament.enable && ( // TODO: не скрывать, а дизейблить
+            <div className={styles.enterItem}>
+              <div
+                className={tourIcon}
+                onClick={() => {
+                  this.setGameMode('tour');
+                  this.gameSelected(tournament.url);
+                }}
+              />
+              <div>Tournament</div>
+            </div>
+          )}
       </div>
     );
   };
@@ -102,9 +113,11 @@ export class GameSelect extends React.PureComponent<Props, State> {
 
     return (
       <>
-        {gamelist.map(({ url, players, maxPlayers, city }, i) => (
-          <div key={i}>{this.renderGameRoom(url, players, maxPlayers, city)}</div>
-        ))}
+        {gamelist
+          .filter(({ type }) => type === 'dm')
+          .map(({ url, players, maxPlayers, city }, i) => (
+            <div key={i}>{this.renderGameRoom(url, players, maxPlayers, city)}</div>
+          ))}
       </>
     );
   };
@@ -117,7 +130,7 @@ export class GameSelect extends React.PureComponent<Props, State> {
     });
 
     return (
-      <div className={styles.gameItem} onClick={this.gameSelected(url)}>
+      <div className={styles.gameItem} onClick={() => this.gameSelected(url)}>
         <div className={styles.itemRounded}>
           <div className={iconClass} />
         </div>
@@ -131,7 +144,8 @@ export class GameSelect extends React.PureComponent<Props, State> {
     );
   };
 
-  private gameSelected = (url: string) => () => {
+  private gameSelected = (url: string) => {
+    console.log('asdads');
     this.props.executeCmd(joinGame(this.props.appState, url));
   };
 
@@ -140,4 +154,12 @@ export class GameSelect extends React.PureComponent<Props, State> {
       gameMode: mode,
     });
   };
+}
+
+function getTournament(list: GamelistResponse) {
+  for (const game of list) {
+    if (game.type === 'tournament' && game.enable) {
+      return game;
+    }
+  }
 }

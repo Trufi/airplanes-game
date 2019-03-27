@@ -50,9 +50,11 @@ export const createGameState = (
       time: 0,
       tournamentId,
       duration: 345600000, // 4 суток
+      isGrandFinal: false,
     },
     city,
     startTime: time,
+    isGrandFinal: false,
     tournamentId,
     duration,
     maxPlayers,
@@ -298,12 +300,13 @@ export const kickObserver = (game: GameState, id: number): Cmd => {
 };
 
 export const restartInSeconds = (game: GameState, data: RestartData): Cmd => {
-  const { tournamentId, inSeconds, duration } = data;
+  const { tournamentId, inSeconds, duration, isGrandFinal } = data;
 
   game.restart.need = true;
   game.restart.time = game.time + inSeconds * 1000;
   game.restart.duration = duration;
   game.restart.tournamentId = tournamentId;
+  game.restart.isGrandFinal = isGrandFinal;
 
   return cmd.sendMsgTo(tickBodyRecipientIds(game), msg.restartAt(game));
 };
@@ -312,11 +315,11 @@ const restart = (game: GameState): Cmd => {
   game.restart.need = false;
 
   const {
-    restart: { duration, tournamentId },
+    restart: { duration, tournamentId, isGrandFinal },
   } = game;
   game.tournamentId = tournamentId;
   game.duration = duration;
-
+  game.isGrandFinal = isGrandFinal;
   game.startTime = game.time;
 
   game.bodies.map.forEach((body) => {

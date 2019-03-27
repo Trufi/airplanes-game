@@ -6,7 +6,7 @@ import { createState } from './state';
 import { time } from './utils';
 import * as config from '../config';
 import * as api from './services/main';
-import { City } from '../types';
+import { City, GameType } from '../types';
 import { applyRoutes } from './routes';
 import { initSocket } from './socket';
 
@@ -35,7 +35,7 @@ const init = (tournamentId: number) => {
     {
       maxPlayers: 30,
       city: config.gameServer.city as City,
-      type: 'dm',
+      type: config.gameServer.type as GameType,
       url,
       duration: 345600000, // 4 суток
     },
@@ -63,17 +63,19 @@ const init = (tournamentId: number) => {
     const {
       url,
       type,
-      game: { maxPlayers, players, tournamentId, city },
+      game: { maxPlayers, players, tournamentId, city, startTime, time, duration, isGrandFinal },
     } = state;
 
     api
       .notify({
         url,
-        type,
         city,
+        type,
         players: players.size,
         maxPlayers,
         tournamentId,
+        enable: time > startTime && time < startTime + duration,
+        isGrandFinal,
       })
       .catch((err) => {
         console.log(`Main server notify error: ${err}`);

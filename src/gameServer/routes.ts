@@ -23,6 +23,7 @@ const restartScheme = Joi.object().keys({
   secret: Joi.string()
     .allow(secret)
     .required(),
+  grand: Joi.any(),
 });
 
 const metrics = `# HELP sky_game_active_players Active players in game
@@ -67,6 +68,7 @@ export const applyRoutes = (app: express.Express, state: State, executeCmd: (cmd
     const duration = Number(value.duration) * 60 * 1000;
     const tournamentName = value.name;
     const inSeconds = Number(value.inSeconds);
+    const isGrandFinal = Boolean(query.grand);
 
     api
       .getTournamentList()
@@ -81,11 +83,11 @@ export const applyRoutes = (app: express.Express, state: State, executeCmd: (cmd
           return;
         }
 
-        const { id, is_grand_final } = tournament;
+        const { id } = tournament;
 
         const msg =
           `Restart game after ${inSeconds} seconds with tournament id: ${id}, ` +
-          `duration: ${duration}, grandFinal: ${is_grand_final}`;
+          `duration: ${duration}, grandFinal: ${isGrandFinal}`;
 
         console.log(msg);
         executeCmd(
@@ -93,7 +95,7 @@ export const applyRoutes = (app: express.Express, state: State, executeCmd: (cmd
             tournamentId: id,
             duration,
             inSeconds,
-            isGrandFinal: is_grand_final,
+            isGrandFinal,
           }),
         );
         return res.status(200).send(msg);

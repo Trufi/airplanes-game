@@ -2,11 +2,13 @@ import { GameType } from '../../types';
 
 export interface NotifyRequest {
   url: string;
-  type: GameType;
   city: string;
+  type: GameType;
   players: number;
   tournamentId: number;
   maxPlayers: number;
+  enable: boolean;
+  isGrandFinal: boolean;
 }
 
 export interface PlayerRequest {

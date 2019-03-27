@@ -99,10 +99,12 @@ export interface GameState {
     time: number;
     duration: number;
     tournamentId: number;
+    isGrandFinal: boolean;
   };
   city: City;
   startTime: number;
   tournamentId: number;
+  isGrandFinal: boolean;
   duration: number;
   maxPlayers: number;
   healPoints: HealPointsState;
@@ -112,7 +114,6 @@ export interface State {
   type: GameType;
   url: string;
   connections: ConnectionsState;
-  isGrandFinal: boolean;
   game: GameState;
 }
 

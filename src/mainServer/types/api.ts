@@ -1,7 +1,10 @@
 import { Tournament, UserStats } from '../models/types';
+import { GameType } from '../../types';
 
 export type GamelistResponse = Array<{
-  type: string;
+  type: GameType;
+  enable: boolean;
+  isGrandFinal: boolean;
   city: string;
   players: number;
   maxPlayers: number;
