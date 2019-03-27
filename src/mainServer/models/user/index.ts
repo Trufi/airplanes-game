@@ -42,21 +42,29 @@ export const attachUserToTournament = (
   tournamentId: Tournament['id'],
 ) => {
   // @TODO Уставновить рейтинг Эло. 1200 [#ratingElo]
-  const sql = `
-    INSERT INTO tournaments_per_user (user_id, tournament_id)
-    VALUES
-      (
-        '${userId}',
-        '${tournamentId}'
-      )
-  `;
-
-  return new Promise((resolve, reject) => {
-    connection.query(sql, (err) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve();
+  return getUserStatsByTournament(connection, userId, tournamentId).then((stats) => {
+    const sql = stats
+      ? `
+          UPDATE tournaments_per_user
+          SET
+            deaths=0,
+            kills=0,
+            points=0
+          WHERE user_id=${userId} AND tournament_id=${tournamentId};`
+      : `
+          INSERT INTO tournaments_per_user (user_id, tournament_id)
+          VALUES
+            (
+              '${userId}',
+              '${tournamentId}'
+            )`;
+    return new Promise((resolve, reject) => {
+      connection.query(sql, (err) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve();
+      });
     });
   });
 };
@@ -146,7 +154,7 @@ export const getUserStatsByTournament = (
   connection: Client,
   userId: User['id'],
   tournamentId: Tournament['id'],
-) => {
+): Promise<UserStats> => {
   const sql = `
     SELECT u.id, u.name, tpr.kills, tpr.deaths, tpr.points
     FROM users as u

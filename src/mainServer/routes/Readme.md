@@ -27,7 +27,7 @@
 
 ###TOURNAMENT
 ###ATTACH
-`curl -v -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer 123456789" --request POST --data '{"tournamentId":1}' http://127.0.0.1:3002/api/tournament/attach`
+`curl -v -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer 123456789" --request POST http://127.0.0.1:3002/api/user/tournament/1/attach`
 
 ###LIST
 `curl -v -H "Accept: application/json" -H "Content-Type: application/json" http://127.0.0.1:3002/api/tournament/list`

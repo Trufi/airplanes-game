@@ -193,44 +193,52 @@ export function applyApiRouter(app: Express, state: State) {
       });
   });
 
-  apiRouter.post('/user/stats', authenticate('bearer', { failureRedirect: '/' }), (req, res) => {
-    setAccessAllowOrigin(req, res);
+  apiRouter.post(
+    '/user/tournament/:id/stats',
+    authenticate('bearer', { failureRedirect: '/' }),
+    (req, res) => {
+      setAccessAllowOrigin(req, res);
 
-    const { deaths, kills, points, tournamentId } = req.body;
+      const { deaths, kills, points } = req.body;
+      const tournamentId = Number(req.params.id);
 
-    if (typeof tournamentId === 'undefined' || typeof tournamentId !== 'number') {
-      return res.status(422).send('Unprocessed entity: tournamentId');
-    }
-    if (typeof deaths === 'undefined' || typeof deaths !== 'number') {
-      return res.status(422).send('Unprocessed entity: deaths');
-    }
-    if (typeof kills === 'undefined' || typeof kills !== 'number') {
-      return res.status(422).send('Unprocessed entity: kills');
-    }
-    if (typeof points === 'undefined' || typeof points !== 'number') {
-      return res.status(422).send('Unprocessed entity: points');
-    }
+      if (typeof tournamentId === 'undefined' || typeof tournamentId !== 'number') {
+        return res.status(422).send('Unprocessed entity: tournamentId');
+      }
+      if (typeof deaths === 'undefined' || typeof deaths !== 'number') {
+        return res.status(422).send('Unprocessed entity: deaths');
+      }
+      if (typeof kills === 'undefined' || typeof kills !== 'number') {
+        return res.status(422).send('Unprocessed entity: kills');
+      }
+      if (typeof points === 'undefined' || typeof points !== 'number') {
+        return res.status(422).send('Unprocessed entity: points');
+      }
 
-    const connection = connectionDB();
-    const { id } = req.user;
+      const connection = connectionDB();
+      const { id } = req.user;
 
-    updateUserStats(connection, id, tournamentId, {
-      kills: req.user.kills + kills,
-      deaths: req.user.deaths + deaths,
-      points: req.user.points + points,
-    })
-      .then(() => {
-        connection.end().then(() => {
-          res.sendStatus(200);
+      getUserStatsByTournament(connection, id, tournamentId)
+        .then((stats: UserStats) => {
+          return updateUserStats(connection, id, tournamentId, {
+            kills: stats.kills + kills,
+            deaths: stats.deaths + deaths,
+            points: stats.points + points,
+          });
+        })
+        .then(() => {
+          connection.end().then(() => {
+            res.sendStatus(200);
+          });
+        })
+        .catch((err) => {
+          connection.end().then(() => {
+            console.log('/user/stats:err', err);
+            res.sendStatus(ERROR_CODE);
+          });
         });
-      })
-      .catch((err) => {
-        connection.end().then(() => {
-          console.log('/user/stats:err', err);
-          res.sendStatus(ERROR_CODE);
-        });
-      });
-  });
+    },
+  );
 
   apiRouter.get(
     '/user/tournament/:id/stats',
@@ -262,7 +270,7 @@ export function applyApiRouter(app: Express, state: State) {
   );
 
   apiRouter.post(
-    '/user/tournament/:id/stats',
+    '/user/tournament/:id/attach',
     authenticate('bearer', { failureRedirect: '/' }),
     (req, res) => {
       setAccessAllowOrigin(req, res);
