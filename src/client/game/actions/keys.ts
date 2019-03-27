@@ -55,7 +55,7 @@ export const processPressedkeys = (state: State) => {
   }
 
   updateBoost(body, dt, pressedKeys['KeyF']);
-  updateSlow(body, dt, pressedKeys['KeyR']);
+  updateSlow(body, pressedKeys['KeyR']);
 
   // Если нажата кнопка ускорения, то не стреляем
   if (!pressedKeys['KeyF']) {
