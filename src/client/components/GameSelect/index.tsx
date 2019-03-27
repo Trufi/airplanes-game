@@ -57,14 +57,24 @@ export class GameSelect extends React.PureComponent<Props, State> {
       return null;
     }
 
+    const dmIcon = classNames({
+      [styles.enterIcon]: true,
+      [styles.dmIcon]: true,
+    });
+
+    const tourIcon = classNames({
+      [styles.enterIcon]: true,
+      [styles.tourIcon]: true,
+    });
+
     return (
       <div className={styles.entersContainer}>
         <div className={styles.enterItem}>
-          <div className={styles.dmIcon} onClick={() => this.setGameMode('dm')} />
+          <div className={dmIcon} onClick={() => this.setGameMode('dm')} />
           <div>DeathMatch</div>
         </div>
         <div className={styles.enterItem}>
-          <div className={styles.tourIcon} onClick={() => this.setGameMode('tour')} />
+          <div className={tourIcon} onClick={() => this.setGameMode('tour')} />
           <div>Tournament</div>
         </div>
       </div>
@@ -84,7 +94,7 @@ export class GameSelect extends React.PureComponent<Props, State> {
   private renderGameList = (gamelist: GamelistResponse) => {
     if (gamelist.length === 0) {
       return (
-        <div className={styles.list}>
+        <div className={styles.enterItem}>
           <div>These aren't the games you're looking for.</div>
         </div>
       );
@@ -112,9 +122,10 @@ export class GameSelect extends React.PureComponent<Props, State> {
           <div className={iconClass} />
         </div>
         <div className={styles.cityName}>
-          {cityName}
-          <br />
-          {players}/{maxPlayers}
+          <div className={styles.title}>{cityName}</div>
+          <div className={styles.stat}>
+            {players}/{maxPlayers}
+          </div>
         </div>
       </div>
     );

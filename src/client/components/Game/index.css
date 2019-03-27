@@ -9,6 +9,11 @@
   height: 100px;
   margin-bottom: 27px;
   margin-right: 20px;
+
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }
 
 .deathNotesWrapper {

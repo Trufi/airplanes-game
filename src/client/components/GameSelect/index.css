@@ -1,8 +1,7 @@
 .itemRounded {
   padding: 24px;
-  width: 95px;
-  height: 95px;
-  border-radius: 50%;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,8 +15,7 @@
   display: flex;
   flex-direction: column;
   width: auto;
-  margin: 20px 40px;
-  margin-bottom: 24px;
+  margin: 0px 24px;
   align-items: center;
 }
 
@@ -37,6 +35,7 @@
   background-color: rgb(52, 52, 52);
   background-size: cover;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .list {
@@ -48,68 +47,83 @@
 }
 
 .cityName {
-  margin-top: 20px;
+  margin-top: 8px;
   text-transform: uppercase;
   color: #ffffff;
   text-align: center;
   font-weight: bold;
 }
 
+.title {
+  font-size: 12px;
+}
+
+.stat {
+  font-size: 12px;
+}
+
 .icon {
   background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
 }
 
 .nsk {
   background-image: url('/assets/cities/nsk.png');
   width: 42px;
-  height: 64px;
+  height: 42px;
 }
 
 .omsk {
   background-image: url('/assets/cities/omsk.png');
-  width: 64px;
-  height: 64px;
+  width: 42px;
+  height: 42px;
 }
 
 .tomsk {
   background-image: url('/assets/cities/tomsk.png');
-  width: 64px;
-  height: 64px;
+  width: 42px;
+  height: 42px;
 }
 
 .barnaul {
   background-image: url('/assets/cities/barnaul.png');
-  width: 64px;
-  height: 64px;
+  width: 42px;
+  height: 42px;
 }
 
 .kemerovo {
   background-image: url('/assets/cities/kemerovo.png');
-  width: 64px;
-  height: 55px;
+  width: 42px;
+  height: 42px;
 }
 
 .krasnoyarsk {
   background-image: url('/assets/cities/krasnoyarsk.png');
-  width: 50px;
-  height: 63px;
+  width: 42px;
+  height: 42px;
+}
+
+.enterIcon {
+  background-size: cover;
+  background-position: center;
+  width: 285px;
+  cursor: pointer;
+  height: 220px;
+}
+
+.enterIcon.inactive {
+  width: 245px;
+  height: 200px;
+  filter: grayscale(0.8);
 }
 
 .dmIcon {
   background-image: url('/assets/deathmatch.png');
-  background-size: cover;
-  width: 285px;
-  cursor: pointer;
-  height: 276px;
 }
 
 .tourIcon {
   background-image: url('/assets/tour.png');
-  background-size: cover;
-  width: 285px;
-  cursor: pointer;
-  height: 276px;
 }
 
 .entersContainer {
