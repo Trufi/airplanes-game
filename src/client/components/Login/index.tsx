@@ -1,11 +1,12 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import { cmd } from '../../commands';
 import { ExecuteCmd } from '../../commands/execute';
 import { userAuth, userLogin, userRegister } from '../../services/user';
 import * as cookie from 'js-cookie';
 import { AppState } from '../../types';
 import styles from './index.css';
-import classNames from 'classnames';
+
 interface Props {
   appState: AppState;
   executeCmd: ExecuteCmd;
@@ -14,6 +15,8 @@ interface Props {
 interface State {
   isError: boolean;
   isFilled: boolean;
+  password: string;
+  username: string;
 }
 
 export class Login extends React.Component<Props, State> {
@@ -25,6 +28,8 @@ export class Login extends React.Component<Props, State> {
     this.state = {
       isError: false,
       isFilled: false,
+      password: '',
+      username: '',
     };
     this.inputNameRef = React.createRef();
     this.inputPassRef = React.createRef();
@@ -63,21 +68,23 @@ export class Login extends React.Component<Props, State> {
           <div className={containerClass}>
             <input
               className={styles.input}
-              onChange={this.handleChange}
+              onChange={this.onUsernameChange}
               ref={this.inputNameRef}
               type='text'
               onKeyPress={this.onLoginKeyPress}
               maxLength={30}
               autoFocus
               placeholder={'Nickname'}
+              value={this.state.username}
             />
             <input
               className={styles.input}
-              onChange={this.handleChange}
+              onChange={this.onPasswordChange}
               ref={this.inputPassRef}
               type='password'
               onKeyPress={this.onPasswordKeyPress}
               placeholder={'Password'}
+              value={this.state.password}
             />
           </div>
           <button className={buttonClass} onClick={this.submit}>
@@ -87,24 +94,34 @@ export class Login extends React.Component<Props, State> {
       </div>
     );
   }
+  private onUsernameChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      ...this.state,
+      username: ev.target.value,
+    });
 
-  private handleChange = () => {
-    const usernameInput = this.inputNameRef.current;
-    const passwordInput = this.inputPassRef.current;
+    this.handleChange();
+  };
 
-    if (!usernameInput || !passwordInput) {
-      return;
-    }
+  private onPasswordChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      ...this.state,
+      password: ev.target.value,
+    });
 
-    const username = usernameInput.value;
-    const password = passwordInput.value;
+    this.handleChange();
+  };
 
-    if (username && password) {
+  private handleChange() {
+    const { username, password } = this.state;
+
+    if (username && password && username.length > 3 && password.length > 3) {
       this.setState({
         isFilled: true,
+        isError: false,
       });
     }
-  };
+  }
 
   private submit = () => {
     const usernameInput = this.inputNameRef.current;
@@ -117,13 +134,14 @@ export class Login extends React.Component<Props, State> {
     const username = usernameInput.value;
     const password = passwordInput.value;
 
-    if (!username || !password) {
+    if (!username || !password || username.length <= 3 || password.length <= 3) {
       this.setState({
         isError: true,
       });
+      return;
     }
 
-    if (username.length > 3 || password.length > 3) {
+    if (username.length > 3 && password.length > 3) {
       // @TODO КОСТЫЛЬ PIZDEC NAHOY BLYAT
       // Если юзер вбил свой логин/пароль, мы его регаем.
       // Если при регистрации произошла ошибка, значит юзер с таким именем уже есть.
