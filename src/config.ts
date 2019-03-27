@@ -35,10 +35,8 @@ export const weapon = {
   offset: 5000,
   bullet: {
     color: {
-      // flash: 0xd1780c,
-      // line: 0xd8c70d,
-      line: 0x8442ab,
-      flash: 0xb069db,
+      flash: 0xd1780c,
+      line: 0xd8c70d,
     },
     opacity: 0.7,
     width: 2,
