@@ -34,7 +34,7 @@ export const Aim = ({ weapon: { lastHitTime }, time }: Props) => {
               position: 'absolute',
               left: `${-width / 2}px`,
               width: `${width}px`,
-              height: `1px`,
+              height: `2px`,
               background: '#ff0000',
               transform: `rotate(45deg)`,
             }}
@@ -43,7 +43,7 @@ export const Aim = ({ weapon: { lastHitTime }, time }: Props) => {
             style={{
               position: 'absolute',
               top: `${-width / 2}px`,
-              width: `1px`,
+              width: `2px`,
               height: `${width}px`,
               background: '#ff0000',
               transform: `rotate(45deg)`,
