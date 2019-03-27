@@ -201,7 +201,7 @@ const playerDeath = (game: GameState, body: Body, causePlayerId: number): Cmd =>
     causePlayer.kills++;
     const newPoints = getNewPoints(causePlayer.points, 'kills');
     addPointsDelta(
-      causePlayer.id,
+      causePlayer.userId,
       {
         kills: 1,
         points: newPoints - causePlayer.points,
@@ -218,7 +218,7 @@ const playerDeath = (game: GameState, body: Body, causePlayerId: number): Cmd =>
     player.deaths++;
     const newPoints = getNewPoints(player.points, 'deaths');
     addPointsDelta(
-      player.id,
+      player.userId,
       {
         deaths: 1,
         points: newPoints - player.points,
