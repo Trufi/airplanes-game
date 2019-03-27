@@ -89,7 +89,9 @@ export const initSocket = (server: Server, state: State) => {
           .player({
             gameUrl: state.url,
             playerToken: cmdData.token,
-            toFinal: state.game.isGrandFinal,
+
+            // Проверяем на попадание финал только у игроков
+            toFinal: cmdData.joinType === 'player' && state.game.isGrandFinal,
           })
           .then((res) => {
             const cmd = authConnection(
