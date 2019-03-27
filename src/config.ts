@@ -156,10 +156,6 @@ export const healPoints = {
 };
 
 export const mainAirplaneColors = [
-  { r: 222, g: 222, b: 222 },
-  { r: 178, g: 178, b: 178 },
-  { r: 132, g: 132, b: 132 },
-  { r: 94, g: 94, b: 94 },
   { r: 206, g: 103, b: 67 },
   { r: 206, g: 126, b: 70 },
   { r: 223, g: 144, b: 67 },
