@@ -33,9 +33,11 @@ export const PlayerLabel = ({ name, position, camera, bodyId, frustum, observer 
   // В обсервер моде всегда показывае полную информацию
   const near = observer || distance < config.weapon.distance;
 
-  const colorId = bodyId % config.mainAirplaneColorsUI.length;
-  const mainColor = config.mainAirplaneColorsUI[colorId];
-  const color = near ? mainColor : 'rgba(128, 128, 128, 0.3)';
+  const colorId = bodyId % config.mainAirplaneColors.length;
+  const mainColor = config.mainAirplaneColors[colorId];
+  const color = near
+    ? `rgb(${mainColor.r}, ${mainColor.g}, ${mainColor.b})`
+    : 'rgba(128, 128, 128, 0.3)';
 
   v.project(camera.object);
 
