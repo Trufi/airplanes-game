@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import { joinGame } from '../../reducers';
 import { City } from '../../../types';
 import { canIjoinToGrandFinal } from '../../services/user';
+import { cityOrder } from '../../../cities';
 
 interface State {
   gamelist: GamelistResponse;
@@ -148,9 +149,13 @@ export class GameSelect extends React.PureComponent<Props, State> {
       );
     }
 
+    const sortedGames = deathMatchGames.sort((a, b) => {
+      return cityOrder.indexOf(a.city) - cityOrder.indexOf(b.city);
+    });
+
     return (
       <>
-        {deathMatchGames.map(({ url, players, maxPlayers, city }, i) => (
+        {sortedGames.map(({ url, players, maxPlayers, city }, i) => (
           <div key={i}>{this.renderGameRoom(url, players, maxPlayers, city)}</div>
         ))}
       </>

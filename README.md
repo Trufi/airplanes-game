@@ -35,6 +35,11 @@ CITY=nsk
 - barnaul
 - krasnoyarsk
 
+Чтобы игровой сервер запустился с турнирным флагом, надо передать параметр:
+```
+GAME_TYPE=tournament
+```
+
 # URLs
 
 Чтобы зайти как обсервер, нужно в URL добавить GET-параметр `?observer`, например, https://sky.2gis.ru?observer

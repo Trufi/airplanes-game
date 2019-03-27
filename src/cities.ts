@@ -49,4 +49,4 @@ export const originByCity: { [key in City]: number[] } = {
   krasnoyarsk: [1108005417, 810291456],
 };
 
-export const order: City[] = ['nsk', 'tomsk', 'krasnoyarsk', 'omsk', 'barnaul', 'kemerovo'];
+export const cityOrder: City[] = ['nsk', 'tomsk', 'krasnoyarsk', 'omsk', 'barnaul', 'kemerovo'];

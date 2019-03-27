@@ -78,7 +78,7 @@ export class ObserverPlayerLabel extends React.Component<Props, State> {
       >
         {capitalizeFirstLetter(name)}
         <br />
-        {Math.round(health)} / 100}
+        {Math.round(health)} / 100
       </div>
     );
   }
