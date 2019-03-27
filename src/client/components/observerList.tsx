@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ObserverState } from '../observer/types';
-import { mapMap } from '../../utils';
+import { mapToArray } from '../../utils';
 import * as control from '../observer/control';
 
 interface Props {
@@ -27,6 +27,9 @@ export class ObserverList extends React.Component<Props, State> {
       observer: { players, bodies, control: controlState },
     } = this.props;
 
+    const playersList = mapToArray(players);
+    playersList.sort((a, b) => b.points - a.points);
+
     return (
       <div
         style={{
@@ -44,7 +47,7 @@ export class ObserverList extends React.Component<Props, State> {
             </tr>
           </thead>
           <tbody>
-            {mapMap(players, (player, i) => {
+            {playersList.map((player, i) => {
               const body = bodies.get(player.bodyId);
               const follow = controlState.target && controlState.target.id === player.bodyId;
               return (
