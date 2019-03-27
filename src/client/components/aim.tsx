@@ -25,7 +25,7 @@ export const Aim = ({ weapon: { lastHitTime }, time }: Props) => {
           width: `${width}px`,
           opacity: 0.5,
         }}
-        src='./assets/aim.png'
+        src='./assets/aim2.png'
       />
       {time - lastHitTime < 100 && (
         <>
