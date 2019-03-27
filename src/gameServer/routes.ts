@@ -25,6 +25,10 @@ const restartScheme = Joi.object().keys({
     .required(),
 });
 
+const metrics = `# HELP sky_game_active_players Active players in game
+# TYPE sky_game_active_players gauge
+sky_game_active_players [PLAYERS]`;
+
 export const applyRoutes = (app: express.Express, state: State, executeCmd: (cmd: Cmd) => void) => {
   // health check для k8s
   app.get('/', (_req, res) => res.sendStatus(200));
@@ -33,9 +37,10 @@ export const applyRoutes = (app: express.Express, state: State, executeCmd: (cmd
   app.get('/metrics', (_, res) => {
     res.setHeader('Content-Type', 'text/plain; version=0.0.4; charset=utf-8');
 
-    res.send(`# HELP sky_game_active_players Active players in game
-  # TYPE sky_game_active_players gauge
-  sky_game_active_players ${state.game.players.size}`);
+    // @TODO КОСТЫЛЬ PIZDEC NAHOY BLYAT
+    // быстрый фикс. Текст всегда надо прижимать.
+    // иначе метрика начинает гнать - воспринимает как лишние отступы.
+    res.send(metrics.replace('[PLAYERS]', state.game.players.size.toString()));
   });
 
   app.get('/state', (_req, res) => {
