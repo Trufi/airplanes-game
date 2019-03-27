@@ -1,6 +1,15 @@
 ### restart
 
-http://127.0.0.1:3001/restart?secret=2gistop1&name=t1&duration=10&inSeconds=20
+Турнир:
+1. Вначале запускаем режим ожидания, т.е. infinity игру http://sky.2gis.ru/tournament/restart?secret=2gistop1&name=infinity&duration=1000000&inSeconds=1
+2. Когда народ соберется, включаем турнир:
+  1. http://sky.2gis.ru/tournament/restart?secret=2gistop1&duration=10&inSeconds=15&name=t1
+  2. http://sky.2gis.ru/tournament/restart?secret=2gistop1&duration=10&inSeconds=15&name=t2
+  3. http://sky.2gis.ru/tournament/restart?secret=2gistop1&duration=10&inSeconds=15&name=t3
+  4. http://sky.2gis.ru/tournament/restart?secret=2gistop1&duration=10&inSeconds=15&name=t4
+  5. http://sky.2gis.ru/tournament/restart?secret=2gistop1&duration=10&inSeconds=15&name=t5
+  6. http://sky.2gis.ru/tournament/restart?secret=2gistop1&duration=10&inSeconds=15&name=t6
 
 Гранд финал:
-http://127.0.0.1:3001/restart?secret=2gistop1&name=g1&duration=10&inSeconds=20&grand
+1. Вначале запускаем режим ожидания, т.е. infinity игру http://sky.2gis.ru/tournament/restart?secret=2gistop1&name=infinity&duration=1000000&inSeconds=1&grand=true
+2. Когда народ соберется, включаем финал http://sky.2gis.ru/tournament/restart?secret=2gistop1&name=g1&duration=10&inSeconds=15&grand=true
