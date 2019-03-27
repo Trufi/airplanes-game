@@ -12,7 +12,6 @@ interface Props {
   camera: CameraState;
   health: number;
   frustum: THREE.Frustum;
-  observer?: boolean;
 }
 
 const v = new THREE.Vector3();
@@ -21,15 +20,7 @@ const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-export const PlayerLabel = ({
-  name,
-  position,
-  camera,
-  health,
-  bodyId,
-  frustum,
-  observer,
-}: Props) => {
+export const PlayerLabel = ({ name, position, camera, health, bodyId, frustum }: Props) => {
   v.fromArray(position);
 
   if (!frustum.containsPoint(v)) {
@@ -39,7 +30,7 @@ export const PlayerLabel = ({
   const distance = vec3.distance(position, camera.position);
 
   // В обсервер моде всегда показывае полную информацию
-  const near = observer || distance < config.weapon.distance;
+  const near = distance < config.weapon.distance;
 
   const colorId = bodyId % config.mainAirplaneColors.length;
   const mainColor = config.mainAirplaneColors[colorId];

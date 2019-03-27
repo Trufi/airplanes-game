@@ -139,7 +139,8 @@ export class GameSelect extends React.PureComponent<Props, State> {
   };
 
   private renderGameList = (gamelist: GamelistResponse) => {
-    if (gamelist.length === 0) {
+    const deathMatchGames = gamelist.filter(({ type }) => type === 'dm');
+    if (deathMatchGames.length === 0) {
       return (
         <div className={styles.enterItem}>
           <div>These aren't the games you're looking for.</div>
@@ -149,11 +150,9 @@ export class GameSelect extends React.PureComponent<Props, State> {
 
     return (
       <>
-        {gamelist
-          .filter(({ type }) => type === 'dm')
-          .map(({ url, players, maxPlayers, city }, i) => (
-            <div key={i}>{this.renderGameRoom(url, players, maxPlayers, city)}</div>
-          ))}
+        {deathMatchGames.map(({ url, players, maxPlayers, city }, i) => (
+          <div key={i}>{this.renderGameRoom(url, players, maxPlayers, city)}</div>
+        ))}
       </>
     );
   };

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as THREE from 'three';
 import { AppState } from '../types';
-import { PlayerLabel } from './playerLabel';
 import { DeathNotes } from './DeathNotes';
 import { ExecuteCmd } from '../commands/execute';
 import { Debug } from './debug';
 import { ObserverList } from './observerList';
 import { Aim } from './aim';
+import { ObserverPlayerLabel } from './observerPlayerLabel';
 
 interface Props {
   appState: AppState;
@@ -43,15 +43,14 @@ export class Observer extends React.Component<Props, {}> {
       }
 
       playerNames.push(
-        <PlayerLabel
+        <ObserverPlayerLabel
           key={id}
-          bodyId={bodyId}
           name={name}
           position={targetBody.position}
           camera={camera}
           health={targetBody.health}
           frustum={frustum}
-          observer={true}
+          time={time}
         />,
       );
     });
