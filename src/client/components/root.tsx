@@ -6,6 +6,7 @@ import { AppState } from '../types';
 import { Game } from './Game';
 import { appState } from '../appState';
 import { Observer } from './observer';
+import { Connection } from './Connection';
 
 interface Props {
   appState: AppState;
@@ -35,7 +36,7 @@ export class Root extends React.Component<Props, {}> {
       if (!tryJoin) {
         return <GameSelect appState={appState} executeCmd={executeCmd} />;
       } else {
-        return <div>Connect...</div>;
+        return <Connection />;
       }
     }
   }
