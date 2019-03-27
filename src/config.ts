@@ -35,10 +35,12 @@ export const weapon = {
   offset: 5000,
   bullet: {
     color: {
-      flash: 0xd1780c,
-      line: 0xd8c70d,
+      // flash: 0xd1780c,
+      // line: 0xd8c70d,
+      line: 0x8442ab,
+      flash: 0xb069db,
     },
-    opacity: 0.8,
+    opacity: 0.7,
     width: 2,
     offset: { x: 920, y: 1200, z: 500 },
   },
@@ -153,3 +155,5 @@ export const healPoints = {
   radius: 10000,
   height: 20000,
 };
+
+export const mainAirplaneColors = [0x87149d, 0x375982, 0x98f282, 0x205628];

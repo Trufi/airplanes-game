@@ -19,31 +19,35 @@ export const createRenderer = () => {
   return renderer;
 };
 
+const defaultColor = new THREE.Color(0x474747);
+const groups = {
+  main: {
+    color: defaultColor,
+    names: [
+      'Корпус',
+      'Крылья',
+      'Крылья_хвостовые',
+      'Нос007',
+      'Закрылки',
+      'Закрылки_хвостовые',
+      'Хвост005',
+    ],
+  },
+  default: {
+    color: defaultColor,
+    names: [
+      'Пимпа002',
+      'Cylinder8283',
+      'КрышкаНоса002',
+      'Кабина002',
+      'Колено001',
+      'Ноги001',
+      'Пулеметы',
+      'Дуло',
+    ],
+  },
+};
 const textureLoader = new THREE.TextureLoader();
-const airplane_palettes = [
-  [
-    {
-      color: new THREE.Color(0xcc0000),
-      names: ['Закрылки', 'Закрылки_хвостовые', 'КрышкаНоса002', 'Дуло', 'Хвост005'],
-    },
-    { color: new THREE.Color(0x00cc00), names: ['Корпус', 'Крылья', 'Крылья_хвостовые', 'Нос007'] },
-    {
-      color: new THREE.Color(0x0000cc),
-      names: ['Пулеметы', 'Кабина002', 'Колено001', 'Ноги001', 'Пимпа002', 'Cylinder8283'],
-    },
-  ],
-  [
-    {
-      color: new THREE.Color(0x0000cc),
-      names: ['Закрылки', 'Закрылки_хвостовые', 'КрышкаНоса002', 'Дуло', 'Хвост005'],
-    },
-    { color: new THREE.Color(0xcc0000), names: ['Корпус', 'Крылья', 'Крылья_хвостовые', 'Нос007'] },
-    {
-      color: new THREE.Color(0x00cc00),
-      names: ['Пулеметы', 'Кабина002', 'Колено001', 'Ноги001', 'Пимпа002', 'Cylinder8283'],
-    },
-  ],
-];
 const group_apply = (group: any, model: THREE.Object3D) => {
   group.names.forEach((name: string) => {
     const child = model.getObjectByName(name) as THREE.Mesh | undefined;
@@ -57,16 +61,16 @@ const group_apply = (group: any, model: THREE.Object3D) => {
 
 export const createMesh = (id: number) => {
   const mesh = new THREE.Object3D();
-  const paletteId = id % airplane_palettes.length;
+  const paletteId = id % config.mainAirplaneColors.length;
+  groups.main.color = new THREE.Color(config.mainAirplaneColors[paletteId]);
 
   getGltfLoader().then((loader) =>
     loader.load('./assets/new.glb', (gltf) => {
       const scene = gltf.scene;
       const airplane_model = scene.getObjectByName('Самолет');
       if (airplane_model) {
-        airplane_palettes[paletteId].forEach((group) => {
-          group_apply(group, airplane_model);
-        });
+        group_apply(groups.main, airplane_model);
+        group_apply(groups.default, airplane_model);
 
         textureLoader.load('./assets/propeller.jpg', (texture) => {
           const circleGeom = new THREE.CircleGeometry(config.airplane.propeller.radius, 32);
