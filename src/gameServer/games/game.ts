@@ -6,7 +6,7 @@ import { msg, pbfMsg } from '../messages';
 import { findMap, clamp, mapMap, vec2SignedAngle, mapToArray, getNewPoints } from '../../utils';
 import { ClientMsg } from '../../client/messages';
 import * as config from '../../config';
-import { updatePoints } from './calcPoints';
+import { addPointsDelta } from './calcPoints';
 import { GameState, Body, GamePlayer, GameObserver, RestartData } from '../types';
 import { createHealPointsState, updateHealPoints, restartHealPoints } from './healPoints';
 import { City } from '../../types';
@@ -34,6 +34,7 @@ export const createGameState = (
   maxPlayers: number,
   duration: number,
   city: City,
+  tournamentId: number,
 ): GameState => {
   return {
     prevTime: time,
@@ -47,12 +48,12 @@ export const createGameState = (
     restart: {
       need: false,
       time: 0,
-      tournamentId: -1,
+      tournamentId,
       duration: 345600000, // 4 суток
     },
     city,
     startTime: time,
-    tournamentId: -1,
+    tournamentId,
     duration,
     maxPlayers,
     healPoints: createHealPointsState(city),
@@ -196,8 +197,16 @@ const playerDeath = (game: GameState, body: Body, causePlayerId: number): Cmd =>
   const causePlayer = game.players.get(causePlayerId);
   if (causePlayer) {
     causePlayer.kills++;
-    causePlayer.points = getNewPoints(causePlayer.points, 'kills');
-    updatePoints(causePlayer);
+    const newPoints = getNewPoints(causePlayer.points, 'kills');
+    addPointsDelta(
+      causePlayer.id,
+      {
+        kills: 1,
+        points: newPoints - causePlayer.points,
+      },
+      game.tournamentId,
+    );
+    causePlayer.points = newPoints;
   }
 
   // Превращаем живого игрока в мертвого
@@ -205,8 +214,16 @@ const playerDeath = (game: GameState, body: Body, causePlayerId: number): Cmd =>
   if (player) {
     player.live = false;
     player.deaths++;
-    player.points = getNewPoints(player.points, 'deaths');
-    updatePoints(player);
+    const newPoints = getNewPoints(player.points, 'deaths');
+    addPointsDelta(
+      player.id,
+      {
+        deaths: 1,
+        points: newPoints - player.points,
+      },
+      game.tournamentId,
+    );
+    player.points = newPoints;
 
     // TODO: если игра на вылет, то тут нужно как-то прокинуть команду
     // чтобы игрока выкинуло из игры

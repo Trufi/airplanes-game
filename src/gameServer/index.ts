@@ -23,53 +23,63 @@ let url = config.gameServer.url;
 url = url.replace('http://', '');
 url = url.replace('https://', '');
 
-const state = createState(
-  {
-    maxPlayers: 30,
-    city: config.gameServer.city as City,
-    type: 'dm',
-    url,
-    duration: 345600000, // 4 суток
-  },
-  time(),
-);
+// Ищем Id бесконечной игры
+api.getTournamentList().then(({ tournaments }) => {
+  const tournament = tournaments.find((t) => t.machine_name === 'infinity');
+  const tournamentId = tournament ? tournament.id : -1;
+  init(tournamentId);
+});
 
-console.log(
-  `Start game server with url: ${state.url}, type: ${state.type}, city: ${
-    state.game.city
-  }, maxPlayers: ${state.game.maxPlayers}, main server url: ${config.mainServer.url}`,
-);
+const init = (tournamentId: number) => {
+  const state = createState(
+    {
+      maxPlayers: 30,
+      city: config.gameServer.city as City,
+      type: 'dm',
+      url,
+      duration: 345600000, // 4 суток
+    },
+    time(),
+    tournamentId,
+  );
 
-const { executeCmd } = initSocket(server, state);
-applyRoutes(app, state, executeCmd);
+  console.log(
+    `Start game server with url: ${state.url}, type: ${state.type}, city: ${state.game.city}, ` +
+      `maxPlayers: ${state.game.maxPlayers}, main server url: ${config.mainServer.url}, ` +
+      `tournamentId: ${tournamentId}`,
+  );
 
-const gameLoop = () => {
-  setTimeout(gameLoop, config.serverGameStep);
-  const cmd = tick(state, time());
-  executeCmd(cmd);
-};
-gameLoop();
+  const { executeCmd } = initSocket(server, state);
+  applyRoutes(app, state, executeCmd);
 
-const notifyMainServer = () => {
-  const {
-    url,
-    type,
-    game: { maxPlayers, players, tournamentId, city },
-  } = state;
+  const gameLoop = () => {
+    setTimeout(gameLoop, config.serverGameStep);
+    const cmd = tick(state, time());
+    executeCmd(cmd);
+  };
+  gameLoop();
 
-  api
-    .notify({
+  const notifyMainServer = () => {
+    const {
       url,
       type,
-      city,
-      players: players.size,
-      maxPlayers,
-      tournamentId,
-    })
-    .catch((err) => {
-      console.log(`Main server notify error: ${err}`);
-    });
-};
+      game: { maxPlayers, players, tournamentId, city },
+    } = state;
 
-setInterval(() => notifyMainServer(), config.gameServer.updateMainInverval);
-notifyMainServer();
+    api
+      .notify({
+        url,
+        type,
+        city,
+        players: players.size,
+        maxPlayers,
+        tournamentId,
+      })
+      .catch((err) => {
+        console.log(`Main server notify error: ${err}`);
+      });
+  };
+
+  setInterval(() => notifyMainServer(), config.gameServer.updateMainInverval);
+  notifyMainServer();
+};

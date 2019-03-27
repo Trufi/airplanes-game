@@ -1,24 +1,20 @@
-import { GamePlayer } from '../types';
+import { addPlayerStats } from '../services/main';
 
-// import { getNewPoints } from '../../utils';
+export const addPointsDelta = (
+  playerId: number,
+  delta: {
+    kills?: number;
+    deaths?: number;
+    points: number;
+  },
+  tournamentId: number,
+) => {
+  const { kills = 0, deaths = 0, points } = delta;
 
-export const updatePoints = (_player: GamePlayer) => {
-  // const connection = connectionDB();
-  // selectUserByName(connection, player.name)
-  //   .then((user: any) =>
-  //     updateUserStats(connection, user.id, {
-  //       kills: Number(user.kills) + (type === 'kills' ? 1 : 0),
-  //       deaths: Number(user.deaths) + (type === 'deaths' ? 1 : 0),
-  //       points: getNewPoints(Number(user.points), type),
-  //     }),
-  //   )
-  //   .then(() => {
-  //     connection.end();
-  //     return Promise.resolve();
-  //   })
-  //   .catch((err) => {
-  //     connection.end();
-  //     console.log('Error in updatePointsByType. Details: ', err);
-  //     return Promise.resolve();
-  //   });
+  addPlayerStats(playerId, {
+    kills,
+    deaths,
+    points,
+    tournamentId,
+  });
 };

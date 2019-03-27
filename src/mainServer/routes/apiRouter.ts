@@ -3,14 +3,12 @@ import { Router, Express } from 'express';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import { connectionDB } from '../models/database';
 import {
-  attachUserToTournament,
   getUserStatsByTournament,
   createToken,
   createUser,
   selectUser,
   selectUserByName,
   selectUserByToken,
-  updateUserStats,
   getUserLadder,
 } from '../models/user';
 import { getAchievements, getOwnAchievements, setAchievements } from '../models/achievements';
@@ -192,60 +190,6 @@ export function applyApiRouter(app: Express, state: State) {
         });
       });
   });
-
-  apiRouter.post(
-    '/user/tournament/:id/stats',
-    authenticate('bearer', { failureRedirect: '/' }),
-    (req, res) => {
-      setAccessAllowOrigin(req, res);
-
-      const { deaths = 0, kills = 0, points = 0 } = req.body;
-      const tournamentId = Number(req.params.id);
-
-      if (typeof tournamentId === 'undefined' || typeof tournamentId !== 'number') {
-        return res.status(422).send('Unprocessed entity: tournamentId');
-      }
-      if (typeof deaths === 'undefined' || typeof deaths !== 'number') {
-        return res.status(422).send('Unprocessed entity: deaths');
-      }
-      if (typeof kills === 'undefined' || typeof kills !== 'number') {
-        return res.status(422).send('Unprocessed entity: kills');
-      }
-      if (typeof points === 'undefined' || typeof points !== 'number') {
-        return res.status(422).send('Unprocessed entity: points');
-      }
-
-      const connection = connectionDB();
-      const { id } = req.user;
-
-      getUserStatsByTournament(connection, id, tournamentId)
-        .then((stats: UserStats) => {
-          if (stats) {
-            return updateUserStats(connection, id, tournamentId, {
-              kills: stats.kills + kills,
-              deaths: stats.deaths + deaths,
-              points: stats.points + points,
-            });
-          }
-          return attachUserToTournament(connection, id, tournamentId, {
-            kills,
-            deaths,
-            points,
-          });
-        })
-        .then(() => {
-          connection.end().then(() => {
-            res.sendStatus(200);
-          });
-        })
-        .catch((err) => {
-          connection.end().then(() => {
-            console.log('/user/stats:err', err);
-            res.sendStatus(ERROR_CODE);
-          });
-        });
-    },
-  );
 
   apiRouter.get(
     '/user/tournament/:id/stats',

@@ -11,6 +11,7 @@ export const createState = (
     duration: number;
   },
   time: number,
+  tournamentId: number,
 ): State => {
   const { url, type, maxPlayers, city, duration } = settings;
   return {
@@ -20,7 +21,7 @@ export const createState = (
       map: new Map(),
       nextId: 1,
     },
-    game: game.createGameState(time, maxPlayers, duration, city),
+    game: game.createGameState(time, maxPlayers, duration, city, tournamentId),
     isGrandFinal: false,
   };
 };

@@ -16,6 +16,7 @@ describe('reducers', () => {
         duration: 0,
       },
       0,
+      -1,
     );
   });
 

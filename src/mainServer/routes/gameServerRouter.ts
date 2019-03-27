@@ -2,9 +2,21 @@ import * as express from 'express';
 import { State } from '../types';
 import { updateGameData } from '../reducers';
 import { connectionDB } from '../models/database';
-import { selectUserByToken } from '../models/user';
-import { NotifyRequest, PlayerResponse, PlayerRequest } from '../types/gameApi';
-import { getPretenders } from '../models/tournaments';
+import {
+  selectUserByToken,
+  getUserStatsByTournament,
+  updateUserStats,
+  attachUserToTournament,
+} from '../models/user';
+import {
+  NotifyRequest,
+  PlayerResponse,
+  PlayerRequest,
+  AddPlayerStatsRequest,
+} from '../types/gameApi';
+import { getPretenders, getFullTournamentList } from '../models/tournaments';
+import { UserStats, Tournament } from '../models/types';
+import { TournamentListResponse } from '../types/api';
 
 export const applyGameServerRouter = (app: express.Express, state: State) => {
   const router = express.Router();
@@ -53,6 +65,58 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
     }
 
     await dbConnect.end();
+  });
+
+  router.post('/player/:id/stats', (req, res) => {
+    const data = req.body as AddPlayerStatsRequest;
+    const { deaths = 0, kills = 0, points = 0, tournamentId } = data;
+    const playerId = Number(req.params.id);
+
+    const connection = connectionDB();
+
+    getUserStatsByTournament(connection, playerId, tournamentId)
+      .then((stats: UserStats) => {
+        if (stats) {
+          return updateUserStats(connection, playerId, tournamentId, {
+            kills: stats.kills + kills,
+            deaths: stats.deaths + deaths,
+            points: stats.points + points,
+          });
+        }
+        return attachUserToTournament(connection, playerId, tournamentId, {
+          kills,
+          deaths,
+          points,
+        });
+      })
+      .then(() => {
+        connection.end().then(() => {
+          res.sendStatus(200);
+        });
+      })
+      .catch((err) => {
+        connection.end().then(() => {
+          console.log('/user/stats:err', err);
+          res.sendStatus(501);
+        });
+      });
+  });
+
+  router.get('/tournament/list', (_req, res) => {
+    const connection = connectionDB();
+    getFullTournamentList(connection)
+      .then((tournaments: Tournament[]) => {
+        connection.end().then(() => {
+          const result: TournamentListResponse = { tournaments };
+          res.send(result);
+        });
+      })
+      .catch((err: any) => {
+        connection.end().then(() => {
+          console.log('Game server /tournament/list:err', err);
+          res.sendStatus(501);
+        });
+      });
   });
 
   app.use('/game', router);

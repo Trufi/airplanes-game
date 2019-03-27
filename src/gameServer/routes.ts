@@ -78,10 +78,11 @@ export const applyRoutes = (app: express.Express, state: State, executeCmd: (cmd
 
         const { id, is_grand_final } = tournament;
 
-        console.log(
+        const msg =
           `Restart game after ${inSeconds} seconds with tournament id: ${id}, ` +
-            `duration: ${duration}, grandFinal: ${is_grand_final}`,
-        );
+          `duration: ${duration}, grandFinal: ${is_grand_final}`;
+
+        console.log(msg);
         executeCmd(
           restartInSeconds(state, {
             tournamentId: id,
@@ -90,7 +91,7 @@ export const applyRoutes = (app: express.Express, state: State, executeCmd: (cmd
             isGrandFinal: is_grand_final,
           }),
         );
-        return res.sendStatus(200);
+        return res.status(200).send(msg);
       })
       .catch((reason) => {
         res.status(400).send(reason);

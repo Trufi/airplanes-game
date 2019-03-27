@@ -79,6 +79,35 @@ export const getTournamentList = (connection: Client): Promise<Tournament[]> => 
   });
 };
 
+/**
+ * В отличие от getTournamentList, возвращает все турниры, включая infinity
+ */
+export const getFullTournamentList = (connection: Client): Promise<Tournament[]> => {
+  const sql = `
+    SELECT
+     t.id,
+     t.name,
+     t.machine_name,
+     t.description,
+     t.start_on,
+     t.duration_min,
+     t.input_count,
+     t.output_count,
+     t.is_grand_final
+    FROM tournament as t
+    ORDER BY t.start_on
+  `;
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(parseResult<Tournament>(result));
+    });
+  });
+};
+
 export const getPretenders = (connection: Client): Promise<Pretender[]> => {
   return new Promise((resolve, reject) => {
     getTournamentList(connection).then((tournaments: Tournament[]) => {

@@ -19,3 +19,10 @@ export interface PlayerResponse {
   id: number;
   name: string;
 }
+
+export interface AddPlayerStatsRequest {
+  kills: number;
+  deaths: number;
+  points: number;
+  tournamentId: number;
+}
