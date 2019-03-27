@@ -6,6 +6,7 @@ import { CameraState } from '../types';
 import * as config from '../../config';
 
 interface Props {
+  bodyId: number;
   name: string;
   position: number[];
   camera: CameraState;
@@ -16,7 +17,11 @@ interface Props {
 
 const v = new THREE.Vector3();
 
-export const PlayerLabel = ({ name, position, camera, health, frustum, observer }: Props) => {
+const capitalizeFirstLetter = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+export const PlayerLabel = ({ name, position, camera, bodyId, frustum, observer }: Props) => {
   v.fromArray(position);
 
   if (!frustum.containsPoint(v)) {
@@ -28,7 +33,9 @@ export const PlayerLabel = ({ name, position, camera, health, frustum, observer 
   // В обсервер моде всегда показывае полную информацию
   const near = observer || distance < config.weapon.distance;
 
-  const color = near ? '#ff0000' : 'rgba(128, 128, 128, 0.3)';
+  const colorId = bodyId % config.mainAirplaneColorsUI.length;
+  const mainColor = config.mainAirplaneColorsUI[colorId];
+  const color = near ? mainColor : 'rgba(128, 128, 128, 0.3)';
 
   v.project(camera.object);
 
@@ -54,13 +61,7 @@ export const PlayerLabel = ({ name, position, camera, health, frustum, observer 
         userSelect: 'none',
       }}
     >
-      {name}
-      {near && (
-        <>
-          <br />
-          {Math.round(health)} / 100
-        </>
-      )}
+      {capitalizeFirstLetter(name)}
     </div>
   );
 };

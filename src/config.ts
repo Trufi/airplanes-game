@@ -76,7 +76,7 @@ export const boost = {
   maxVolume: 4,
 
   /**
-   *  Множитель замедления
+   * Множитель замедления
    */
   slowFactor: 0.5,
 };
@@ -186,3 +186,4 @@ export const mainAirplaneColors = [
   { r: 215, g: 120, b: 155 },
   { r: 230, g: 165, b: 186 },
 ];
+export const mainAirplaneColorsUI = ['#87149d', '#375982', '#98f282', '#205628'];
