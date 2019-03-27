@@ -12,4 +12,7 @@
 
 Гранд финал:
 1. Вначале запускаем режим ожидания, т.е. infinity игру http://sky.2gis.ru/tournament/restart?secret=2gistop1&name=infinity&duration=1000000&inSeconds=1&grand=true
-2. Когда народ соберется, включаем финал http://sky.2gis.ru/tournament/restart?secret=2gistop1&name=g1&duration=10&inSeconds=15&grand=true
+2. Когда народ соберется, включаемп финал http://sky.2gis.ru/tournament/restart?secret=2gistop1&name=g1&duration=10&inSeconds=15&grand=true
+
+Закрыть турнир:
+https://sky.2gis.ru/tournament/restart?secret=2gistop1&name=infinity&duration=0.01&inSeconds=1
