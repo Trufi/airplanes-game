@@ -105,6 +105,40 @@ export const initSocket = (server: Server, state: State) => {
           })
           .catch((err) => {
             console.log(`Auth player main server request error: ${err}`);
+            executeCmd(cmd.sendMsg(cmdData.connectionId, msg.gameJoinFail()));
+          });
+        break;
+      }
+
+      case 'notifyMain': {
+        const {
+          url,
+          type,
+          game: {
+            maxPlayers,
+            players,
+            tournamentId,
+            city,
+            startTime,
+            time,
+            duration,
+            isGrandFinal,
+          },
+        } = state;
+
+        api
+          .notify({
+            url,
+            city,
+            type,
+            players: players.size,
+            maxPlayers,
+            tournamentId,
+            enable: time > startTime && time < startTime + duration,
+            isGrandFinal,
+          })
+          .catch((err) => {
+            console.log(`Main server notify error: ${err}`);
           });
         break;
       }

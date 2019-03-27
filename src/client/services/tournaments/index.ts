@@ -24,22 +24,3 @@ export const getTournamentPretenders = () => {
     })
     .then((response: AxiosResponse<User>) => response.data);
 };
-
-export const attachUserTournament = (p: { tournamentId: number; token: string }) => {
-  return axios
-    .post(
-      config.mainServer.url + '/api/tournament/attach',
-      {
-        tournamentId: p.tournamentId,
-        token: p.token,
-      },
-      {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${p.token}`,
-        },
-      },
-    )
-    .then((response: AxiosResponse<User>) => response.data);
-};

@@ -66,6 +66,7 @@ export function applyApiRouter(app: Express, state: State) {
       '/gamelist',
       '/login',
       '/user/stats',
+      '/user/canIjoinToGrandFinal',
       '/achievement/own',
       '/achievement/set',
       '/achievement/list',

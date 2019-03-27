@@ -343,5 +343,5 @@ const restart = (game: GameState): Cmd => {
 
   restartHealPoints(game.healPoints);
 
-  return cmd.sendMsgTo(tickBodyRecipientIds(game), msg.restartData(game));
+  return [cmd.sendMsgTo(tickBodyRecipientIds(game), msg.restartData(game)), cmd.notifyMain()];
 };

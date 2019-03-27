@@ -24,6 +24,10 @@ const sendMsgToAllInGame = (msg: AnyServerMsg) => ({
   msg,
 });
 
+const notifyMain = () => ({
+  type: 'notifyMain' as 'notifyMain',
+});
+
 const authPlayer = (connectionId: number, token: string, joinType: 'player' | 'observer') => ({
   type: 'authPlayer' as 'authPlayer',
   connectionId,
@@ -37,6 +41,7 @@ export const cmd = {
   sendPbfMsgTo,
   sendMsgToAllInGame,
   authPlayer,
+  notifyMain,
 };
 
 export const union = (cmds: Cmd[]): Cmd => {

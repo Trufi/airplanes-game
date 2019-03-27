@@ -9,6 +9,7 @@ import * as api from './services/main';
 import { City, GameType } from '../types';
 import { applyRoutes } from './routes';
 import { initSocket } from './socket';
+import { cmd } from './commands';
 
 const port = 3001;
 
@@ -59,29 +60,6 @@ const init = (tournamentId: number) => {
   };
   gameLoop();
 
-  const notifyMainServer = () => {
-    const {
-      url,
-      type,
-      game: { maxPlayers, players, tournamentId, city, startTime, time, duration, isGrandFinal },
-    } = state;
-
-    api
-      .notify({
-        url,
-        city,
-        type,
-        players: players.size,
-        maxPlayers,
-        tournamentId,
-        enable: time > startTime && time < startTime + duration,
-        isGrandFinal,
-      })
-      .catch((err) => {
-        console.log(`Main server notify error: ${err}`);
-      });
-  };
-
-  setInterval(() => notifyMainServer(), config.gameServer.updateMainInverval);
-  notifyMainServer();
+  setInterval(() => executeCmd(cmd.notifyMain()), config.gameServer.updateMainInverval);
+  executeCmd(cmd.notifyMain());
 };

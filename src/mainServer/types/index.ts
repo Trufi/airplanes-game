@@ -1,4 +1,4 @@
-import { GameType } from '../../types';
+import { GameType, City } from '../../types';
 
 export interface Game {
   id: number;
@@ -6,7 +6,7 @@ export interface Game {
   type: GameType;
   players: number;
   maxPlayers: number;
-  city: string;
+  city: City;
   lastNotifyTime: number;
   tournamentId: number;
   isGrandFinal: boolean;

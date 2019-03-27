@@ -1,15 +1,17 @@
 import { Tournament, UserStats } from '../models/types';
-import { GameType } from '../../types';
+import { GameType, City } from '../../types';
 
-export type GamelistResponse = Array<{
+export interface GamelistItem {
   type: GameType;
   enable: boolean;
   isGrandFinal: boolean;
-  city: string;
+  city: City;
   players: number;
   maxPlayers: number;
   url: string;
-}>;
+}
+
+export type GamelistResponse = GamelistItem[];
 
 export interface TournamentListResponse {
   tournaments: Tournament[];

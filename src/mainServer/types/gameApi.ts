@@ -1,8 +1,8 @@
-import { GameType } from '../../types';
+import { GameType, City } from '../../types';
 
 export interface NotifyRequest {
   url: string;
-  city: string;
+  city: City;
   type: GameType;
   players: number;
   tournamentId: number;

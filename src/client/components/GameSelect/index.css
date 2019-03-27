@@ -117,9 +117,10 @@
   height: 220px;
 }
 
-.enterIcon.inactive {
+.enterIconInactive {
   width: 245px;
   height: 200px;
+  cursor: default;
   filter: grayscale(0.8);
 }
 
@@ -148,4 +149,13 @@
   color: #ffffff;
   font-size: 24px;
   text-transform: uppercase;
+}
+
+.enterItemDisable {
+  color: #8e9691;
+}
+
+.tournamentMessage {
+  font-size: 20px;
+  text-transform: initial;
 }

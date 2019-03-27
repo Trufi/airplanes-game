@@ -6,10 +6,13 @@ import { GamelistResponse } from '../../../mainServer/types/api';
 import styles from './index.css';
 import classNames from 'classnames';
 import { joinGame } from '../../reducers';
+import { City } from '../../../types';
+import { canIjoinToGrandFinal } from '../../services/user';
 
 interface State {
   gamelist: GamelistResponse;
   gameMode: any;
+  canJoinToGrandFinal: boolean;
 }
 
 interface Props {
@@ -17,7 +20,7 @@ interface Props {
   executeCmd: ExecuteCmd;
 }
 
-const CITY_NAMES_MAP: any = {
+const CITY_NAMES_MAP: { [name in City]: string } = {
   nsk: 'Novosibirsk',
   omsk: 'Omsk',
   tomsk: 'Tomsk',
@@ -30,13 +33,17 @@ export class GameSelect extends React.PureComponent<Props, State> {
   public state = {
     gamelist: [],
     gameMode: null,
+    canJoinToGrandFinal: false,
   };
 
   public componentDidMount() {
     const { appState } = this.props;
     if (appState.token) {
-      getList({ token: appState.token }).then((data) => {
-        this.setState({ gamelist: data });
+      Promise.all([
+        canIjoinToGrandFinal({ token: appState.token }),
+        getList({ token: appState.token }),
+      ]).then(([canJoinToGrandFinal, gamelist]) => {
+        this.setState({ gamelist, canJoinToGrandFinal });
       });
     }
   }
@@ -51,10 +58,36 @@ export class GameSelect extends React.PureComponent<Props, State> {
   }
 
   private renderSelectMode = () => {
-    const { gameMode, gamelist } = this.state;
+    const { gameMode, gamelist, canJoinToGrandFinal } = this.state;
 
     if (gameMode) {
       return null;
+    }
+
+    let tournamentTitle = 'Tournament';
+    let enableTournament = false;
+    let tournamentMessage = 'Скоро новый турнир';
+
+    const tournament = getCurrentTournament(gamelist);
+    if (tournament && tournament.enable) {
+      if (tournament.isGrandFinal) {
+        tournamentTitle = 'Grand Final';
+        if (canJoinToGrandFinal) {
+          enableTournament = true;
+          tournamentMessage = '';
+        } else {
+          enableTournament = false;
+          tournamentMessage = 'Ты не прошел в финал';
+        }
+      } else {
+        if (canJoinToGrandFinal) {
+          enableTournament = false;
+          tournamentMessage = 'Ты уже в финале!';
+        } else {
+          enableTournament = true;
+          tournamentMessage = '';
+        }
+      }
     }
 
     const dmIcon = classNames({
@@ -65,9 +98,8 @@ export class GameSelect extends React.PureComponent<Props, State> {
     const tourIcon = classNames({
       [styles.enterIcon]: true,
       [styles.tourIcon]: true,
+      [styles.enterIconInactive]: !enableTournament,
     });
-
-    const tournament = getTournament(gamelist);
 
     return (
       <div className={styles.entersContainer}>
@@ -75,19 +107,23 @@ export class GameSelect extends React.PureComponent<Props, State> {
           <div className={dmIcon} onClick={() => this.setGameMode('dm')} />
           <div>DeathMatch</div>
         </div>
-        {tournament &&
-        tournament.enable && ( // TODO: не скрывать, а дизейблить
-            <div className={styles.enterItem}>
-              <div
-                className={tourIcon}
-                onClick={() => {
-                  this.setGameMode('tour');
-                  this.gameSelected(tournament.url);
-                }}
-              />
-              <div>Tournament</div>
-            </div>
-          )}
+        <div
+          className={classNames({
+            [styles.enterItem]: true,
+            [styles.enterItemDisable]: !enableTournament,
+          })}
+        >
+          <div
+            className={tourIcon}
+            onClick={() => {
+              if (enableTournament && tournament) {
+                this.gameSelected(tournament.url);
+              }
+            }}
+          />
+          <div>{tournamentTitle}</div>
+          <div className={styles.tournamentMessage}>{tournamentMessage}</div>
+        </div>
       </div>
     );
   };
@@ -122,7 +158,7 @@ export class GameSelect extends React.PureComponent<Props, State> {
     );
   };
 
-  private renderGameRoom = (url: string, players: number, maxPlayers: number, city: string) => {
+  private renderGameRoom = (url: string, players: number, maxPlayers: number, city: City) => {
     const cityName = CITY_NAMES_MAP[city];
     const iconClass = classNames({
       [styles.icon]: true,
@@ -156,7 +192,7 @@ export class GameSelect extends React.PureComponent<Props, State> {
   };
 }
 
-function getTournament(list: GamelistResponse) {
+function getCurrentTournament(list: GamelistResponse) {
   for (const game of list) {
     if (game.type === 'tournament' && game.enable) {
       return game;
