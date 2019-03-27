@@ -1,7 +1,7 @@
 import { addPlayerStats } from '../services/main';
 
 export const addPointsDelta = (
-  playerId: number,
+  userId: number,
   delta: {
     kills?: number;
     deaths?: number;
@@ -11,7 +11,7 @@ export const addPointsDelta = (
 ) => {
   const { kills = 0, deaths = 0, points } = delta;
 
-  addPlayerStats(playerId, {
+  addPlayerStats(userId, {
     kills,
     deaths,
     points,
