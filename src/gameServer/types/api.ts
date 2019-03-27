@@ -1,5 +1,6 @@
 export interface RestartRequest {
-  tournamentId: number;
-  durationMinutes: number;
+  name: string;
+  duration: number;
   inSeconds: number;
+  secret: string;
 }

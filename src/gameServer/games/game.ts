@@ -7,7 +7,7 @@ import { findMap, clamp, mapMap, vec2SignedAngle, mapToArray } from '../../utils
 import { ClientMsg } from '../../client/messages';
 import * as config from '../../config';
 import { updatePointsByType } from './calcPoints';
-import { GameState, Body, GamePlayer, GameObserver } from '../types';
+import { GameState, Body, GamePlayer, GameObserver, RestartData } from '../types';
 import { createHealPointsState, updateHealPoints, restartHealPoints } from './healPoints';
 import { City } from '../../types';
 
@@ -108,13 +108,6 @@ export const tick = (game: GameState, time: number): Cmd => {
   game.prevTime = game.time;
   game.time = time;
 
-  // Если от пользователей довно не приходило сообщений, то убиваем их
-  // game.bodies.map.forEach((body) => {
-  //   if (body.updateTime !== 0 && game.time - body.updateTime > 10000) {
-  //     playerDeath(game, body, 0);
-  //   }
-  // });
-
   const cmds: Cmd[] = [];
 
   cmds.push(updateHealPoints(game.healPoints, game.time));
@@ -124,18 +117,6 @@ export const tick = (game: GameState, time: number): Cmd => {
   if (game.restart.need && game.time > game.restart.time) {
     console.log(`Restart game!`);
     cmds.push(restart(game));
-  } else {
-    // Если время игры истекло, то включаем бесконечную игру
-    if (!game.restart.need && game.startTime + game.duration < game.time) {
-      console.log(`Game end, prepare to return to infinity game`);
-      cmds.push(
-        restartInSeconds(game, {
-          tournamentId: -1,
-          inSeconds: 30,
-          duration: 345600000, // 4 суток
-        }),
-      );
-    }
   }
 
   return union(cmds);
@@ -297,14 +278,7 @@ export const kickObserver = (game: GameState, id: number): Cmd => {
   game.observers.delete(id);
 };
 
-export const restartInSeconds = (
-  game: GameState,
-  data: {
-    tournamentId: number;
-    inSeconds: number;
-    duration: number;
-  },
-): Cmd => {
+export const restartInSeconds = (game: GameState, data: RestartData): Cmd => {
   const { tournamentId, inSeconds, duration } = data;
 
   game.restart.need = true;

@@ -114,3 +114,10 @@ export interface State {
   connections: ConnectionsState;
   game: GameState;
 }
+
+export interface RestartData {
+  tournamentId: number;
+  inSeconds: number;
+  duration: number;
+  isGrandFinal: boolean;
+}

@@ -7,6 +7,7 @@ import {
   State,
   Connection,
   ObserverConnection,
+  RestartData,
 } from '../types';
 import { Cmd, cmd } from '../commands';
 import { msg } from '../messages';
@@ -208,4 +209,8 @@ const updatePlayerChanges = (
 
 export const tick = (state: State, time: number): Cmd => {
   return game.tick(state.game, time);
+};
+
+export const restartInSeconds = (state: State, data: RestartData) => {
+  return game.restartInSeconds(state.game, data);
 };
