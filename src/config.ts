@@ -74,6 +74,11 @@ export const boost = {
   factor: 2.5,
 
   maxVolume: 4,
+
+  /**
+   *  Множитель замедления
+   */
+  slowFactor: 0.5,
 };
 
 export const airplane = {

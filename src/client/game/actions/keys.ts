@@ -1,7 +1,7 @@
 import * as quat from '@2gis/gl-matrix/quat';
 import { PhysicBodyState, State } from '../../types';
 import { clamp } from '../../../utils';
-import { updateBoost } from './boost';
+import { updateBoost, updateSlow } from './boost';
 import { localAxisToXYAngle, degToRad } from '../../utils';
 import { updateWeapon } from './weapon';
 
@@ -55,6 +55,7 @@ export const processPressedkeys = (state: State) => {
   }
 
   updateBoost(body, dt, pressedKeys['KeyF']);
+  updateSlow(body, dt, pressedKeys['KeyR']);
 
   // Если нажата кнопка ускорения, то не стреляем
   if (!pressedKeys['KeyF']) {

@@ -38,3 +38,12 @@ export const updateBoost = (body: PhysicBodyState, dt: number, tryUse: boolean) 
     }
   }
 };
+
+/**
+ * @param tryUse Пробует ли пользователь тормозить
+ */
+export const updateSlow = (body: PhysicBodyState, dt: number, tryUse: boolean) => {
+  if (tryUse) {
+    body.velocity = Math.max(config.airplane.velocity, body.velocity) * config.boost.slowFactor;
+  }
+};

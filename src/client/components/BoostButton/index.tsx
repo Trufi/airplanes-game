@@ -26,31 +26,52 @@ export class BoostButton extends React.Component<Props, {}> {
       <div className={styles.cover}>
         <div
           className={styles.boostContainer}
-          onTouchStart={this.onTouchStart}
-          onTouchEnd={this.onTouchEnd}
-          onTouchMove={this.onTouchMove}
+          onTouchStart={this.onBoostTouchStart}
+          onTouchEnd={this.onBoostTouchEnd}
+          onTouchMove={this.onBoostTouchMove}
         >
           <div className={styles.boost} />
           <div className={styles.boostLimitContainer}>
             <div className={styles.boostLimit} style={{ height: `${fillPercent}px` }} />
           </div>
         </div>
-        <div className={styles.slow} />
+        <div
+          className={styles.boostContainer}
+          onTouchStart={this.onSlowTouchStart}
+          onTouchEnd={this.onSlowTouchEnd}
+          onTouchMove={this.onSlowTouchMove}
+        >
+          <div className={styles.slow} />
+        </div>
       </div>
     );
   }
 
-  private onTouchStart = (ev: React.TouchEvent) => {
+  private onBoostTouchStart = (ev: React.TouchEvent) => {
     ev.preventDefault();
     this.props.game.pressedKeys['KeyF'] = true;
   };
 
-  private onTouchEnd = (ev: React.TouchEvent) => {
+  private onBoostTouchEnd = (ev: React.TouchEvent) => {
     ev.preventDefault();
     this.props.game.pressedKeys['KeyF'] = false;
   };
 
-  private onTouchMove = (ev: React.TouchEvent) => {
+  private onBoostTouchMove = (ev: React.TouchEvent) => {
+    ev.preventDefault();
+  };
+
+  private onSlowTouchStart = (ev: React.TouchEvent) => {
+    ev.preventDefault();
+    this.props.game.pressedKeys['KeyR'] = true;
+  };
+
+  private onSlowTouchEnd = (ev: React.TouchEvent) => {
+    ev.preventDefault();
+    this.props.game.pressedKeys['KeyR'] = false;
+  };
+
+  private onSlowTouchMove = (ev: React.TouchEvent) => {
     ev.preventDefault();
   };
 }
