@@ -17,15 +17,20 @@ interface Props {
   executeCmd: ExecuteCmd;
 }
 
-export class GameSelect extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
+const CITY_NAMES_MAP: any = {
+  nsk: 'Novosibirsk',
+  omsk: 'Omsk',
+  tomsk: 'Tomsk',
+  barnaul: 'Barnaul',
+  kemerovo: 'Kemerovo',
+  krasnoyarsk: 'Krasnoyarsk',
+};
 
-    this.state = {
-      gamelist: [],
-      gameMode: null,
-    };
-  }
+export class GameSelect extends React.PureComponent<Props, State> {
+  public state = {
+    gamelist: [],
+    gameMode: null,
+  };
 
   public componentDidMount() {
     const { appState } = this.props;
@@ -37,62 +42,85 @@ export class GameSelect extends React.Component<Props, State> {
   }
 
   public render() {
-    const { gamelist, gameMode } = this.state;
-    const CITY_NAMES_MAP: any = {
-      nsk: 'Novosibirsk',
-      omsk: 'Omsk',
-      tomsk: 'Tomsk',
-      barnaul: 'Barnaul',
-      kemerovo: 'Kemerovo',
-      krasnoyarsk: 'Krasnoyarsk',
-    };
-
     return (
       <div className={styles.container}>
-        {!gameMode ? (
-          <div className={styles.entersContainer}>
-            <div className={styles.enterItem}>
-              <div className={styles.dmIcon} onClick={() => this.setGameMode('dm')} />
-              <div>DeathMatch</div>
-            </div>
-            <div className={styles.enterItem}>
-              <div className={styles.tourIcon} onClick={() => this.setGameMode('tour')} />
-              <div>Tournament</div>
-            </div>
-          </div>
-        ) : (
-          <div className={styles.list}>
-            {gamelist.length === 0 ? (
-              <div>These aren't the games you're looking for.</div>
-            ) : (
-              gamelist.map(({ url, players, maxPlayers, city }, i) => {
-                const cityName = CITY_NAMES_MAP[city];
-                const iconClass = classNames({
-                  [styles.icon]: true,
-                  [styles[city]]: true,
-                });
-
-                return (
-                  <div key={i} className={styles.gameItem} onClick={() => this.gameSelected(url)}>
-                    <div className={styles.itemRounded}>
-                      <div className={iconClass} />
-                    </div>
-                    <div className={styles.cityName}>
-                      {cityName}
-                      <br />
-                      {players}/{maxPlayers}
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        )}
+        {this.renderSelectMode()}
+        {this.renderRooms()}
       </div>
     );
   }
 
-  private gameSelected = (url: string) => {
+  private renderSelectMode = () => {
+    const { gameMode } = this.state;
+
+    if (gameMode) {
+      return null;
+    }
+
+    return (
+      <div className={styles.entersContainer}>
+        <div className={styles.enterItem}>
+          <div className={styles.dmIcon} onClick={() => this.setGameMode('dm')} />
+          <div>DeathMatch</div>
+        </div>
+        <div className={styles.enterItem}>
+          <div className={styles.tourIcon} onClick={() => this.setGameMode('tour')} />
+          <div>Tournament</div>
+        </div>
+      </div>
+    );
+  };
+
+  private renderRooms = () => {
+    const { gamelist, gameMode } = this.state;
+
+    if (!gameMode) {
+      return null;
+    }
+
+    return this.renderGameList(gamelist);
+  };
+
+  private renderGameList = (gamelist: GamelistResponse) => {
+    if (gamelist.length === 0) {
+      return (
+        <div className={styles.list}>
+          <div>These aren't the games you're looking for.</div>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        {gamelist.map(({ url, players, maxPlayers, city }, i) => (
+          <div key={i}>{this.renderGameRoom(url, players, maxPlayers, city)}</div>
+        ))}
+      </>
+    );
+  };
+
+  private renderGameRoom = (url: string, players: number, maxPlayers: number, city: string) => {
+    const cityName = CITY_NAMES_MAP[city];
+    const iconClass = classNames({
+      [styles.icon]: true,
+      [styles[city]]: true,
+    });
+
+    return (
+      <div className={styles.gameItem} onClick={this.gameSelected(url)}>
+        <div className={styles.itemRounded}>
+          <div className={iconClass} />
+        </div>
+        <div className={styles.cityName}>
+          {cityName}
+          <br />
+          {players}/{maxPlayers}
+        </div>
+      </div>
+    );
+  };
+
+  private gameSelected = (url: string) => () => {
     this.props.executeCmd(joinGame(this.props.appState, url));
   };
 

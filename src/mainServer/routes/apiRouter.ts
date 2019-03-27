@@ -199,7 +199,7 @@ export function applyApiRouter(app: Express, state: State) {
     (req, res) => {
       setAccessAllowOrigin(req, res);
 
-      const { deaths, kills, points } = req.body;
+      const { deaths = 0, kills = 0, points = 0 } = req.body;
       const tournamentId = Number(req.params.id);
 
       if (typeof tournamentId === 'undefined' || typeof tournamentId !== 'number') {
@@ -220,10 +220,17 @@ export function applyApiRouter(app: Express, state: State) {
 
       getUserStatsByTournament(connection, id, tournamentId)
         .then((stats: UserStats) => {
-          return updateUserStats(connection, id, tournamentId, {
-            kills: stats.kills + kills,
-            deaths: stats.deaths + deaths,
-            points: stats.points + points,
+          if (stats) {
+            return updateUserStats(connection, id, tournamentId, {
+              kills: stats.kills + kills,
+              deaths: stats.deaths + deaths,
+              points: stats.points + points,
+            });
+          }
+          return attachUserToTournament(connection, id, tournamentId, {
+            kills,
+            deaths,
+            points,
           });
         })
         .then(() => {
@@ -263,35 +270,6 @@ export function applyApiRouter(app: Express, state: State) {
         .catch((err) => {
           connection.end().then(() => {
             console.log('GET tournament/stats:err', err);
-            res.sendStatus(ERROR_CODE);
-          });
-        });
-    },
-  );
-
-  apiRouter.post(
-    '/user/tournament/:id/attach',
-    authenticate('bearer', { failureRedirect: '/' }),
-    (req, res) => {
-      setAccessAllowOrigin(req, res);
-
-      const tournamentId = Number(req.params.id);
-
-      if (typeof tournamentId === 'undefined' || typeof tournamentId !== 'number') {
-        return res.status(422).send('Unprocessed entity: tournamentId');
-      }
-
-      const connection = connectionDB();
-      const { id } = req.user;
-      attachUserToTournament(connection, id, tournamentId)
-        .then(() => {
-          connection.end().then(() => {
-            return res.sendStatus(200);
-          });
-        })
-        .catch((err) => {
-          connection.end().then(() => {
-            console.log('POST tournament/stats:err', err);
             res.sendStatus(ERROR_CODE);
           });
         });
