@@ -9,7 +9,11 @@
   width: 92px;
   height: 92px;
   border-radius: 50%;
-  margin-left: 20px;
+
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }
 
 .fireButton {

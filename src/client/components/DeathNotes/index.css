@@ -31,4 +31,9 @@
   color: rgb(217, 52, 1);
   font-weight: bold;
   margin-bottom: 12px;
+
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }

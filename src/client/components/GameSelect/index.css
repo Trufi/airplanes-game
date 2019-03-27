@@ -9,6 +9,11 @@
   box-shadow: 0 0 64px 5px rgb(88, 214, 97);
   border-radius: 50%;
   cursor: pointer;
+
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }
 
 .gameItem {
