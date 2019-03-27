@@ -44,6 +44,7 @@ export class Observer extends React.Component<Props, {}> {
       playerNames.push(
         <PlayerLabel
           key={id}
+          bodyId={bodyId}
           name={name}
           position={targetBody.position}
           camera={camera}

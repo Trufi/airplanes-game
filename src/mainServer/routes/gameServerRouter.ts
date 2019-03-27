@@ -90,6 +90,7 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
         });
       })
       .then(() => {
+        console.log('Game Server:SetStats', data, playerId, tournamentId);
         connection.end().then(() => {
           res.sendStatus(200);
         });
