@@ -6,6 +6,7 @@ import { DeathNotes } from './DeathNotes';
 import { ExecuteCmd } from '../commands/execute';
 import { Debug } from './debug';
 import { ObserverList } from './observerList';
+import { Aim } from './aim';
 
 interface Props {
   appState: AppState;
@@ -24,7 +25,7 @@ export class Observer extends React.Component<Props, {}> {
       return;
     }
 
-    const { players, bodies, camera } = observer;
+    const { players, bodies, camera, control, time } = observer;
 
     const playerNames: JSX.Element[] = [];
 
@@ -78,6 +79,7 @@ export class Observer extends React.Component<Props, {}> {
             state={observer}
           />
         )}
+        {control.target && control.view && <Aim time={time} />}
         {timeToRestart >= 0 && (
           <div style={{ fontSize: '50px' }}>Start at {Math.floor(timeToRestart / 1000)}</div>
         )}

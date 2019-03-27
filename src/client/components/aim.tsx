@@ -2,11 +2,11 @@ import * as React from 'react';
 import { WeaponState } from '../types';
 
 interface Props {
-  weapon: WeaponState;
+  weapon?: WeaponState;
   time: number;
 }
 
-export const Aim = ({ weapon: { lastHitTime }, time }: Props) => {
+export const Aim = ({ weapon, time }: Props) => {
   const width = 30;
 
   return (
@@ -27,7 +27,7 @@ export const Aim = ({ weapon: { lastHitTime }, time }: Props) => {
         }}
         src='./assets/aim2.png'
       />
-      {time - lastHitTime < 100 && (
+      {weapon && time - weapon.lastHitTime < 100 && (
         <>
           <div
             style={{
