@@ -7,6 +7,7 @@ import { Game } from './Game';
 import { appState } from '../appState';
 import { Observer } from './observer';
 import { Connection } from './Connection';
+import { Dashboard } from './Dashboard';
 
 interface Props {
   appState: AppState;
@@ -19,6 +20,11 @@ export class Root extends React.Component<Props, {}> {
       appState: { type, game, name, observer, tryJoin },
       executeCmd,
     } = this.props;
+    const isDashboard = appState.query.page === 'dashboard';
+
+    if (isDashboard) {
+      return <Dashboard />;
+    }
 
     if (type === 'game' && game) {
       return <Game appState={appState} executeCmd={executeCmd} />;
