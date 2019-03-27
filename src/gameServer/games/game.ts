@@ -49,7 +49,7 @@ export const createGameState = (
       need: false,
       time: 0,
       tournamentId,
-      duration: 345600000, // 4 суток
+      duration,
       isGrandFinal: false,
     },
     city,

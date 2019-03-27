@@ -32,13 +32,19 @@ api.getTournamentList().then(({ tournaments }) => {
 });
 
 const init = (tournamentId: number) => {
+  const type = config.gameServer.type as GameType;
+
+  // Если турнир, то он по умолчанию выключен
+  // Если DM, то 4 суток
+  const duration = type === 'tournament' ? 0 : 345600000;
+
   const state = createState(
     {
       maxPlayers: 30,
       city: config.gameServer.city as City,
-      type: config.gameServer.type as GameType,
+      type,
+      duration,
       url,
-      duration: 345600000, // 4 суток
     },
     time(),
     tournamentId,
