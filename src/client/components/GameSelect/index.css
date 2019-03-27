@@ -112,7 +112,7 @@
 .enterIcon {
   background-size: cover;
   background-position: center;
-  width: 285px;
+  width: 268px;
   cursor: pointer;
   height: 220px;
 }
@@ -133,6 +133,9 @@
 
 .entersContainer {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .enterItem {
