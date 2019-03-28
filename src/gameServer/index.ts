@@ -25,11 +25,17 @@ url = url.replace('http://', '');
 url = url.replace('https://', '');
 
 // Ищем Id бесконечной игры
-api.getTournamentList().then(({ tournaments }) => {
-  const tournament = tournaments.find((t) => t.machine_name === 'infinity');
-  const tournamentId = tournament ? tournament.id : -1;
-  init(tournamentId);
-});
+api
+  .getTournamentList()
+  .then(({ tournaments }) => {
+    const tournament = tournaments.find((t) => t.machine_name === 'infinity');
+    const tournamentId = tournament ? tournament.id : -1;
+    init(tournamentId);
+  })
+  .catch((err) => {
+    console.log(`Get tournament list error: ${err}`);
+    init(-1);
+  });
 
 const init = (tournamentId: number) => {
   const type = config.gameServer.type as GameType;

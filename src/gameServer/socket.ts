@@ -10,13 +10,13 @@ import * as api from './services/main';
 export const initSocket = (server: Server, state: State) => {
   const wsServer = new ws.Server({
     server,
-    perMessageDeflate: {
-      zlibDeflateOptions: {
-        chunkSize: 1024,
-        memLevel: 7,
-        level: 3,
-      },
-    },
+    // perMessageDeflate: {
+    //   zlibDeflateOptions: {
+    //     chunkSize: 1024,
+    //     memLevel: 7,
+    //     level: 3,
+    //   },
+    // },
   });
 
   const sendMessage = (connection: Connection, msg: AnyServerMsg | ArrayBuffer): void => {

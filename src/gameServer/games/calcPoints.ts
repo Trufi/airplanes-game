@@ -16,5 +16,7 @@ export const addPointsDelta = (
     deaths,
     points,
     tournamentId,
+  }).catch((err) => {
+    console.log(`Add player (userId: ${userId}) stats error: ${err.message}`);
   });
 };

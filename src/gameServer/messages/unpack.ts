@@ -20,7 +20,7 @@ const unpackPbf = (buffer: ArrayBuffer, id: number): AnyClientMsg | undefined =>
 
     msg = pbfMsg;
   } catch (err) {
-    console.log(`Client pbf msg parse error: ${err}`);
+    console.log(`Client (id: ${id} pbf msg parse error`);
     return;
   }
 
@@ -43,7 +43,7 @@ export const unpackMessage = (data: ws.Data, id: number): AnyClientMsg | undefin
   try {
     msg = JSON.parse(data);
   } catch (err) {
-    console.error(`Client msg parse error: ${err}`);
+    console.error(`Client msg parse error`);
     return;
   }
 

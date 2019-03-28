@@ -207,7 +207,6 @@ export const pbfMsg = {
   tickData: (game: GameState) => {
     const pbf = new Pbf();
     const msg = tickData(game);
-    // console.log(msg.bodies.length > 0 && msg.bodies[0]);
     serverMsgSchema.TickData.write(msg, pbf);
     const u8 = pbf.finish() as Uint8Array;
     return u8.buffer.slice(0, u8.byteLength);
