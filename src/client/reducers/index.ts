@@ -31,7 +31,7 @@ export const connected = (appState: AppState): Cmd => {
   } else if (type === 'observer') {
     return [cmd.renderUI(), cmd.sendMsg(msg.joinGameAsObserver(token))];
   } else if (type === 'bot' && appState.name) {
-    return [cmd.renderUI(), cmd.sendMsg(msg.joinGameAsBot(appState.name))];
+    return [cmd.renderUI(), cmd.sendMsg(msg.joinGameAsBot(appState.name, -1))];
   }
 };
 
