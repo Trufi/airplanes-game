@@ -34,14 +34,15 @@ const Note = ({ state, note }: { state: State | ObserverState; note: DeathNote }
   return (
     <div className={styles.container}>
       {/* Emoji Plane */}
-      {String.fromCodePoint(0x1f6e9)}
-      &nbsp;
-      <span className={styles.killer}>{causeName}</span>
-      &nbsp;➔
+      <span className={styles.killer}>
+        {String.fromCodePoint(0x1f6e9)}
+        {causeName}
+      </span>
       {/* Emoji Skull */}
-      {String.fromCodePoint(0x1f480)}
-      &nbsp;
-      <span className={styles.deadMan}>{deadName}</span>
+      <span className={styles.deadMan}>
+        {String.fromCodePoint(0x1f480)}
+        {deadName}
+      </span>
     </div>
   );
 };
