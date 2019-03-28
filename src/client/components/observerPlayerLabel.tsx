@@ -51,7 +51,7 @@ export class ObserverPlayerLabel extends React.Component<Props, State> {
       return null;
     }
 
-    const color = time - startBlinkTime < 100 ? '#ff0000' : '#000000';
+    const color = time - startBlinkTime < 200 ? '#ff0000' : '#000000';
 
     v.project(camera.object);
 
