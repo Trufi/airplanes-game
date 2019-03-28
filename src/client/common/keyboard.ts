@@ -7,6 +7,13 @@ export interface KeyboardState {
   };
 }
 
+const reset = (state: KeyboardState) => {
+  const { pressedKeys } = state;
+  for (const key in pressedKeys) {
+    pressedKeys[key] = false;
+  }
+};
+
 const keyDown = (state: KeyboardState, ev: KeyboardEvent) => {
   state.pressedKeys[ev.code] = true;
 };
@@ -48,4 +55,5 @@ export const keyboard = {
   enable,
   disable,
   getPressedKeys,
+  reset,
 };

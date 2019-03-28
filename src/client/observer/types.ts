@@ -1,7 +1,7 @@
 import { PlayerState, CameraState, NonPhysicBodyState } from '../types';
 import { NotesState } from '../common/notes';
 import { ControlState } from './control';
-import { KeyboardState } from './keyboard';
+import { KeyboardState } from '../common/keyboard';
 import { ServerTimeState } from '../common/serverTime';
 import { HealPointsState } from '../game/actions/healPoints';
 

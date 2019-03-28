@@ -10,6 +10,7 @@ import { ObserverState } from '../../observer/types';
 import { getNewPoints } from '../../../utils';
 import * as config from '../../../config';
 import { healPointAlive, healPointWasTaken, setHealPointState } from './healPoints';
+import { keyboard } from '../../common/keyboard';
 
 export const message = (state: State, msg: AnyServerMsg): Cmd => {
   switch (msg.type) {
@@ -155,6 +156,8 @@ export const playerNewBody = (state: State | ObserverState, msg: ServerMsg['play
     addBody(state, body);
     state.player.bodyId = body.id;
     state.body = body;
+
+    keyboard.reset(state.keyboard);
   } else {
     const body = createNonPhysicBody(msg.body);
     addBody(state, body);

@@ -10,7 +10,12 @@ const maxRotationSpeed = { x: 0.0007, z: 0.0007 };
 const restoreYSpeed = 0.0006;
 
 export const processPressedkeys = (state: State) => {
-  const { pressedKeys, stick, body } = state;
+  const {
+    stick,
+    body,
+    keyboard: { pressedKeys },
+  } = state;
+
   const dt = state.time - state.prevTime;
 
   if (!body) {

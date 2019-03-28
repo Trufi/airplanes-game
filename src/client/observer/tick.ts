@@ -3,7 +3,7 @@ import { ObserverState } from './types';
 import { updateNonPhysicBody } from '../game/actions/tick';
 import * as view from '../game/view';
 import * as control from './control';
-import { keyboard } from './keyboard';
+import { keyboard } from '../common/keyboard';
 import { updateHealPoints } from '../game/actions/healPoints';
 
 export const tick = (state: ObserverState, time: number) => {
@@ -41,10 +41,10 @@ const processPressedKeys = (state: ObserverState) => {
       case 'KeyD':
         control.right(state.control, dt);
         break;
-      case 'KeyK':
+      case 'KeyR':
         control.closer(state.control, dt);
         break;
-      case 'KeyI':
+      case 'KeyF':
         control.farther(state.control, dt);
         break;
       case 'Digit1':

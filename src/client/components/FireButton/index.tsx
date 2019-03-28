@@ -53,12 +53,12 @@ export class FireButton extends React.Component<Props, {}> {
 
   private onTouchStart = (ev: React.TouchEvent) => {
     ev.preventDefault();
-    this.props.game.pressedKeys['Space'] = true;
+    this.props.game.keyboard.pressedKeys['Space'] = true;
   };
 
   private onTouchEnd = (ev: React.TouchEvent) => {
     ev.preventDefault();
-    this.props.game.pressedKeys['Space'] = false;
+    this.props.game.keyboard.pressedKeys['Space'] = false;
   };
 
   private onTouchMove = (ev: React.TouchEvent) => {

@@ -15,6 +15,7 @@ import { createNotesState } from '../common/notes';
 import { createDamageIndicatorState } from './actions/damageIndicator';
 import { createHealPointsState, setHealPointState } from './actions/healPoints';
 import { originByCity } from '../../cities';
+import { keyboard } from '../common/keyboard';
 
 export const start = (data: ServerMsg['startData']) => {
   if (!appState.id) {
@@ -70,7 +71,7 @@ export const start = (data: ServerMsg['startData']) => {
     scene: view.createScene(),
     camera: view.createCamera(),
     serverTime: createServerTimeState(now),
-    pressedKeys: {},
+    keyboard: keyboard.enable(),
     notes: createNotesState(),
     stick: { x: 0, y: 0 },
     damageIndicator: createDamageIndicatorState(),
@@ -81,24 +82,6 @@ export const start = (data: ServerMsg['startData']) => {
   setHealPointState(state, data.healPoints);
 
   view.createMap();
-
-  window.addEventListener('keydown', (ev) => {
-    state.pressedKeys[ev.code] = true;
-    // @TODO ЗВУК
-    if (ev.code === 'Space') {
-      // const audio = document.querySelector(`audio[data-key="${ev.code}"]`) as HTMLAudioElement;
-      // if (!audio) return;
-      // if (!audio.paused) return;
-      //
-      // audio.currentTime = 0;
-      // audio.pause();
-      // audio.play();
-    }
-  });
-
-  window.addEventListener('keyup', (ev) => {
-    state.pressedKeys[ev.code] = false;
-  });
 
   window.addEventListener('resize', () => {
     view.resize(state.camera.object, state.renderer);

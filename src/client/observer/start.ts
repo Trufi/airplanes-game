@@ -4,7 +4,7 @@ import { addBody, createPlayer, createNonPhysicBody } from '../game/common';
 import * as config from '../../config';
 import * as view from '../game/view';
 import * as control from './control';
-import { keyboard } from './keyboard';
+import { keyboard } from '../common/keyboard';
 import { createServerTimeState } from '../common/serverTime';
 import { createNotesState } from '../common/notes';
 import { AppState } from '../types';

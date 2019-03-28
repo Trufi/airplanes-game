@@ -3,6 +3,7 @@ import { ObserverState } from './observer/types';
 import { NotesState } from './common/notes';
 import { ServerTimeState } from './common/serverTime';
 import { HealPointsState } from './game/actions/healPoints';
+import { KeyboardState } from './common/keyboard';
 
 export interface BodyStep {
   time: number;
@@ -150,7 +151,7 @@ export interface State {
   healPoints: HealPointsState;
 
   serverTime: ServerTimeState;
-  pressedKeys: { [key: string]: boolean };
+  keyboard: KeyboardState;
 
   notes: NotesState;
 
