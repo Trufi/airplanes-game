@@ -42,7 +42,35 @@ export const tick = (state: State, time: number): Cmd => {
 
   view.updateCameraAndMap(state);
 
+  shootSound(state);
+
   return union(cmds);
+};
+
+const shootSound = (state: State) => {
+  // @TODO ЗВУК
+  const fly = document.querySelector(`audio[data-key="Fly"]`) as HTMLAudioElement;
+  const weapon = document.querySelector(`audio[data-key="Weapon"]`) as HTMLAudioElement;
+  if (state.body) {
+    if (state.time - state.body.weapon.lastShotTime < config.weapon.cooldown) {
+      if (weapon) {
+        if (weapon.paused) {
+          weapon.currentTime = 0;
+          weapon.volume = 0.2;
+          weapon.pause();
+          weapon.play();
+        }
+      }
+    }
+
+    if (fly) {
+      if (fly.paused) {
+        fly.currentTime = 0;
+        fly.pause();
+        // fly.play();
+      }
+    }
+  }
 };
 
 const updateBody = (state: State, body: PhysicBodyState | NonPhysicBodyState) => {

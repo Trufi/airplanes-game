@@ -84,6 +84,16 @@ export const start = (data: ServerMsg['startData']) => {
 
   window.addEventListener('keydown', (ev) => {
     state.pressedKeys[ev.code] = true;
+    // @TODO ЗВУК
+    if (ev.code === 'Space') {
+      // const audio = document.querySelector(`audio[data-key="${ev.code}"]`) as HTMLAudioElement;
+      // if (!audio) return;
+      // if (!audio.paused) return;
+      //
+      // audio.currentTime = 0;
+      // audio.pause();
+      // audio.play();
+    }
   });
 
   window.addEventListener('keyup', (ev) => {

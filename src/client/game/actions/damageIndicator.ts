@@ -22,6 +22,16 @@ export const updateDamageIndicator = (state: State) => {
 
   if (body.health < damageIndicator.prevCheckHealth) {
     findShooter(state, body);
+
+    // @TODO ЗВУК
+    const damage = document.querySelector(`audio[data-key="Damage"]`) as HTMLAudioElement;
+    if (damage) {
+      if (damage.paused) {
+        damage.currentTime = 0;
+        damage.pause();
+        damage.play();
+      }
+    }
   }
   damageIndicator.prevCheckHealth = body.health;
 
