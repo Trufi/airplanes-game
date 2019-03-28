@@ -20,7 +20,7 @@ const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-export const PlayerLabel = ({ name, position, camera, bodyId, frustum }: Props) => {
+export const PlayerLabel = ({ name, position, health, camera, bodyId, frustum }: Props) => {
   v.fromArray(position);
 
   if (!frustum.containsPoint(v)) {
@@ -70,6 +70,12 @@ export const PlayerLabel = ({ name, position, camera, bodyId, frustum }: Props) 
       }}
     >
       {capitalizeFirstLetter(name)}
+      {near && (
+        <>
+          <br />
+          {Math.round(health)} / 100
+        </>
+      )}
     </div>
   );
 };

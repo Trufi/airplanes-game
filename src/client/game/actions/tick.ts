@@ -65,8 +65,9 @@ const shootSound = (state: State) => {
 
     if (fly) {
       if (fly.paused) {
-        fly.currentTime = 0;
-        fly.pause();
+        // fly.loop = true;
+        // fly.currentTime = 0;
+        // fly.pause();
         // fly.play();
       }
     }
