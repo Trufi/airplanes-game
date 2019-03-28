@@ -6,7 +6,7 @@ import { RadarLoader } from '../../RadarLoader';
 
 interface Props {
   game: any;
-  restart: any;
+  restart: () => void;
 }
 
 interface State {

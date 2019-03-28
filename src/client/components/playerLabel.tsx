@@ -20,7 +20,7 @@ const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-export const PlayerLabel = ({ name, position, health, camera, bodyId, frustum }: Props) => {
+export const PlayerLabel = ({ name, position, health, camera, frustum }: Props) => {
   v.fromArray(position);
 
   if (!frustum.containsPoint(v)) {
@@ -32,11 +32,7 @@ export const PlayerLabel = ({ name, position, health, camera, bodyId, frustum }:
   // В обсервер моде всегда показывае полную информацию
   const near = distance < config.weapon.distance;
 
-  const colorId = bodyId % config.mainAirplaneColors.length;
-  const mainColor = config.mainAirplaneColors[colorId];
-  const color = near
-    ? `rgb(${mainColor.r}, ${mainColor.g}, ${mainColor.b})`
-    : 'rgba(128, 128, 128, 0.5)';
+  const color = near ? '#000000' : 'rgba(128, 128, 128, 0.5)';
 
   v.project(camera.object);
 
@@ -61,12 +57,6 @@ export const PlayerLabel = ({ name, position, health, camera, bodyId, frustum }:
         textAlign: 'center',
         userSelect: 'none',
         fontSize: 14,
-        ...(near
-          ? {
-              backgroundColor: 'rgb(238, 238, 238)',
-              borderRadius: 5,
-            }
-          : {}),
       }}
     >
       {capitalizeFirstLetter(name)}

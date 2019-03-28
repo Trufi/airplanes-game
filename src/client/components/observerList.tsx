@@ -57,7 +57,8 @@ export class ObserverList extends React.Component<Props, State> {
                   onClick={() => this.followPlayer(player.id)}
                 >
                   <td>{player.name}</td>
-                  <td>{body ? body.health : 'dead'}</td>
+                  {/* Skull Symbol */}
+                  <td>{body ? body.health : String.fromCodePoint(0x1f480)}</td>
                   <td>{player.points}</td>
                 </tr>
               );
