@@ -16,6 +16,7 @@ import { createDamageIndicatorState } from './actions/damageIndicator';
 import { createHealPointsState, setHealPointState } from './actions/healPoints';
 import { originByCity } from '../../cities';
 import { keyboard } from '../common/keyboard';
+import { visibilityChange } from './actions/visibility';
 
 export const start = (data: ServerMsg['startData']) => {
   if (!appState.id) {
@@ -66,6 +67,7 @@ export const start = (data: ServerMsg['startData']) => {
     origin: [origin[0], origin[1], 0],
     players,
     bodies,
+    visibility: document.visibilityState,
     healPoints: createHealPointsState(),
     renderer: view.createRenderer(),
     scene: view.createScene(),
@@ -88,6 +90,10 @@ export const start = (data: ServerMsg['startData']) => {
   });
   view.resize(state.camera.object, state.renderer);
 
+  document.addEventListener('visibilitychange', () => {
+    visibilityChange(state, document.visibilityState);
+  });
+
   function loop() {
     requestAnimationFrame(loop);
 
@@ -101,7 +107,7 @@ export const start = (data: ServerMsg['startData']) => {
   requestAnimationFrame(loop);
 
   setInterval(() => {
-    if (!state.body) {
+    if (!state.body || state.visibility !== 'visible') {
       return;
     }
 
@@ -112,6 +118,8 @@ export const start = (data: ServerMsg['startData']) => {
   }, config.clientSendChangesInterval);
 
   setInterval(() => {
-    sendMessage(msg.ping(time()));
+    if (state.visibility === 'visible') {
+      sendMessage(msg.ping(time()));
+    }
   }, config.clientPingInterval);
 };

@@ -123,6 +123,8 @@ export interface State {
   serverEndTime: number;
   restartTime: number;
 
+  visibility: VisibilityState;
+
   /**
    * Текущий игрок
    */
