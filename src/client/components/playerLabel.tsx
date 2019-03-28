@@ -20,7 +20,7 @@ const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-export const PlayerLabel = ({ name, position, camera, health, bodyId, frustum }: Props) => {
+export const PlayerLabel = ({ name, position, camera, bodyId, frustum }: Props) => {
   v.fromArray(position);
 
   if (!frustum.containsPoint(v)) {
@@ -36,7 +36,7 @@ export const PlayerLabel = ({ name, position, camera, health, bodyId, frustum }:
   const mainColor = config.mainAirplaneColors[colorId];
   const color = near
     ? `rgb(${mainColor.r}, ${mainColor.g}, ${mainColor.b})`
-    : 'rgba(128, 128, 128, 0.3)';
+    : 'rgba(128, 128, 128, 0.5)';
 
   v.project(camera.object);
 
@@ -60,15 +60,16 @@ export const PlayerLabel = ({ name, position, camera, health, bodyId, frustum }:
         color,
         textAlign: 'center',
         userSelect: 'none',
+        fontSize: 14,
+        ...(near
+          ? {
+              backgroundColor: 'rgb(238, 238, 238)',
+              borderRadius: 5,
+            }
+          : {}),
       }}
     >
       {capitalizeFirstLetter(name)}
-      {near && (
-        <>
-          <br />
-          {Math.round(health)} / 100
-        </>
-      )}
     </div>
   );
 };
