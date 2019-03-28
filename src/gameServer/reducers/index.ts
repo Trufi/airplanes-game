@@ -197,6 +197,12 @@ export const connectionLost = (state: State, connectionId: number): Cmd => {
   }
 };
 
+export const kickAll = (state: State) => {
+  state.connections.map.forEach(({ socket }) => {
+    socket.terminate();
+  });
+};
+
 const updatePlayerChanges = (
   state: State,
   msg: ClientMsg['changes'],

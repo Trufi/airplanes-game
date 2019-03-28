@@ -3,12 +3,18 @@ import * as Joi from 'joi';
 import { State } from './types';
 import { mapMap } from '../utils';
 import * as game from './games/game';
-import { RestartRequest } from './types/api';
+import { RestartRequest, KickAllRequest } from './types/api';
 import { Cmd } from './commands';
 import * as api from './services/main';
-import { restartInSeconds } from './reducers';
+import { restartInSeconds, kickAll } from './reducers';
 
 const secret = '2gistop1';
+
+const kickallScheme = Joi.object().keys({
+  secret: Joi.string()
+    .allow(secret)
+    .required(),
+});
 
 const restartScheme = Joi.object().keys({
   name: Joi.string()
@@ -52,6 +58,24 @@ export const applyRoutes = (app: express.Express, state: State, executeCmd: (cmd
       game: game.debugInfo(state.game),
     };
     res.send(JSON.stringify(result));
+  });
+
+  app.get('/kickall', (req, res) => {
+    const query = req.query as KickAllRequest;
+
+    const { error } = kickallScheme.validate(query);
+    if (error) {
+      const msg = `Kick all bad request ${error.message}`;
+      console.log(msg);
+      res.sendStatus(400);
+      return;
+    }
+
+    kickAll(state);
+
+    const msg = 'Kick all players';
+    console.log(msg);
+    res.status(200).send(msg);
   });
 
   app.get('/restart', (req, res) => {
