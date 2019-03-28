@@ -49,12 +49,12 @@ export class BoostButton extends React.Component<Props, {}> {
 
   private onBoostTouchStart = (ev: React.TouchEvent) => {
     ev.preventDefault();
-    this.props.game.pressedKeys['KeyF'] = true;
+    this.props.game.pressedKeys['KeyI'] = true;
   };
 
   private onBoostTouchEnd = (ev: React.TouchEvent) => {
     ev.preventDefault();
-    this.props.game.pressedKeys['KeyF'] = false;
+    this.props.game.pressedKeys['KeyI'] = false;
   };
 
   private onBoostTouchMove = (ev: React.TouchEvent) => {
@@ -63,12 +63,12 @@ export class BoostButton extends React.Component<Props, {}> {
 
   private onSlowTouchStart = (ev: React.TouchEvent) => {
     ev.preventDefault();
-    this.props.game.pressedKeys['KeyR'] = true;
+    this.props.game.pressedKeys['KeyK'] = true;
   };
 
   private onSlowTouchEnd = (ev: React.TouchEvent) => {
     ev.preventDefault();
-    this.props.game.pressedKeys['KeyR'] = false;
+    this.props.game.pressedKeys['KeyK'] = false;
   };
 
   private onSlowTouchMove = (ev: React.TouchEvent) => {

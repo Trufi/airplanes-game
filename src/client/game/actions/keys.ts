@@ -43,22 +43,22 @@ export const processPressedkeys = (state: State) => {
         pitchUp(dt / 2, body);
         pitchPressed = true;
         break;
-      case 'KeyE':
+      case 'KeyL':
         quat.rotateY(body.rotation, body.rotation, 0.001 * dt);
         rollPressed = true;
         break;
-      case 'KeyQ':
+      case 'KeyJ':
         quat.rotateY(body.rotation, body.rotation, -0.001 * dt);
         rollPressed = true;
         break;
     }
   }
 
-  updateBoost(body, dt, pressedKeys['KeyF']);
-  updateSlow(body, pressedKeys['KeyR']);
+  updateBoost(body, dt, pressedKeys['KeyI']);
+  updateSlow(body, pressedKeys['KeyK']);
 
   // Если нажата кнопка ускорения, то не стреляем
-  if (!pressedKeys['KeyF']) {
+  if (!pressedKeys['KeyI']) {
     updateWeapon(state, pressedKeys['Space']);
   }
 

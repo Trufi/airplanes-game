@@ -41,10 +41,10 @@ const processPressedKeys = (state: ObserverState) => {
       case 'KeyD':
         control.right(state.control, dt);
         break;
-      case 'KeyR':
+      case 'KeyK':
         control.closer(state.control, dt);
         break;
-      case 'KeyF':
+      case 'KeyI':
         control.farther(state.control, dt);
         break;
       case 'Digit1':
