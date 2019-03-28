@@ -33,16 +33,7 @@ const Note = ({ state, note }: { state: State | ObserverState; note: DeathNote }
 
   return (
     <div className={styles.container}>
-      {/* Emoji Plane */}
-      <span className={styles.killer}>
-        {String.fromCodePoint(0x1f6e9)}
-        {causeName}
-      </span>
-      {/* Emoji Skull */}
-      <span className={styles.deadMan}>
-        {String.fromCodePoint(0x1f480)}
-        {deadName}
-      </span>
+      <span className={styles.killer}>{causeName}</span>&nbsp;➔&nbsp;
     </div>
   );
 };

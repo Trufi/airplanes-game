@@ -7,21 +7,21 @@
 .killer::before {
   content: '';
   display: block;
-  /*background-image: url('/assets/icons/plane.png');*/
+  background-image: url('/assets/icons/plane.png');
   width: 13px;
   height: 13px;
   background-size: cover;
-  /*margin-right: 3px;*/
+  margin-right: 3px;
 }
 
 .deadMan::before {
   content: '';
   display: block;
-  /*background-image: url('/assets/icons/scull.png');*/
+  background-image: url('/assets/icons/scull.png');
   width: 10px;
   height: 12px;
   background-size: cover;
-  /*margin-right: 3px;*/
+  margin-right: 3px;
 }
 
 .container {
