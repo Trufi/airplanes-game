@@ -20,3 +20,7 @@ export interface TournamentListResponse {
 export interface LadderResponse {
   ladder: UserStats[];
 }
+
+export interface CanIjoinToGrandFinalResponse {
+  can: boolean;
+}

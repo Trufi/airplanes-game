@@ -44,7 +44,7 @@ export class GameSelect extends React.PureComponent<Props, State> {
         canIjoinToGrandFinal({ token: appState.token }),
         getList({ token: appState.token }),
       ]).then(([canJoinToGrandFinal, gamelist]) => {
-        this.setState({ gamelist, canJoinToGrandFinal });
+        this.setState({ gamelist, canJoinToGrandFinal: canJoinToGrandFinal.can });
       });
     }
   }

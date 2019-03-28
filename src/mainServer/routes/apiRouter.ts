@@ -15,7 +15,12 @@ import { getAchievements, getOwnAchievements, setAchievements } from '../models/
 import { State } from '../types';
 import { setAccessAllowOrigin } from './cors';
 import { mapMap } from '../../utils';
-import { GamelistResponse, LadderResponse, TournamentListResponse } from '../types/api';
+import {
+  GamelistResponse,
+  LadderResponse,
+  TournamentListResponse,
+  CanIjoinToGrandFinalResponse,
+} from '../types/api';
 import { getPretenders, getTournamentList } from '../models/tournaments';
 import { Pretender, Tournament, User, UserStats } from '../models/types';
 
@@ -230,15 +235,19 @@ export function applyApiRouter(app: Express, state: State) {
 
       const connection = connectionDB();
 
-      getPretenders(connection).then((pretenders: Pretender[]) => {
-        connection.end().then(() => {
-          const isApproved = pretenders.find((pretender) => pretender.user_id === id);
-          if (isApproved) {
-            return res.sendStatus(200);
-          }
-          return res.sendStatus(403);
+      getPretenders(connection)
+        .then((pretenders: Pretender[]) => {
+          connection.end().then(() => {
+            const isApproved = pretenders.find((pretender) => pretender.user_id === id);
+            const data: CanIjoinToGrandFinalResponse = { can: Boolean(isApproved) };
+            res.send(data);
+          });
+        })
+        .catch(() => {
+          connection.end().then(() => {
+            res.sendStatus(ERROR_CODE);
+          });
         });
-      });
     },
   );
 
