@@ -35,13 +35,12 @@ export class DeathScreen extends React.PureComponent<Props, State> {
         </div>
         <div className={styles.deathContent}>
           <div className={styles.box}>
-            <div className={styles.stats}>
-              <div>ПОТРАЧЕНО!</div>
-              <GameStats players={game.players} />
-            </div>
             <button className={restartButtonClass} onClick={restart}>
               Restart
             </button>
+            <div className={styles.stats}>
+              <GameStats game={game} />
+            </div>
           </div>
         </div>
       </div>

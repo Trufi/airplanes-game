@@ -148,7 +148,7 @@ export const getUserStatsByTournament = (
   connection: Client,
   userId: User['id'],
   tournamentId: Tournament['id'],
-): Promise<UserStats> => {
+): Promise<UserStats | undefined> => {
   const sql = `
     SELECT u.id, u.name, tpr.kills, tpr.deaths, tpr.points
       FROM users as u

@@ -1,21 +1,27 @@
 import * as React from 'react';
 import { State } from '../types';
-import { mapMap } from '../../utils';
+import { mapMap, clamp } from '../../utils';
 
 interface Props {
   style?: React.CSSProperties;
-  players: State['players'];
+  game: State;
 }
 
-export const GameStats = ({ players, style }: Props) => {
+export const GameStats = ({ game: { player, players }, style }: Props) => {
   const playerArray = mapMap(players, (player) => player);
   playerArray.sort((a, b) => b.points - a.points);
+
+  const index = playerArray.findIndex((p) => p === player);
+
+  const slice = playerArray
+    .map((player, place) => ({ player, place }))
+    .slice(clamp(index - 1, 0, playerArray.length), clamp(index + 2, 0, playerArray.length));
 
   return (
     <table style={style}>
       <thead>
         <tr>
-          <td>#</td>
+          <td />
           <td>Name</td>
           <td>Kills</td>
           <td>Deaths</td>
@@ -23,9 +29,9 @@ export const GameStats = ({ players, style }: Props) => {
         </tr>
       </thead>
       <tbody>
-        {playerArray.map((player, i) => (
-          <tr key={i}>
-            <td>{i}</td>
+        {slice.map(({ player, place }) => (
+          <tr key={place}>
+            <td>{place}</td>
             <td>{player.name}</td>
             <td>{player.kills}</td>
             <td>{player.deaths}</td>

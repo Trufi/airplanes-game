@@ -30,10 +30,17 @@ export const createNewConnection = (state: ConnectionsState, socket: ws): number
 export const authConnection = (
   state: State,
   connectionId: number,
-  userId: number,
-  name: string,
+  data: {
+    userId: number;
+    name: string;
+    deaths: number;
+    kills: number;
+    points: number;
+  },
   joinType: 'player' | 'observer',
 ): Cmd => {
+  const { userId, name } = data;
+
   const connection = state.connections.map.get(connectionId);
   if (!connection || connection.status !== 'initial') {
     return;
@@ -59,7 +66,7 @@ export const authConnection = (
       isAlive: connection.isAlive,
     });
 
-    return game.joinPlayer(state.game, connection.id, userId, name);
+    return game.joinPlayer(state.game, connection.id, data);
   }
 
   if (joinType === 'observer') {
@@ -108,7 +115,18 @@ export const initialConnectionMessage = (
     case 'joinGame':
       return joinGame(state, connection, clientMsg);
     case 'joinGameAsBot':
-      return authConnection(state, connection.id, clientMsg.userId, clientMsg.name, 'player');
+      return authConnection(
+        state,
+        connection.id,
+        {
+          userId: clientMsg.userId,
+          name: clientMsg.name,
+          kills: 0,
+          deaths: 0,
+          points: 0,
+        },
+        'player',
+      );
     case 'joinGameAsObserver':
       return joinGameAsObserver(state, connection, clientMsg);
     case 'ping':

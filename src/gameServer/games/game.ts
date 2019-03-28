@@ -129,10 +129,22 @@ export const canJoinPlayer = (game: GameState, userId: number) => {
   return !hasSamePlayer;
 };
 
-export const joinPlayer = (game: GameState, id: number, userId: number, name: string): Cmd => {
+export const joinPlayer = (
+  game: GameState,
+  id: number,
+  data: {
+    userId: number;
+    name: string;
+    deaths: number;
+    kills: number;
+    points: number;
+  },
+): Cmd => {
   const body = createAirplane(game.bodies.nextId, id);
   game.bodies.nextId++;
   game.bodies.map.set(body.id, body);
+
+  const { userId, name, deaths, kills, points } = data;
 
   const gamePlayer: GamePlayer = {
     id,
@@ -140,9 +152,9 @@ export const joinPlayer = (game: GameState, id: number, userId: number, name: st
     bodyId: body.id,
     name,
     live: true,
-    kills: 0,
-    deaths: 0,
-    points: 0,
+    kills,
+    deaths,
+    points,
   };
   game.players.set(id, gamePlayer);
 

@@ -31,7 +31,7 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
   });
 
   router.post('/player', async (req, res) => {
-    const { playerToken, toFinal } = req.body as PlayerRequest;
+    const { playerToken, toFinal, tournamentId } = req.body as PlayerRequest;
 
     const dbConnect = connectionDB();
 
@@ -45,7 +45,17 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
         const data: PlayerResponse = {
           id,
           name,
+          kills: 0,
+          deaths: 0,
+          points: 0,
         };
+
+        const stats = await getUserStatsByTournament(dbConnect, id, tournamentId);
+        if (stats) {
+          data.kills = stats.kills;
+          data.deaths = stats.deaths;
+          data.points = stats.points;
+        }
 
         if (toFinal) {
           const pretenders = await getPretenders(dbConnect);
@@ -75,7 +85,7 @@ export const applyGameServerRouter = (app: express.Express, state: State) => {
     const connection = connectionDB();
 
     getUserStatsByTournament(connection, playerId, tournamentId)
-      .then((stats: UserStats) => {
+      .then((stats: UserStats | undefined) => {
         if (stats) {
           return updateUserStats(connection, playerId, tournamentId, {
             kills: stats.kills + kills,

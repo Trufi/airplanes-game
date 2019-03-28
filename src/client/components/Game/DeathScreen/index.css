@@ -37,9 +37,9 @@
   width: 100%;
   background: #232323ba;
   border: none;
-  border-radius: 0 0 7px 7px;
+  border-radius: 7px 7px 0 0;
   outline: none;
-  border-top: 1px solid #ffffff45;
+  border-bottom: 1px solid #ffffff45;
 }
 
 .logo {

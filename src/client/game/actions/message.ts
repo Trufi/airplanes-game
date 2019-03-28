@@ -111,6 +111,7 @@ const removeBody = (state: State | ObserverState, bodyId: number) => {
   }
 };
 
+// TODO: кажется, эта функция не нужна, ведь сам игрок тоже есть в общим списке игроков
 const getPlayer = (state: State | ObserverState, id: number) => {
   let player: PlayerState | undefined;
 
