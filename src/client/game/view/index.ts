@@ -63,7 +63,8 @@ export const createMesh = (id: number) => {
   const mesh = new THREE.Object3D();
   const colorId = id % config.mainAirplaneColors.length;
   const mainColor = config.mainAirplaneColors[colorId];
-  groups.main.color = new THREE.Color(mainColor.r / 255, mainColor.g / 255, mainColor.b / 255);
+  console.log(mainColor.toString(16));
+  groups.main.color = new THREE.Color(mainColor);
 
   getGltfLoader().then((loader) =>
     loader.load('./assets/new.glb', (gltf) => {
