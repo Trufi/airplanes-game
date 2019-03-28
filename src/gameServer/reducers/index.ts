@@ -105,7 +105,7 @@ export const initialConnectionMessage = (
     case 'joinGame':
       return joinGame(state, connection, clientMsg);
     case 'joinGameAsBot':
-      return authConnection(state, connection.id, -1, clientMsg.name, 'player');
+      return authConnection(state, connection.id, clientMsg.userId, clientMsg.name, 'player');
     case 'joinGameAsObserver':
       return joinGameAsObserver(state, connection, clientMsg);
     case 'ping':

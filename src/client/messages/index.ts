@@ -11,9 +11,10 @@ const joinGame = (token: string) => ({
   token,
 });
 
-const joinGameAsBot = (name: string) => ({
+const joinGameAsBot = (name: string, userId: number) => ({
   type: 'joinGameAsBot' as 'joinGameAsBot',
   name,
+  userId,
 });
 
 const joinGameAsObserver = (token: string) => ({

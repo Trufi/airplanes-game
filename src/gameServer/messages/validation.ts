@@ -19,6 +19,9 @@ const joinGameAsBot = Joi.object().keys({
     .min(1)
     .max(30)
     .required(),
+  userId: Joi.number()
+    .required()
+    .integer(),
 });
 
 const joinGameAsObserver = Joi.object().keys({
@@ -53,6 +56,7 @@ const takeHealPoint = Joi.object().keys({
   id: Joi.number()
     .required()
     .strict()
+    .integer()
     .positive(),
   time: Joi.number()
     .required()
@@ -88,6 +92,7 @@ const changes = Joi.object().keys({
   hitBodyIds: Joi.array().items(
     Joi.number()
       .strict()
+      .integer()
       .positive(),
   ),
 });

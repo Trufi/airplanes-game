@@ -11,12 +11,12 @@ import { time } from '../client/utils';
 const clientMsgSchema = require('../protobuf/clientMsg.proto');
 const Pbf = require('pbf');
 
-export const initBot = (serverUrl: string, name: string, gameId: number) => {
+export const initBot = (serverUrl: string, name: string, userId: number) => {
   const serverTimeState = createServerTimeState(time());
 
   let connected = false;
 
-  const socket = new ws(`ws://${serverUrl}`);
+  const socket = new ws(`${serverUrl}`);
 
   const sendMessage = (msg: AnyClientMsg) => {
     socket.send(JSON.stringify(msg));
@@ -29,13 +29,13 @@ export const initBot = (serverUrl: string, name: string, gameId: number) => {
   socket.on('open', () => {
     console.log(`Bot ${name} connected to server`);
     connected = true;
-    sendMessage(msg.joinGameAsBot(name));
+    sendMessage(msg.joinGameAsBot(name, userId));
   });
 
   let body: BotBody | undefined;
 
   const startDataMessage = (data: ServerMsg['startData']) => {
-    console.log(`Bot ${name} join game server ${gameId}`);
+    console.log(`Bot ${name} join game server`);
 
     let bodyId = -1;
 
