@@ -3,7 +3,7 @@ import { initBot } from './bot';
 // const serverUrl = `ws://localhost:3001`;
 const serverUrl = `wss://sky.2gis.ru/city/nsk`;
 
-const botNumber = 20;
+const botNumber = 28;
 
 for (let i = 0; i < botNumber; i++) {
   const name = `Bot ${i}`;

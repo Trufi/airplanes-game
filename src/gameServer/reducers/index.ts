@@ -20,6 +20,7 @@ export const createNewConnection = (state: ConnectionsState, socket: ws): number
     status: 'initial',
     id: state.nextId,
     socket,
+    isAlive: true,
   };
   state.nextId++;
   state.map.set(connection.id, connection);
@@ -55,6 +56,7 @@ export const authConnection = (
       socket: connection.socket,
       userId,
       name,
+      isAlive: connection.isAlive,
     });
 
     return game.joinPlayer(state.game, connection.id, userId, name);
@@ -71,6 +73,7 @@ export const authConnection = (
       socket: connection.socket,
       userId,
       name,
+      isAlive: connection.isAlive,
     });
 
     return game.joinObserver(state.game, connection.id, userId, name);

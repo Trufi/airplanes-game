@@ -185,7 +185,6 @@ export class GameSelect extends React.PureComponent<Props, State> {
   };
 
   private gameSelected = (url: string) => {
-    console.log('asdads');
     this.props.executeCmd(joinGame(this.props.appState, url));
   };
 

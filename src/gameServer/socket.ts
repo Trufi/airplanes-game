@@ -19,19 +19,23 @@ export const initSocket = (server: Server, state: State) => {
     },
   });
 
-  const sendMessage = (connection: Connection, msg: AnyServerMsg): void => {
-    try {
-      connection.socket.send(JSON.stringify(msg));
-    } catch (e) {
-      console.error(e);
+  const sendMessage = (connection: Connection, msg: AnyServerMsg | ArrayBuffer): void => {
+    if (connection.socket.readyState === ws.OPEN) {
+      connection.socket.send(JSON.stringify(msg), (err) => {
+        if (err) {
+          console.log(`Socket (connectionId: ${connection.id}) send error: ${err.message}`);
+        }
+      });
     }
   };
 
   const sendPbfMessage = (connection: Connection, msg: ArrayBuffer): void => {
-    try {
-      connection.socket.send(msg);
-    } catch (e) {
-      console.error(e);
+    if (connection.socket.readyState === ws.OPEN) {
+      connection.socket.send(msg, (err) => {
+        if (err) {
+          console.log(`Socket (connectionId: ${connection.id}) send error: ${err.message}`);
+        }
+      });
     }
   };
 
@@ -158,16 +162,25 @@ export const initSocket = (server: Server, state: State) => {
       executeCmd(cmd);
     };
 
-    socket.on('message', onMessage);
+    const onPong = () => {
+      const connection = state.connections.map.get(id);
+      if (connection) {
+        connection.isAlive = true;
+      }
+    };
 
     const onClose = () => {
       const cmd = connectionLost(state, id);
       executeCmd(cmd);
-      // socket.off('message', onMessage);
-      // socket.off('close', onClose);
+
+      socket.off('message', onMessage);
+      socket.off('close', onClose);
+      socket.off('pong', onPong);
     };
 
+    socket.on('message', onMessage);
     socket.on('close', onClose);
+    socket.on('pong', onPong);
 
     executeCmd(cmd.sendMsg(id, msg.connect(id)));
   });

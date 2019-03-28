@@ -68,4 +68,16 @@ const init = (tournamentId: number) => {
 
   setInterval(() => executeCmd(cmd.notifyMain()), config.gameServer.updateMainInverval);
   executeCmd(cmd.notifyMain());
+
+  const noop = () => {};
+  setInterval(() => {
+    state.connections.map.forEach((connection) => {
+      if (!connection.isAlive) {
+        connection.socket.terminate();
+      } else {
+        connection.isAlive = false;
+        connection.socket.ping(noop);
+      }
+    });
+  }, config.gameServer.clientsCheckInterval);
 };

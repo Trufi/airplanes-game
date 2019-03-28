@@ -16,6 +16,7 @@ export const gameServer = {
   city: process.env.CITY || 'nsk',
   updateMainInverval: 10000,
   type: process.env.GAME_TYPE || 'dm',
+  clientsCheckInterval: 30000,
 };
 
 export const weapon = {

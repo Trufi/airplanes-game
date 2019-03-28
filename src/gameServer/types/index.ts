@@ -6,6 +6,11 @@ export interface InitialConnection {
   status: 'initial';
   id: number;
   socket: ws;
+
+  /**
+   * Используется для пинга и для удаления, если не отвечает
+   */
+  isAlive: boolean;
 }
 
 export interface PlayerConnection {
@@ -18,6 +23,11 @@ export interface PlayerConnection {
    */
   userId: number;
   name: string;
+
+  /**
+   * Используется для пинга и для удаления, если не отвечает
+   */
+  isAlive: boolean;
 }
 
 export interface ObserverConnection {
@@ -30,6 +40,11 @@ export interface ObserverConnection {
    */
   userId: number;
   name: string;
+
+  /**
+   * Используется для пинга и для удаления, если не отвечает
+   */
+  isAlive: boolean;
 }
 
 export type Connection = InitialConnection | PlayerConnection | ObserverConnection;
