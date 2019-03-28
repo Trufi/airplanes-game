@@ -34,6 +34,7 @@ const Note = ({ state, note }: { state: State | ObserverState; note: DeathNote }
   return (
     <div className={styles.container}>
       <span className={styles.killer}>{causeName}</span>&nbsp;➔&nbsp;
+      <span className={styles.deadMan}>{deadName}</span>
     </div>
   );
 };
