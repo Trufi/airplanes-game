@@ -12,6 +12,7 @@ const fullscreenButton = document.getElementById('fullscreen') as HTMLElement;
 fullscreenButton.addEventListener('click', () => {
   document.body.requestFullscreen();
 });
+fullscreenButton.addEventListener('touchmove', (ev) => ev.preventDefault());
 
 const resize = () => {
   document.body.style.width = `${window.innerWidth}px`;
