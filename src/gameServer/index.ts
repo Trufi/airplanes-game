@@ -1,7 +1,7 @@
 import '@2gis/gl-matrix';
 import * as express from 'express';
 import { json } from 'body-parser';
-import { tick } from './reducers';
+import { tick, connectionLost } from './reducers';
 import { createState } from './state';
 import { time } from './utils';
 import * as config from '../config';
@@ -80,6 +80,7 @@ const init = (tournamentId: number) => {
     state.connections.map.forEach((connection) => {
       if (!connection.isAlive) {
         connection.socket.terminate();
+        executeCmd(connectionLost(state, connection.id));
       } else {
         connection.isAlive = false;
         connection.socket.ping(noop);

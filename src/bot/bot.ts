@@ -19,11 +19,23 @@ export const initBot = (serverUrl: string, name: string, userId: number) => {
   const socket = new ws(`${serverUrl}`);
 
   const sendMessage = (msg: AnyClientMsg) => {
-    socket.send(JSON.stringify(msg));
+    if (socket.readyState === ws.OPEN) {
+      socket.send(JSON.stringify(msg), (err) => {
+        if (err) {
+          console.log(`Socket send error: ${err.message}`);
+        }
+      });
+    }
   };
 
   const sendPbfMessage = (msg: ArrayBuffer) => {
-    socket.send(msg);
+    if (socket.readyState === ws.OPEN) {
+      socket.send(msg, (err) => {
+        if (err) {
+          console.log(`Socket send error: ${err.message}`);
+        }
+      });
+    }
   };
 
   socket.on('open', () => {
