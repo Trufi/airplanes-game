@@ -27,7 +27,6 @@ const speedLimiter = slowDown({
 
 export function applyMiddlewares(app: Express) {
   app.enable('trust proxy');
-  app.use(speedLimiter);
   app.use(['/api/register', '/api/login'], rateLimiter);
   app.use(['/api/register', '/api/login'], speedLimiter);
   app.use(compression());
