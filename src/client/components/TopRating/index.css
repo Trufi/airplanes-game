@@ -1,0 +1,191 @@
+.header {
+  height: 115px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  padding-left: 66px;
+  box-shadow: inset 0 -40px 57px -33px rgba(92, 219, 99, 0.7);
+}
+
+.logoContainer {
+  display: flex;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  align-items: center;
+  position: relative;
+  top: 40px;
+  justify-content: center;
+}
+
+.logo {
+  background-image: url('/assets/logo.png');
+  width: 120px;
+  height: 69px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 1;
+}
+
+.cover {
+  display: block;
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #212121;
+  z-index: 0;
+  box-shadow: 0 0 37px 7px rgba(92, 219, 99, 0.7);
+}
+
+.title {
+  font-size: 32px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-left: 74px;
+  position: relative;
+  top: 20px;
+}
+
+ol {
+  counter-reset: item;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 640px;
+  width: 540px;
+  padding-top: 90px;
+  padding-left: 70px;
+}
+li {
+  display: flex;
+  margin-bottom: 8px;
+  align-items: baseline;
+}
+li:before {
+  content: counter(item) '  ';
+  counter-increment: item;
+  margin-right: 20px;
+  font-size: 18px;
+  width: 32px;
+  text-align: right;
+  color: #ffffffb8;
+}
+
+.item {
+  display: flex;
+  width: 100%;
+  padding-right: 80px;
+  color: rgb(88, 214, 97);
+  justify-content: space-between;
+  font-size: 22px;
+}
+
+.points {
+  color: rgba(88, 214, 97, 0.5);
+}
+
+.nickname {
+  max-width: 180px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.leftContainer {
+  width: 40%;
+}
+
+.rightContainer {
+  width: 60%;
+  background-color: white;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  background-color: #212121;
+  border-left: 1px solid rgb(88, 214, 97);
+}
+
+.rightContainer::after {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 100vh;
+  width: 1px;
+  background-color: rgb(88, 214, 97);
+  top: 0;
+  left: 50%;
+}
+
+.mainContainer {
+  display: flex;
+}
+
+.timeItem {
+  width: 50%;
+  height: 271px;
+  border-bottom: 1px solid rgb(88, 214, 97);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.timeItemIcon {
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 360px;
+  height: 220px;
+}
+
+.timeItemIcon {
+  background-image: url('/assets/timeTable/radar.png');
+  width: 320px;
+  height: 320px;
+}
+
+.text {
+  position: absolute;
+  text-transform: uppercase;
+  font-size: 32px;
+  font-weight: bold;
+  width: 348px;
+  height: 97px;
+  top: 85px;
+  border-radius: 4px;
+  border: 4px solid #343434;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.text.finished {
+  background-color: #a1a1a1;
+}
+
+.text.rightNow {
+  background-color: #d95800;
+}
+
+.text.next {
+  background-color: #58d661;
+}
+
+.text.willBe {
+  background-color: #46854a;
+}
+
+.eventDate {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.eventTime {
+  font-size: 36px;
+}

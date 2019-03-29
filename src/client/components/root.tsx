@@ -8,6 +8,7 @@ import { appState } from '../appState';
 import { Observer } from './observer';
 import { Connection } from './Connection';
 import { Dashboard } from './Dashboard';
+import { TopRating } from './TopRating';
 
 interface Props {
   appState: AppState;
@@ -21,6 +22,11 @@ export class Root extends React.Component<Props, {}> {
       executeCmd,
     } = this.props;
     const isDashboard = appState.query.page === 'dashboard';
+    const isRating = appState.query.page === 'rating';
+
+    if (isRating) {
+      return <TopRating />;
+    }
 
     if (isDashboard) {
       return <Dashboard />;
