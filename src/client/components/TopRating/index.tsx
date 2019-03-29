@@ -23,21 +23,10 @@ export class TopRating extends React.PureComponent<{}, State> {
   };
 
   public componentDidMount(): void {
-    getTournamentList()
-      .then(({ tournaments }) => {
-        this.setState({ tournaments });
-      })
-      .catch(() => {
-        console.log('getTournamentList:errors');
-      });
-
-    getTournamentPretenders()
-      .then(({ pretenders }) => {
-        this.setState({ pretenders });
-      })
-      .catch(() => {
-        console.log('getTournamentPretenders:errors');
-      });
+    setInterval(() => {
+      this.update();
+    }, 30000);
+    this.update();
   }
 
   public render() {
@@ -96,6 +85,24 @@ export class TopRating extends React.PureComponent<{}, State> {
         </div>
       </div>
     );
+  }
+
+  private update() {
+    getTournamentList()
+      .then(({ tournaments }) => {
+        this.setState({ tournaments });
+      })
+      .catch(() => {
+        console.log('getTournamentList:errors');
+      });
+
+    getTournamentPretenders()
+      .then(({ pretenders }) => {
+        this.setState({ pretenders });
+      })
+      .catch(() => {
+        console.log('getTournamentPretenders:errors');
+      });
   }
 
   private formatter = (tournament: Tournament) => {
