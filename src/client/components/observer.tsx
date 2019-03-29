@@ -65,7 +65,6 @@ export class Observer extends React.Component<Props, {}> {
           touchAction: 'none',
         }}
       >
-        <DeathNotes state={observer} />
         <div>{playerNames}</div>
         {query.debug && (
           <Debug
@@ -79,12 +78,25 @@ export class Observer extends React.Component<Props, {}> {
           />
         )}
         {control.target && control.view && <Aim time={time} />}
-        {timeToRestart >= 0 && (
-          <div style={{ fontSize: '50px' }}>Start at {Math.floor(timeToRestart / 1000)}</div>
-        )}
-        {timeLast <= 60 * 1000 * 15 && (
-          <div style={{ fontSize: '30px' }}>Last time: {Math.floor(timeLast / 1000)}</div>
-        )}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            color: '#eee',
+            paddingTop: 28,
+            textShadow: '#222 0 0 4px',
+          }}
+        >
+          {timeLast <= 60 * 1000 * 15 && (
+            <div style={{ fontSize: '30px' }}>Last time: {Math.floor(timeLast / 1000)}</div>
+          )}
+          {timeToRestart >= 0 && (
+            <div style={{ fontSize: '50px' }}>Start at {Math.floor(timeToRestart / 1000)}</div>
+          )}
+          <DeathNotes state={observer} />
+        </div>
         <ObserverList observer={observer} />
       </div>
     );
