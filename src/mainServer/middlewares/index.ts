@@ -1,4 +1,4 @@
-import { Express } from 'express';
+import { Express, Request } from 'express';
 import * as expressSession from 'express-session';
 import * as passport from 'passport';
 import { json, urlencoded } from 'body-parser';
@@ -7,21 +7,22 @@ import * as RateLimit from 'express-rate-limit';
 import * as slowDown from 'express-slow-down';
 import { mainServer } from '../../config';
 
+const keyGenerator = (req: Request) => {
+  console.log('[KEYGEN] CLIENT IP is:', req.ip);
+  return req.ip;
+};
+
 const rateLimiter = new RateLimit({
   windowMs: mainServer.protector.windowMs,
   max: mainServer.protector.edgeCountRequest,
-  keyGenerator: (req) => {
-    return req.ip;
-  },
+  keyGenerator,
 });
 
 const speedLimiter = slowDown({
   windowMs: mainServer.protector.windowMs,
   delayAfter: mainServer.protector.edgeCountRequest,
   delayMs: mainServer.protector.delayMs,
-  keyGenerator: (req) => {
-    return req.ip;
-  },
+  keyGenerator,
 });
 
 export function applyMiddlewares(app: Express) {
