@@ -3,9 +3,10 @@ import { GameStats } from '../../gameStats';
 import styles from './index.css';
 import classNames from 'classnames';
 import { RadarLoader } from '../../RadarLoader';
+import { State as GameState } from '../../../types';
 
 interface Props {
-  game: any;
+  game: GameState;
   restart: () => void;
 }
 

@@ -52,6 +52,8 @@
 
 .counter::after {
   position: absolute;
+  left: 9px;
+  top: 9px;
   display: block;
   content: '';
   border: 1px solid #ffffff57;
@@ -62,6 +64,8 @@
 
 .counter::before {
   position: absolute;
+  left: 19px;
+  top: 19px;
   display: block;
   content: '';
   border: 1px solid #ffffff57;
