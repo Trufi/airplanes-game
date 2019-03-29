@@ -89,6 +89,11 @@ export class GameSelect extends React.PureComponent<Props, State> {
           tournamentMessage = '';
         }
       }
+
+      if (this.props.appState.query.observer) {
+        enableTournament = true;
+        tournamentMessage = 'Обсерверу можно!';
+      }
     }
 
     const dmIcon = classNames({
