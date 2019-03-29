@@ -29,7 +29,7 @@ export class FireButton extends React.Component<Props, {}> {
     }
     const fillPercent = size - size * volume;
     const buttonClass = classnames({
-      [styles.fireButtonInner]: true,
+      [styles.fireButtonCircle]: true,
       [styles.fireInProgress]: fillPercent > 0,
       [styles.fireDisabled]: isHeated,
     });
@@ -44,8 +44,7 @@ export class FireButton extends React.Component<Props, {}> {
           <HeatCircle percentage={fillPercent} strokeWidth={8} diametr={92} />
         </div>
         <div className={styles.fireButton}>
-          <div className={styles.fireButtonCircle} />
-          <div className={buttonClass}>Fire</div>
+          <div className={buttonClass} />
         </div>
       </div>
     );

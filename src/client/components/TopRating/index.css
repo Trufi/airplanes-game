@@ -50,7 +50,7 @@
   top: 20px;
 }
 
-ol {
+.mainContainer ol {
   counter-reset: item;
   list-style-type: none;
   padding: 0;
@@ -63,12 +63,12 @@ ol {
   padding-top: 90px;
   padding-left: 70px;
 }
-li {
+.mainContainer li {
   display: flex;
   margin-bottom: 8px;
   align-items: baseline;
 }
-li:before {
+.mainContainer li:before {
   content: counter(item) '  ';
   counter-increment: item;
   margin-right: 20px;
