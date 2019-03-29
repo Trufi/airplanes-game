@@ -81,6 +81,7 @@ const init = (tournamentId: number) => {
       if (!connection.isAlive) {
         connection.socket.terminate();
         executeCmd(connectionLost(state, connection.id));
+        console.log(`Terminate dead connection, id: ${connection.id}`);
       } else {
         connection.isAlive = false;
         connection.socket.ping(noop);

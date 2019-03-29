@@ -7,6 +7,7 @@ import { Debug } from './debug';
 import { ObserverList } from './observerList';
 import { Aim } from './aim';
 import { ObserverPlayerLabel } from './observerPlayerLabel';
+import { Disconnect } from './Disconnect/index';
 
 interface Props {
   appState: AppState;
@@ -18,8 +19,12 @@ const projScreenMatrix = new THREE.Matrix4();
 export class Observer extends React.Component<Props, {}> {
   public render() {
     const {
-      appState: { observer, query },
+      appState: { observer, query, connected },
     } = this.props;
+
+    if (!connected) {
+      return <Disconnect />;
+    }
 
     if (!observer) {
       return;

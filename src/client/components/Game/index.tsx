@@ -15,7 +15,7 @@ import { Health } from '../Health';
 import { BoostButton } from '../BoostButton';
 import { ShotBlink } from '../shotBlink/shotBlink';
 import { DamageIndicator } from '../damageIndicator/damageIndicator';
-import { Disconnect } from '../disconnect';
+import { Disconnect } from '../Disconnect/index';
 import styles from './index.css';
 import { DeathScreen } from './DeathScreen';
 interface Props {

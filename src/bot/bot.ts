@@ -44,6 +44,11 @@ export const initBot = (serverUrl: string, name: string, userId: number) => {
     sendMessage(msg.joinGameAsBot(name, userId));
   });
 
+  socket.on('close', () => {
+    console.log(`Bot ${name} lost connect`);
+    connected = false;
+  });
+
   let body: BotBody | undefined;
 
   const startDataMessage = (data: ServerMsg['startData']) => {
