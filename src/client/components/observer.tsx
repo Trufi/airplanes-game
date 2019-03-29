@@ -84,16 +84,18 @@ export class Observer extends React.Component<Props, {}> {
             justifyContent: 'center',
             alignItems: 'center',
             flexDirection: 'column',
-            color: '#eee',
             paddingTop: 28,
-            textShadow: '#222 0 0 4px',
           }}
         >
           {timeLast <= 60 * 1000 * 15 && (
-            <div style={{ fontSize: '30px' }}>Last time: {Math.floor(timeLast / 1000)}</div>
+            <div style={{ fontSize: '30px', color: '#eee', textShadow: '#222 0 0 4px' }}>
+              Last time: {Math.floor(timeLast / 1000)}
+            </div>
           )}
           {timeToRestart >= 0 && (
-            <div style={{ fontSize: '50px' }}>Start at {Math.floor(timeToRestart / 1000)}</div>
+            <div style={{ fontSize: '50px', color: '#eee', textShadow: '#222 0 0 4px' }}>
+              Start at {Math.floor(timeToRestart / 1000)}
+            </div>
           )}
           <DeathNotes state={observer} />
         </div>
