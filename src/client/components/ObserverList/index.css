@@ -1,0 +1,64 @@
+.panel {
+  width: 25%;
+  height: 100vh;
+  background-color: rgb(52, 52, 52);
+  position: absolute;
+  top: 0;
+}
+
+.header {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: inset 0 -40px 57px -33px rgba(92, 219, 99, 0.7);
+}
+
+.logoContainer {
+  display: flex;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  background-image: url('/assets/logo.png');
+  width: 120px;
+  height: 69px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 1;
+}
+
+.cover {
+  display: block;
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  z-index: 0;
+  box-shadow: 0 0 37px 7px rgba(92, 219, 99, 0.7);
+}
+
+.tableHeader {
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.nickname {
+  max-width: 100px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.tablebody {
+  color: #ffffff;
+}
+
+.table {
+  width: 100%;
+}

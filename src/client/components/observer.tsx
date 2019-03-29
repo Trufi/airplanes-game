@@ -4,7 +4,7 @@ import { AppState } from '../types';
 import { DeathNotes } from './DeathNotes';
 import { ExecuteCmd } from '../commands/execute';
 import { Debug } from './debug';
-import { ObserverList } from './observerList';
+import { ObserverList } from './ObserverList';
 import { Aim } from './aim';
 import { ObserverPlayerLabel } from './observerPlayerLabel';
 import { Disconnect } from './Disconnect/index';
