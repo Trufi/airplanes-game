@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './index.css';
 
-export class Disconnect extends React.Component<{}, {}> {
+export class Disconnect extends React.PureComponent {
   public render() {
     return (
       <div className={styles.container}>

@@ -1,7 +1,6 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import * as config from '../../../config';
-import { User } from '../types';
-import { TournamentListResponse } from '../../../mainServer/types/api';
+import { PretenderListResponse, TournamentListResponse } from '../../../mainServer/types/api';
 
 export const getTournamentList = () => {
   return axios
@@ -16,11 +15,11 @@ export const getTournamentList = () => {
 
 export const getTournamentPretenders = () => {
   return axios
-    .get(config.mainServer.url + '/api/tournament/pretenders', {
+    .get<PretenderListResponse>(config.mainServer.url + '/api/tournament/pretenders', {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
     })
-    .then((response: AxiosResponse<User>) => response.data);
+    .then((response) => response.data);
 };

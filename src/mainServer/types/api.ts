@@ -1,4 +1,4 @@
-import { Tournament, UserStats } from '../models/types';
+import { Pretender, Tournament, UserStats } from '../models/types';
 import { GameType, City } from '../../types';
 
 export interface GamelistItem {
@@ -15,6 +15,10 @@ export type GamelistResponse = GamelistItem[];
 
 export interface TournamentListResponse {
   tournaments: Tournament[];
+}
+
+export interface PretenderListResponse {
+  pretenders: Pretender[];
 }
 
 export interface LadderResponse {
