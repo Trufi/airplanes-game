@@ -92,10 +92,18 @@ export class Game extends React.Component<Props, {}> {
         <div>{playerNames}</div>
         <div>{playerArrows}</div>
         {timeToRestart >= 0 && (
-          <div style={{ fontSize: '50px' }}>Start at {Math.floor(timeToRestart / 1000)}</div>
+          <div className={styles.startAtTime}>
+            <div className={styles.startAtText}>
+              Start at {Math.max(0, Math.floor(timeToRestart / 1000))}
+            </div>
+          </div>
         )}
         {timeLast <= 60 * 1000 * 15 && (
-          <div style={{ fontSize: '30px' }}>Last time: {Math.floor(timeLast / 1000)}</div>
+          <div className={styles.startAtTime}>
+            <div className={styles.startAtText}>
+              Last time {Math.max(0, Math.floor(timeLast / 1000))}
+            </div>
+          </div>
         )}
         {body ? (
           this.renderLiveComponents(game, body)
