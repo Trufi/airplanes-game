@@ -48,12 +48,12 @@ const groups = {
   },
 };
 const textureLoader = new THREE.TextureLoader();
-const group_apply = (group: any, model: THREE.Object3D) => {
+const group_apply = (group: any, model: THREE.Object3D, color: THREE.Color) => {
   group.names.forEach((name: string) => {
     const child = model.getObjectByName(name) as THREE.Mesh | undefined;
     if (child && child.material instanceof THREE.MeshStandardMaterial) {
       const newMaterial = child.material.clone();
-      newMaterial.color = group.color;
+      newMaterial.color = color;
       child.material = newMaterial;
     }
   });
@@ -63,15 +63,14 @@ export const createMesh = (id: number) => {
   const mesh = new THREE.Object3D();
   const colorId = id % config.mainAirplaneColors.length;
   const mainColor = config.mainAirplaneColors[colorId];
-  groups.main.color = new THREE.Color(mainColor);
 
   getGltfLoader().then((loader) =>
     loader.load('./assets/new.glb', (gltf) => {
       const scene = gltf.scene;
       const airplane_model = scene.getObjectByName('Самолет');
       if (airplane_model) {
-        group_apply(groups.main, airplane_model);
-        group_apply(groups.default, airplane_model);
+        group_apply(groups.main, airplane_model, new THREE.Color(mainColor));
+        group_apply(groups.default, airplane_model, groups.default.color);
 
         textureLoader.load('./assets/propeller.jpg', (texture) => {
           const circleGeom = new THREE.CircleGeometry(config.airplane.propeller.radius, 32);
