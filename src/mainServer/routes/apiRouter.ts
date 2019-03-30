@@ -99,8 +99,9 @@ export function applyApiRouter(app: Express, state: State) {
     selectUserByName(connection, username)
       .then((result: any) => {
         if (result) {
-          res.status(400).send('Username already exists');
-          return;
+          return connection.end().then(() => {
+            res.status(400).send('Username already exists');
+          });
         }
         return createUser(connection, {
           name: req.body.username,
