@@ -22,7 +22,7 @@ export const mainServer = {
 };
 
 export const gameServer = {
-  url: process.env.GAME_SERVER_URL || 'sky.2gis.ru/city/nsk',
+  url: process.env.GAME_SERVER_URL || 'sky-game-nsk.web-staging.2gis.ru',
   city: process.env.CITY || 'nsk',
   updateMainInverval: 10000,
   type: process.env.GAME_TYPE || 'dm',

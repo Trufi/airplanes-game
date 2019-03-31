@@ -1,7 +1,7 @@
 import { initBot } from './bot';
 
 // const serverUrl = `ws://localhost:3001`;
-const serverUrl = `wss://sky.2gis.ru/city/nsk`;
+const serverUrl = `wss://sky-game-nsk.web-staging.2gis.ru`;
 
 const botNumber = 30;
 

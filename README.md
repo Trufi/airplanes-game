@@ -42,4 +42,4 @@ GAME_TYPE=tournament
 
 # URLs
 
-Чтобы зайти как обсервер, нужно в URL добавить GET-параметр `?observer`, например, https://sky.2gis.ru?observer
+Чтобы зайти как обсервер, нужно в URL добавить GET-параметр `?observer`, например, https://sky.web-staging.2gis.ru?observer
