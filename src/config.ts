@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const mainServer = {
-  url: process.env.MAIN_SERVER_URL || 'https://sky.2gis.ru',
+  url: process.env.MAIN_SERVER_URL || 'https://sky.web-staging.2gis.ru',
 
   /**
    * Если игровой сервер не прислал информацию о себе за это время, то удаляем его
