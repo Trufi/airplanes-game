@@ -79,6 +79,12 @@
   height: 42px;
 }
 
+.msk {
+  background-image: url('/assets/cities/nsk.png');
+  width: 42px;
+  height: 42px;
+}
+
 .omsk {
   background-image: url('/assets/cities/omsk.png');
   width: 42px;

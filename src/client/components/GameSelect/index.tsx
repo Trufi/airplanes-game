@@ -22,6 +22,7 @@ interface Props {
 }
 
 const CITY_NAMES_MAP: { [name in City]: string } = {
+  msk: 'Moscow',
   nsk: 'Novosibirsk',
   omsk: 'Omsk',
   tomsk: 'Tomsk',

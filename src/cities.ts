@@ -1,6 +1,7 @@
 import { City } from './types';
 
 export const healPointsByCity: { [key in City]: number[][] } = {
+  msk: [],
   nsk: [
     [989329080, 789625871], // Оперный
     [988990162, 789736310], // Вокзал
@@ -41,6 +42,7 @@ export const healPointsByCity: { [key in City]: number[][] } = {
 };
 
 export const originByCity: { [key in City]: number[] } = {
+  msk: [448245852, 804743906],
   nsk: [989279049, 789621208],
   omsk: [875446967, 788288755],
   tomsk: [1013559686, 820529938],
@@ -49,4 +51,12 @@ export const originByCity: { [key in City]: number[] } = {
   krasnoyarsk: [1108005417, 810291456],
 };
 
-export const cityOrder: City[] = ['nsk', 'tomsk', 'krasnoyarsk', 'omsk', 'barnaul', 'kemerovo'];
+export const cityOrder: City[] = [
+  'msk',
+  'nsk',
+  'tomsk',
+  'krasnoyarsk',
+  'omsk',
+  'barnaul',
+  'kemerovo',
+];
