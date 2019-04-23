@@ -41,8 +41,8 @@ const init = (tournamentId: number) => {
   const type = config.gameServer.type as GameType;
 
   // Если турнир, то он по умолчанию выключен
-  // Если DM, то 4 суток
-  const duration = type === 'tournament' ? 0 : 345600000;
+  // Если DM, то 365 суток
+  const duration = type === 'tournament' ? 0 : 31536000000;
 
   const state = createState(
     {
