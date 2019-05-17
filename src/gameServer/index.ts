@@ -46,7 +46,7 @@ const init = (tournamentId: number) => {
 
   const state = createState(
     {
-      maxPlayers: 30,
+      maxPlayers: 100,
       city: config.gameServer.city as City,
       type,
       duration,
