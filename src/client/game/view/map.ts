@@ -31,9 +31,8 @@ export const initMap = () => {
 
     const skyImage = document.createElement('img');
     skyImage.onload = () => {
-      const skybox = new Skybox(skyImage);
       if (map) {
-        skybox.addTo(map);
+        new Skybox(map, skyImage);
       }
     };
     skyImage.src = './assets/skybox3.jpg';

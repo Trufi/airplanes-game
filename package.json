@@ -63,7 +63,7 @@
     "ws": "^6.1.3"
   },
   "devDependencies": {
-    "@2gis/jakarta": "https://gitlab.2gis.ru/WebMaps/jakarta/builds/artifacts/v1.9.2-free-camera.11/raw/build.tar.gz?job=release",
+    "@2gis/jakarta": "https://gitlab.2gis.ru/WebMaps/jakarta/builds/artifacts/v3.5.0-free-camera.0/raw/build.tar.gz?job=release",
     "@types/fs-extra": "^5.0.4",
     "@types/js-cookie": "^2.2.1",
     "@types/mocha": "^5.2.5",
