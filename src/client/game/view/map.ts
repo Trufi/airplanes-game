@@ -2,15 +2,15 @@ import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as config from '../../../config';
 import { CameraState } from '../../types';
 
-let map: import('@2gis/jakarta').Map | undefined;
-let jakartaModule: typeof import('@2gis/jakarta') | undefined;
+let map: import('@webmaps/jakarta').Map | undefined;
+let jakartaModule: typeof import('@webmaps/jakarta') | undefined;
 
 export const initMap = () => {
   if (map) {
     return;
   }
 
-  import(/* webpackChunkName: "map" */ '@2gis/jakarta').then((jakarta) => {
+  import(/* webpackChunkName: "map" */ '@webmaps/jakarta').then((jakarta) => {
     jakartaModule = jakarta;
 
     const { Map, Skybox, config: mapConfig } = jakarta;
@@ -24,8 +24,10 @@ export const initMap = () => {
       center: [82.920412, 55.030111],
       zoom: 17,
       sendAnalytics: false,
-      fontUrl: './assets/fonts',
       floorsEnabled: false,
+      tileServer: 'tile{subdomain}-sdk.maps.2gis.com',
+      key: '042b5b75-f847-4f2a-b695-b5f58adc9dfd',
+      sessionId: uuid(),
     };
     map = (window as any).map = new Map(container, options);
 
@@ -61,4 +63,21 @@ export const invalidateMapSize = () => {
   if (map) {
     map.invalidateSize();
   }
+};
+
+const uuid = () => {
+  let ret = '';
+  let value: number;
+  for (let i = 0; i < 32; i++) {
+    value = (Math.random() * 16) | 0;
+
+    // Insert the hypens
+    if (i > 4 && i < 21 && !(i % 4)) {
+      ret += '-';
+    }
+
+    // Add the next random character
+    ret += (i === 12 ? 4 : i === 16 ? (value & 3) | 8 : value).toString(16);
+  }
+  return ret;
 };

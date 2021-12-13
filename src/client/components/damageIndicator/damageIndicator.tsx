@@ -12,7 +12,7 @@ export const DamageIndicator = ({ game }: Props) => {
     damageIndicator: { shooters },
   } = game;
 
-  const shooterElements = mapMap(shooters, (s) => <Indicator shooter={s} />);
+  const shooterElements = mapMap(shooters, (s) => <Indicator key={s.hitTime} shooter={s} />);
 
   return (
     <div

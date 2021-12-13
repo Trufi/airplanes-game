@@ -4,7 +4,7 @@ import { renderUI } from './ui';
 import { executeCmd } from './commands/execute';
 
 import(/* webpackPrefetch: true */ 'three-gltf-loader');
-import(/* webpackPrefetch: true */ '@2gis/jakarta');
+import(/* webpackPrefetch: true */ '@webmaps/jakarta');
 
 renderUI(appState, executeCmd);
 
