@@ -11,7 +11,7 @@ import { applyRoutes } from './routes';
 import { initSocket } from './socket';
 import { cmd } from './commands';
 
-const port = 3001;
+const port = process.env.GAME_SERVER_PORT || 3001;
 
 const app = express();
 

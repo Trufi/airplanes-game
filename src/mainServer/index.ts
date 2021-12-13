@@ -7,7 +7,7 @@ import { applyMiddlewares } from './middlewares';
 import { State } from './types';
 import { clearOldGames } from './reducers';
 
-const port = 3002;
+const port = process.env.MAIN_SERVER_PORT || 3002;
 
 const app = express();
 
