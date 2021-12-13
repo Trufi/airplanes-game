@@ -10,7 +10,7 @@ import {
   selectUserByName,
   selectUserByToken,
   getUserLadder,
-} from '../models/user';
+} from '../models/database/mock';
 import { getAchievements, getOwnAchievements, setAchievements } from '../models/achievements';
 import { State } from '../types';
 import { setAccessAllowOrigin } from './cors';
@@ -21,7 +21,7 @@ import {
   TournamentListResponse,
   CanIjoinToGrandFinalResponse,
 } from '../types/api';
-import { getPretenders, getTournamentList } from '../models/tournaments';
+import { getPretenders, getTournamentList } from '../models/database/mock';
 import { Pretender, Tournament, User, UserStats } from '../models/types';
 
 export function applyApiRouter(app: Express, state: State) {

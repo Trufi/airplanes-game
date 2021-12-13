@@ -7,14 +7,14 @@ import {
   getUserStatsByTournament,
   updateUserStats,
   attachUserToTournament,
-} from '../models/user';
+} from '../models/database/mock';
 import {
   NotifyRequest,
   PlayerResponse,
   PlayerRequest,
   AddPlayerStatsRequest,
 } from '../types/gameApi';
-import { getPretenders, getFullTournamentList } from '../models/tournaments';
+import { getPretenders, getFullTournamentList } from '../models/database/mock';
 import { UserStats, Tournament } from '../models/types';
 import { TournamentListResponse } from '../types/api';
 

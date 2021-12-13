@@ -7,7 +7,6 @@ export interface User {
   id: number;
   name: string;
   password: string;
-  sessionId: string;
 }
 
 export interface UserStats {
