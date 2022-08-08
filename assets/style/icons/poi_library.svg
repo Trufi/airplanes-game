@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_library</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_library" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <path d="M78,36 L78,80 L74,80 L42,80 C40.0233289,80 37.93776,78.9744252 37.93776,75.6257698 C37.93776,72.2771143 40.0500521,71 42,71 L74,71 L74,27 L42,27 C37.4784162,27 33,31.42334 33,36 L33,77 C33,81.8481602 37.4784162,85 42,85 L74,85 L83,85 L83,80 L83,36 L78,36 Z" id="Page-1" fill="#72B8EB"></path>
+    </g>
+</svg>

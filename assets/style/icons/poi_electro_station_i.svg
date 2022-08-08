@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_electro_station_i</title>
+    <g id="poi_electro_station_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-green-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#6DC234" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Group" transform="translate(19.000000, 15.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="3 8 6 8 6 0 3 0"></polygon>
+            <polygon id="Fill-2" points="12 8 15 8 15 0 12 0"></polygon>
+            <path d="M12.8571429,24 L5.14285714,24 C2.304,24 0,21.6106667 0,18.6666667 L0,8 L18,8 L18,18.6666667 C18,21.6106667 15.696,24 12.8571429,24" id="Fill-3"></path>
+            <path d="M23.4008518,8 L23.4008518,26.5714286 C22.6294233,29.0704 21.1245714,30.665603 18.8,31.4084601 L15.2,31.4084601 C12.8754286,30.665603 11.364178,29.0704 10.5927494,26.5714286 L10.5927494,23.5431309 L8,22.8571429 L8,26.5714286 C8,30.5082 11.4534286,34 15.2,34 L18.8,34 C22.5465714,34 26,30.5082 26,26.5714286 L26,8 L23.4008518,8 Z" id="Fill-5"></path>
+        </g>
+    </g>
+</svg>

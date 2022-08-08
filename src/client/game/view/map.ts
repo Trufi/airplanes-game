@@ -2,15 +2,15 @@ import * as vec3 from '@2gis/gl-matrix/vec3';
 import * as config from '../../../config';
 import { CameraState } from '../../types';
 
-let map: import('@webmaps/jakarta').Map | undefined;
-let jakartaModule: typeof import('@webmaps/jakarta') | undefined;
+let map: any | undefined;
+let jakartaModule: any | undefined;
 
 export const initMap = () => {
   if (map) {
     return;
   }
 
-  import(/* webpackChunkName: "map" */ '@webmaps/jakarta').then((jakarta) => {
+  import(/* webpackChunkName: "map" */ '../../jakarta/jakarta.js').then((jakarta) => {
     jakartaModule = jakarta;
 
     const { Map, Skybox, config: mapConfig } = jakarta;
@@ -25,15 +25,21 @@ export const initMap = () => {
       zoom: 17,
       sendAnalytics: false,
       floorsEnabled: false,
-      tileServer: 'tile{subdomain}-sdk.maps.2gis.com',
-      key: '042b5b75-f847-4f2a-b695-b5f58adc9dfd',
-      sessionId: uuid(),
+      tileServer: config.tilesUrl,
+
+      // The style was copied from the style with ID 'c6b98f58-6754-4103-b85e-cca497050d7a'
+      style: '/assets/style',
+      styleOptions: {
+        iconsPath: '/icons',
+        fontsPath: '/fonts',
+      },
     };
     map = (window as any).map = new Map(container, options);
 
     const skyImage = document.createElement('img');
     skyImage.onload = () => {
       if (map) {
+        // tslint:disable-next-line: no-unused-expression
         new Skybox(map, skyImage);
       }
     };
@@ -63,21 +69,4 @@ export const invalidateMapSize = () => {
   if (map) {
     map.invalidateSize();
   }
-};
-
-const uuid = () => {
-  let ret = '';
-  let value: number;
-  for (let i = 0; i < 32; i++) {
-    value = (Math.random() * 16) | 0;
-
-    // Insert the hypens
-    if (i > 4 && i < 21 && !(i % 4)) {
-      ret += '-';
-    }
-
-    // Add the next random character
-    ret += (i === 12 ? 4 : i === 16 ? (value & 3) | 8 : value).toString(16);
-  }
-  return ret;
 };

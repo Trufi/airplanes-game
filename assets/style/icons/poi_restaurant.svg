@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_restaurant</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_restaurant" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(35.000000, 25.000000)" fill="#F28B3D">
+            <polygon id="Fill-1" points="0 16 6 16 6 0 0 0"></polygon>
+            <polygon id="Fill-2" points="9 16 15 16 15 0 9 0"></polygon>
+            <polygon id="Fill-3" points="18 16 24 16 24 0 18 0"></polygon>
+            <polygon id="Fill-4" points="9 68 15 68 15 27 9 27"></polygon>
+            <polygon id="Fill-5" points="0 16 0 21.8985688 9.6 32 14.7688122 32 24 21.8985688 24 16"></polygon>
+            <path d="M42,0 C36,0 32,7.28571429 32,15 L32,35 L36,35 L36,68 L42,68 L42,0 Z" id="Fill-6"></path>
+        </g>
+    </g>
+</svg>

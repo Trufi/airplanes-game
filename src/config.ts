@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const mainServer = {
-  url: process.env.MAIN_SERVER_URL || 'https://sky.web-staging.2gis.ru',
+  url: process.env.MAIN_SERVER_URL || 'http://localhost:3002',
 
   /**
    * Если игровой сервер не прислал информацию о себе за это время, то удаляем его
@@ -21,8 +21,10 @@ export const mainServer = {
   },
 };
 
+export const tilesUrl = process.env.TILE_SERVER_URL || 'trufi.art:8003';
+
 export const gameServer = {
-  url: process.env.GAME_SERVER_URL || 'sky-game-nsk.web-staging.2gis.ru',
+  url: process.env.GAME_SERVER_URL || 'localhost:3001',
   city: process.env.CITY || 'nsk',
   updateMainInverval: 10000,
   type: process.env.GAME_TYPE || 'dm',

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_icerink_i</title>
+    <g id="poi_icerink_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-yellow-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#F7B21B" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(16.000000, 13.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="6 29 11 29 11 26 6 26"></polygon>
+            <polygon id="Fill-2" points="18 29 23 29 23 26 18 26"></polygon>
+            <path d="M26,33 L0,33 L0,29 L26,29 C28.7842593,29.1428571 31.1111111,26.835 31,24 L35,24 C35,29.6725714 31.6451852,33 26,33" id="Fill-3"></path>
+            <path d="M26,26 L6,26 C4.1648,26 3,24.8352 3,23 L3,21 L6,16 L6,5 L16,0 L16,8 C16,13.5434 20.6566,18.2 26,18 C27.8352,18.2 29,19.3648 29,21 L29,23 C29,24.8352 27.8352,26 26,26" id="Fill-5"></path>
+        </g>
+    </g>
+</svg>

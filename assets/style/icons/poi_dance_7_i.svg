@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="60px" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_dance_7_i</title>
+    <g id="poi_dance_7_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-8" transform="translate(7.000000, 5.000000)" stroke="#FFFFFF" stroke-width="5">
+            <path d="M19.0001306,40 C19.0393298,45.8232222 10.1868526,48 7,48 C1.54922005,48 0,43.6233333 0,41 C0,33.5555556 11.2727681,34.9061111 14,37 L14,9 L19.0001306,9 L19.0001306,40 Z" id="Fill-3"></path>
+            <path d="M42.0001306,36 C42.0393298,41.8232222 33.1868526,44 30,44 C24.54922,44 23,39.6233333 23,37 C23,29.5555556 34.2727681,30.9061111 37,33 L37,5 L42.0001306,5 L42.0001306,36 Z" id="Fill-5"></path>
+            <polygon id="Path" points="42 0 14 7 14 14 42 7"></polygon>
+            <polygon id="Path" points="14 27 42 20 42 13 14 20"></polygon>
+        </g>
+        <g id="Group-8" transform="translate(7.000000, 5.000000)" fill="#D91928">
+            <path d="M19.0001306,40 C19.0393298,45.8232222 10.1868526,48 7,48 C1.54922005,48 0,43.6233333 0,41 C0,33.5555556 11.2727681,34.9061111 14,37 L14,9 L19.0001306,9 L19.0001306,40 Z" id="Fill-3"></path>
+            <path d="M42.0001306,36 C42.0393298,41.8232222 33.1868526,44 30,44 C24.54922,44 23,39.6233333 23,37 C23,29.5555556 34.2727681,30.9061111 37,33 L37,5 L42.0001306,5 L42.0001306,36 Z" id="Fill-5"></path>
+            <polygon id="Path" points="42 0 14 7 14 14 42 7"></polygon>
+            <polygon id="Path" points="14 27 42 20 42 13 14 20"></polygon>
+        </g>
+    </g>
+</svg>

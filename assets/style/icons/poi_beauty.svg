@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="117px" height="116px" viewBox="0 0 117 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_beauty</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_beauty" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(1.000000, 0.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(33.000000, 21.000000)" fill="#6DC234">
+            <path d="M10,52.8571429 C4.48,52.8571429 0,57.5931429 0,63.4285714 C0,69.264 4.48,74 10,74 C15.52,74 20,69.264 20,63.4285714 C20,57.5931429 15.52,52.8571429 10,52.8571429 M10,58.1428571 C12.76,58.1428571 15,60.5108571 15,63.4285714 C15,66.3462857 12.76,68.7142857 10,68.7142857 C7.24,68.7142857 5,66.3462857 5,63.4285714 C5,60.5108571 7.24,58.1428571 10,58.1428571" id="Fill-1"></path>
+            <path d="M40,52.8571429 C34.48,52.8571429 30,57.5931429 30,63.4285714 C30,69.264 34.48,74 40,74 C45.52,74 50,69.264 50,63.4285714 C50,57.5931429 45.52,52.8571429 40,52.8571429 M40,58.1428571 C42.76,58.1428571 45,60.5108571 45,63.4285714 C45,66.3462857 42.76,68.7142857 40,68.7142857 C37.24,68.7142857 35,66.3462857 35,63.4285714 C35,60.5108571 37.24,58.1428571 40,58.1428571" id="Fill-3"></path>
+            <polygon id="Fill-5" points="15 63.4285714 40 0 45 15.8571429 35 47.5714286 27.5 47.5714286 19.025 67.9901429"></polygon>
+            <polygon id="Fill-7" points="35 63.4285714 10 0 5 15.8571429 15 47.5714286 22.5 47.5714286 30.975 67.9901429"></polygon>
+        </g>
+    </g>
+</svg>

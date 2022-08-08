@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_cityhall_i</title>
+    <g id="poi_cityhall_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-blue-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#72B8EB" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(17.000000, 14.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="13 7.84615385 18 7.84615385 18 0 13 0"></polygon>
+            <path d="M5.00829777,16.0247699 L25.9856418,16.0247699 C25.9856418,10.2473852 21.2065833,5.23076923 15.5,5.23076923 C9.79341667,5.23076923 5.00829777,10.2473852 5.00829777,16.0247699 Z" id="Fill-2"></path>
+            <polygon id="Fill-4" points="0 15.9906898 0 31.9633601 7.96581367 31.9633601 7.96581367 23.0804579 15.5 17 23.0292372 23.0804579 23.0292372 31.9633601 31 31.9633601 31 15.9906898"></polygon>
+            <polygon id="Fill-6" points="20.9697804 25.0574275 15.5002096 20.4506964 10.0306387 25.0574275 10.0306387 34 20.9697804 34"></polygon>
+        </g>
+    </g>
+</svg>

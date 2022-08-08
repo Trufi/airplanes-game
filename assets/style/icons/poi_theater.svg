@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_theater</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_theater" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(27.000000, 30.000000)" fill="#F7B21B">
+            <path d="M7,31 L16,31 L16,25 L7,25 L7,31 Z M9,50 C10.3509623,44.1125 13.4566621,36.16 21.0455349,34 C21.0455349,32.3821898 21.0455349,26.3821898 21.0455349,16 C18.5618934,16 19.5163585,16 17,16 C5.13049807,16 0,9 0,9 L0,41 C0,49 5.17548116,59 17,59 C24.5680091,59 29.0862041,56.51 32,52 C27.5646126,51.1525 24.5990619,47.935 23,43 C15.3245997,44.245 10.3509623,49 9,50 Z" id="Fill-1"></path>
+            <path d="M44,23 L53,23 L53,17 L44,17 L44,23 Z M42,44 C35.4,44 31,33.8906667 31,28 C31,28 35.4,33.3333333 42,33.3333333 C48.6,33.3333333 53,28 53,28 C53,33.8906667 48.6,44 42,44 L42,44 Z M31,23 L40,23 L40,17 L31,17 L31,23 Z M42,5 C29.8571429,5 25,0 25,0 L25,30 C25,40 29.8571429,50 42,50 C54.1428571,50 59,40 59,30 L59,0 C59,0 54.1428571,5 42,5 L42,5 Z" id="Fill-3"></path>
+        </g>
+    </g>
+</svg>

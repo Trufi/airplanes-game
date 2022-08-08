@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_tennis_i</title>
+    <g id="poi_tennis_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-yellow-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#F7B21B" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(14.000000, 14.000000)" fill="#FFFFFF">
+            <path d="M13,21 L13,13 L21,21 L13,21 Z M21.6557365,0 C15.6941069,0 10.7200183,4.24038646 9.56485516,9.87815819 L9.52847206,9.84165932 L7.79637698,23.5717517 L2.48689958e-14,31.5663076 L2.48689958e-14,34 L2.42467324,34 L10.3951693,26.1788138 L21.5595811,24.760572 C21.592066,24.7618756 21.6232515,24.7657861 21.6557365,24.7657861 C28.4723687,24.7657861 34,19.2205651 34,12.3822413 C34,5.54391749 28.4723687,0 21.6557365,0 L21.6557365,0 Z" id="Fill-1"></path>
+            <path d="M23,33 C23,30.7906667 24.7906667,29 27,29 C29.208,29 31,30.7906667 31,33 C31,35.2093333 29.208,37 27,37 C24.7906667,37 23,35.2093333 23,33" id="Fill-4"></path>
+        </g>
+    </g>
+</svg>

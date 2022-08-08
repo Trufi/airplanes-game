@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="88px" height="88px" viewBox="0 0 88 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>spb/metro_blue_88</title>
+    <g id="spb/metro_blue_88" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="metro/88/bounding" fill="#008FE4" stroke="#FFFFFF">
+            <circle id="Oval" cx="44" cy="44" r="43.5"></circle>
+        </g>
+        <path d="M35,65 C30.035,62.2440476 20.6666667,56.4166667 21,49 C20.6666667,41.1130952 22.825,31.0178571 30,28 L44,70 L58,28 C65.175,31.0178571 67.3333333,41.1130952 67,49 C67.3333333,56.4166667 57.965,62.2440476 53,65 L74,65 C76.7191667,61.25 79,55.3214286 79,49 C79,32.6190476 67.3333333,18.2619048 53,16 C49.8333333,24.2142857 44,45.0952381 44,44 C44,45.0952381 38.1666667,24.2142857 35,16 C20.6666667,18.2619048 9,32.6190476 9,49 C9,55.3214286 11.275,61.25 14,65 L35,65 Z" id="Fill-3" fill="#FFFFFF"></path>
+    </g>
+</svg>

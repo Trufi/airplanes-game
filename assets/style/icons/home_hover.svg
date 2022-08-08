@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>home_hover_day</title>
+    <g id="favorite" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons-finale!" transform="translate(-252.000000, -212.000000)">
+            <g id="home_hover_day" transform="translate(252.000000, 212.000000)">
+                <path d="M14,0 L26,0 C33.7319865,0 40,6.2680135 40,14 L40,26 C40,33.7319865 33.7319865,40 26,40 L14,40 C6.2680135,40 0,33.7319865 0,26 L0,14 C0,6.2680135 6.2680135,0 14,0 Z" id="Rectangle" fill="#E64500"></path>
+                <path d="M24,27.9990456 L24,20.9990456 L16,20.9990456 L16,27.9990456 L12.0247919,27.9990456 L12,19 L9,19 L9,16.9478907 L19.8357637,9.02781706 C19.8906368,8.99229028 20.0093632,8.99229028 20.0509248,9.01931145 L31,17.0160886 L31,19 L28,19 L28.0247919,27.9990456 L24,27.9990456 Z M22,27.9990456 L18,27.9990456 L18,22.9990456 L22,22.9990456 L22,27.9990456 Z" id="Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

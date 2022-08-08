@@ -15,6 +15,13 @@ const reset = (state: KeyboardState) => {
 };
 
 const keyDown = (state: KeyboardState, ev: KeyboardEvent) => {
+  if (
+    (ev.altKey || ev.shiftKey) &&
+    (ev.code === 'KeyS' || ev.code === 'KeyW' || ev.code === 'KeyA' || ev.code === 'KeyD')
+  ) {
+    ev.preventDefault();
+  }
+
   state.pressedKeys[ev.code] = true;
 };
 

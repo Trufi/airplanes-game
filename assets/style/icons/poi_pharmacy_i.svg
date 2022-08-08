@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_pharmacy_i</title>
+    <g id="poi_pharmacy_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-green-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#6DC234" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(16.000000, 16.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="11 32 21 32 21 0 11 0"></polygon>
+            <polygon id="Fill-2" points="0 21 32 21 32 11 0 11"></polygon>
+        </g>
+    </g>
+</svg>

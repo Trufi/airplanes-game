@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="117px" height="116px" viewBox="0 0 117 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_cafe</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_cafe" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(1.000000, 0.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(25.000000, 33.000000)" fill="#F28B3D">
+            <path d="M53.3076923,20 L45.6923077,20 L45.6923077,15 L53.3076923,15 C57.5063077,15 60.9230769,11.635 60.9230769,7.5 L60.9230769,5 L45.6923077,5 L45.6923077,0 L66,0 L66,7.5 C66,14.3925 60.3087692,20 53.3076923,20" id="Fill-1"></path>
+            <line x1="22.8461538" y1="35" x2="38.0769231" y2="35" id="Fill-3"></line>
+            <path d="M60.9230769,40 L0,40 C0,45.5225 4.54638462,50 10.1538462,50 L50.7692308,50 C56.3766923,50 60.9230769,45.5225 60.9230769,40" id="Fill-5"></path>
+            <path d="M5.07692308,0 L13.1263846,27.7475 C14.3727692,32.04 18.3556154,35 22.8918462,35 L38.0312308,35 C42.5674615,35 46.5503077,32.04 47.7966923,27.7475 L55.8461538,0 L5.07692308,0 Z" id="Fill-7"></path>
+        </g>
+    </g>
+</svg>

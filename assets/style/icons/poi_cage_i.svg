@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_cage_2_i</title>
+    <g id="poi_cage_2_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(5.000000, 4.000000)" stroke="#FFFFFF" stroke-width="2">
+            <path d="M9.417,7.3921 C9.417,7.3921 8.479,5.9951 7.294,5.9951 C6.041,5.9951 6,6.9421 6,6.9421 C6,6.9421 6.014,8.4411 6.014,8.6511 C5.231,8.6511 4.735,8.5761 3.88,8.6531 C2.882,8.7431 2.546,9.7191 2.546,9.7191 L1,12.0001 L3,12.0001 L3.88,11.1841 C3.88,11.1841 4.776,11.2061 5.269,11.2061 C7.811,11.2061 7.708,10.8611 7.708,9.1291 C7.708,7.8571 9.417,7.3921 9.417,7.3921" id="Fill-1"></path>
+            <polygon id="Fill-3" points="12 4 6 3 0 4 0 5 12 5"></polygon>
+            <path d="M5,3 L7,3 L7,1 L5,1 L5,3 Z M4,2 C4,3.104 4.896,4 6,4 C7.104,4 8,3.104 8,2 C8,0.896 7.104,0 6,0 C4.896,0 4,0.896 4,2 Z" id="Fill-5"></path>
+            <polygon id="Fill-7" points="0 13 1 13 1 5 0 5"></polygon>
+            <polygon id="Fill-8" points="0 14 12 14 12 13 0 13"></polygon>
+            <polygon id="Fill-9" points="11 13 12 13 12 5 11 5"></polygon>
+            <polygon id="Fill-10" points="9 13 10 13 10 8 9 8"></polygon>
+            <polygon id="Fill-11" points="9 6 10 6 10 5 9 5"></polygon>
+            <polygon id="Fill-12" points="7 6 8 6 8 5 7 5"></polygon>
+            <polygon id="Fill-13" points="4 13 5 13 5 12 4 12"></polygon>
+            <polygon id="Fill-14" points="2 13 3 13 3 12 2 12"></polygon>
+            <polygon id="Fill-15" points="7 13 8 13 8 11 7 11"></polygon>
+            <polygon id="Fill-16" points="2 8 3 8 3 5 2 5"></polygon>
+            <polygon id="Fill-17" points="4 8 5 8 5 5 4 5"></polygon>
+        </g>
+        <g id="Group" transform="translate(5.000000, 4.000000)" fill="#D91928">
+            <path d="M9.417,7.3921 C9.417,7.3921 8.479,5.9951 7.294,5.9951 C6.041,5.9951 6,6.9421 6,6.9421 C6,6.9421 6.014,8.4411 6.014,8.6511 C5.231,8.6511 4.735,8.5761 3.88,8.6531 C2.882,8.7431 2.546,9.7191 2.546,9.7191 L1,12.0001 L3,12.0001 L3.88,11.1841 C3.88,11.1841 4.776,11.2061 5.269,11.2061 C7.811,11.2061 7.708,10.8611 7.708,9.1291 C7.708,7.8571 9.417,7.3921 9.417,7.3921" id="Fill-1"></path>
+            <polygon id="Fill-3" points="12 4 6 3 0 4 0 5 12 5"></polygon>
+            <path d="M5,3 L7,3 L7,1 L5,1 L5,3 Z M4,2 C4,3.104 4.896,4 6,4 C7.104,4 8,3.104 8,2 C8,0.896 7.104,0 6,0 C4.896,0 4,0.896 4,2 Z" id="Fill-5"></path>
+            <polygon id="Fill-7" points="0 13 1 13 1 5 0 5"></polygon>
+            <polygon id="Fill-8" points="0 14 12 14 12 13 0 13"></polygon>
+            <polygon id="Fill-9" points="11 13 12 13 12 5 11 5"></polygon>
+            <polygon id="Fill-10" points="9 13 10 13 10 8 9 8"></polygon>
+            <polygon id="Fill-11" points="9 6 10 6 10 5 9 5"></polygon>
+            <polygon id="Fill-12" points="7 6 8 6 8 5 7 5"></polygon>
+            <polygon id="Fill-13" points="4 13 5 13 5 12 4 12"></polygon>
+            <polygon id="Fill-14" points="2 13 3 13 3 12 2 12"></polygon>
+            <polygon id="Fill-15" points="7 13 8 13 8 11 7 11"></polygon>
+            <polygon id="Fill-16" points="2 8 3 8 3 5 2 5"></polygon>
+            <polygon id="Fill-17" points="4 8 5 8 5 5 4 5"></polygon>
+        </g>
+    </g>
+</svg>

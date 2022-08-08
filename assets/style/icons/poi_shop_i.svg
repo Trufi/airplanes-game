@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_shop_i</title>
+    <g id="poi_shop_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-green-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#6DC234" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Group-10" transform="translate(16.000000, 15.000000)" fill="#FFFFFF">
+            <path d="M12.5,25 C10.014875,25 8,27.014875 8,29.5 C8,31.985125 10.014875,34 12.5,34 C14.985125,34 17,31.985125 17,29.5 C17,27.014875 14.985125,25 12.5,25 M12.5,28 C13.32725,28 14,28.67275 14,29.5 C14,30.32725 13.32725,31 12.5,31 C11.67275,31 11,30.32725 11,29.5 C11,28.67275 11.67275,28 12.5,28" id="Fill-3"></path>
+            <path d="M24.5,25 C22.014875,25 20,27.014875 20,29.5 C20,31.985125 22.014875,34 24.5,34 C26.985125,34 29,31.985125 29,29.5 C29,27.014875 26.985125,25 24.5,25 M24.5,28 C25.32725,28 26,28.67275 26,29.5 C26,30.32725 25.32725,31 24.5,31 C23.67275,31 23,30.32725 23,29.5 C23,28.67275 23.67275,28 24.5,28" id="Fill-3-Copy"></path>
+            <g id="Group-7" transform="translate(5.000000, 6.000000)">
+                <path d="M7.54362,17 C4.80662,17 2.47002,14.9968333 2.02062,12.2655 L0.00042,0 L28.00042,0 L25.97882,12.2655 C25.52942,14.9968333 23.19282,17 20.45582,17 L7.54362,17 Z" id="Fill-5"></path>
+            </g>
+            <path d="M5,6 L8,6 C8,2.6865 5.612,0 3,0 L0,0 L0,3 L3,3 C4.13733333,3 5.33333333,4.3455 5,6" id="Fill-8"></path>
+        </g>
+    </g>
+</svg>

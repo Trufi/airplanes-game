@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_busstation_i</title>
+    <g id="poi_busstation_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-tr-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval" fill="#2C8CC3" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(19.000000, 15.000000)" fill="#FFFFFF">
+            <path d="M0,2.58333333 L0,15.5 L2.6,15.5 L2.6,5.05634755 L23.4,5.05634755 L23.4,15.5 L26,15.5 L26,2.58333333 C26,2.58333333 20.8,0 13,0 C5.2,0 0,2.58333333 0,2.58333333 Z" id="Fill-1"></path>
+            <path d="M21.0090317,27.923597 L26,27.923597 L26,31 L23.0105213,31 C22.2916213,31 21.0090317,29.7436714 21.0090317,29.0293798 L21.0090317,27.923597 Z" id="Fill-5"></path>
+            <path d="M0.00903166612,27.923597 L5,27.923597 L5,31 L2.01052132,31 C1.29162132,31 0.00903166612,29.7436714 0.00903166612,29.0293798 L0.00903166612,27.923597 Z" id="Fill-5" transform="translate(2.504516, 29.461798) scale(-1, 1) translate(-2.504516, -29.461798) "></path>
+            <path d="M20.8,23.25 C19.3648,23.25 18.2,22.0926667 18.2,20.6666667 C18.2,19.2406667 19.3648,18.0833333 20.8,18.0833333 C22.2352,18.0833333 23.4,19.2406667 23.4,20.6666667 C23.4,22.0926667 22.2352,23.25 20.8,23.25 L20.8,23.25 Z M5.2,23.25 C3.7648,23.25 2.6,22.0926667 2.6,20.6666667 C2.6,19.2406667 3.7648,18.0833333 5.2,18.0833333 C6.6352,18.0833333 7.8,19.2406667 7.8,20.6666667 C7.8,22.0926667 6.6352,23.25 5.2,23.25 L5.2,23.25 Z M0,27.9831102 L26,27.9831102 L26,14.943772 L0,14.943772 L0,27.9831102 Z" id="Fill-7"></path>
+        </g>
+    </g>
+</svg>

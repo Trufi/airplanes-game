@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="116px" viewBox="0 0 116 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_airport</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_airport" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/100/bounding-tr">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval" fill="#72B8EB" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(24.000000, 26.000000)" fill="#FFFFFF">
+            <path d="M24.8148148,66.0002538 L19.8518519,66.0002538 L14.8888889,50.7694846 L-3.94430453e-31,45.6925615 L-3.94430453e-31,40.6156385 L14.8888889,40.6156385 L19.851,45.6917462 L14.8903778,40.6151308 L31.077,24.0547462 L4.96296296,7.61538462 L9.92592593,2.53846154 L42.066,12.8127462 L54.5916,-0.000253846154 L64.5200074,-0.000253846154 L64.5200074,10.1561308 L51.993,22.9687462 L62.037037,55.8461538 L57.0740741,60.9230769 L41.004,34.2087462 L24.814,50.7677462 L24.8148148,66.0002538 Z" id="Combined-Shape"></path>
+        </g>
+    </g>
+</svg>

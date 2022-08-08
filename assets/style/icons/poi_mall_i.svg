@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_mall_i</title>
+    <g id="poi_mall_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-green-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#6DC234" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Group-5" transform="translate(17.000000, 17.000000)">
+            <path d="M22,10 L8,10 L8,7.5 C8,3.35875 11.1348333,0 15,0 C18.8651667,0 22,3.35875 22,7.5 L22,10 Z" id="Stroke-1" stroke="#FFFFFF" stroke-width="3"></path>
+            <path d="M25,30 L5,30 C2.23875,30 0,27.811 0,25.1111111 L2.5,8 L27.5,8 L30,25.1111111 C30,27.811 27.76125,30 25,30" id="Fill-3" fill="#FFFFFF"></path>
+        </g>
+    </g>
+</svg>

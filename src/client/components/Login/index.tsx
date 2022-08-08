@@ -14,6 +14,7 @@ interface Props {
 
 interface State {
   isError: boolean;
+  msg: string;
   isFilled: boolean;
   password: string;
   username: string;
@@ -28,6 +29,7 @@ export class Login extends React.Component<Props, State> {
     this.state = {
       isError: false,
       isFilled: false,
+      msg: '',
       password: '',
       username: '',
     };
@@ -90,26 +92,29 @@ export class Login extends React.Component<Props, State> {
           <button className={buttonClass} onClick={this.submit}>
             Start
           </button>
+          {this.state.isError && <div className={styles.error}>{this.state.msg}</div>}
         </div>
       </div>
     );
   }
   private onUsernameChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      ...this.state,
-      username: ev.target.value,
-    });
-
-    this.handleChange();
+    this.setState(
+      {
+        ...this.state,
+        username: ev.target.value,
+      },
+      () => this.handleChange(),
+    );
   };
 
   private onPasswordChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      ...this.state,
-      password: ev.target.value,
-    });
-
-    this.handleChange();
+    this.setState(
+      {
+        ...this.state,
+        password: ev.target.value,
+      },
+      () => this.handleChange(),
+    );
   };
 
   private handleChange() {
@@ -134,9 +139,18 @@ export class Login extends React.Component<Props, State> {
     const username = usernameInput.value;
     const password = passwordInput.value;
 
-    if (!username || !password || username.length <= 3 || password.length <= 3) {
+    if (!username || !password) {
       this.setState({
         isError: true,
+        msg: `Nickname and password can't be empty`,
+      });
+      return;
+    }
+
+    if (username.length <= 3 || password.length <= 3) {
+      this.setState({
+        isError: true,
+        msg: `Nickname and password length must be at least 4`,
       });
       return;
     }

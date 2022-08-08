@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_stadium_i</title>
+    <g id="poi_stadium_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-yellow-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#F7B21B" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(14.000000, 14.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="10 1.26317685e-14 10 5 16 5 16 10 20 10 20 5 26 5 26 1.97270585e-16"></polygon>
+            <path d="M18,19.4444444 C11.3734286,19.4444444 5.99914286,17.7035185 5.99914286,15.5555556 C5.99914286,13.4075926 11.3734286,11.6666667 18,11.6666667 C24.6265714,11.6666667 30.0008571,13.4075926 30.0008571,15.5555556 C30.0008571,17.7035185 24.6265714,19.4444444 18,19.4444444 M0,15.5555556 L0,28.5185185 C0,31.4546296 5.58592227,34.1589814 13.0186366,34.9562036 L13.0186366,29.9514365 C13.0186366,28.5203254 14.531195,26.9773504 15.9506235,26.9773504 L20.07778,26.9773504 C21.4972085,26.9773504 23.0057877,28.5203254 23.0057877,29.9514365 L23.0057877,34.9562036 C30.438502,34.1589814 36,31.4546296 36,28.5185185 L36,15.5555556 C36,11.9751852 27.9411429,9.07407407 18,9.07407407 C8.05885714,9.07407407 0,11.9751852 0,15.5555556 Z" id="Fill-2"></path>
+        </g>
+    </g>
+</svg>

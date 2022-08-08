@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>job_hover_day</title>
+    <g id="favorite" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons-finale!" transform="translate(-431.000000, -212.000000)">
+            <g id="job_hover_day" transform="translate(431.000000, 212.000000)">
+                <path d="M14,0 L26,0 C33.7319865,0 40,6.2680135 40,14 L40,26 C40,33.7319865 33.7319865,40 26,40 L14,40 C6.2680135,40 0,33.7319865 0,26 L0,14 C0,6.2680135 6.2680135,0 14,0 Z" id="Rectangle" fill="#E64500"></path>
+                <path d="M19,20 L19,22 L21,22 L21,20 L30,20 L30,28 L10,28 L10,20 L19,20 Z M23,12 L17,12 L17,14 L15,14 L15,12 C15,10.8954305 15.8954305,10 17,10 L23,10 C24.1045695,10 25,10.8954305 25,12 L25,14 L30,14 L30,18 L10,18 L10,14 L23,14 L23,12 Z" id="Combined-Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

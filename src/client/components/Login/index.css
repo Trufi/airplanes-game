@@ -98,3 +98,11 @@
 .buttonActive {
   background: linear-gradient(to bottom, #65ff65 0%, #0d100e 100%);
 }
+
+.error {
+  color: #e30000;
+  font-size: 20px;
+  position: absolute;
+  bottom: -55px;
+  text-align: center;
+}

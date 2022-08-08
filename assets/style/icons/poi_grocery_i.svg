@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_grocery_i</title>
+    <g id="poi_grocery_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-green-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#6DC234" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(14.000000, 14.000000)" fill="#FFFFFF">
+            <path d="M33,18 L3,18 L4.80375,29.5426667 C5.20625,32.1146667 7.2925,34 9.73625,34 L26.26375,34 C28.7075,34 30.79375,32.1146667 31.19625,29.5426667 L33,18 Z" id="Fill-1"></path>
+            <polygon id="Fill-3" points="0 15 36 15 36 10 0 10"></polygon>
+            <polygon id="Fill-5" points="25 0 20 0 15 10 20 10"></polygon>
+        </g>
+    </g>
+</svg>

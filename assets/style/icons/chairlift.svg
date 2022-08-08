@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>chairlift_72</title>
+    <g id="chairlift_72" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="transport/72/bounding" fill="#72B8EB">
+            <g>
+                <rect x="0" y="0" width="72" height="72" rx="15"></rect>
+            </g>
+        </g>
+        <rect id="Rectangle" fill="#FFFFFF" x="18" y="9" width="37" height="5"></rect>
+        <rect id="Rectangle" fill="#FFFFFF" x="34" y="11" width="5" height="25"></rect>
+        <rect id="Rectangle" fill="#FFFFFF" x="7" y="53" width="58" height="4"></rect>
+        <path d="M57,34.5 L15,34.5 C13.4812169,34.5 12.1062169,35.1156085 11.1109127,36.1109127 C10.1156085,37.1062169 9.5,38.4812169 9.5,40 L9.5,50.5 L62.5,50.5 L62.5,40 C62.5,38.4812169 61.8843915,37.1062169 60.8890873,36.1109127 C59.8937831,35.1156085 58.5187831,34.5 57,34.5 Z" id="Rectangle" stroke="#FFFFFF" stroke-width="5"></path>
+    </g>
+</svg>

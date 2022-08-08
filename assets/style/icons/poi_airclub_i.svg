@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_airclub_i</title>
+    <g id="poi_airclub_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-blue-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#72B8EB" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(12.000000, 24.000000)">
+            <path d="M16.2003187,0.000533333333 C17.5928812,0.000533333333 18.9290062,0.561866667 19.9133812,1.56186667 L24.010802,6.02327123 L31.0836963,6.02327123 L36.7501312,0.000533333333 L42.0001312,0.000533333333 L35.7972562,10.5018667 C34.7446312,12.2858667 32.9307562,13.4685333 30.8950687,13.6978667 L13.6356937,15.6458667 C11.6538187,15.8698667 9.67981875,15.1672 8.27019375,13.7338667 L5.01024527,11.0024772 L5.01,10.9995333 L2,11 L2,8 L5.01024527,8 L8.94088125,2.3752 C9.91606875,0.8912 11.5553812,0.000533333333 13.3101937,0.000533333333 L16.2003187,0.000533333333 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+            <polygon id="Fill-4" fill="#FFFFFF" points="0 16 3 16 3 3 0 3"></polygon>
+            <path d="M16.4399544,1.98914243 C17.1368919,1.98914243 17.8049544,2.27047576 18.2971419,2.77047576 L23.0629417,8 L7.52771737,8 L10.385025,3.24247576 C10.8654,2.46247576 11.7067125,1.98914243 12.611025,1.98914243 L16.4399544,1.98914243 Z" id="Fill-7" fill="#72B8EB"></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="117px" height="116px" viewBox="0 0 117 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_busstation</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_busstation" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(1.000000, 0.000000)">
+        <g id="poi/100/bounding-tr">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval" fill="#72B8EB" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(33.000000, 25.000000)" fill="#FFFFFF">
+            <path d="M0,4.91666667 L0,27.0319334 L5.00541705,27.0319334 L5.00541705,9.00271587 L44.9575997,9.00271587 L44.9575997,27.0319334 L50,27.0319334 L50,4.91666667 C50,4.91666667 40,0 25,0 C10,0 0,4.91666667 0,4.91666667 Z" id="Fill-1"></path>
+            <path d="M40.9280256,52.001985 L50,52.001985 L50,59 L44.9818245,59 C42.760536,59 40.9280256,57.2502989 40.9280256,54.9695449 L40.9280256,52.001985 Z" id="Fill-5"></path>
+            <path d="M0.0173685887,51.9414684 L9.06877393,51.9414684 L9.06877393,59 L4.12338481,59 C1.84365089,59 0.0173685887,57.2073753 0.0173685887,54.9518935 L0.0173685887,51.9414684 Z" id="Fill-5" transform="translate(4.543071, 55.470734) scale(-1, 1) translate(-4.543071, -55.470734) "></path>
+            <path d="M40,44.25 C37.24,44.25 35,42.0473333 35,39.3333333 C35,36.6193333 37.24,34.4166667 40,34.4166667 C42.76,34.4166667 45,36.6193333 45,39.3333333 C45,42.0473333 42.76,44.25 40,44.25 L40,44.25 Z M10,44.25 C7.24,44.25 5,42.0473333 5,39.3333333 C5,36.6193333 7.24,34.4166667 10,34.4166667 C12.76,34.4166667 15,36.6193333 15,39.3333333 C15,42.0473333 12.76,44.25 10,44.25 L10,44.25 Z M0,51.9748011 L50,52.0717119 L50,27.0092279 L0,27.0092279 L0,51.9748011 Z" id="Fill-7"></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_railwaystation_i</title>
+    <g id="poi_railwaystation_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-tr-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval" fill="#2C8CC3" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(19.000000, 13.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="5.85787745 32 2 37 7.14340808 37 11 32"></polygon>
+            <polygon id="Fill-2" points="15 32 18.8584286 37 24 37 20.1441429 32"></polygon>
+            <g id="Group-11">
+                <path d="M10,6 C10,4.344 11.344,3 13,3 C14.656,3 16,4.344 16,6 C16,7.656 14.656,9 13,9 C11.344,9 10,7.656 10,6 Z M7,6 C7,9.3135 9.6865,12 13,12 C16.3135,12 19,9.3135 19,6 C19,2.6865 16.3135,0 13,0 C9.6865,0 7,2.6865 7,6 Z" id="Fill-3"></path>
+                <polygon id="Fill-5" points="26 23 23 23 23 12 13 12 16.2480213 8.26372375 17 4 26 6"></polygon>
+                <polygon id="Fill-7" points="0 23 3 23 3 12 13 12 9.96411912 8.93841087 9 4 0 6"></polygon>
+                <path d="M0,22 L0,27 C0,29.76125 2.3283,32 5.2,32 L20.8,32 C23.6717,32 26,29.76125 26,27 L26,22 L0,22 Z" id="Fill-9"></path>
+            </g>
+        </g>
+    </g>
+</svg>

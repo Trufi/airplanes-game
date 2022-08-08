@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_restaurant_i</title>
+    <g id="poi_restaurant_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-orange-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#F28B3D" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(20.000000, 14.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="0 8 3 8 3 0 0 0"></polygon>
+            <polygon id="Fill-2" points="5 8 8 8 8 0 5 0"></polygon>
+            <polygon id="Fill-3" points="10 8 13 8 13 0 10 0"></polygon>
+            <polygon id="Fill-4" points="5 36 8 36 8 15 5 15"></polygon>
+            <polygon id="Fill-5" points="0 8 0 10.9492844 5.2 16 7.9997733 16 13 10.9492844 13 8"></polygon>
+            <path d="M23,0 C19.4,0 17,3.85714286 17,7.71428571 L17,18.9627602 L20,18.9627602 L20,36 L23,36 L23,0 Z" id="Fill-6"></path>
+        </g>
+    </g>
+</svg>

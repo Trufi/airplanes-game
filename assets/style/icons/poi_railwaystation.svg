@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_railwaystation</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_railwaystation" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding-tr">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval" fill="#72B8EB" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(33.000000, 22.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="12 59 4 68 13 68 21 59"></polygon>
+            <polygon id="Fill-2" points="29 59 37 68 46 68 38 59"></polygon>
+            <g id="Group-11">
+                <path d="M19,11 C19,7.688 21.688,5 25,5 C28.312,5 31,7.688 31,11 C31,14.312 28.312,17 25,17 C21.688,17 19,14.312 19,11 Z M14,11 C14,17.07475 18.92525,22 25,22 C31.07475,22 36,17.07475 36,11 C36,4.92525 31.07475,3.55271368e-15 25,3.55271368e-15 C18.92525,3.55271368e-15 14,4.92525 14,11 Z" id="Fill-3"></path>
+                <polygon id="Fill-5" points="50 42 45 42 45 22 25 22 32.3897145 14.5047977 33 6 50 12"></polygon>
+                <polygon id="Fill-7" points="0 42 5 42 5 22 25.9688631 22 18 15 17 6 0 12"></polygon>
+                <path d="M0,41 L0,50 C0,54.97025 4.4775,59 10,59 L40,59 C45.5225,59 50,54.97025 50,50 L50,41 L0,41 Z" id="Fill-9"></path>
+            </g>
+        </g>
+    </g>
+</svg>

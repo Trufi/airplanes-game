@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_tennis</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_tennis" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(24.000000, 24.000000)" fill="#F7B21B">
+            <path d="M25,41 L25,25 L41,41 L25,41 Z M42.0376061,0 C30.465031,0 20.8094474,8.23133842 18.5670718,19.1752482 L18.4964458,19.1043975 L15.1341435,45.7569298 L2.48689958e-14,61.2757735 L2.48689958e-14,66 L4.70671864,66 L20.1788581,50.8176974 L41.8509516,48.0646398 C41.9140105,48.0671702 41.9745471,48.0747613 42.0376061,48.0747613 C55.2698922,48.0747613 66,37.3105088 66,24.0361155 C66,10.7617222 55.2698922,0 42.0376061,0 L42.0376061,0 Z" id="Fill-1"></path>
+            <path d="M43,65 C43,60.5813333 46.5813333,57 51,57 C55.416,57 59,60.5813333 59,65 C59,69.4186667 55.416,73 51,73 C46.5813333,73 43,69.4186667 43,65" id="Fill-4"></path>
+        </g>
+    </g>
+</svg>

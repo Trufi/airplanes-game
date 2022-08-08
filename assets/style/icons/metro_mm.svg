@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="92px" height="92px" viewBox="0 0 92 92" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>images/transport/metro_mm</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="images/transport/metro_mm" transform="translate(2.000000, 2.000000)" fill-rule="nonzero">
+            <g id="metro/88/bounding" fill="#FFFFFF" stroke="#72B8EB" stroke-width="3">
+                <circle id="Oval" cx="44" cy="44" r="42"></circle>
+            </g>
+            <polygon id="Page-1" fill="#EC0003" points="57 17 44 42 31 17 15 61 28 61 34 44 44 64 54 44 60 61 73 61"></polygon>
+        </g>
+    </g>
+</svg>

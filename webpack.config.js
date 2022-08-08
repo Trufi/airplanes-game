@@ -16,7 +16,10 @@ module.exports = (_, args) => {
       rules: [
         {
           test: /(\.ts|\.tsx|\.js)$/,
-          exclude: /node_modules(\/|\\)(?!@2gis(\/|\\)gl-matrix|2gl)/,
+          exclude: [
+            /node_modules(\/|\\)(?!@2gis(\/|\\)gl-matrix|2gl)/,
+            path.resolve(__dirname, 'src/client/jakarta/jakarta.js'),
+          ],
           use: {
             loader: 'ts-loader',
             options: {

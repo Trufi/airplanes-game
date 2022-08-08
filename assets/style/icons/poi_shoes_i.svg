@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_shoes_i</title>
+    <g id="poi_shoes_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-green-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#6DC234" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(16.000000, 19.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="24 25 29 25 29 9 24 9"></polygon>
+            <path d="M11,19.5 C11,16.462625 8.537375,14 5.5,14 C2.462625,14 0,16.462625 0,19.5 C0,22.537375 2.462625,25 5.5,25 C8.537375,25 11,22.537375 11,19.5" id="Fill-2"></path>
+            <polygon id="Fill-4" points="29 9.21052632 13 25 5 25 21 0 29 0"></polygon>
+        </g>
+    </g>
+</svg>

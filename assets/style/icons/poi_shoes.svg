@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_shoes</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_shoes" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(26.000000, 33.000000)" fill="#6DC234">
+            <polygon id="Fill-1" points="48 49 57 49 57 17 48 17"></polygon>
+            <path d="M23,37.5 C23,31.149125 17.850875,26 11.5,26 C5.149125,26 0,31.149125 0,37.5 C0,43.850875 5.149125,49 11.5,49 C17.850875,49 23,43.850875 23,37.5" id="Fill-2"></path>
+            <polygon id="Fill-4" points="57 18.0526316 25 49 9 49 41 0 57 0"></polygon>
+        </g>
+    </g>
+</svg>

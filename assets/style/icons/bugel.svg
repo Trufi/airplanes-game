@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>bugel_72</title>
+    <g id="bugel_72" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="transport/72/bounding" fill="#72B8EB">
+            <g>
+                <rect x="0" y="0" width="72" height="72" rx="15"></rect>
+            </g>
+        </g>
+        <g id="Group-5" transform="translate(11.000000, 13.000000)">
+            <line x1="25.5" y1="-1.42996726e-13" x2="25.5" y2="46" id="Stroke-1" stroke="#FFFFFF" stroke-width="5"></line>
+            <path d="M50,37.9506928 L40.109474,43.1494561 C28.171974,48.2835146 21.8283638,48.2835146 9.89086378,43.1494561 L0,37.9506928 L0,31 L14.2444263,35.3441135 L35.6032852,35.3441135 L50,31 L50,37.9506928 Z" id="Fill-3" fill="#FFFFFF"></path>
+        </g>
+    </g>
+</svg>

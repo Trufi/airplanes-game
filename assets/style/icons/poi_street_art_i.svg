@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_street_art_2_i</title>
+    <g id="poi_street_art_2_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(5.000000, 3.000000)">
+            <path d="M4,6 L2,6 C0.896,6 0,6.896 0,8 L0,15 C0,15.553 0.447,16 1,16 L5,16 C5.553,16 6,15.553 6,15 L6,8 C6,6.896 5.104,6 4,6" id="Fill-1" stroke="#FFFFFF" stroke-width="2"></path>
+            <polygon id="Fill-3" stroke="#FFFFFF" stroke-width="2" points="2 5 4 5 4 3 2 3"></polygon>
+            <rect id="Rectangle-2" fill="#FFFFFF" x="0" y="8" width="6" height="1"></rect>
+            <polygon id="Fill-5" stroke="#FFFFFF" stroke-width="2" points="11 8 7.57142857 5 7 6 10.4285714 9"></polygon>
+            <polygon id="Fill-6" stroke="#FFFFFF" stroke-width="2" points="11 1 7.57142857 4 7 3 10.4285714 0"></polygon>
+            <polygon id="Fill-7" stroke="#FFFFFF" stroke-width="2" points="7 5 12 5 12 4 7 4"></polygon>
+        </g>
+        <g id="Group" transform="translate(5.000000, 3.000000)" fill="#D91928">
+            <path d="M6,9 L6,15 C6,15.553 5.553,16 5,16 L5,16 L1,16 C0.447,16 0,15.553 0,15 L0,15 L0,9 L6,9 Z M0.00548910594,7.85080841 C0.0818842975,6.81639669 0.946181818,6 2,6 L2,6 L4,6 C5.104,6 6,6.896 6,8 L6,8 L0,8 Z" id="Combined-Shape"></path>
+            <polygon id="Fill-3" points="2 5 4 5 4 3 2 3"></polygon>
+            <polygon id="Fill-5" points="11 8 7.57142857 5 7 6 10.4285714 9"></polygon>
+            <polygon id="Fill-6" points="11 1 7.57142857 4 7 3 10.4285714 0"></polygon>
+            <polygon id="Fill-7" points="7 5 12 5 12 4 7 4"></polygon>
+        </g>
+    </g>
+</svg>

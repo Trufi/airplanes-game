@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_airport_i</title>
+    <g id="poi_airport_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-tr-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval" fill="#2C8CC3" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(14.000000, 15.000000)" fill="#FFFFFF">
+            <path d="M7.77777778,20.9232077 L12.962963,26.1539769 L12.962963,34.0001308 L10.3703704,34.0001308 L7.77777778,26.1539769 L-3.94430453e-31,23.5385923 L-3.94430453e-31,20.9232077 L7.77777778,20.9232077 Z M33.7044815,-0.000130769231 L33.7044815,5.23194615 L27.16,11.8318692 L32.4074074,28.7692308 L29.8148148,31.3846154 L21.419,17.6228692 L12.9624444,26.1537154 L7.77855556,20.9229462 L16.235,12.3918692 L2.59259259,3.92307692 L5.18518519,1.30769231 L21.975,6.60086923 L28.518,-0.000130769231 L33.7044815,-0.000130769231 Z" id="Combined-Shape"></path>
+        </g>
+    </g>
+</svg>

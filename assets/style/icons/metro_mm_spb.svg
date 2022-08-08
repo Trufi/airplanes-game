@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="90px" height="90px" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>images_spb/transport/metro_mm</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="images_spb/transport/metro_mm" transform="translate(1.000000, 1.000000)" fill-rule="nonzero">
+            <g id="metro/88/bounding" fill="#FFFFFF" stroke="#72B8EB" stroke-width="3">
+                <circle id="Oval" cx="44" cy="44" r="42"></circle>
+            </g>
+            <path d="M35,65 C30.035,62.2440476 20.6666667,56.4166667 21,49 C20.6666667,41.1130952 22.825,31.0178571 30,28 L44,70 L58,28 C65.175,31.0178571 67.3333333,41.1130952 67,49 C67.3333333,56.4166667 57.965,62.2440476 53,65 L74,65 C76.7191667,61.25 79,55.3214286 79,49 C79,32.6190476 67.3333333,18.2619048 53,16 C49.8333333,24.2142857 44,45.0952381 44,44 C44,45.0952381 38.1666667,24.2142857 35,16 C20.6666667,18.2619048 9,32.6190476 9,49 C9,55.3214286 11.275,61.25 14,65 L35,65 Z" id="Fill-3" fill="#005DA8"></path>
+        </g>
+    </g>
+</svg>

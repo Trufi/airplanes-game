@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_gym_i</title>
+    <g id="poi_gym_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-yellow-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#F7B21B" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(14.000000, 14.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="2.57142857 20.5714286 7.71428571 15.4285714 20.5714286 28.2857143 15.4285714 33.4285714"></polygon>
+            <polygon id="Fill-2" points="15.4285714 7.71428571 20.5714286 2.57142857 33.4285714 15.4285714 28.2857143 20.5714286"></polygon>
+            <polygon id="Fill-3" points="21.8571429 10.2857143 25.7142857 14.1428571 12.8571429 27 9 23.1428571"></polygon>
+            <polygon id="Fill-4" points="28.2852 0.000128571429 25.7137714 2.57155714 33.4293429 10.2858429 35.9994857 7.71441429"></polygon>
+            <polygon id="Fill-5" points="0 28.2853286 7.71428571 35.9996143 10.2857143 33.4294714 2.57142857 25.7139"></polygon>
+        </g>
+    </g>
+</svg>

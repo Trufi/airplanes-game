@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_school</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_school" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(34.000000, 26.000000)" fill="#72B8EB">
+            <path d="M41,22 C41,32.268875 32.268875,41 22.5263158,41 C10.731125,41 2,32.268875 2,22 C2,10.731125 10.731125,2 22.5263158,2 C32.268875,2 41,10.731125 41,22" id="Fill-1"></path>
+            <path d="M39,3.84126984 C44.1232129,8.04012055 46.4285714,13.913223 46.4285714,21.1269841 C46.4285714,35.5589824 36.1582648,47 22.2857143,47 C14.9046396,47 8.17513168,43.0826729 3.71428571,36.4920635 L-1.30809534e-14,40.3333333 C5.38487585,47.574276 13.5331076,51.8571429 22.2857143,51.8571429 C38.8630549,51.8571429 52,38.3446099 52,21.1269841 C52,13.1629624 48.5592551,5.48750173 42.7142857,-1.09313058e-14 L39,3.84126984 Z" id="Fill-3"></path>
+            <path d="M15.053344,58 C12.2186774,58 8,61.584 8,66 L37,66 C37,61.584 31.8421104,58 29.0074438,58 L15.053344,58 Z" id="Fill-1"></path>
+            <polygon id="Fill-8" points="19 66 26 66 26 50 19 50"></polygon>
+        </g>
+    </g>
+</svg>

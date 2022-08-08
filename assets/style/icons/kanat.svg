@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>kanat_72</title>
+    <g id="kanat_72" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="transport/72/bounding" fill="#72B8EB">
+            <g>
+                <rect x="0" y="0" width="72" height="72" rx="15"></rect>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(12.000000, 7.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="48 -5.81369534e-15 3.97909787e-14 8.27272727 3.97909787e-14 13 48 4.72845455"></polygon>
+            <path d="M3,19 L3,38 L8,38 L8,21 L40,21 L40,38 L45,38 L45,19 C45,18.7702381 38.0107059,13 24,13 C9.99670588,13 3,18.7702381 3,19" id="Fill-2"></path>
+            <polygon id="Fill-4" points="3 53 45 53 45 34 3 34"></polygon>
+            <polygon id="Fill-6" points="21 15 26 15 26 7 21 7"></polygon>
+        </g>
+    </g>
+</svg>

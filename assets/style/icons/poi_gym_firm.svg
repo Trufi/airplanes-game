@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="116px" viewBox="0 0 116 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_gym</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_gym" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(24.000000, 24.000000)" fill="#F7B21B">
+            <polygon id="Fill-1" points="4.85714286 38.8571429 14.5714286 29.1428571 38.8571429 53.4285714 29.1428571 63.1428571"></polygon>
+            <polygon id="Fill-2" points="29.1428571 14.5714286 38.8571429 4.85714286 63.1428571 29.1428571 53.4285714 38.8571429"></polygon>
+            <polygon id="Fill-3" points="41.2857143 19.4285714 48.5714286 26.7142857 24.2857143 51 17 43.7142857"></polygon>
+            <polygon id="Fill-4" points="53.4276 0.000242857143 48.5704571 4.85738571 63.1443143 19.4288143 67.9990286 14.5716714"></polygon>
+            <polygon id="Fill-5" points="0 53.4278429 14.5714286 67.9992714 19.4285714 63.1445571 4.85714286 48.5707"></polygon>
+        </g>
+    </g>
+</svg>

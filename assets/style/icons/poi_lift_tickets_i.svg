@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_lift_tickets_i</title>
+    <g id="poi_lift_tickets_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-yellow-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#F7B21B" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Group-12" transform="translate(15.000000, 16.000000)">
+            <path d="M31,0 L31,30 L2.58333333,30 L2.58333333,26.0869565 L16.9761905,26.0869565 L14.343,19.743 L10.3333333,22.173913 L3.875,18.2608696 L6.02777778,16.3043478 L10.3333333,18.2608696 L14.6388889,14.3478261 L14.745,14.541 L14.9464286,14.3478261 L25.0952381,14.3478261 L27.125,16.3043478 L23.0654762,26.0869565 L28.4166667,26.0869565 L28.416,2.608 L12.9166667,2.60869565 L12.9166667,10.4347826 L10.3333333,10.4347826 L10.3333333,0 L31,0 Z M7.75,10.4347826 L7.75,14.3478261 L0,14.3478261 L0,10.4347826 L7.75,10.4347826 Z M20.0208333,5.2173913 C21.8033333,5.2173913 23.25,6.67608696 23.25,8.47826087 C23.25,10.2804348 21.8033333,11.7391304 20.0208333,11.7391304 C18.2383333,11.7391304 16.7916667,10.2804348 16.7916667,8.47826087 C16.7916667,6.67608696 18.2383333,5.2173913 20.0208333,5.2173913 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+            <g id="Group-11"></g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="116px" viewBox="0 0 116 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_airclub</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_airclub" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(21.000000, 42.000000)">
+            <path d="M29.9176796,0.00106666667 C32.5669448,0.00106666667 35.1088412,1.12373333 36.9815546,3.12373333 L45.9641754,14.1033992 L56.0206956,14.1033992 L69.0124448,0.00106666667 L79.0002497,0.00106666667 L67.1996582,21.0037333 C65.1971034,24.5717333 61.7463168,26.9370667 57.8735454,27.3957333 L25.0386369,31.2917333 C21.2682405,31.7397333 17.9371579,30.4237142 15.0563984,27.9214936 L8.62924711,22.0049545 L8.62843902,21.9990667 L2.90243902,22 L2.90243902,16 L8.62924711,16 L16.1070424,4.7504 C17.9622771,1.7824 21.0809692,0.00106666667 24.419393,0.00106666667 L29.9176796,0.00106666667 Z" id="Combined-Shape" fill="#72B8EB"></path>
+            <polygon id="Fill-4" fill="#72B8EB" points="0 33 4.9 33 4.9 5 0 5"></polygon>
+            <path d="M30.3735718,3.97828486 C31.6994529,3.97828486 32.9704011,4.54095152 33.9067578,5.54095152 L42.9734014,16 L13.4185843,16 L18.8544378,6.48495152 C19.768322,4.92495152 21.3688677,3.97828486 23.0892671,3.97828486 L30.3735718,3.97828486 Z" id="Fill-7" fill="#FFFFFF"></path>
+        </g>
+    </g>
+</svg>

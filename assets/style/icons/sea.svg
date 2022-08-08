@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>sea_72</title>
+    <g id="sea_72" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="transport/72/bounding" fill="#72B8EB">
+            <rect x="0" y="0" width="72" height="72" rx="15"></rect>
+        </g>
+        <g id="Page-1" transform="translate(12.000000, 8.000000)" fill="#FFFFFF">
+            <path d="M6,6 L6,25 L11,25 L11,8 L37,8 L37,25 L42,25 L42,6 C42,5.7702381 36,-9.07084195e-15 24,-9.07084195e-15 C12,-9.07084195e-15 6,5.7702381 6,6" id="Fill-1"></path>
+            <path d="M24,48 C17.9496,42.6463976 6.0504,42.6463976 0,48 L0,55 C6.0504,48.4621967 17.9496,48.4621967 24,55 L24,48 Z" id="Fill-4"></path>
+            <path d="M48,48 C41.9496,42.6463976 30.0504,42.6463976 24,48 L24,55 C30.0504,48.4621967 41.9496,48.4621967 48,55 L48,48 Z" id="Fill-6"></path>
+            <path d="M0,24 L24,16 L48,24 L42,41 C42,40.6521739 30,37.1304348 24,43 C18,37.1304348 6,40.6521739 6,41 L0,24 Z" id="Fill-8"></path>
+        </g>
+    </g>
+</svg>

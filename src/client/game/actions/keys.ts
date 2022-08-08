@@ -30,21 +30,24 @@ export const processPressedkeys = (state: State) => {
     if (!pressedKeys[code]) {
       continue;
     }
-
     switch (code) {
       case 'KeyA':
+      case 'ArrowLeft':
         yawLeft(dt / 2, body);
         yawPressed = true;
         break;
       case 'KeyD':
+      case 'ArrowRight':
         yawRight(dt / 2, body);
         yawPressed = true;
         break;
       case 'KeyW':
+      case 'ArrowUp':
         pitchDown(dt / 2, body);
         pitchPressed = true;
         break;
       case 'KeyS':
+      case 'ArrowDown':
         pitchUp(dt / 2, body);
         pitchPressed = true;
         break;
@@ -59,11 +62,15 @@ export const processPressedkeys = (state: State) => {
     }
   }
 
-  updateBoost(body, dt, pressedKeys['KeyI']);
-  updateSlow(body, pressedKeys['KeyK']);
+  const isBoostPressed =
+    pressedKeys['KeyI'] || pressedKeys['ShiftLeft'] || pressedKeys['ShiftRight'];
+  const isSlowPressed = pressedKeys['KeyK'] || pressedKeys['AltLeft'] || pressedKeys['AltRight'];
+
+  updateBoost(body, dt, isBoostPressed);
+  updateSlow(body, isSlowPressed);
 
   // Если нажата кнопка ускорения, то не стреляем
-  if (!pressedKeys['KeyI']) {
+  if (!isBoostPressed) {
     updateWeapon(state, pressedKeys['Space']);
   }
 

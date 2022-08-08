@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_stadium</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_stadium" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(24.000000, 24.000000)" fill="#F7B21B">
+            <polygon id="Fill-1" points="18 1.97270585e-16 18 9 28 9 28 18 40 18 40 9 50 9 50 1.97270585e-16"></polygon>
+            <path d="M34,37.2222222 C21.4831429,37.2222222 11.3317143,33.8895926 11.3317143,29.7777778 C11.3317143,25.665963 21.4831429,22.3333333 34,22.3333333 C46.5168571,22.3333333 56.6682857,25.665963 56.6682857,29.7777778 C56.6682857,33.8895926 46.5168571,37.2222222 34,37.2222222 M0,29.7777778 L0,54.5925926 C0,60.2131481 10.906415,65.3900501 24.9459864,66.9161613 L24.9459864,57.9492757 C24.9459864,55.2097202 27.4231916,51.9395239 30.1043345,51.9395239 L38.0008838,51.9395239 C40.6820266,51.9395239 43.0376193,55.2097202 43.0376193,57.9492757 L43.0376193,66.9161613 C57.0771907,65.3900501 68,60.2131481 68,54.5925926 L68,29.7777778 C68,22.9239259 52.7777143,17.3703704 34,17.3703704 C15.2222857,17.3703704 0,22.9239259 0,29.7777778 Z" id="Fill-2"></path>
+        </g>
+    </g>
+</svg>

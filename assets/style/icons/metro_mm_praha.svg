@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="90px" height="90px" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>images_praha/transport/metro_mm</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="images_praha/transport/metro_mm" transform="translate(1.000000, 1.000000)" fill-rule="nonzero">
+            <g id="metro/88/bounding" fill="#FFFFFF" stroke="#72B8EB" stroke-width="3">
+                <circle id="Oval" cx="44" cy="44" r="42"></circle>
+            </g>
+            <path d="M52,14.0673454 L44,26.638774 L36,14.0673454 L29.1428571,14.0673454 L29.1428571,39.2102025 L12,39.2102025 L12,46.0673454 L44,76.989819 L76,46.0673454 L76,39.2102025 L58.8571429,39.2102025 L58.8571429,14.0673454 L52,14.0673454 Z M53.1428571,22.0673454 L53.1428571,46.0673454 L67.0246878,46.0673454 L44,67.8269834 L21.6784765,46.0673454 L34.8571429,46.0673454 L34.8571429,22.0673454 L44,35.7816311 L53.1428571,22.0673454 Z" id="Fill-1" fill="#EC0003"></path>
+        </g>
+    </g>
+</svg>

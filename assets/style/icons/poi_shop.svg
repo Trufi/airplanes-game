@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_shop</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_shop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Group-10" transform="translate(22.000000, 28.000000)" fill="#6DC234">
+            <g id="Group-7" transform="translate(11.000000, 11.000000)">
+                <path d="M15.0864,31 C9.6124,31 4.9392,27.3471667 4.0404,22.3665 L8.63117086e-14,0 L56,0 L51.9568,22.3665 C51.058,27.3471667 46.3848,31 40.9108,31 L15.0864,31 Z" id="Fill-5"></path>
+            </g>
+            <path d="M17,11 C17,4.92525 11.9255,0 6,0 L0,0 L0,5 L6,5 C8.79183333,6.5 11.3333333,7.96675 11,11 L17,11 Z" id="Fill-8"></path>
+        </g>
+        <circle id="Oval-3" stroke="#6DC234" stroke-width="5" cx="47" cy="83" r="6.5"></circle>
+        <circle id="Oval-3-Copy" stroke="#6DC234" stroke-width="5" cx="73" cy="83" r="6.5"></circle>
+    </g>
+</svg>

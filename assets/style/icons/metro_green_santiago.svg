@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="88px" height="88px" viewBox="0 0 88 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>saintiago/metro_green_88</title>
+    <g id="saintiago/metro_green_88" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="metro/88/bounding" fill="#29B247" stroke="#FFFFFF">
+            <circle id="Oval" cx="44" cy="44" r="43.5"></circle>
+        </g>
+        <g id="Group" transform="translate(10.000000, 26.000000)" fill="#FFFFFF">
+            <polygon id="Fill-2" points="34 0 22 18 34 36 46 18"></polygon>
+            <polygon id="Fill-2-Copy" points="56 0 44 18 56 36 68 18"></polygon>
+            <polygon id="Fill-2-Copy-2" points="12 0 0 18 12 36 24 18"></polygon>
+        </g>
+    </g>
+</svg>

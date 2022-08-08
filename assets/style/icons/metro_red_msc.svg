@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="88px" height="88px" viewBox="0 0 88 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>moscow/metro_red_88</title>
+    <g id="moscow/metro_red_88" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="metro/88/bounding" fill="#FF0000" stroke="#FFFFFF">
+            <circle id="Oval" cx="44" cy="44" r="43.5"></circle>
+        </g>
+        <polygon id="Page-1" fill="#FFFFFF" points="57 17 44 42 31 17 15 61 28 61 34 44 44 64 54 44 60 61 73 61"></polygon>
+        <rect id="Rectangle" fill="#FFFFFF" x="12" y="57" width="21" height="4"></rect>
+        <rect id="Rectangle" fill="#FFFFFF" x="55" y="57" width="21" height="4"></rect>
+    </g>
+</svg>

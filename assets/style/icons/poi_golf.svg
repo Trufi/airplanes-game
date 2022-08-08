@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="116px" viewBox="0 0 116 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_golf</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_golf" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(33.000000, 33.000000)" fill="#F7B21B">
+            <polygon id="Fill-1" points="42.50025 0.0005 27.50025 34.998 35.00025 34.998 50.00025 0.0005"></polygon>
+            <path d="M13.938,25.974 L35.0005,34.999 C35.0005,34.999 30.0005,49.999 20.0005,49.999 L10.0005,49.999 C4.478,49.999 0.0005,45.5215 0.0005,39.999 L0.0005,35.1665 C0.0005,27.9865 7.3405,23.1465 13.938,25.974" id="Fill-2"></path>
+        </g>
+    </g>
+</svg>

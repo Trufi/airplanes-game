@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_museum_i</title>
+    <g id="poi_museum_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-yellow-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#F7B21B" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Group" transform="translate(16.000000, 13.000000)" fill="#FFFFFF">
+            <polygon id="Fill-1" points="0 34 32 34 32 29 0 29"></polygon>
+            <polygon id="Fill-2" points="0 26 4 26 4 14 0 14"></polygon>
+            <polygon id="Fill-3" points="28 26 32 26 32 14 28 14"></polygon>
+            <polygon id="Fill-4" points="16 0 0 7.33333333 0 11 32 11 32 7.33333333"></polygon>
+            <polygon id="Fill-5" points="7 26 11 26 11 14 7 14"></polygon>
+            <polygon id="Fill-6" points="21 26 25 26 25 14 21 14"></polygon>
+            <polygon id="Fill-7" points="16 25 11 19.5 11 14 16 19.5"></polygon>
+            <polygon id="Fill-8" points="16 25 21 19.5 21 14 16 19.5"></polygon>
+        </g>
+    </g>
+</svg>

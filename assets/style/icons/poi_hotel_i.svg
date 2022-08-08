@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_hotel_i</title>
+    <g id="poi_hotel_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-green-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#6DC234" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(14.000000, 20.000000)" fill="#FFFFFF">
+            <path d="M4,15 L4,0 L0,0 L0,23 L4,23 L4,22 C3.85714286,20.3115556 5.00914286,19.1666667 6,19 L30,19 C30.9908571,19.1666667 32.1428571,20.3115556 32,22 L32,23 L36,23 L36,19 L36,18 L36,15 L4,15 Z" id="Fill-1"></path>
+            <path d="M16,3 C16.4347826,8.00106246 13.5156522,10.5005312 10,11 L6,11 L6,13 L36,13 L36,10 C36,7.33870323 34.113913,5.23415053 32,5 C26.1456522,4.11563825 16.4347826,2.9433874 16,3" id="Fill-3"></path>
+            <path d="M14,5 C14,7.20933333 12.2093333,9 10,9 C7.79066667,9 6,7.20933333 6,5 C6,2.79066667 7.79066667,1 10,1 C12.2093333,1 14,2.79066667 14,5" id="Fill-5"></path>
+        </g>
+    </g>
+</svg>

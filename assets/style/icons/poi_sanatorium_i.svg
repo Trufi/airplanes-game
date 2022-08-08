@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_sanatorium_i</title>
+    <g id="poi_sanatorium_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-green-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#6DC234" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(13.000000, 13.000000)" fill="#FFFFFF">
+            <path d="M12,4 C12,6.20933333 10.2093333,8 8,8 C5.79066667,8 4,6.20933333 4,4 C4,1.79066667 5.79066667,0 8,0 C10.2093333,0 12,1.79066667 12,4" id="Fill-1"></path>
+            <path d="M10.734039,9.36008235 L12.2027435,7.78647034 C13.1814622,6.73784322 14.7679638,6.73784322 15.7466825,7.78647034 L24,16.6293105 L18.9873565,22 L10.734039,13.1571598 C9.75532034,12.1085327 9.75532034,10.4087095 10.734039,9.36008235" id="Fill-3"></path>
+            <polygon id="Fill-5" points="1 30 37 30 37 25 1 25"></polygon>
+            <path d="M6,30 L1,30 L1,35 L2.23695181,35 C3.61695181,35 6,32.6836028 6,31.3036028 L6,30 Z" id="Fill-7"></path>
+            <path d="M37,30 L32,30 L32,31.2634112 C32,32.6434112 34.4201447,35 35.8001447,35 L37,35 L37,30 Z" id="Fill-8"></path>
+            <polygon id="Fill-9" points="19 22 37 22 37 17 19 17"></polygon>
+            <polygon id="Fill-10" points="11 27 0 14.6666667 2.5 11 15.9847715 25.1336997"></polygon>
+        </g>
+    </g>
+</svg>

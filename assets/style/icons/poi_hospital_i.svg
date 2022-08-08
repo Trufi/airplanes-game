@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_hospital_i</title>
+    <g id="poi_hospital_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-red-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#EB7967" cx="30" cy="30" r="26"></circle>
+        </g>
+        <path d="M40,31 L40,37 L35,37 L35,42 L29,42 L29,37 L24,37 L24,31 L29,31 L29,26 L35,26 L35,31 L40,31 Z M32,16 L16,24 L16,26 L19,26 L19,42 C19,45.0004385 20.8967083,47 24,47 L40,47 C43.1032917,47 45,44.9704137 45,42 L45,26 L48,26 L48,24 L32,16 Z" id="Page-1" fill="#FFFFFF"></path>
+    </g>
+</svg>

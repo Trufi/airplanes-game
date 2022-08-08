@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="88px" height="88px" viewBox="0 0 88 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>dubai/transport/metro_red_88</title>
+    <g id="dubai/transport/metro_red_88" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" fill="#FFFFFF" cx="44" cy="44" r="44"></circle>
+        <circle id="Oval" fill="#DC0000" cx="44" cy="44" r="43"></circle>
+        <g id="Page-1" transform="translate(23.000000, 8.000000)" fill="#FFFFFF">
+            <polygon id="Fill-2" transform="translate(7.500000, 57.000000) scale(-1, 1) translate(-7.500000, -57.000000) " points="0 55 10 68 15 64 0 46"></polygon>
+            <polygon id="Fill-2" points="27 55 37 68 42 64 27 46"></polygon>
+            <path d="M21,0 C10.4381111,0 2,4.87771429 2,6 L2,32 L9,32 L9,8 L33,8 L33,32 L40,32 L40,6 C40,4.57142857 31.5618889,0 21,0" id="Fill-3"></path>
+            <polygon id="Fill-5" points="21 38 2 23 2 44 14 55 28 55 40 44 40 23"></polygon>
+        </g>
+    </g>
+</svg>

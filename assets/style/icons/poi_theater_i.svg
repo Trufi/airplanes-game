@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_theater_i</title>
+    <g id="poi_theater_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-yellow-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#F7B21B" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(16.000000, 17.000000)" fill="#FFFFFF">
+            <path d="M3,16 L8,16 L8,13 L3,13 L3,16 Z M5,26 C5.17548116,23.2585 7.02825394,18 10,18 L10,8 C9.53319008,8 9.55302553,8 9,8 C2.58301764,8 0,5 0,5 L0,21 C0,25.8 2.58774058,31 9,31 C12.2840045,31 14.5431021,29.7052 16,28 C13.7823063,26.9193 12.299531,25.2462 11,23 C7.66229985,23.3274 5.17548116,25.8 5,26 Z" id="Fill-1"></path>
+            <path d="M23,11 L28,11 L28,8 L23,8 L23,11 Z M22,22 C18.4,22 16,16.9453333 16,14 C16,14 18.4,16.6666667 22,16.6666667 C25.6,16.6666667 28,14 28,14 C28,16.9453333 25.6,22 22,22 L22,22 Z M16,11 L21,11 L21,8 L16,8 L16,11 Z M22,2.6 C15.5714286,2.6 13,0 13,0 L13,15.6 C13,20.8 15.5714286,26 22,26 C28.4285714,26 31,20.8 31,15.6 L31,0 C31,0 28.4285714,2.6 22,2.6 L22,2.6 Z" id="Fill-3"></path>
+        </g>
+    </g>
+</svg>

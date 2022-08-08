@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_port</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_port" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding-tr">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval" fill="#72B8EB" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(22.000000, 17.000000)" fill="#FFFFFF">
+            <path d="M36,18 C32.688,18 30,15.312 30,12 C30,8.688 32.688,6 36,6 C39.312,6 42,8.688 42,12 C42,15.312 39.312,18 36,18 M24,12 C24,18.627 29.373,24 36,24 C42.627,24 48,18.627 48,12 C48,5.373 42.627,0 36,0 C29.373,0 24,5.373 24,12 Z" id="Fill-1"></path>
+            <polygon id="Fill-3" points="31 70 41 70 41 20 31 20"></polygon>
+            <polygon id="Fill-5" points="22 39 50 39 50 29 22 29"></polygon>
+            <path d="M67,49 L56.6666667,49 C54.3545833,57.6025 45.6048333,64 36,64.625 C26.39775,64 17.6454167,57.6025 15.3333333,49 L5,49 C7.47225,63.165 20.6679167,74 36,74 C51.3320833,74 64.5303333,63.165 67,49" id="Fill-6"></path>
+            <polygon id="Fill-7" points="9.09090909 33 20 49 0 49"></polygon>
+            <polygon id="Fill-8" points="61.0909091 33 72 49 52 49"></polygon>
+        </g>
+    </g>
+</svg>

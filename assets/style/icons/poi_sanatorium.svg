@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_sanatorium</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_sanatorium" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(22.000000, 24.000000)" fill="#6DC234">
+            <path d="M21,8 C21,12.4186667 17.4186667,16 13,16 C8.58133333,16 5,12.4186667 5,8 C5,3.58133333 8.58133333,0 13,0 C17.4186667,0 21,3.58133333 21,8" id="Fill-1"></path>
+            <path d="M21.867177,15.9001751 C23.6879991,13.8173537 25.8066973,13.4121918 27.4201112,14.8562508 L43,32.8114912 L34.075043,42 L19.1256043,24.7542956 C17.3047822,22.6714742 17.8437966,20.2055873 19.6646187,18.1227659 L21.867177,15.9001751 Z" id="Fill-3"></path>
+            <polygon id="Fill-5" points="2 57 70 57 70 48 2 48"></polygon>
+            <path d="M11,57 L2,57 L2,66 L4.22651326,66 C6.71051326,66 11,61.8304851 11,59.3464851 L11,57 Z" id="Fill-7"></path>
+            <path d="M70,57 L61,57 L61,59.2741401 C61,61.7581401 65.3562605,66 67.8402605,66 L70,66 L70,57 Z" id="Fill-8"></path>
+            <polygon id="Fill-9" points="34 42 70 42 70 33 35.3003633 33"></polygon>
+            <polygon id="Fill-10" points="20.0009515 50 0 25.3333333 5.50023788 21 29 47.7089128"></polygon>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>tramvay_72</title>
+    <g id="tramvay_72" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="transport/72/bounding" fill="#72B8EB">
+            <g>
+                <rect x="0" y="0" width="72" height="72" rx="15"></rect>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(18.000000, 6.000000)" fill="#FFFFFF">
+            <path d="M0,14 L0,33 L5,33 L5,16 L31,16 L31,33 L36,33 L36,14 C36,13.7702381 30,8 18,8 C6,8 0,13.7702381 0,14" id="Fill-1"></path>
+            <polygon id="Fill-3" points="7 5 29 5 29 0 7 0"></polygon>
+            <polygon id="Fill-5" points="13 14 8 14 5 0 10 0"></polygon>
+            <polygon id="Fill-6" points="23 14 28 14 31 0 26 0"></polygon>
+            <polygon id="Fill-7" points="1 60 8.09090909 60 14 52 6.90909091 52"></polygon>
+            <polygon id="Fill-8" points="35 60 27.9090909 60 22 52 29.0909091 52"></polygon>
+            <path d="M0,31 L0,41.9285714 C0,45.2812143 2.6856,48 6,48 L30,48 C33.3144,48 36,45.2812143 36,41.9285714 L36,31 L0,31 Z" id="Fill-9"></path>
+        </g>
+    </g>
+</svg>

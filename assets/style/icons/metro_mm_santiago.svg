@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="90px" height="90px" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>images_santiago/transport/metro_mm</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="images_santiago/transport/metro_mm" transform="translate(1.000000, 1.000000)" fill-rule="nonzero">
+            <g id="metro/88/bounding" fill="#FFFFFF" stroke="#72B8EB" stroke-width="3">
+                <circle id="Oval" cx="44" cy="44" r="42"></circle>
+            </g>
+            <g id="Group" transform="translate(10.000000, 26.000000)" fill="#EC0003">
+                <polygon id="Fill-2" points="34 0 22 18 34 36 46 18"></polygon>
+                <polygon id="Fill-2-Copy" points="56 0 44 18 56 36 68 18"></polygon>
+                <polygon id="Fill-2-Copy-2" points="12 0 0 18 12 36 24 18"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

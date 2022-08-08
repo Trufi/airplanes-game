@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_icerink</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_icerink" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(28.000000, 21.000000)" fill="#F7B21B">
+            <polygon id="Fill-1" points="12 57 21 57 21 50 12 50"></polygon>
+            <polygon id="Fill-2" points="33 57 42 57 42 50 33 50"></polygon>
+            <path d="M50,64 L0,64 L0,56 L50,56 C55.1012963,56.7142857 59.5555556,52.355 59,47 L67,47 C67,57.7148571 60.5779259,64 50,64" id="Fill-3"></path>
+            <path d="M11,50 C6.24,50 4,47.76 4,43 L4,40 L10,32 L10,9 L29,0 L29,16 C29,26.045 37.955,35 47,34 C51.76,35 54,37.24 54,41 L54,43 C54,47.76 51.76,50 47,50 L11,50 Z" id="Fill-5"></path>
+        </g>
+    </g>
+</svg>

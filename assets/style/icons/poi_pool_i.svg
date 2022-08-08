@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_pool_i</title>
+    <g id="poi_pool_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/52/bounding-yellow-i" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Shadow" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="30"></circle>
+            <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="29"></circle>
+            <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="28"></circle>
+            <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="30" cy="30" r="27"></circle>
+            <circle id="Oval-2" fill="#F7B21B" cx="30" cy="30" r="26"></circle>
+        </g>
+        <g id="Page-1" transform="translate(16.000000, 19.000000)" fill="#FFFFFF">
+            <path d="M28.9968616,4.15933605 C28.908873,6.3673902 27.0477809,8.08476565 24.8414003,7.9967635 C22.6350197,7.9100947 20.9152427,6.04871572 21.0032313,3.84199494 C21.0912199,1.63394079 22.9523119,-0.0847680315 25.1586925,0.00323412666 C27.3650731,0.0912362848 29.083517,1.95261527 28.9968616,4.15933605" id="Fill-1"></path>
+            <polygon id="Fill-4" points="5 15 15.5 5 26 15"></polygon>
+            <polygon id="Fill-6" points="19 8.33333333 13.6666667 3 3 3 3 7 12.3333333 7 16.3333333 11"></polygon>
+            <polygon id="Fill-8" points="25.8333333 20.6666667 20.6666667 18 15.5 20.6666667 10.3333333 18 5.16666667 20.6666667 0 18 0 23.3333333 5.16666667 26 10.3333333 23.3333333 15.5 26 20.6666667 23.3333333 25.8333333 26 31 23.3333333 31 18"></polygon>
+        </g>
+    </g>
+</svg>

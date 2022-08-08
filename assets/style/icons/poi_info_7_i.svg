@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="60px" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_info_7_i</title>
+    <g id="poi_info_7_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(19.000000, 3.000000)" stroke="#FFFFFF" stroke-width="5">
+            <polygon id="Fill-1" points="0 53 22 53 22 46 0 46"></polygon>
+            <path d="M16,47 L7,47 L6.999,26 L0,26 L0,19 L16,19 L16,47 Z" id="Combined-Shape"></path>
+            <path d="M17,7 C17,10.8655556 13.8655556,14 10,14 C6.13444444,14 3,10.8655556 3,7 C3,3.13444444 6.13444444,0 10,0 C13.8655556,0 17,3.13444444 17,7" id="Fill-4"></path>
+        </g>
+        <g id="Group" transform="translate(19.000000, 3.000000)" fill="#D91928">
+            <polygon id="Fill-1" points="0 53 22 53 22 46 0 46"></polygon>
+            <polygon id="Fill-2" points="0 26 16 26 16 19 0 19"></polygon>
+            <polygon id="Fill-3" points="7 47 16 47 16 26 7 26"></polygon>
+            <path d="M17,7 C17,10.8655556 13.8655556,14 10,14 C6.13444444,14 3,10.8655556 3,7 C3,3.13444444 6.13444444,0 10,0 C13.8655556,0 17,3.13444444 17,7" id="Fill-4"></path>
+        </g>
+    </g>
+</svg>

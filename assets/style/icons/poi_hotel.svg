@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="116px" viewBox="0 0 116 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_hotel</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_hotel" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(25.000000, 34.000000)" fill="#6DC234">
+            <path d="M8,28 L8,0 L0,0 L0,43 L8,43 L8,41 C7.28571429,37.9737778 9.46171429,35.8333333 11,35 L57,35 C58.5382857,35.8333333 60.7142857,37.9737778 60,41 L60,43 L68,43 L68,35 L68,34 L68,28 L8,28 Z" id="Fill-1"></path>
+            <path d="M18,20 L10,20 L10,25 L68,25 L68,19 C68,14.8096658 64.3535652,11.0214709 59,10 C48.9482609,9.00814885 30.173913,6.89809732 29,7 C30.173913,16.0019124 24.5302609,18.5009562 18,20 Z" id="Fill-3"></path>
+            <path d="M26,8 C26,12.4186667 22.4186667,16 18,16 C13.5813333,16 10,12.4186667 10,8 C10,3.58133333 13.5813333,0 18,0 C22.4186667,0 26,3.58133333 26,8" id="Fill-5"></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="60px" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_christmas_bazaar_7_i</title>
+    <g id="poi_christmas_bazaar_7_i" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(19.000000, 7.000000)" stroke="#FFFFFF" stroke-width="5">
+            <polygon id="Fill-1" points="9 49 14 49 14 42 9 42"></polygon>
+            <path d="M9.91313191,16 L0,40.1578947 C0,40.1578947 2.8888,43 11.5,43 C20.1112,43 23,40.1578947 23,40.1578947 L13.1238298,16 L9.91313191,16 Z" id="Fill-2"></path>
+            <polygon id="Star" points="11.5 12.8246447 6.2467111 16 7.67499985 10.0744894 3 6.11145618 9.1360199 5.62464446 11.5 0 13.8639801 5.62464446 20 6.11145618 15.3250002 10.0744894 16.7532889 16"></polygon>
+        </g>
+        <g id="Group" transform="translate(19.000000, 7.000000)" fill="#D91928">
+            <polygon id="Fill-1" points="9 49 14 49 14 42 9 42"></polygon>
+            <path d="M9.91313191,16 L0,40.1578947 C0,40.1578947 2.8888,43 11.5,43 C20.1112,43 23,40.1578947 23,40.1578947 L13.1238298,16 L9.91313191,16 Z" id="Fill-2"></path>
+            <polygon id="Star" points="11.5 12.8246447 6.2467111 16 7.67499985 10.0744894 3 6.11145618 9.1360199 5.62464446 11.5 0 13.8639801 5.62464446 20 6.11145618 15.3250002 10.0744894 16.7532889 16"></polygon>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="117px" viewBox="0 0 116 117" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>poi_islamic</title>
+    <desc>Created with Sketch.</desc>
+    <g id="poi_islamic" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 1.000000)">
+        <g id="poi/100/bounding">
+            <g>
+                <circle id="Oval-Shadow-1" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="58"></circle>
+                <circle id="Oval-Shadow-2" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="56"></circle>
+                <circle id="Oval-Shadow-3" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="54"></circle>
+                <circle id="Oval-Shadow-4" fill-opacity="0.02" fill="#000000" cx="58" cy="58" r="52"></circle>
+                <circle id="Oval-2" fill="#FFFFFF" cx="58" cy="58" r="50"></circle>
+            </g>
+        </g>
+        <g id="Page-1" transform="translate(24.000000, 24.000000)" fill="#72B8EB">
+            <path d="M46.1428571,58.2857143 C31.3892857,58.2857143 19.4285714,46.325 19.4285714,31.5714286 C19.4285714,16.8178571 31.3892857,4.85714286 46.1428571,4.85714286 C48.4961429,4.85714286 50.7644286,5.19228571 52.938,5.763 C47.5247143,2.125 41.0112857,0 34,0 C14.5714286,0 0,14.5714286 0,34 C0,53.4285714 14.5714286,68 34,68 C45.8271429,68 56.236,61.9552857 62.3268571,52.7898571 C57.8315714,56.2238571 52.2361429,58.2857143 46.1428571,58.2857143" id="Fill-1"></path>
+            <polygon id="Fill-3" points="53.4285714 13.9489857 57.9311429 23.0731286 68 24.5351286 60.7142857 31.6387 62.4337143 41.6662714 53.4285714 36.9305571 44.4234286 41.6662714 46.1428571 31.6387 38.8571429 24.5351286 48.926 23.0731286"></polygon>
+        </g>
+    </g>
+</svg>
