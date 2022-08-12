@@ -29,6 +29,7 @@ export const gameServer = {
   updateMainInverval: 10000,
   type: process.env.GAME_TYPE || 'dm',
   clientsCheckInterval: 30000,
+  secretForCommands: process.env.GAME_SERVER_CMD_SECRET || 'secret555',
 };
 
 export const weapon = {

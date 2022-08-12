@@ -42,6 +42,9 @@ GAME_SERVER_PORT=3001
 
 # To change server for map tiles
 TILE_SERVER_URL=trufi.art:8003
+
+# To change game server secret word for admin commands
+GAME_SERVER_CMD_SECRET=secret_word
 ```
 
 ### Development

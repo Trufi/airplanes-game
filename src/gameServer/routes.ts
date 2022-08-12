@@ -7,8 +7,9 @@ import { RestartRequest, KickAllRequest } from './types/api';
 import { Cmd } from './commands';
 import * as api from './services/main';
 import { restartInSeconds, kickAll } from './reducers';
+import * as config from '../config';
 
-const secret = '2gistop1';
+const secret = config.gameServer.secretForCommands;
 
 const kickallScheme = Joi.object().keys({
   secret: Joi.string()
